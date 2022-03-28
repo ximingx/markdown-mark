@@ -155,3 +155,17 @@ shell:startup
 我只设置了字体颜色,感觉不错
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/1257c7bd9e21403480e76eff33903e1a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_18,color_FFFFFF,t_70,g_se,x_16)
+
+# mac 连接服务器
+
+```bash
+> sudo su
+
+> ssh 用户@ip地址
+
+> exit
+
+> exit
+```
+
+![image-20220328215736022](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202203282157117.png)
