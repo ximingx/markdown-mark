@@ -24,6 +24,22 @@ Android 应用程序包含四种组件：
 - 后台进程
 - 空进程
 
+## 清单文件
+
+***\*设置清单文件的属性时，需要遵守几项规则\****：
+
+◼元素：在所有的元素中只有<manifest>和<application>是必需的且只能出现一次
+
+◼属性：元素的属性大部分是可选的但有少数属性是必须设置的
+
+◼定义类名：所有的元素名都对应其在SDK中的类名
+
+◼多数值项：如果某个元素有超过一个数值时，必须通过重复的方式来说明该元素的某个属性具有多个数值项，且不能将多个数值项一次性说明在一个属性中
+
+◼资源项说明：需要引用某个资源时，采用“@[package:]type:name”格式进行引用
+
+◼字符串值：类似于其他语言
+
 ## Activity
 
 提供可视化用户界面的组件
@@ -126,6 +142,20 @@ Service没有界面（最多只能显示一个通知）
 
 Android系统中提供了大量可以直接调用的系统Service
 
+### 启动service的两种方法？
+
+Start方式启动Service
+
+Bind方式启动Service
+
+### IntentService
+
+◼IntentService是Service的子类;
+
+◼其内部会自动开始一个新线程执行任务，并在任务执行完毕后停止Service;
+
+◼当有多个任务时，IntentService会将任务加到一个队列中，按照次序依次执行，直到所有任务执行完毕后停止Service。
+
 ### 分类
 
 - 按照运行的进程不同
@@ -152,13 +182,13 @@ Android系统中提供了大量可以直接调用的系统Service
 
 ◼ **Service运行于UI线程中**
 
-◼ **耗时任务通常都需要新开线程执行**
+◼ 耗时任务通常都需要新开线程执行
 
-◼ **Service不是线程，不是进程**
+◼ Service不是线程，不是进程
 
 ## BroadcastReceiver
 
-◼ BroadcastReceiver是广播接收器，用于接收系统和应用中的广播
+◼ **BroadcastReceiver是广播接收器，用于接收系统和应用中的广播**
 
 ◼ BroadcastReceiver是一种对广播进行过滤接收并响应的组件
 
@@ -168,7 +198,13 @@ Android系统中提供了大量可以直接调用的系统Service
 
 ◼ 电池的使用状态、电话的接收和短信的接收等都会产生一个广播
 
+◼常驻广播：使用AndroidManifest.xml注册，接受者不随Activity的销毁而销毁，也就是拥有独立的生命周期。
+
+◼非常驻广播：使用registerReceiver对广播接收者进行注册。同时，需要使用unregisterReceiver注销这个广播接收者。注册时表示创建广播接收者，注销时表示销毁这个广播接收者。生命周期由开发者决定。通常在activity的onCreate方法中创建广播接收者，在onDestroy中销毁广播接收者。生命周期可控。
+
 ## ContentProvider
+
+**ContentProvider保存和获取数据并使其对所有应用程序可见。是不同应用程序间共享数据的唯一方式。**
 
 在Android中，没有提供所有应用共同访问的公共存储区域。 
 
@@ -176,21 +212,21 @@ Android每个应用程序的数据是私有的，不能被其他应用访问
 
 ## intent
 
-Intent是一个**动作的完整描述， 包含了产生组件、 接收组件和传递数据信息。**
+**Intent是一个动作的完整描述， 包含了产生组件、 接收组件和传递数据信息。**
 
 Intent是Android应用内不同组件之间的通讯载体。
 
-换言之， Intent是**同一或不同应用程序之间的一种运行时绑定(runtime  binding)机制**， 它能在程序运行的过程中连接两个不同的组件。 通过Intent， 你的程序可以向Android表达某种请求或者意愿， Android会根据意愿的内容选择适当的组件来响应。
+换言之， Intent是同一或不同应用程序之间的一种运行时绑定(runtime  binding)机制， 它能在程序运行的过程中连接两个不同的组件。 通过Intent， 你的程序可以向Android表达某种请求或者意愿， Android会根据意愿的内容选择适当的组件来响应。
 
 ### intent 用法
 
 Intent启动Activity、 Service和BroadcastReceiverd
 
-◆ 启 动 Activity ：  **startActivity**(Intent  intent) 或 **startActivityForResult**(Intent intent,int requestCode)方法
+◆ 启 动 Activity ：  startActivity(Intent  intent) 或 startActivityForResult(Intent intent,int requestCode)方法
 
-◆ 启 动 Service  ：  **startService**(Intent  intent) 或 **bindService**(Intent  intent,ServiceConnection  conn  ,int flags)方法
+◆ 启 动 Service  ：  startService(Intent  intent) 或 bindService(Intent  intent,ServiceConnection  conn  ,int flags)方法
 
-◆ 触 发 BroadcastReceiver  ：  **sendBroadcast**(Intent intent)方法
+◆ 触 发 BroadcastReceiver  ：  sendBroadcast(Intent intent)方法
 
 ### Intent属性
 
@@ -223,7 +259,7 @@ Intent启动Activity、 Service和BroadcastReceiverd
 
 ### **常见的使用Intent来启动内置应用程序：**
 
-◆ **启动浏览器**
+◆ 启动浏览器
 
 ```java
 Intent i=new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.baidu.com"));
@@ -231,7 +267,7 @@ Intent i=new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.baidu.com"));
 startActivity(i);
 ```
 
-◆ **启动地图**
+◆ 启动地图
 
 ```java
 Intent i=new Intent(Intent.ACTION_VIEW,
@@ -241,7 +277,7 @@ Uri.parse("geo:25.04692437135412,121.5161783959678"));
 startActivity(i);
 ```
 
-◆ **打电话**
+◆ 打电话
 
 ```java
 Intent i=new Intent(Intent.ACTION_DIAL，Uri.parse("tel:+1234567"));
@@ -249,7 +285,7 @@ Intent i=new Intent(Intent.ACTION_DIAL，Uri.parse("tel:+1234567"));
 startActivity(i);
 ```
 
-◆ **发送电子邮件**
+◆ 发送电子邮件
 
 ```java
 Intent i=new Intent(Intent.ACTION_SENDTO，Uri.parse("mailto:qst@163.com"));
