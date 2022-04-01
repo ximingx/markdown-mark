@@ -169,3 +169,212 @@ shell:startup
 ```
 
 ![image-20220328215736022](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202203282157117.png)
+
+
+
+# 抖音视频接口
+
+## 基本信息
+
+- **接口URL：** `https://api.hlhasd.com/App/douyin_Parse.php`
+- **请求方式：** `GET`
+- **Content-Type：** `multipart/form-data`
+
+| 参数名 | 示例值                        | 参数类型 | 是否必填 | 参数描述                                                 |
+| :----- | :---------------------------- | :------- | :------- | :------------------------------------------------------- |
+| url    | https://v.douyin.com/NCe2DvD/ | string   | 是       | 传入的抖音分享连接URL 示例:https://v.douyin.com/NCe2DvD/ |
+
+```js
+
+```
+
+
+
+
+
+```json
+[
+  {
+    status: 200,
+    statusText: 'OK',
+    headers: {
+      server: 'nginx',
+      date: 'Thu, 31 Mar 2022 03:38:26 GMT',
+      'content-type': 'application/json; charset=gb2312',
+      'transfer-encoding': 'chunked',
+      connection: 'close',
+      'x-xss-protection': '1; mode=block'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Function: httpAdapter],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 0,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      validateStatus: [Function: validateStatus],
+      headers: [Object],
+      params: [Object],
+      method: 'get',
+      url: 'https://api.hlhasd.com/App/douyin_Parse.php',
+      data: undefined
+    },
+    request: ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: false,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      _contentLength: 0,
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'GET /App/douyin_Parse.php?url=https:%2F%2Fv.douyin.com%2FNxu7E6n%2F HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'User-Agent: axios/0.26.1\r\n' +
+        'Host: api.hlhasd.com\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'GET',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/App/douyin_Parse.php?url=https:%2F%2Fv.douyin.com%2FNxu7E6n%2F',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'api.hlhasd.com',
+      protocol: 'https:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype]
+    },
+    data: {
+      status: 'success',
+      Enter: 'https://v.douyin.com/Nxu7E6n/',
+      Original: 'https://aweme.snssdk.com/aweme/v1/playwm/?video_id=v0300fg10000c905c4jc77uagek8add0&ratio=720p&line=0',
+      new: 'https://aweme.snssdk.com/aweme/v1/play/?video_id=v0300fg10000c905c4jc77uagek8add0&ratio=720p&line=0',
+      msg: 'The interface is obtained successfully',
+      time: '2022-03-31 11:38:25'
+    }
+  },
+  {
+    status: 200,
+    statusText: 'OK',
+    headers: {
+      server: 'nginx',
+      date: 'Thu, 31 Mar 2022 03:38:25 GMT',
+      'content-type': 'application/json; charset=gb2312',
+      'transfer-encoding': 'chunked',
+      connection: 'close',
+      'x-xss-protection': '1; mode=block'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Function: httpAdapter],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 0,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      validateStatus: [Function: validateStatus],
+      headers: [Object],
+      method: 'get',
+      url: 'https://api.hlhasd.com/App/douyin_Parse.php',
+      data: undefined
+    },
+    request: ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: true,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: false,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      _contentLength: 0,
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: true,
+      socket: [TLSSocket],
+      _header: 'GET /App/douyin_Parse.php HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'User-Agent: axios/0.26.1\r\n' +
+        'Host: api.hlhasd.com\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'GET',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/App/douyin_Parse.php',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'api.hlhasd.com',
+      protocol: 'https:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype]
+    },
+    data: {
+      status: 'error',
+      msg: 'Interface input parameter error',
+      time: '2022-03-31 11:38:25'
+    }
+  },
+  { params: { url: 'https://v.douyin.com/Nx9532N/' } }
+]
+```
+
