@@ -38,3 +38,15 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 切记：下班前 push 代码，上班后第一件事要 pull 代码
 
+## LibreSSL SSL_read: error:02FFF03C:system library:func(4095):Operation timed out, errno 60
+
+```java
+> git push
+
+fatal: unable to access 'https://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@github.com/ximingx/markdown-mark.git/': LibreSSL SSL_read: error:02FFF03C:system library:func(4095):Operation timed out, errno 60
+  
+> git config http.postBuffer 524288000
+> git config http.sslVerify false
+> git push               
+```
+
