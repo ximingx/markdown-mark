@@ -43,7 +43,7 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ```java
 > git push
 
-fatal: unable to access 'https://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@github.com/ximingx/markdown-mark.git/': LibreSSL SSL_read: error:02FFF03C:system library:func(4095):Operation timed out, errno 60
+fatal: unable to access 'https://github.com/ximingx/markdown-mark.git/': LibreSSL SSL_read: error:02FFF03C:system library:func(4095):Operation timed out, errno 60
   
 > git config http.postBuffer 524288000
 > git config http.sslVerify false
