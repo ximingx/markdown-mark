@@ -4763,7 +4763,7 @@ console.log(Date.now()); // 打印结果举例：1589448165370
             var div = document.getElementsByTagName('div')[0];
 
             var timer = setInterval(() => {
-                countDown('2022/02/03 11:20:00');
+                countDown('2022/06/07 09:00:00');
             }, 1);
 
             function countDown(myTime) {
@@ -4790,13 +4790,13 @@ console.log(Date.now()); // 打印结果举例：1589448165370
 
                 // 兜底处理
                 if (timeSum < 0) {
-                    div.innerHTML = '距离苹果发布会还有00天00小时00分00秒000毫秒';
+                    div.innerHTML = '祝你未来可期';
                     clearInterval(timer);
                     return;
                 }
 
                 // 前端要显示的文案
-                div.innerHTML = '距离苹果发布会还有' + day + '天' + hour + '小时' + minu + '分' + sec + '秒' + millsec + '毫秒';
+                div.innerHTML = day + '天' + hour + '小时' + minu + '分' + sec + '秒' + millsec + '毫秒';
             }
         </script>
     </body>
