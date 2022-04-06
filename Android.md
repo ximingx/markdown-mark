@@ -293,3 +293,35 @@ Intent i=new Intent(Intent.ACTION_SENDTO，Uri.parse("mailto:qst@163.com"));
 startActivity(i);
 ```
 
+## ui
+
+Android界面元素主要由5部分构成： 
+
+- View 视图 
+
+- ViewGroup 视图容器 
+
+- 布局管理器 
+
+- Activity 活动 
+
+- Fragment 碎片
+
+### 元素
+
+View控件是用户界面的基础元素。
+
+View对象是Android屏幕上一个特定的矩形区域的 布局和内容属性的数据载体。
+
+Android 应用的绝大部分UI组件都放在 android.widget 包及其子包中，所有这些UI组件 都继承了View类。
+
+![image-20220406081836606](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204060818647.png)
+
+View类有一个非常重要的ViewGroup子类，该类 通常作为其他控件的容器使用。
+
+### 布局管理器
+
+
+
+### Didget 简单控件
+
