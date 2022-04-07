@@ -1,5 +1,7 @@
 > 总算是复习到 node.js 了, 顺便做一下总结
 
+# node.js
+
 ## 1. 什么是 Node.js
 
 [Node.js官网](https://nodejs.org/zh-cn/)
@@ -215,6 +217,12 @@ NPM 不需要单独安装。默认在安装 Node 的时候，会连带一起安�
 
 最早的时候，我们会把所有的代码都写在一个js文件里，那么，**耦合性会很高（关联性强），不利于维护；而且会造成全局污染，很容易命名冲突。**
 
+Node.js中根据模块来源的不同，将模块分为了 3 大类，分别是：
+
+- 内置模块（内置模块是由 Node.js 官方提供的，例如 fs、path、http 等）；
+- 自定义模块自定义模块（用户创建的每个 .js 文件，都是自定义模块）；
+- 第三方模块（由第三方开发出来的模块，并非官方提供的内置模块，也不是用户创建的自定义模块，使用前需要先下载）；
+
 
 ---
 
@@ -368,8 +376,6 @@ module.exports = function () {
 
 ### exports 和 module.exports 的区别
 
-
-
 最重要的区别：
 
 - 使用exports时，只能单个设置属性 `exports.a = a;`
@@ -379,12 +385,11 @@ module.exports = function () {
 其他要点：
 
 - Node中每个模块的最后，都会执行 `return module.exports`。
-
 - Node中每个模块都会把 `module.exports`指向的对象赋值给一个变量 `exports`，也就是说 `exports = module.exports`。
-
 - `module.exports = XXX`，表示当前模块导出一个单一成员，结果就是XXX。
-
 - 如果需要导出多个成员，则必须使用 `exports.add = XXX; exports.foo = XXX`。或者使用 `module.exports.add = XXX; module.export.foo = XXX`。
+
+使用 `require()` 方法导入模块时，导入的结果，**永远以 module.exports 指向的对象为准**；
 
 
 ---
@@ -872,7 +877,427 @@ console.log(result3);
 
 ![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16-20220326115529960.png)
 
-## express 框架操作 mysql 数据库
+# express
+
+官方给出的概念：Express 是基于 Node.js 平台，快速、开放、极简的 Web 开发框架；
+
+通俗的理解：Express 的作用和 Node.js 内置的 http 模块类似，是专门用来创建 Web 服务器的；
+
+Express 的本质：就是一个 npm 上的第三方包，提供了快速创建 Web 服务器的便捷方法；
+
+可以使用它来做: 
+
+- Web 网站服务器：专门对外提供 Web 网页资源的服务器。
+- API 接口服务器：专门对外提供 API 接口的服务器。
+
+## 1. 安装和导入
+
+```bash
+npm install express
+```
+
+```js
+// 导入
+const express = require("epress");
+// 创建 web 服务器
+const app = express(); 
+
+// 设置监听端口号
+app.listen(3000) 
+```
+
+## 2. 监听
+
+通过 `app.get()` 方法，可以监听客户端的 `GET` 请求，具体的语法格式如下：
+
+```js
+app.get(" 路径 ",function(require, response) {
+    // 处理函数
+})
+```
+
+在 get 方法中 通过 `req.query` 对象，可以访问到客户端通过查询字符串的形式，发送到服务器的参数：
+
+```js
+app.get('/', (require, response) => {
+    // 通过 req.query 可以获取到客户端发送过来的 查询参数
+    // 注意：默认情况下，require.query 是一个空对象
+    console.log(require.query)
+})
+
+```
+
+通过 `app.post()` 方法，可以监听客户端的 `POST` 请求，具体的语法格式如下：
+
+```js
+app.post(" 路径 ",function(require, response) {
+	// 处理函数
+})
+```
+
+## 3. 响应给客户端消息
+
+通过 `res.send()` 方法，可以把处理好的内容，发送给客户端：
+
+```js
+// 监听客户端的 GET 和 POST 请求，并向客户端响应具体的内容
+app.get('/user', (require, response) => {
+    // 调用 express 提供的 res.send() 方法，向客户端响应一个 JSON 对象
+    res.send({ name: 'ximingx', age: 20, gender: '男' })
+})
+app.post('/user', (require, response) => {
+    // 调用 express 提供的 res.send() 方法，向客户端响应一个 文本字符串
+    res.send('请求成功')
+})
+```
+
+## 4. 开放资源
+
+### express.static()
+
+express 提供了一个非常好用的函数，叫做 express.static()，通过它，我们可以非常方便地创建一个静态资源服务器；
+
+例如，通过如下代码就可以将 public 目录下的图片、CSS 文件、JavaScript 文件对外开放访问了：
+
+```js
+app.use(express.static("public"));
+```
+
+`Express` 在指定的静态目录中查找文件，并对外提供资源的访问路径。因此，存放静态文件的目录名不会出现在 URL 中。
+
+如果要托管多个静态资源目录，请多次调用 `express.static()` 函数：
+
+如果希望在托管的静态资源访问路径之前，挂载路径前缀，则可以使用如下的方式：
+
+```js
+app.use("public", express.static("public"));
+```
+
+## 5. 路由
+
+在 `Express` 中，路由指的是客户端的请求与服务器处理函数之间的映射关系；
+
+Express 中的路由分 3 部分组成，分别是请求的类型、请求的 URL 地址、处理函数
+
+每当一个请求到达服务器之后，需要先经过路由的匹配，只有匹配成功之后，才会调用对应的处理函数。
+
+在匹配时，会按照路由的顺序进行匹配，如果请求类型和请求的 URL 同时匹配成功，则 Express 会将这次请求，转交给对应的 function 函数进行处理。
+
+在 `Express` 中使用路由最简单的方式，就是把路由挂载到 app 上
+
+```js
+const express = require('express')
+// 创建 Web 服务器, 命名为 app
+const app = express()
+
+// 挂载路由
+app.get('/', (req, res) => {
+  res.send('Get Request.')
+})
+app.post('/', (req, res) => {
+  res.send('Post Request.')
+})
+
+app.listen(3000)
+```
+
+> 模块化路由
+>
+> 为了方便对路由进行模块化的管理，Express 不建议将路由直接挂载到 app 上，而是推荐将路由抽离为单独的模块。
+> 将路由抽离为单独模块的步骤如下：
+
+创建路由模块对应的 .js 文件；
+调用 express.Router() 函数创建路由对象；
+向路由对象上挂载具体的路由；
+使用 module.exports 向外共享路由对象；
+使用 app.use() 函数注册路由模块；
+
+```js
+// 1. 导入 express
+const express = require('express')
+// 2. 创建路由对象
+const router = express.Router()
+
+// 3. 挂载具体的路由
+router.get('/user/list', (req, res) => {
+  res.send('Get user list.')
+})
+router.post('/user/add', (req, res) => {
+  res.send('Add new user.')
+})
+
+// 4. 向外导出路由对象
+module.exports = router
+```
+
+使用
+
+```js
+// 1. 导入路由模块
+const router = require('./03.router')
+// 2. 使用 app.use() 注册路由模块
+app.use(router)
+```
+
+>  为路由模块添加前缀
+>
+> 类似于托管静态资源时，为静态资源统一挂载访问前缀一样，路由模块添加前缀的方式也非常简单
+
+```js
+// 1. 导入路由模块
+const router = require('./03.router')
+// 2. 使用 app.use() 注册路由模块
+app.use("/spi", router)
+```
+
+## 6. 中间件
+
+> 中间件（Middleware ），特指业务流程的中间处理环节业。
+
+当一个请求到达 `Express` 的服务器之后，可以连续调用多个中间件，从而对这次请求进行预处理；
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204070910605.png)
+
+
+
+`Express` 的中间件，本质上就是一个 **`function` 处理函数**，`Express` 中间件的格式如下：
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204070911536.png)
+
+- 中间件函数的形参列表中，**必须包含 next 参数**。而路由处理函数中只包含 req 和 res；
+- `next 函数`是实现多个中间件连续调用的关键，它表示把流转关系转交给下一个中间件或路由；
+
+中间件的定义
+
+```js
+// 常量 mw 所指向的，就是一个中间件函数
+const mw = function (req, res, next) {
+    console.log('这是中间件函数')
+    // 注意: 在当前中间件的业务处理完毕后，必须调用 next( )函数, 表示把流转关系，转交给下一个中间件或路由
+    next()
+}
+```
+
+客户端发起的任何请求，到达服务器之后，都会触发的中间件，叫做**全局生效的中间件**。
+
+通过调用 `app.use(中间件函数)`，即可定义一个全局生效的中间件，示例代码如下：
+
+```JS
+const mw = function (req, res, next) {
+    console.log('这是最简单的中间件函数')
+    // 表示把流转关系，转交给下一个中间件或路由
+    next()
+}
+// 全局生效的中间件
+app.use(mw)
+```
+
+简化形式
+
+```js
+app.use((req, res, next) => {
+    console.log('这是最简单的中间件函数')
+    next()
+})
+```
+
+多个中间件之间，共享同一份 `req` 和 `res`。基于这样的特性，我们可以在上游的中间件中，统一为 `req` 或 `res` 对象添加自定义的属性或方法，供下游的中间件或路由进行使用。
+
+```js
+const express = require('express')
+const app = express()
+
+// 这是定义全局中间件的简化形式
+app.use((req, res, next) => {
+    // 获取到请求到达服务器的时间
+    const time = Date.now()
+    // 为 req 对象，挂载自定义属性，从而把时间共享给后面的所有路由
+    req.startTime = time
+    next()
+})
+
+app.get('/', (req, res) => {
+    res.send('Home page.' + req.startTime)
+})
+app.get('/user', (req, res) => {
+    res.send('User page.' + req.startTime)
+})
+
+app.listen(80, () => {
+    console.log('http://127.0.0.1')
+})
+```
+
+可以使用 app.use() 连续定义多个全局中间件。客户端请求到达服务器之后，会按照中间件定义的先后顺序依次进行调用，示例代码如下：
+
+```js
+const express = require('express')
+const app = express()
+
+// 定义第一个全局中间件
+app.use((req, res, next) => {
+    console.log('调用了第1个全局中间件')
+    next()
+})
+// 定义第二个全局中间件
+app.use((req, res, next) => {
+    console.log('调用了第2个全局中间件')
+    next()
+})
+
+// 定义一个路由
+app.get('/user', (req, res) => {
+    res.send('User page.')
+})
+
+app.listen(80, () => {
+    console.log('http://127.0.0.1')
+})
+```
+
+不使用 `app.use()` 定义的中间件，叫做局部生效的中间件，示例代码如下：
+
+```js
+// 导入 express 模块
+const express = require('express')
+// 创建 express 的服务器实例
+const app = express()
+
+// 1. 定义中间件函数
+const mw1 = (req, res, next) => {
+    console.log('调用了局部生效的中间件')
+    next()
+}
+
+// 2. 创建路由
+app.get('/', mw1, (req, res) => {
+    res.send('Home page.')
+})
+app.get('/user', (req, res) => {
+    res.send('User page.')
+})
+
+// 调用 app.listen 方法，指定端口号并启动web服务器
+app.listen(80, function () {
+    console.log('Express server running at http://127.0.0.1')
+})
+```
+
+可以在路由中，通过如下 [] 方式，使用多个局部中间件：
+
+```js
+app.get('/', [mw1, mw2], (req, res) => {
+    res.send('Home page.')
+})
+```
+
+> 了解中间件的5个使用注意事项
+
+- 一定要在路由之前注册中间件；
+- 客户端发送过来的请求，可以连续调用多个中间件进行处理；
+- 执行完中间件的业务代码之后，不要忘记调用 next() 函数；
+- 为了防止代码逻辑混乱，调用 next() 函数后不要再写额外的代码；
+- 连续调用多个中间件时，多个中间件之间，共享 req 和 res 对象；
+
+`Express` 官方把常见的中间件用法，分成了 5 大类，分别是：
+
+1. 应用级别的中间件
+2. 路由级别的中间件
+3. 错误级别的中间件
+4. Express 内置的中间件
+5. 第三方的中间件
+
+**应用级别的中间件**
+
+通过 `app.use()` 或 `app.get()` 或 `app.post()` ，**绑定到 app 实例上的中间件，叫做应用级别的中间件**，代码示例如下：
+
+```js
+// 应用级别的中间件(全局中间件)
+app.use((req, res, next) => {
+    next()
+})
+
+// 应用级别的中间件(局部中间件)
+app.get('/', mw1, (req, res) => {
+    res.send('Home page.')
+})
+```
+
+**路由级别的中间件**
+
+**绑定到 express.Router() 实例上的中间件，叫做路由级别的中间件。**它的用法和应用级别中间件没有任何区别。只不过，应用级别中间件是绑定到 app 实例上，路由级别中间件绑定到 router 实例上，代码示例如下：
+
+```js
+const app = express();
+const router = express.Router()
+
+router.use(function(require, response, next) {
+    // 处理函数
+    next()
+})
+```
+
+**错误级别的中间件**
+
+错误级别中间件的作用：专门用来捕获整个项目中发生的异常错误，从而防止项目异常崩溃的问题。
+
+格式：错误级别中间件的 `function` 处理函数中，**必须有 4 个形参**，形参顺序从前到后，分别是 (**err**, req, res, next)。
+
+```js
+// 导入 express 模块
+const express = require('express')
+// 创建 express 的服务器实例
+const app = express()
+
+// 1. 定义路由
+app.get('/', (req, res) => {
+    // 1.1 人为的制造错误
+    throw new Error('服务器内部发生了错误！')
+    res.send('Home page.')
+})
+
+// 2. 定义错误级别的中间件，捕获整个项目的异常错误，从而防止程序的崩溃
+app.use((err, req, res, next) => {
+    console.log('发生了错误！' + err.message)
+    res.send('Error：' + err.message)
+})
+
+// 调用 app.listen 方法，指定端口号并启动web服务器
+app.listen(80, function () {
+    console.log('Express server running at http://127.0.0.1')
+})
+```
+
+**错误级别的中间件，必须注册在所有路由之后；**
+
+## 7. 接口
+
+首先要创建基本的服务器
+
+```js
+// 导入 express
+const express = require('express')
+// 创建 express 的服务器实例
+const app = express()
+
+ // write your code here...
+
+// 调用 app.listen 方法，指定端口号并启动Web服务器
+app.listen(80, () => {
+  console.log('express server running at http://127.0.0.1')
+})
+```
+
+创建 API 路由模块
+
+```js
+// 1. 导入路由模块
+const router = require('./03.router')
+// 2. 使用 app.use() 注册路由模块
+app.use(router)
+```
+
+## 8. 操作 mysql 数据库
 
 
 （1）安装 mysql 包：
@@ -928,8 +1353,6 @@ connection.query(sql,function (err, results) {
 ```
 
 ---
-
-### 增删改查操作
 
 ```js
 /**
@@ -1025,16 +1448,30 @@ app.listen(port,() ={
 
 ![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_19,color_FFFFFF,t_70,g_se,x_16.png)
 
-## node express解决跨域
+## 9. express解决跨域
+
+解决接口跨域问题的方案主要有两种：
+
+1. `CORS`（主流的解决方案，**推荐使用**）
+
+> `CORS` （Cross-Origin Resource Sharing，跨域资源共享）由一系列 HTTP 响应头组成，这些 HTTP 响应头决定浏览器是否阻止前端 JS 代码跨域获取资源。
+>
+> 浏览器的同源安全策略默认会阻止网页“跨域”获取资源。但如果接口服务器配置了 CORS 相关的 HTTP 响应头，就可以解除浏览器端的跨域访问限制。
+>
+> - CORS 主要在服务器端进行配置。客户端浏览器无须做任何额外的配置，即可请求开启了 CORS 的接口；
+> - CORS 在浏览器中有兼容性。只有支持 XMLHttpRequest Level2 的浏览器，才能正常访问开启了 CORS 的服务端接口（例如：IE10+、Chrome4+、FireFox3.5+）；
 
 ```js
-const express = require('express')
 // import router from './routes/index.js';
 const app = express();
 
 // 设置允许跨域访问该服务
 app.all('*', function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
+  // origin 参数的值指定了允许访问该资源的外域 URL。
+  // 如果指定了 Access-Control-Allow-Origin 字段的值为通配符 *，表示允许来自任何域的请求
+  res.header("Access-Control-Allow-Origin", "origin");
+  // CORS 仅支持客户端向服务器发送如下的 9 个请求头：Accept、Accept-Language、Content-Language、DPR、Downlink、Save-Data、Viewport-Width、Width 、Content-Type （值仅限于 text/plain、multipart/form-data、application/x-www-form-urlencoded 三者之一）
+  //  如果客户端向服务器发送了额外的请求头信息，则需要在服务器端，通过 Access-Control-Allow-Headers 对额外的请求头进行声明，否则这次请求会失败！
   res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -1043,7 +1480,65 @@ app.all('*', function (req, res, next) {
 });
 ```
 
-## 内网穿透
+在浏览器与服务器正式通信之前，浏览器会先发送 OPTION 请求进行预检，以获知服务器是否允许该实际请求，所以这一次的 OPTION 请求称为“预检请求”。服务器成功响应预检请求后，才会发送真正的请求，并且携带真实数据。
+
+2. `JSONP`（有缺陷的解决方案：只支持 GET 请求）
+
+> 浏览器端通过 `<script>` 标签的 src 属性，请求服务器上的数据，同时，服务器返回一个函数的调用。这种请求数据的方式叫做 `JSONP`。
+
+- JSONP 不属于真正的 Ajax 请求，因为它没有使用 `XMLHttpRequest` 这个对象。
+- JSONP 仅支持 GET 请求，不支持 POST、PUT、DELETE 等请求。
+
+实现 JSONP 接口的步骤
+
+1. 获取客户端发送过来的回调函数的名字；
+2. 得到要通过 JSONP 形式发送给客户端的数据；
+3. 根据前两步得到的数据，拼接出一个函数调用的字符串；
+4. 把上一步拼接得到的字符串，响应给客户端的 `<script>` 标签进行解析执行；
+
+```js
+app.get("/api/jsonp", require, response) {
+    data = {
+        name: "ximingx",
+        age: 20
+    }
+    res.sned(`${requ.query.callback (${JSON.strify(data)})}`);
+}
+
+// ------------------------------
+
+$("#btn").on("click", function() {
+    $.ajax({
+        method: "GET",
+        url: "http://localhost:3000/api/jsonp",
+        dataType: "jsonp",
+        success(res) {
+            console.log(res);
+        }
+    })
+})
+```
+
+
+
+3. 使用 cors 中间件解决跨域问题
+
+> cors 是 Express 的一个第三方中间件。通过安装和配置 cors 中间件，可以很方便地解决跨域问题。
+
+使用步骤分为如下 3 步：
+
+- 运行 npm install cors 安装中间件；
+- 使用 const cors = require('cors') 导入中间件；
+- 在路由之前调用 app.use(cors()) 配置中间件；
+  
+
+
+
+
+
+# 案例
+
+## 1. 内网穿透
 
 ### 首先强调几个遇到的问题
 
@@ -1138,7 +1633,7 @@ http_proxy=                     #代理设置 如 http://10.123.10.10:3128 非�
 [更换阿里公共DNS](https://natapp.cn/article/alidns)
 [连不上网络错误调试排查详解](https://natapp.cn/article/networkerrors)
 
-## 网易云接口
+## 2. 网易云接口
 
 **目的功能:**
 1. axios 请求获取歌曲的 url 以及 封面照片
@@ -1419,7 +1914,3 @@ export default {
 </style>
 ```
 
-当然,所有的功能还没有全部实现,未完待续
-搞了一天,累了,回家
-
- **\> _<**
