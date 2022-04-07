@@ -1,6 +1,6 @@
 一个20级山西农业大学的大学生学习的笔记
 
-有感兴趣的的可以到我的博客去看一些我的文章 [ximingx ](http://ximingx.com/) 
+有感兴趣的的可以到我的博客去看一些我的文章 [ximingx ](https://ximingx.blog.csdn.net) 
 
 有需要帮忙的也可以加我好友
 

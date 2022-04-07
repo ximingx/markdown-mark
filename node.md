@@ -1,16 +1,16 @@
 # node.js
 
-Node.js 的官网地址：**https://nodejs.org/zh-cn/**
+Node.js 的 中文官网地址：**https://nodejs.org/zh-cn/**
 
 ## 1. 什么是 Node.js
 
-Node.js是一个基于 **Chrome V8 引擎**的 JavaScript 运行环境。Node.js 使用了一个**事件驱动**、**非阻塞式 I/O**的模型，使其轻量又高效。Node.js 的包管理工具 npm 是全球最大的开源库生态系统。
+Node.js 是一个基于 **Chrome V8 引擎的 JavaScript 运行环境** 。Node.js 使用了一个**事件驱动**、**非阻塞式 I/O**的模型，使其轻量又高效。Node.js 的**包管理工具 npm 是全球最大的开源库生态系统。**
 
-`Node.js`是一个基于 Chrome V8 引擎的JavaScript 运行环境。V8引擎执行`Javascript`的速度非常快，性能非常好。`Node.js`对一些特殊用例进行了优化，提供了替代的API，使得V8在非浏览器环境下运行得更好；
+V8引擎执行`Javascript`的速度非常快，性能非常好。`Node.js`对一些特殊用例进行了优化，提供了替代的API，使得V8在非浏览器环境下运行得更好；
 
 Node.js 不是一门语言，也不是 JavaScript 的框架，也不是像Nginx一样的Web服务器 ，**Node.js 是 JavaScript 在服务器端的运行环境（平台）**。
 
-常用途径: 
+使用 node.js 我们可以做什么: 
 
 - 基于 Express 框架（http://www.expressjs.com.cn/），可以快速构建 Web 应用；
 - 基于 Electron 框架（https://electronjs.org/），可以构建跨平台的桌面应用；
@@ -36,7 +36,7 @@ ECMAScript 是 JS 的语法；DOM 和 BOM 浏览器端为 JS 提供的 API。
 
 -   **ECMAScript**。ECMAScript 的所有语法在 Node 环境中都可以使用。
 
--   **Node 环境**提供的一些**附加 API**(包括文件、网络等相关的 API)。
+-   **Node 环境提供的一些附加 API**(包括文件、网络等相关的 API)。
 
 在 Node.js 里运行 JavaScript，跟在 Chrome 里运行 JavaScript 有什么不同？
 
@@ -55,8 +55,6 @@ Node.js 是 JavaScript 在服务器端的运行环境，在这个意义上，Nod
 -   [V8 引擎](https://v8.dev/) ：编译和执行 JS 代码、管理内存、垃圾回收。V8 给 JS 提供了运行环境，可以说是 JS 的虚拟机。V8 引擎本身是用 C++ 写的。
 -   [libuv](https://zh.wikipedia.org/wiki/Libuv)： libuv 是一个专注于异步 I/O 的跨平台类库，目前主要在 Node.js 上使用。它是 Node.js 最初的作者 Ryan Dahl 为 Node.js 写的底层类库，也可以称之为虚拟机。libuv 本身是用 C 写的。
 
-![img](https://img-blog.csdnimg.cn/ebde67926fb346c7b0c65edc1afb6616.png#pic_center)
-
 **注意:** 
 
 - 浏览器是 JavaScript 的前端运行环境；
@@ -67,7 +65,7 @@ Node.js 是 JavaScript 在服务器端的运行环境，在这个意义上，Nod
 
 ### V8 的内存限制
 
-在一般的后端开发语言中，在基本的内存使用上没有什么限制，然而在 Node 中通过 JavaScript 使用内存时就会发现只能使用部分内存（64 位系统下约为 1.4GB，32 位系统下约为 0.7GB）。在这样的限制下，将会导致 Node 无法直接操作大内存对象。
+在一般的后端开发语言中，在基本的内存使用上没有什么限制，然而在 Node 中通过 JavaScript 使用内存时就会发现只能使用部分内存（64 位系统下约为 1.4GB，32 位系统下约为 0.7GB）。在这样的限制下，将会导致 **Node 无法直接操作大内存对象。**
 
 造成这个问题的主要原因在于 Node 基于 V8 构建，所以在 Node 中使用的 JavaScript 对象基本上都是通过 V8 自己的方式来进行分配和管理的。V8 的这套内存管理机制在浏览器的应用场景下使用起来绰绰有余，足以胜任前端页面中的所有需求。但在 Node 中，这却限制了开发者随心所欲使用大内存的想法。
 
@@ -114,7 +112,7 @@ Node.js 是 JavaScript 在服务器端的运行环境，在这个意义上，Nod
 
 ### 进程（进行中的程序）
 
-- 每一个 **正在运行** 的应用程序都称之为进程。
+- 每一个正在运行的应用程序都称之为进程。
 
 - 每一个应用程序运行都至少有一个进程。
 
@@ -132,7 +130,7 @@ Node.js 是 JavaScript 在服务器端的运行环境，在这个意义上，Nod
 
 - 在一个线程内部，同时只可以干一件事
 
-- 传统的开发方式大部分都是 I/O 阻塞的，所以需要多线程来更好的利用硬件资源。
+- **传统的开发方式大部分都是 I/O 阻塞的，所以需要多线程来更好的利用硬件资源。**
 
 线程并不是越多越好。
 
@@ -144,7 +142,7 @@ Node.js 是 JavaScript 在服务器端的运行环境，在这个意义上，Nod
 - 线程数量有限。
 - CPU 在不同线程之间转换，有个上下文转换，这个转换非常耗时。
 
-所谓的多线程其实都是假的，对于单核CPU而言，它们无非是在抢占 CPU 资源。线程和线程之间需要**切换和调度**，这是很耗费资源的。
+**所谓的多线程其实都是假的，对于单核CPU而言，它们无非是在抢占 CPU 资源。线程和线程之间需要切换和调度，这是很耗费资源的。**
 
 缺点二：
 
@@ -192,8 +190,8 @@ Node.js 的性能和效率非常高。
 
 **终端中快捷操作**
 
-- 使用 ↑ 键，可以快速定位到上一次执行的命令；
-- 使用 tab 键，能够快速补全路径；
+- **使用 ↑ 键，可以快速定位到上一次执行的命令；**
+- **使用 tab 键，能够快速补全路径；**
 - 使用 esc 键，能够快速清空当前已输入的命令；
 - 输入 cls 命令，可以清空终端；
 
@@ -227,7 +225,7 @@ requiere(`fs`);
 
 ### NPM 的概念
 
-**NPM**：Node Package Manager。官方链接： <https://www.npmjs.com/
+NPM：Node Package Manager。官方链接： <https://www.npmjs.com/
 
 Node.js 发展到现在，已经形成了一个非常庞大的生态圈。包的生态圈一旦繁荣起来，就必须有工具去来管理这些包。NPM 应运而生。
 
@@ -241,20 +239,65 @@ Node.js 发展到现在，已经形成了一个非常庞大的生态圈。包的
 
 NPM 不需要单独安装。默认在安装 Node 的时候，会连带一起安装 NPM
 
+### package.json
+
+在项目根目录中，创建一个叫做 `package.json` 的配置文件，即可用来记录项目中安装了哪些包。从而方便剔除 node_modules 目录之后，在团队成员之间共享项目的源代码。
+
+`package.json` 的包管理配置文件。用来记录与项目有关的一些配置信息。例如：
+
+- 项目的名称、版本号、描述等；
+- 项目中都用到了哪些包；
+- 哪些包只在开发期间会用到；
+- 哪些包在开发和部署时都需要用到；
+
+npm 包管理工具提供了一个快捷命令，可以在执行命令时所处的目录中，快速创建 `package.json` 这个包管理配置文件：
+
+```js
+npm iniy -y
+```
+
+当我们拿到一个剔除了 node_modules 的项目之后，需要先把所有的包下载到项目中，才能将项目运行起来。
+
+可以运行 `npm install` 命令（或 `npm i`）一次性安装所有的依赖包：
+
+```bash
+npm install
+```
+
+可以运行 `npm uninstall` 命令，来卸载指定的包：
+
+```bash
+npm uninstall mysql
+```
+
+在使用 npm 下包的时候，默认从国外的 https://registry.npmjs.org/ 服务器进行下载，此时，网络数据的传输需要经过漫长的海底光缆，因此下包速度会很慢。
+
+淘宝在国内搭建了一个服务器，专门把国外官方服务器上的包**同步**到国内的服务器，然后在国内提供下包的服务。从而极大的提高了下包的速度。
+
+```bash
+npm config set registry http://registry.npm.taobao.org/
+```
+
+**初次装包完成后，在项目文件夹下多一个叫做 node_modules 的文件夹和 package-lock.json 的配置文件；**
+
+**node_modules 文件夹用来存放所有已安装到项目中的包。require() 导入第三方包时，就是从这个目录中查找并加载包；**
+
+**package-lock.json 配置文件用来记录 node_modules 目录下的每一个包的下载信息，例如包的名字、版本号、下载地址等；**
+
 ## 6. 模块化
 
 
-**概念**：将一个复杂的程序依据一定的规则（规范）封装成几个块（文件），并组合在一起。
+概念：将一个复杂的程序依据一定的规则（规范）封装成几个块（文件），并组合在一起。
 
 **模块的内部数据、实现是私有的, 只是向外部暴露一些接口(方法)与外部其它模块通信。**
 
-最早的时候，我们会把所有的代码都写在一个js文件里，那么，**耦合性会很高（关联性强），不利于维护；而且会造成全局污染，很容易命名冲突。**
+最早的时候，我们会把所有的代码都写在一个js文件里，那么，耦合性会很高（关联性强），不利于维护；而且会造成全局污染，很容易命名冲突。
 
 Node.js中根据模块来源的不同，将模块分为了 3 大类，分别是：
 
-- 内置模块（内置模块是由 Node.js 官方提供的，例如 fs、path、http 等）；
-- 自定义模块自定义模块（用户创建的每个 .js 文件，都是自定义模块）；
-- 第三方模块（由第三方开发出来的模块，并非官方提供的内置模块，也不是用户创建的自定义模块，使用前需要先下载）；
+- **内置模块**（内置模块是由 Node.js 官方提供的，例如 fs、path、http 等）；
+- **自定义模块自定义模块**（用户创建的每个 .js 文件，都是自定义模块）；
+- **第三方模块**（由第三方开发出来的模块，并非官方提供的内置模块，也不是用户创建的自定义模块，使用前需要先下载）；
 
 
 ---
@@ -262,14 +305,24 @@ Node.js中根据模块来源的不同，将模块分为了 3 大类，分别是�
 ### 模块化的好处
 
 - 避免命名冲突，减少命名空间污染
-
 - 降低耦合性；更好地分离、按需加载
-
 - **高复用性**：代码方便重用，别人开发的模块直接拿过来就可以使用，不需要重复开发类似的功能。
-
 - **高可维护性**：软件的声明周期中最长的阶段其实并不是开发阶段，而是维护阶段，需求变更比较频繁。使用模块化的开发，方式更容易维护。
-
 - 部署方便
+
+---
+
+### 模块的加载机制
+
+模块在第一次加载后会被缓存。 这也意味着多次调用 `require()` 不会导致模块的代码被执行多次。
+
+不论是内置模块、用户自定义模块、还是第三方模块，它们都会优先从缓存中加载，从而提高模块的加载效率。
+
+当把目录作为模块标识符，传递给 require() 进行加载的时候，有三种加载方式：
+
+- 在被加载的目录下查找一个叫做 package.json 的文件，并寻找 main 属性，作为 require() 加载的入口；
+- 如果目录里没有 package.json 文件，或者 main 入口不存在或无法解析，则 Node.js 将会试图加载目录下的 index.js 文件；
+- 如果以上两步都失败了，则 Node.js 会在终端打印错误消息，报告模块的缺失：Error: Cannot find module 'xxx'；
 
 ---
 
@@ -330,7 +383,7 @@ Node.js中，每个模块都有一个 exports 接口对象，我们可以把公�
 
 `exports`对象用来导出当前模块的公共方法或属性。别的模块通过 require 函数调用当前模块时，得到的就是当前模块的 exports 对象。
 
-**语法格式**：
+语法格式：
 
 ```js
 // 相当于是：给 exports 对象添加属性
@@ -341,9 +394,7 @@ exports.xxx = value
 
 **注意**：暴露的关键词是`exports`，不是`export`。其实，这里的 exports 类似于 ES6 中的 export 的用法，都是用来导出一个指定名字的对象。
 
-
-
-**代码举例**：
+代码举例：
 
 ```js
 const name = 'ximingx';
@@ -358,10 +409,10 @@ exports.foo = foo;
 
 ---
 
-### 暴露模块的方式二： module.exports
+### **暴露模块的方式二： module.exports**
 
-- Node中每个模块的最后，都会执行 `return: module.exports`。
-- Node中每个模块都会把 `module.exports`指向的对象赋值给一个变量 `exports`，也就是说 `exports = module.exports`。
+- **Node中每个模块的最后，都会执行 `return: module.exports`。**
+- **Node中每个模块都会把 `module.exports`指向的对象赋值给一个变量 `exports`，也就是说 `exports = module.exports`。**
 
 `module.exports`用来导出一个默认对象，没有指定对象名。
 
@@ -393,7 +444,6 @@ module.exports = {
 // 方式2
 const age = 28;
 module.exports.age = age;
-
 ```
 
 `module.exports` 还可以修改模块的原始导出对象。比如当前模块原本导出的是一个对象，我们可以通过 module.exports 修改为导出一个函数。如下：
@@ -417,8 +467,8 @@ module.exports = function () {
 
 其他要点：
 
-- Node中每个模块的最后，都会执行 `return module.exports`。
-- Node中每个模块都会把 `module.exports`指向的对象赋值给一个变量 `exports`，也就是说 `exports = module.exports`。
+- **Node中每个模块的最后，都会执行 `return module.exports`。**
+- **Node中每个模块都会把 `module.exports`指向的对象赋值给一个变量 `exports`，也就是说 `exports = module.exports`。**
 - `module.exports = XXX`，表示当前模块导出一个单一成员，结果就是XXX。
 - 如果需要导出多个成员，则必须使用 `exports.add = XXX; exports.foo = XXX`。或者使用 `module.exports.add = XXX; module.export.foo = XXX`。
 
@@ -478,12 +528,6 @@ $ node main.js
 ### 模块的初始化
 
 一个模块中的 JS 代码仅在模块**第一次被使用时**执行一次，并且在使用的过程中进行初始化，然后会被缓存起来，便于后续继续使用。
-
-仅在模块**第一次被使用时**执行一次
-
-仅在模块**第一次被使用时**执行一次
-
-仅在模块**第一次被使用时**执行一次
 
 代码举例：
 
@@ -561,8 +605,6 @@ Node.js 应用由模块组成，采用 CommonJS 模块规范。Node.js中的模�
 const path = require("path");
 ```
 
-require方法用于加载模块。
-
 常见的内置模块包括：
 
 - FS：文件系统模块
@@ -583,6 +625,7 @@ require方法用于加载模块。
 
 ```js
 // 需要提前通过 npm 下载以后才可以使用
+// npm install mysql
 const mysql= require('mysql');
 ```
 
@@ -802,7 +845,7 @@ fs.readdir("../dist",function(err, files){
 
 > 在使用 fs 模块操作文件时，如果提供的操作路径是以 ./ 或 …/ 开头的相对路径时，很容易出现路径动态拼接错误的问题；
 >
-> 解决方案：在使用 fs 模块操作文件时，直接提供完整的路径，不要提供 ./ 或 …/ 开头的相对路径，从而防止路径动态拼接的问题
+> **解决方案：在使用 fs 模块操作文件时，直接提供完整的路径，不要提供 ./ 或 …/ 开头的相对路径，从而防止路径动态拼接的问题**
 >
 > 这就需要使用到了 path 模块
 
@@ -810,7 +853,7 @@ path 模块是 `Node.js` 官方提供的、用来**处理路径**的模块。它
 
 - `path.join()`方法，用来将多个路径片段拼接成一个完整的路径字符串；
 - `path.basename()` 方法，用来从路径字符串中，将文件名解析出来；
-- 使用 path.join() 方法，可以把多个路径片段拼接为完整的路径字符串;
+- `path.join()` 方法，可以把多个路径片段拼接为完整的路径字符串;
 
 ### path.extname() 
 
@@ -939,7 +982,7 @@ console.log(result3);
 
 ## 11. http 模块
 
-http 模块是 Node.js 官方提供的、用来创建 web 服务器的模块。通过 http 模块提供的 http.createServer() 方法，就能方便的把一台普通的电脑，变成一台 Web 服务器，从而对外提供 Web 资源服务。
+**http 模块是 Node.js 官方提供的、用来创建 web 服务器的模块。通过 http 模块提供的 http.createServer() 方法，就能方便的把一台普通的电脑，变成一台 Web 服务器，从而对外提供 Web 资源服务。**
 
 如果要希望使用 http 模块创建 Web 服务器，则需要先导入它：
 
@@ -966,10 +1009,11 @@ const http = require('http')
 const server = http.createServer()
 // 3. 为服务器实例绑定 request 事件，监听客户端的请求
 server.on('request', function (req, res) {
-    console.log('Someone visit our web server.')
+    console.log('server.')
 })
 // 4. 启动服务器
 // 调用服务器实例的 .listen() 方法，即可启动当前的 web 服务器实例
+// 也可以不带函数启动， 只需要端口号
 server.listen(8080, function () {
     console.log('server running at http://127.0.0.1:8080')
 })
@@ -990,7 +1034,6 @@ server.on('request', (req, res) => {
     // req.method 是客户端请求的 method 类型
     const method = req.method
     const str = `Your request url is ${url}, and request method is ${method}`
-    console.log(str)
     // 调用 res.end() 方法，向客户端响应一些内容
     res.end(str)
 })
@@ -1001,11 +1044,11 @@ server.listen(80, () => {
 
 ### response
 
-在服务器的 ·request· 事件处理函数中，如果想**访问与服务器相关的数据或属性**，可以使用如下的方式：
+在服务器的 `request` 事件处理函数中，如果想**访问与服务器相关的数据或属性**，可以使用如下的方式：
 
 ```js
 server.on("request",(require, response) => {
-    res.send("aw")
+    console.log(response);
 })
 ```
 
@@ -1075,7 +1118,7 @@ server.listen(80, () => {
 
 官方给出的概念：Express 是基于 Node.js 平台，快速、开放、极简的 Web 开发框架；
 
-通俗的理解：Express 的作用和 Node.js 内置的 http 模块类似，是专门用来创建 Web 服务器的；
+**通俗的理解：Express 的作用和 Node.js 内置的 http 模块类似，是专门用来创建 Web 服务器的；**
 
 Express 的本质：就是一个 npm 上的第三方包，提供了快速创建 Web 服务器的便捷方法；
 
@@ -1232,11 +1275,11 @@ app.listen(3000)
 > 为了方便对路由进行模块化的管理，Express 不建议将路由直接挂载到 app 上，而是推荐将路由抽离为单独的模块。
 > 将路由抽离为单独模块的步骤如下：
 
-创建路由模块对应的 .js 文件；
-调用 express.Router() 函数创建路由对象；
-向路由对象上挂载具体的路由；
-使用 module.exports 向外共享路由对象；
-使用 app.use() 函数注册路由模块；
+- 创建路由模块对应的 .js 文件；
+- 调用 express.Router() 函数创建路由对象；
+- 向路由对象上挂载具体的路由；
+- 使用 module.exports 向外共享路由对象；
+- 使用 app.use() 函数注册路由模块；
 
 ```js
 // 1. 导入 express
@@ -1758,13 +1801,11 @@ $("#btn").on("click", function() {
 - 在路由之前调用 app.use(cors()) 配置中间件；
   
 
-
-
-
-
 # 案例
 
 ## 1. 内网穿透
+
+[博客原地址，里面有具体的展示过程， 很详细](https://blog.csdn.net/ximing020714/article/details/122077265?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164933400216782248544817%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=164933400216782248544817&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-122077265.142^v7^control,157^v4^control&utm_term=node+ximingx&spm=1018.2226.3001.4187)
 
 ### 首先强调几个遇到的问题
 
@@ -1773,13 +1814,13 @@ $("#btn").on("click", function() {
 3. 使用 `node` 开放资源目录
 4. `natapp` 连接隧道失败
 5. 以下步骤要配置`node`环境
-![在这里插入图片描述](https://img-blog.csdnimg.cn/19445681fe224eeb97aeab96c2e54a7c.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_11,color_FFFFFF,t_70,g_se,x_16)
+
 ### 过程
 
 首先将 `vue` 项目打包, 生成dist文件夹
-![在这里插入图片描述](https://img-blog.csdnimg.cn/10659e5de6754b51b42eb205a94e596a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 直接把 `dist` 文件夹放到 node 服务器与 app.js 同级目录
-![在这里插入图片描述](https://img-blog.csdnimg.cn/b14438cfe24642dc821d26321c38681d.png)
+
 此时我们进入 `app.js` 
 
 ```js
@@ -1822,18 +1863,18 @@ node app.js
 首先需要进入 `natapp` 的官网 [官网链接](https://natapp.cn/)
 
 然后选择注册或者登录, 需要实名认证
-![在这里插入图片描述](https://img-blog.csdnimg.cn/7351fd56b83f44d3be30f983a593c6e0.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 注册完毕后 看那个免费隧道, 真的不错
-![在这里插入图片描述](https://img-blog.csdnimg.cn/3b2aa17c2c4345f199e809c6190c9e67.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 在配置隧道的时候, 需要注意的是, 我node服务器使用的端口号是 3000
 这里也需要填写 3000
-![在这里插入图片描述](https://img-blog.csdnimg.cn/bbc6fb5be12d4dd5a626d422ecbfba10.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 and, 写到这里的时候, 我突然想起来还要安装下载 natapp, 但是很简单, 不要慌
-![在这里插入图片描述](https://img-blog.csdnimg.cn/0ce788c6a35a46c1a3341e5df14ad1ca.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 然后直接安装就可以了
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/a091f76615154f66b11ca5ca9ed7c639.png)
 在 config.ini 需要配置一下
+
 ```bash
 #将本文件放置于natapp同级目录 程序将读取 [default] 段
 #在命令行参数模式如 natapp -authtoken=xxx 等相同参数将会覆盖掉此配置
@@ -1846,20 +1887,19 @@ loglevel=ERROR                  #日志等级 DEBUG, INFO, WARNING, ERROR 默认
 http_proxy=                     #代理设置 如 http://10.123.10.10:3128 非代理上网用户请务必留空
 ```
 配置完成后, 点击 `natapp,exe `, 如果显示的是下面的页面, 表示成功了
-![在这里插入图片描述](https://img-blog.csdnimg.cn/6b97a502fcd24335a8d6503bf774730b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-然后搜索你下面红框中的 http地址, 即可成功实现![在这里插入图片描述](https://img-blog.csdnimg.cn/f044573ddbe04c8c9b1b9dc3ac267f7a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-最后演示一下成果, 已经可以在手机访问了
-![在这里插入图片描述](https://img-blog.csdnimg.cn/6644e0f26716451f93169c0df32ed659.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+然后搜索你下面红框中的 http地址, 即可成功实现
 <font color="red">当然在最后一步连接隧道时, 可能会遇到问题, 报错的评论区扣,或者私信截图</font>
 
 ### 连接隧道报错解决方法
 
-显示如下图: 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/5e1cbec2c889441da405e5ed96bff812.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 [更换阿里公共DNS](https://natapp.cn/article/alidns)
 [连不上网络错误调试排查详解](https://natapp.cn/article/networkerrors)
 
 ## 2. 网易云接口
+
+[博客原地址](https://blog.csdn.net/ximing020714/article/details/121366965?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164933409016780366535612%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=164933409016780366535612&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~rank_v31_ecpm-1-121366965.142^v7^control,157^v4^control&utm_term=ximingx+%E7%BD%91%E6%98%93%E4%BA%91&spm=1018.2226.3001.4187)
 
 **目的功能:**
 1. axios 请求获取歌曲的 url 以及 封面照片
@@ -1869,15 +1909,9 @@ http_proxy=                     #代理设置 如 http://10.123.10.10:3128 非�
 5. 刷新重置进度
 6. 歌单的展示
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/816f80d586a049f9b304019b8ea10376.png#pic_center)
-
-
-**先展示一波:**
-![在这里插入图片描述](https://img-blog.csdnimg.cn/0f4704dd57d1447fa72c1fd3252da280.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-**and**
-![在这里插入图片描述](https://img-blog.csdnimg.cn/793be68e640c4405a1ee71cdd7b33b3e.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
 **首先声明一点: 这里引用的不是官方的网易云接口**
 **网易云音乐接口  github地址**  
+
 ```bash
 https://github.com/Binaryify/NeteaseCloudMusicApi
 ```
@@ -1898,13 +1932,13 @@ node app.js
 http://localhost:3000/
 ```
 打开文档
-![在这里插入图片描述](https://img-blog.csdnimg.cn/374ae94668b147bca1dac96acd2b9127.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 借此我们可以请求歌单和歌曲的 url 地址 ,  歌曲照片地址等等,详细功能可以自己查看
 
 以上全部借助别人的 api 接口
 
 **这里重点强调一下 获取歌曲 url 的 api**
-![在这里插入图片描述](https://img-blog.csdnimg.cn/f0b95cdfb05f460d876e145d367379e9.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
+
 需要传入歌曲的 id 返回 url 地址
 
 下面是自己写的样式
