@@ -1799,7 +1799,80 @@ $("#btn").on("click", function() {
 - 运行 npm install cors 安装中间件；
 - 使用 const cors = require('cors') 导入中间件；
 - 在路由之前调用 app.use(cors()) 配置中间件；
-  
+
+## 10. express-generator
+
+您可以使用 `npx` 命令（在 Node.js 8.2.0 中可用）运行应用程序生成器。
+
+```bash
+npx express-generator
+```
+
+![image-20220407225823471](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204072258530.png)
+
+生成的项目目录
+
+```bash
+.
+├── app.js
+├── bin
+│   └── www
+├── package.json
+├── public
+│   ├── images
+│   ├── javascripts
+│   └── stylesheets
+│       └── style.css
+├── routes
+│   ├── index.js
+│   └── users.js
+└── views
+    ├── error.pug
+    ├── index.pug
+    └── layout.pug
+
+7 directories, 9 files
+```
+
+
+
+![image-20220407225734975](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204072257042.png)
+
+然后安装依赖项：
+
+```bash
+$ cd myapp
+$ npm install
+```
+
+```bash
+# 启动服务
+$ node ./bin/www
+```
+
+![image-20220407230029657](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204072300762.png)
+
+# 中间件
+
+## body-parser
+
+在处理程序之前在中间件中解析传入的请求主体，在`req.body`属性下可用。
+
+安装
+
+```bash
+npm install body-parser
+```
+
+### API
+
+```js
+var bodyParser = require('body-parser')
+```
+
+
+
+
 
 # 案例
 
