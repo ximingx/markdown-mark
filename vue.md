@@ -1729,3 +1729,20 @@ Vue-resource角jQuery轻便很多，但在vue2.x之后，尤雨溪对Vue-resourc
 ### 动态添加对象的属性
 
 Vue中，动态新增对象的属性时，不能直接添加。正确的做法是：Vue.set(obj,key,value)。
+
+### normalize.css
+
+安装
+
+```bash
+npm install --save normalize.css 
+```
+
+main.js 引入
+
+```js
+import 'normalize.css/normalize.css'
+```
+
+
+
