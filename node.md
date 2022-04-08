@@ -195,6 +195,13 @@ Node.js 的性能和效率非常高。
 - 使用 esc 键，能够快速清空当前已输入的命令；
 - 输入 cls 命令，可以清空终端；
 
+如果主[Node](https://so.csdn.net/so/search?q=Node&spm=1001.2101.3001.7020).js应用程序文件是 app.js，则可以通过键入以下命令调用它：
+
+```bash
+node app.js
+# 命令行使用 ctrl+c 可以停止node.js程序
+```
+
 ## 4. 包和 NPM
 
 由于 Node 是一套轻内核的平台，虽然提供了一系列的内置模块，但是不足以满足开发者的需求，于是乎出现了包（package）的概念：
@@ -678,7 +685,7 @@ fs模块对文件的几乎所有操作都有同步和异步两种形式。例如
 
 ---
 
-### fs.readFile() 异步读取文件 
+### fs.readFile() 
 
 语法格式：
 
@@ -689,6 +696,8 @@ fs.readFile(file[, options], callback(error, data))
 > - **参数1：必选参数，字符串，表示文件的路径。**
 > - 参数2：可选参数，表示以什么编码格式来读取文件。
 > - **参数3：必选参数，文件读取完成后，通过回调函数拿到读取的结果。**
+
+第二个参数是对象`options`，有`encoding`(编码，默认值为null)和`flag`(标识位，默认值为 r )。也可以直接传入`encoding`，通常为求简便，都是直接传入encoding。
 
 代码举例：
 
@@ -730,7 +739,7 @@ function fsRead(path) {
 
 ---
 
-### fs.readFileSync() 同步读取文件 
+### fs.readFileSync() 
 
 语法格式：
 
@@ -754,7 +763,9 @@ try {
 
 ---
 
-### fs.write() 写入文件
+### fs.write() 
+
+写入文件
 
 语法格式：
 
@@ -789,7 +800,25 @@ function writeFs(path, content) {
 
 ---
 
-### fs.unlink() 删除文件
+### writeFileSync
+writeFileSync 有3个参数：
+
+- 第一个参数是文件路径或者文件描述符
+- 第二个参数是写入的数据，类型可以是String或者Buffer
+- 第三个参数是对象options，其中有 encoding(编码，默认值为utf8)、flag(标识位，默认值为w) 和 mode(权限位，默认值为0o666)。也可以直接传入enconding，为了方便，通常只传encoding即可。
+
+---
+
+### appendFileSync
+
+**writeFileSync 和 writeFile 实现了文件的同步写入和异步写入，但是会直接覆盖原来的文件内容**
+appendFileSync 有3个参数，和同步同步写入方法writeFileSync参数一致
+
+---
+
+### fs.unlink() 
+
+删除文件
 
 语法格式：
 
@@ -817,7 +846,9 @@ fs.unlink('./a.js', (err) ={
 
 ---
 
-### fs.readdir() 读取目录下的文件
+### fs.readdir()
+
+读取目录下的文件
 
 
 语法格式：
@@ -841,7 +872,57 @@ fs.readdir("../dist",function(err, files){
 });
 ```
 
-## 10. path 模块 
+---
+
+### fs.mkdirSync()
+
+`mkdirSync` 方法参数为一个目录的路径，没有返回值，在创建目录的过程中，**必须保证传入的路径前面的文件目录都存在，否则会抛出异常。**
+
+```js
+const fs = require('fs')
+fs.mkdirSync('D:/node')
+```
+
+---
+
+### Fs.mkdir()
+
+```js
+const fs = require('fs')
+fs.mkdir('D:/node',err=>{
+    if(!err){
+        console.log('文件夹创建成功！')
+    }
+})
+```
+
+---
+
+### fs.rmdirSync()
+
+```js
+const fs = require('fs')
+fs.rmdirSync('D:/node')
+```
+
+---
+
+### fs.rmdir
+
+```js
+const fs = require('fs')
+fs.rmdir('D:/node',err=>{
+    if(!err){
+        console.log('删除文件成功！')
+    }
+})
+```
+
+
+
+
+
+## 10. path 模块
 
 > 在使用 fs 模块操作文件时，如果提供的操作路径是以 ./ 或 …/ 开头的相对路径时，很容易出现路径动态拼接错误的问题；
 >
@@ -1113,6 +1194,45 @@ server.listen(80, () => {
     console.log('server running at http://127.0.0.1')
 })
 ```
+
+## 12. 全局变量与对象
+
+Node.js 中的全局对象是 global，所有全局变量（除了 global 本身以外）都是 global 对象的属性。
+
+1. __filename 当前执行脚本的文件名（全名称），即文件所在位置的绝对路径
+
+2. __dirname 表示当前执行脚本所在的目录。
+
+3. setTimeout() / clearTimeout
+
+4. setInterval() / clearInterval
+
+5. console 
+6. process
+
+### process
+
+**它用来描述当前Node.js进程状态的对象**，提供了一个与操作系统的简单接口，通常写`本地命令行`的程序的时候都会用到它。
+
+- process.argv：返回一个数组，成员是当前进程的所有命令行参数。
+- process.env：返回一个对象，成员为当前Shell的环境变量，比如process.env.HOME。
+- process.installPrefix：返回一个字符串，表示 Node 安装路径的前缀，比如/usr/local。相应地，Node 的执行文件目录为/usr/local/bin/node。
+- process.pid：返回一个数字，表示当前进程的进程号。
+- process.platform：返回一个字符串，表示当前的操作系统，比如Linux。
+- process.title：返回一个字符串，默认值为node，可以自定义该值。
+- process.version：返回一个字符串，表示当前使用的 Node 版本，比如v7.10.0。
+- process.cwd():表示当前文件的绝对路径
+- process.on(‘exit’,function(){})表示当程序退出的时候会触发	
+
+
+
+
+
+
+
+
+
+
 
 # express
 
@@ -1856,7 +1976,7 @@ $ node ./bin/www
 
 ## body-parser
 
-在处理程序之前在中间件中解析传入的请求主体，在`req.body`属性下可用。
+**在处理程序之前在中间件中解析传入的请求主体，在`req.body`属性下可用。**
 
 安装
 
@@ -1864,11 +1984,100 @@ $ node ./bin/www
 npm install body-parser
 ```
 
-### API
+使用
 
 ```js
 var bodyParser = require('body-parser')
 ```
+
+## Debug
+
+Express 在内部使用[调试](https://www.npmjs.com/package/debug)模块来**记录关于路由匹配、使用的中间件函数、应用程序模式以及请求/响应循环流程的信息。**
+
+要查看 Express 中使用的所有内部日志，在启动应用程序时，请将 `DEBUG` 环境变量设置为 `express:*`。
+
+```bash
+$ DEBUG=express:* node index.js
+```
+
+在 Windows 上，使用对应的命令。
+
+```bash
+> set DEBUG=express:* & node index.js
+```
+
+## cookie-parser
+
+express直接提供了api,只需要在需要使用的地方调用如下api即可
+
+```js
+    function(req, res, next){
+        ...
+        res.cookie(name, value [, options]);
+        ...
+    }
+```
+
+**express就会将其填入 Response Header 中的Set-Cookie，达到在浏览器中设置cookie的作用。**
+
+- name: 类型为String
+- value: 类型为String和Object，**如果是Object会在cookie.serialize()之前自动调用JSON.stringify对其进行处理**
+- Option: 类型为对象，可使用的属性如下
+
+```js
+-   domain：cookie在什么域名下有效，类型为String,。默认为网站域名
+-   expires: cookie过期时间，类型为Date。如果没有设置或者设置为0，那么该cookie只在这个这个session有效，即关闭浏览器后，这个cookie会被浏览器删除。
+-   httpOnly: 只能被web server访问，类型Boolean。
+-   maxAge: 实现expires的功能，设置cookie过期的时间，类型为String，指明从现在开始，多少毫秒以后，cookie到期。
+-   path: cookie在什么路径下有效，默认为'/'，类型为String
+-   secure：只能被HTTPS使用，类型Boolean，默认为false
+-   signed:使用签名，类型Boolean，默认为false。`express会使用req.secret来完成签名，需要cookie-parser配合使用`
+```
+
+```js
+res.cookie('name', 'koby', { domain: '.example.com', path: '/admin', secure: true });
+//cookie的有效期为900000ms
+res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
+//cookie的有效期为900000ms
+res.cookie('rememberme', '1', { maxAge: 900000, httpOnly: true });
+ 
+//cookie的value为对象
+res.cookie('cart', { items: [1,2,3] });
+res.cookie('cart', { items: [1,2,3] }, { maxAge: 900000 });
+ 
+res.cookie('name', 'tobi', { signed: true });
+```
+
+**cookie的删除**
+express直接提供了api删除浏览器中的cookie,只需要在需要使用的地方调用如下api即可
+
+```javascript
+    function(req, res, next){
+        res.clearCookie(name [, options]);
+    }
+```
+
+npm 安装 `cookie-parser` 命令
+
+```ruby
+$ npm install cookie-parser --save
+```
+
+使用方式
+
+```js
+var express = require('express');
+var cookieParser = require('cookie-parser');
+ 
+var app = express();
+//不使用签名
+app.use(cookiePareser());
+ 
+//若需要使用签名，需要指定一个secret,字符串,否者会报错
+app.use(cookiePareser('Simon'));
+```
+
+
 
 
 

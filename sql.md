@@ -54,6 +54,8 @@ mongod --version
 
 ```bash
 mongod 
+
+sudo mongod --dbpath=/Users/ximingx/data (mac)
 ```
 
 开启服务后 , 连接mongodb数据库,默认连接本地
