@@ -918,7 +918,26 @@ fs.rmdir('D:/node',err=>{
 })
 ```
 
+---
 
+### fs.stat
+
+判断是 目录 还是 文件
+
+```js
+function isFile(path) {
+  return new Promise((resolve, reject) => {
+    fs.stat(path,function(err,stat){
+      if (err) {
+       reject(err);
+      } else {
+        resolve(stat.isFile()); // 如果是文件， 返回 true
+        // resolve(stat.isDirectory());  如果是目录， 返回 true
+      }
+    })
+  })
+}
+```
 
 
 
