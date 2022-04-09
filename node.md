@@ -876,6 +876,8 @@ fs.readdir("../dist",function(err, files){
 
 ### isFile
 
+判断是否是目录或者是文件
+
 ```js
 function isFile(path) {
   return new Promise((resolve, reject) => {
@@ -884,6 +886,7 @@ function isFile(path) {
        reject(err);
       } else {
         resolve(stat.isFile());
+        resolve(stat.isDirectory());
       }
     })
   })
