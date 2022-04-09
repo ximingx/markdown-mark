@@ -50,6 +50,18 @@ fatal: unable to access 'https://github.com/ximingx/markdown-mark.git/': LibreSS
 > git push               
 ```
 
+## fatal: unable to access '' Could not resolve host: github.com
+
+```js
+> 
+  
+fatal: unable to access 'https://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@github.com/ximingx/code.git/': Could not resolve host: github.com
+  
+>
+```
+
+
+
 # Node.js
 
 ## TypeError [ERR_INVALID_ARG_TYPE]: The “chunk“ argument must be of type string or an instance of Buff
