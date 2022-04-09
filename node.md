@@ -874,6 +874,24 @@ fs.readdir("../dist",function(err, files){
 
 ---
 
+### isFile
+
+```js
+function isFile(path) {
+  return new Promise((resolve, reject) => {
+    fs.stat(path,function(err,stat){
+      if (err) {
+       reject(err);
+      } else {
+        resolve(stat.isFile());
+      }
+    })
+  })
+}
+```
+
+---
+
 ### fs.mkdirSync()
 
 `mkdirSync` 方法参数为一个目录的路径，没有返回值，在创建目录的过程中，**必须保证传入的路径前面的文件目录都存在，否则会抛出异常。**
