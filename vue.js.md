@@ -41,7 +41,11 @@ export default {
 </script>
 ```
 
-解释一下， 就是修改在 vue 实例对象里的 data 数据时，页面会自动更新显示的数据
+**解释一下， 就是修改在 vue 实例对象里的 data 数据时，页面会自动更新显示的数据**
+
+ **Vue通过MVVM模式,能够实现视图与模型的双向绑定。**
+
+ **简单来说，就是数据变化的时候, 页面会自动刷新, 页面变化的时候，数据也会自动变化.**
 
 ---
 
@@ -144,7 +148,7 @@ export default {
 
 ---
 
-### 引用 Vue.js 文件 (没有构建工具) （不推荐）
+### 引用 Vue.js 文件
 
 **首先介绍的方式都是直接在 `html` 文件中使用**
 
@@ -207,7 +211,7 @@ $ npm install vue
 
 ---
 
-### 利用 vue-cli 新建一个空的项目 (重要) （使用构建工具）
+### 利用 vue-cli 新建项目
 
 Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该工具为现代化的前端开发工作流提供了开箱即用的构建配置。只需几分钟即可创建并启动一个带热重载、保存时静态检查以及可用于生产环境的构建配置的项目。
 
@@ -253,7 +257,7 @@ Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该�
 
 ---
 
-### 使用 vite 构建工具 （官方推荐）
+### 使用 vite （官方推荐）
 
 官方的 Vue 构建设置基于[Vite](https://vitejs.dev/)，这是一个现代、轻量级且速度极快的前端构建工具。
 
@@ -291,7 +295,7 @@ Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该�
 
 ---
 
-### 对于构建一个 vue 实例的解释
+### vue 实例的解释
 
 每个 Vue 应用程序首先使用以下函数创建一个新的**应用程序实例**[`createApp`](https://vuejs.org/api/application.html#createapp)：
 
@@ -445,6 +449,12 @@ v-text可以将一个变量的值渲染到指定的元素中。
 
 注意：使用v-html渲染数据可能会非常危险，因为它很容易导致 XSS（跨站脚本） 攻击，使用的时候请谨慎，能够使用{{}}或者v-text实现的不要使用v-html。
 
+v-text和v-html专门用来展示数据, 其作用和插值表达式类似。**v-text和v-html可以避免插值闪烁问题.**
+
+当网速比较慢时, 使用 {{ }} 来展示数据, **有可能会产生插值闪烁问题。**
+
+插值闪烁: 在数据未加载完成时，页面会显示出原始的{undefined{}}, 过一会才会展示正常数据.
+
 ---
 
 ### v-on: 事件绑定
@@ -484,10 +494,7 @@ v-text可以将一个变量的值渲染到指定的元素中。
 </script>
 ```
 
-
----
-
-#### v-on的常用事件
+v-on的常用事件
 
 v-on 提供了click 事件，也提供了一些其他的事件。
 
@@ -504,9 +511,7 @@ v-on 提供了click 事件，也提供了一些其他的事件。
 
 - v-on:submit
 
----
-
-#### v-on的常见事件修饰符
+v-on的常见事件修饰符
 
 vue为v-on提供了事件修饰符，通过点(.)表示的指令后缀来调用修饰符。
 
@@ -524,9 +529,7 @@ vue为v-on提供了事件修饰符，通过点(.)表示的指令后缀来调用�
 - `.{keyCode | keyAlias}`   只当事件是从侦听器绑定的元素本身触发时，才触发回调。
 - `.native` 监听组件根元素的原生事件。
 
----
-
-#### 关键修饰符
+关键修饰符
 
 在监听键盘事件时，我们经常需要检查特定的键。Vue 允许为`v-on`或`@`在监听键事件时添加键修饰符：
 
@@ -585,7 +588,7 @@ Vue 为最常用的键提供别名：
     <div :style="{ fontSize: size + 'px' }"></div>
 ```
 
-#### Vue中通过属性绑定为元素设置class 类样式
+Vue中通过属性绑定为元素设置class 类样式
 
 下面这是一般的写法
 
@@ -730,7 +733,7 @@ export default {
 <label for="mike">Mike</label>
 ```
 
-### `.lazy`
+### .lazy
 
 默认情况下，`v-model`在每个事件之后将输入与数据同步（[上述](https://vuejs.org/guide/essentials/forms.html#vmodel-ime-tip)`input`IME 组合除外）。您可以添加修饰符以改为在事件后同步：`lazy``change`
 
@@ -739,7 +742,7 @@ export default {
 <input v-model.lazy="msg" />
 ```
 
-### `.number`
+### .number
 
 如果您希望用户输入自动转换为数字，您可以将`number`修饰符添加到`v-model`托管输入：
 
@@ -751,7 +754,7 @@ export default {
 
 如果输入有，`number`则自动应用修饰符`type="number"`。
 
-### `.trim`
+### .trim
 
 如果您希望自动修剪用户输入中的空白，您可以将`trim`修饰符添加到您的`v-model`-managed 输入中：
 
@@ -814,8 +817,6 @@ data() {
 <div v-for="item of items"></div>
 ```
 
-#### v-for中key的使用注意事项
-
 **注意**：在 Vue 2.2.0+ 版本里，当在**组件中**使用 v-for 时，key 属性是必须要加上的。
 
 这样做是因为：每次 for 循环的时候，通过指定 key 来标示当前循环这一项的**唯一身份**。
@@ -828,7 +829,7 @@ key的类型只能是：string/number，而且要通过 v-bind 来指定。
 
 ---
 
-### v-if：设置元素的显示和隐藏（添加/删除DOM元素）
+### v-if：设置元素的显示和隐藏
 
 **作用**：根据表达式的值的真假条件，来决定是否渲染元素，如果为false则不渲染（达到隐藏元素的目的），如果为true则渲染。
 
@@ -850,7 +851,7 @@ key的类型只能是：string/number，而且要通过 v-bind 来指定。
 
 ---
 
-### v-show：设置元素的显示和隐藏
+### v-show：元素的显示和隐藏
 
 **作用**：根据表达式的真假条件，来切换元素的 display 属性。如果为false，则在元素上添加 `display:none`属性；否则移除`display:none`属性。
 
@@ -915,40 +916,61 @@ export default {
 
 ---
 
+### computed
+
+计算属性就是一个提前定义好的方法, 该方法可以看作是一个特殊的值, 可以在插值表达式中使用.
+
+```js
+ var app = new Vue({
+     el:"#app",
+     // 计算属性必须放在Vue的computed中
+     computed:{
+         // 定义计算属性
+         // 有方法的皮， 但是却是当作属性使用
+         属性名() {
+             return "返回值";
+         }
+     }
+});
+
+```
+
+---
+
 ### watch
 
 计算属性允许我们以声明方式计算派生值。但是，在某些情况下，我们需要执行“副作用”以响应状态更改——例如，改变 DOM，或根据异步操作的结果更改另一部分状态。
 
 使用 Options API，我们可以使用`watch`选项在反应属性发生变化时触发函数：
 
+ watch可以监听简单属性值及其对象中属性值的变化.
+
+ **watch类似于onchange事件,可以在属性值修改的时候,执行某些操作.**
+
 ```js
-export default {
-  data() {
-    return {
-      question: '',
-      answer: 'Questions usually contain a question mark. ;-)'
+var app = new Vue({
+    el:"#app",
+    data:{
+        message:"白大锅",
+        person:{"name":"heima", "age":13}
+    },
+    //watch监听
+    watch:{
+        //监听message属性值,newValue代表新值,oldValue代表旧值
+        message(newValue, oldValue){
+        	console.log("新值：" + newValue + "；旧值：" + oldValue);
+        },
+        //监控person对象的值,对象的监控只能获取新值
+        person: {
+            //开启深度监控；监控对象中的属性值变化
+            deep: true,
+            //获取到对象的最新属性数据(obj代表新对象)
+            handler(obj){
+                console.log("name = " + obj.name + "; age=" + obj.age);
+            }
+        }
     }
-  },
-  watch: {
-    // whenever question changes, this function will run
-    question(newQuestion, oldQuestion) {
-      if (newQuestion.indexOf('?') > -1) {
-        this.getAnswer()
-      }
-    }
-  },
-  methods: {
-    async getAnswer() {
-      this.answer = 'Thinking...'
-      try {
-        const res = await fetch('https://yesno.wtf/api')
-        this.answer = (await res.json()).answer
-      } catch (error) {
-        this.answer = 'Error! Could not reach the API. ' + error
-      }
-    }
-  }
-}
+});
 ```
 
 ---
@@ -957,7 +979,11 @@ export default {
 
 从Vue实例创建、运行、到销毁期间，总是伴随着各种各样的事件，这些事件，统称为生命周期。
 
+Vue 实例从创建到销毁的过程，就是生命周期。也就是从开始创建、初始化数据、编译模板、挂载Dom→渲染、更新→渲染、卸载等一系列过程，我们称这是 Vue 的生命周期。
+
 生命周期钩子 = 生命周期函数 = 生命周期事件。
+
+生命周期中里有一个很重要的概念： **钩子函数**, 其实就是Vue提前定义好的事件, 其作用类似于Servlet的init方法和distory方法
 
 
 ### 创建期间的生命周期函数
@@ -989,6 +1015,24 @@ PS：数据发生变化时，会触发这两个方法。不过，我们一般用
 - destroyed：Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。
 
 PS：可以在beforeDestroy里**清除定时器、或清除事件绑定**。
+
+---
+
+第一次页面加载时会触发 beforeCreate, created, beforeMount, mounted 这几个钩子
+
+DOM 渲染在 mounted 中就已经完成了。
+
+生命周期钩子的一些使用方法：
+
+- beforecreate : 可以在此阶段加loading事件，在加载实例时触发；
+
+- created : 初始化完成时的事件写在这里，如在这结束loading事件，异步请求也适宜在这里调用；
+
+- mounted : 挂载元素，获取到DOM节点；
+
+- updated : 如果对数据统一处理，在这里写上相应函数；
+
+- beforeDestroy : 可以做一个确认停止事件的确认框；
 
 ---
 
@@ -1138,9 +1182,8 @@ export default {
 
 `Vue` 组件作用域是孤立的，不允许在子组件模板内直接引用父组件的数据。必须使用特定的方法才能实现组件之间的数据传递。
 
-- 父组件通过标签上`:data=data`方式定义传值
-- 子组件通过`props`方法接受数据
-- 子组件通过`$emit`方法传递参数
+- 父组件通过标签上`:data=data`方式定义传值， 子组件通过`props`方法接受数据
+- 子组件通过`$emit`方法传递参数， 父组件通过定义的函数接收数据
 
 ```html
 <!-- BlogPost.vue -->
@@ -1174,6 +1217,17 @@ import BlogPost.vue from " ~ ~ ~ 路径"
 
 ### 7.5 props
 
+**1.数组形式**
+
+```c
+props: [data1, data2]
+1
+```
+
+数组形式相当于直接接收消息，不做任何校验，一般来说，不建议使用数组形式。
+
+**2.简单对象形式**
+
 除了使用字符串数组声明 props 之外，我们还可以使用对象语法：
 
 ```js
@@ -1185,11 +1239,30 @@ export default {
 }
 ```
 
-###
-
 组件可以为其 props 指定要求，例如您已经看到的类型。如果不满足要求，Vue 将在浏览器的 JavaScript 控制台中警告
 
+**3.复杂对象形式**
+
 要指定 prop 验证，您可以向option提供具有验证要求的对象，而不是字符串数组。例如：`props`
+
+- type: 设定参数类型，当传入参数类型与type不相符时，控制台会报错；
+
+- > - `String`
+  > - `Number`
+  > - `Boolean`
+  > - `Array`
+  > - `Object`
+  > - `Date`
+  > - `Function`
+  > - `Symbol`
+
+- required：设定参数是否是必传，当设为true时，不传该参数会报错；
+
+- default：设定默认值，当参数类型为复杂类型时，需使用工厂模式生成默认值，否则Vue会在控制台抛出警告。
+
+- validator：校验器，是一个函数，拥有一个代表传入值的形参，可以自定义各种校验，当返回false时，会报错，表示没通过校验。
+
+**`props` 会在一个组件实例创建之前进行验证，所以实例的属性 (如 `data`、`computed` 等) 在 `default` 或 `validator` 函数中是不可用的。**
 
 ```js
 export default {
@@ -1253,6 +1326,8 @@ export default {
 
 **总结**：后端路由，就是把所有url地址都对应到服务器的资源，这个**对应关系**就是路由。
 
+---
+
 ### 前端路由
 
 对于单页面应用程序来说，主要通过URL中的`hash`（url地址中的#号）来实现不同页面之间的切换。
@@ -1260,6 +1335,47 @@ export default {
 同时，hash有一个特点：HTTP请求中不会包含hash相关的内容。所以，单页面程序中的页面跳转主要用hash实现。
 
 **总结**：在**单页应用**程序中，这种通过`hash`改变来**切换页面**的方式，称作前端路由（区别于后端路由）。
+
+---
+
+### Vue页面跳转
+
+方式一：
+
+```html
+<router-link :to="{name: 'bookshelf', params: { entityId: this.entityId } }"></router-link>
+<router-view></router-view>
+```
+
+方式二：
+
+```js
+// 基础
+// 想要导航到不同的 URL，使用 router.push 方法。这个方法会向 history 栈添加一个新记录，所以，当用户点击浏览器后退按钮时，可以返回到之前的 URL。
+this.$router.push({path: '/index'})
+
+// 通过 this.$route.params.id 接收参数
+this.$router.push({
+        name: 'particulars',
+        params: {
+          id: id
+        }
+      })
+
+// 通过 this.$route.query.id 接收参数
+// 通过query来传递参数，这种情况下 query传递的参数会显示在url后面以?id=？形式展示。
+this.$router.push({
+      path: '/particulars',
+      query: {
+        id: id
+      }
+   })
+
+// query要用path来引入，params要用name来引入，接收参数都是类似的，分别是this.$route.query.name和this.$route.params.name。
+
+this.$router.replace({})
+// 设置 replace 属性的话，当点击时，会调用 router.replace() 而不是 router.push()，于是导航后不会留下 history 记录。点击返回按钮时，不会返回到这个页面。
+```
 
 
 
@@ -1723,6 +1839,43 @@ Vue-resource角jQuery轻便很多，但在vue2.x之后，尤雨溪对Vue-resourc
 
 > 尤雨溪推荐使用axios。
 
+## 10. Vuex
+
+vuex 是 `vue`框架中**状态管理**工具。
+
+需要在在`main.js`引入`store`，新建一个目录`store` 。
+
+场景有：单页应用中，组件之间的状态，音乐播放、登录状态、加入购物车等。
+
+### vue属性
+
+有五种，分别是 `State`、 `Getter`、`Mutation` 、`Action`、 `Module`。
+
+Vuex就是一个仓库，仓库里面放了很多对象。
+
+一般情况下，如果需要访问`vuex.store`中`state`存放的数据，需要使用`this.$store.state.属性名`方式。显然，采取这样的数据访问方式，代码略显繁杂，**辅助函数**为了解决繁杂行问题应运而生。
+
+**State**
+
+- 其中state就是数据源存放地，对应于一般Vue对象里面的data。
+
+- state里面存放的数据是响应式的，Vue组件从store中读取数据，若是store中的数据发生改变，依赖这个数据的组件也会发生更新。
+
+**Getter**
+
+- `getters` 可以对`State`进行计算操作，它就是`Store`的计算属性。
+- 虽然在组件内也可以做计算属性，但是`getters` 可以在多组件之间复用。
+- 如果一个状态只在一个组件内使用，可以不用`getters`。
+
+**Mutation Action**
+
+- `Action` 类似于 `mutation`，不同在于：`Action` 提交的是 `mutation`，而不是直接变更状态；`Action` 可以包含任意异步操作。
+
+
+
+
+
+
 
 ## @补充
 
@@ -1744,5 +1897,7 @@ main.js 引入
 import 'normalize.css/normalize.css'
 ```
 
+### keep-alive 
 
+包裹动态组件时，会缓存不活动的组件实例，主要用于**保留组件状态**或**避免重新渲染**。
 
