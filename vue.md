@@ -1172,6 +1172,51 @@ import BlogPost.vue from " ~ ~ ~ 路径"
 <BlogPost title="Why Vue is so fun" />
 ```
 
+```html
+<template>
+    <button @click='select(`山西`)'>点击此处将发射给父组件</button>
+</template>
+<script>
+  export default {
+    methods:{
+      select(val) {
+        let data = {
+          cityname: val
+        };
+        //select事件触发后，自动触发showCityName事件
+        this.$emit('showCityName',data);
+      }
+    }
+  }
+</script>
+```
+
+父组件通过调用方法换取数据
+
+```html
+
+<template>
+    <!-- showCityName 
+    <train-city @showCityName="updateCity"></train-city>
+<template>
+<script>
+  export default {
+    data () {
+      return {
+        toCity:" "
+      }
+    },
+    methods
+      //触发子组件城市选择-选择城市的事件
+      updateCity(data){
+        //改变了父组件的值
+        this.toCity = data.cityname;
+      }
+    }
+  }
+</script>
+```
+
 ### 7.5 props
 
 除了使用字符串数组声明 props 之外，我们还可以使用对象语法：
@@ -1184,8 +1229,6 @@ export default {
   }
 }
 ```
-
-###
 
 组件可以为其 props 指定要求，例如您已经看到的类型。如果不满足要求，Vue 将在浏览器的 JavaScript 控制台中警告
 
