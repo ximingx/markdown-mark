@@ -1843,11 +1843,79 @@ Vue-resource角jQuery轻便很多，但在vue2.x之后，尤雨溪对Vue-resourc
 
 vuex 是 `vue`框架中**状态管理**工具。
 
-需要在在`main.js`引入`store`，新建一个目录`store` 。
+```bahs
+npm install vuex
+```
+
+需要在在`main.js`引入`store`
+
+```js
+// 引入vuex-store
+import store from './store/index';
+ 
+createApp(App).use(store)
+```
+
+新建一个目录`store` , 新建个index.js文件
+
+```js
+import { createStore } from 'vuex'
+ 
+export default createStore({
+    state:{
+        pathName: "",
+        currDbSource: {},
+        currJobData: {},
+        DbSource: []
+    },
+    mutations:{
+        // 保存当前菜单栏的路径
+        savePath(state,pathName){
+            state.pathName = pathName;
+        },
+        // 保存当前点击的数据源
+        saveCurrDbSource(state,currDbSource){
+            state.currDbSource = currDbSource;
+        },
+        // 保存当前点击的元数据
+        saveCurrJobData(state,currJobData){
+            state.currJobData = currJobData;
+        },
+        // 保存所有数据源
+        saveDbSource(state,DbSource){
+            state.DbSource = DbSource;
+        }
+    }
+})
+```
+
+state是自定义的一些变量，需要用来保存数据，mutations是用来触发事件，相当于方法，用户需要通过触发这个方法，借此来保存数据，参数的话，第二个参数就是用户传入的值，然后在方法中赋值给state中的变量
+
+场景举例：当我点击按钮后，我需要把当前的数据保存到vuex中，然后跳转到别的路由，然后使用这些数据
+
+```js
+methods:{
+    click(){
+        // 点击按钮进行一些操作，然后保存数据
+        this.$store.commit('saveCurrDbSource',this.db)
+    }
+}
+```
+
+这里的第一个参数是要触发的方法，也就是上面mutations中的方法，第二个参数是你要传递的数据
+
+**获取数据**
+
+```js
+this.$store.state.变量名
+ 
+// 例如
+this.$store.state.currDbSource
+```
 
 场景有：单页应用中，组件之间的状态，音乐播放、登录状态、加入购物车等。
 
-### vue属性
+### vuex 属性
 
 有五种，分别是 `State`、 `Getter`、`Mutation` 、`Action`、 `Module`。
 
@@ -1871,9 +1939,100 @@ Vuex就是一个仓库，仓库里面放了很多对象。
 
 - `Action` 类似于 `mutation`，不同在于：`Action` 提交的是 `mutation`，而不是直接变更状态；`Action` 可以包含任意异步操作。
 
+### 辅助函数
 
+**通过辅助函数mapGetters、mapState、mapActions、mapMutations，把vuex.store中的属性映射到vue实例身上，这样在vue实例中就能访问vuex.store中的属性了，对于操作vuex.store就变得非常方便。**
 
+state辅助函数为mapState，actions辅助函数为mapActions，mutations辅助函数为mapMutations。（Vuex实例身上有mapState、mapActions、mapMutations属性，属性值都是函数）
 
+1. 需要在当前组件中引入`Vuex`。
+2. 通过`Vuex`来调用辅助函数。
+
+## 11. Pinia
+
+Pinia 是 Vue 的存储库，它允许您跨组件/页面共享状态。
+
+Pinia 最初是为了探索 Vuex 的下一次迭代可能会是什么样子，结合了 Vuex 5 核心团队讨论中的许多想法。最终，我们意识到 Pinia 已经实现了我们在 Vuex 5 中想要的大部分内容，并决定实现它取而代之的是新的建议。
+
+**与 Vuex 相比，Pinia 提供了一个更简单的 API，具有更少的仪式，提供了 Composition-API 风格的 API，最重要的是，在与 TypeScript 一起使用时具有可靠的类型推断支持。**
+
+简单的使用案例
+
+```js
+// stores/counter.js
+import { defineStore } from 'pinia'
+export const useCounterStore = defineStore('counter', {
+  state: () => {
+    return {
+      count: 0
+    }
+  },
+  actions: {
+    increment() {
+      this.count++
+    },
+  },
+})
+
+// 组件中使用
+import { useCounterStore } from '@/stores/counter'
+export default {
+  setup() {
+    const counter = useCounterStore()
+
+    counter.count++
+    // with autocompletion ✨
+    counter.$patch({ count: counter.count + 1 })
+    // or using an action instead
+    counter.increment()
+  },
+}
+```
+
+### 安装使用
+
+```bash
+yarn add pinia
+# or with npm
+npm install pinia
+```
+
+使用
+
+```js
+import { createPinia } from 'pinia'
+
+app.use(createPinia())
+```
+
+### defineStore（）
+
+存储是使用定义的`defineStore()`，并且它需要一个**唯一的**名称，作为第一个参数传递：
+
+```js
+import { defineStore } from 'pinia'
+
+// main 这个名称，也称为id，是必要的，是唯一的
+export const useStore = defineStore('main', {
+ 
+})
+```
+
+我们正在*定义*`useStore()`一个 store ，因为商店在被调用之前不会被创建`setup()`：
+
+```js
+import { useStore } from '@/stores/counter'
+
+export default {
+  setup() {
+    const store = useStore()
+
+    return {
+      store,
+    }
+  },
+}
+```
 
 
 

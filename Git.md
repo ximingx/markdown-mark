@@ -149,6 +149,24 @@ git commit -m "edit file1"
 git push
 ```
 
+### 删除远程仓库的代码
+
+```bash
+# 拉取远程的Repo到本地（如果已经在本地，可以略过） 
+$ git clone xxxxxx
+# 在本地仓库删除文件 
+$ git rm 我的文件
+# 在本地仓库删除文件夹 
+$ git rm -r 我的文件夹/
+# 此处-r表示递归所有子目录，如果你要删除的，是空的文件夹，此处可以不用带上-r。
+# 提交代码 
+$ git commit -m"我的修改"
+# 推送到远程仓库（比如GitHub） 
+$ git push origin xxxxxx
+```
+
+
+
 ## Git 分支
 
  **在初始化本地 Git 仓库的时候，Git 默认已经帮我们创建了一个名字叫做 master 的分支。**通常我们把这个 master 分支叫做主分支；
