@@ -1361,7 +1361,7 @@ app.post('/user', (require, response) => {
 
 ## 4. 开放资源
 
-### express.static()
+express.static()
 
 express 提供了一个非常好用的函数，叫做 express.static()，通过它，我们可以非常方便地创建一个静态资源服务器；
 
