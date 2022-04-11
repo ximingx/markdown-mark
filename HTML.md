@@ -1,8 +1,6 @@
 # HTML
 
-##  面试题
-
-### 1。 你是如何理解 HTML 语义化的？
+##  理解 HTML 语义化的？
 
 **语义化**：指对文本内容的结构化（内容语义化），选择合乎语义的标签（代码语义化）。
 
@@ -18,13 +16,56 @@
 
 ---
 
-### 1.1.2  meta viewport 是做什么用的，怎么写？
+## meta viewport 
 
 ```html
 <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 ```
 
 控制页面在移动端不要缩小显示。
+
+## input标签自动填充问题
+
+前言：如果是同域名网站，并且曾经在该网站下登录过账号密码，并且选择了记住账号密码。chrome浏览器会对账号密码进行自动填充功能，虽然这功能给我们提供了很多方便，但是也带来了些困扰。
+
+chrome浏览器对type="password"进行了识别，并把"密码"项进行了填充，并且把"密码"项前面input当成了"账号"项进行了填充。
+
+方法一:
+
+```html
+<label>
+    <span>卡号:</span>
+    <input type="text" name="userName" placeholder="请输入卡号" autocomplete="new-password">
+</label>
+<label>
+    <span>密码:</span>
+    <input type="password" name=password" placeholder="请输入密码" autocomplete="new-password">
+</label>
+```
+
+方法二:
+
+```html
+<!-- 
+chrome浏览器只对带password的前两个input标签自动填充。直接通过display进行隐藏的话，第二password还是会出现密码提示，但是通过width:0; height:0;的方式进行“隐藏”能很好的解决这个问题。
+-->
+<label><span></span><input type="text" name="hidden1" style="width:0; height:0;"></label>
+<label><span></span><input type="password" name="hidden2" style="width:0; height:0;"></label>
+<label>
+    <span>卡号:</span>
+    <input type="text" name="userName" placeholder="请输入卡号" autocomplete="off">
+</label>
+<label>
+    <span>密码:</span>
+    <input type="password" name=password" placeholder="请输入密码" autocomplete="off">
+</label>
+```
+
+
+
+
+
+
 
 
 

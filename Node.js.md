@@ -2048,11 +2048,48 @@ $ DEBUG=express:* node index.js
 express直接提供了api,只需要在需要使用的地方调用如下api即可
 
 ```js
-    function(req, res, next){
-        ...
-        res.cookie(name, value [, options]);
-        ...
-    }
+// 一: 没有使用签名
+var express = require('express');
+var router = express.Router();
+ 
+/* GET users listing. */
+router.get('/', function(req, res, next) {
+  res.send('respond with a resource');
+  console.log(req.cookies)
+  console.log(req.cookies.username)
+});
+router.get('/a', function(req, res, next) {
+  
+  res.cookie('username','张三',{maxAge:1000*10})
+  res.cookie('password','123',{maxAge:1000*10})
+ 
+  res.redirect('/users')
+});
+module.exports = router;
+
+
+// 二: 使用签名
+var express = require('express');
+var router = express.Router();
+ 
+/* GET users listing. */
+router.get('/', function(req, res, next) {
+  res.send('respond with a resource');
+ 
+  console.log(req.signedCookies)
+  console.log(req.signedCookies.username)
+});
+router.get('/a', function(req, res, next) {
+ 
+  res.cookie('username','张三',{maxAge:1000*10,signed:true})
+  res.cookie('password','123',{maxAge:1000*10,signed:true})
+ 
+  res.redirect('/users')
+});
+module.exports = router;
+
+// s
+ res.clearCookie('age')
 ```
 
 **express就会将其填入 Response Header 中的Set-Cookie，达到在浏览器中设置cookie的作用。**
@@ -2113,6 +2150,155 @@ app.use(cookiePareser());
 //若需要使用签名，需要指定一个secret,字符串,否者会报错
 app.use(cookiePareser('Simon'));
 ```
+
+## express-session
+
+身份认证的方式
+
+- 服务器渲染推荐使用Session认证机制
+- 前后端分离推荐使用JWT认证机制
+
+Cookie的几大特性：
+
+- 自动发送
+- 域名独立
+- 过期时限
+- 4KB限制
+
+**session 是另一种记录客户状态的机制，不同的是 Cookie 保存在客户端浏览器中，而 session 保存在服务器上。**
+
+Session的用途：
+
+- session运行在服务器端，当客户端第一次访问服务器时，可以将客户的登录信息保存。
+- 当客户访问其他页面时，可以判断客户的登录状态，做出提示，相当于登录拦截。
+- session可以和Redis或者数据库等结合做持久化操作，当服务器挂掉时也不会导致某些客户信息（购物车）
+  丢失。
+
+当浏览器访问服务器并发送第一次请求时，服务器端会创建一个session对象，生成一个类似于key,value的键值对，然后将key(cookie)返回到浏览器(客户)端，浏览器下次再访问时，携带key(cookie)，找到对应的session(value)。 客户的信息都保存在session中
+
+在express项目中，只需要安装express-session中间件，即可在项目中使用Session认证：
+
+```bash
+npm install express-session
+```
+
+```js
+// 设置官方文档提供的中间件
+var session=require('express-session')
+app.use(session({
+  secret: 'aaa',//签名，与上文中cookie设置的签名字符串一致
+  resave: false,// 一个请求在另一个请求结束时对session进行修改覆盖并保存，默认值为true。建议设为false
+  saveUninitialized: true,//无论是否使用session,默认只要对页面发起请求，都会给客户端一个cookie  
+  name: 'connect.sid', // // 在浏览器中生成cookie的名称key，默认是connect.sid
+  cookie:{
+   maxAge:1000*60 // session 的有效时长
+  }
+}))
+// 这段代码放在路由前面
+```
+
+使用
+
+```js
+ console.log(req.session.username)
+```
+
+示例 demo1
+
+```js
+    var express = require("express");
+    var app = express();
+    var session = require("express-session");
+    //配置中间件
+    app.use(session({
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: true
+        //cookie: { secure: true }   /*secure https这样的情况才可以访问cookie*/
+    }))
+    app.get("/",function(req,res){
+        //获取sesssion
+        if(req.session.userinfo){  /*获取*/
+            res.send('你好'+req.session.userinfo+'欢迎回来');
+        }else{
+            res.send('未登录');
+        }
+    });
+
+    app.get("/login",function(req,res){
+        req.session.userinfo="zhangsan111"; /*设置session*/
+        res.send('登录成功');
+    });
+
+    app.get("/news",function(req,res){
+        //获取sesssion
+        if(req.session.userinfo){  /*获取*/
+            res.send('你好'+req.session.userinfo+'欢迎回来 news');
+        }else{
+            res.send('未登录 news');
+        }
+    });
+
+    app.listen(3000);
+```
+
+示例demo 2
+
+```js
+//app.js中添加如下代码(已有的不用添加)
+var express = require('express');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+ 
+app.use(cookieParser('sessiontest'));
+app.use(session({
+ secret: 'sessiontest',//与cookieParser中的一致
+ resave: true,
+ saveUninitialized:true
+}));
+```
+
+```js
+//修改router/index.js,第一次请求时我们保存一条用户信息。
+router.get('/', function(req, res, next) {
+ var user={
+  name:"Chen-xy",
+  age:"22",
+  address:"bj"
+ }
+ req.session.user=user;
+ res.render('index', {
+  title: 'the test for nodejs session' ,
+  name:'sessiontest'
+ });
+});
+```
+
+```js
+//修改router/users.js，判断用户是否登陆。
+router.get('/', function(req, res, next) {
+ if(req.session.user){
+  var user=req.session.user;
+  var name=user.name;
+  res.send('你好'+name+'，欢迎来到我的家园。');
+ }else{
+  res.send('你还没有登录，先登录下再试试！');
+ }
+});
+```
+
+`secret`:一个`String`类型的字符串，作为服务器端生成`session`的签名。
+`name`:返回客户端的key的名称，默认为`connect.sid`,也可以自己设置。
+`resave`:(是否允许)当客户端并行发送多个请求时，其中一个请求在另一个请求结束时对`session`进行修改覆盖并保存。
+默认为`true`。但是(后续版本)有可能默认失效，所以最好手动添加。
+`saveUninitialized`:初始化session时是否保存到存储。默认为`true`， 但是(后续版本)有可能默认失效，所以最好手动添加。
+`cookie`:设置返回到前端key的属性，默认值为`{ path: ‘/', httpOnly: true, secure: false, maxAge: null }` 。
+
+- `express-session`的一些方法:
+- `Session.destroy()` :删除`session`，当检测到客户端关闭时调用。
+- `Session.reload()` :当`session`有修改时，刷新`session`。
+- `Session.regenerate()` ：将已有`session`初始化。
+- `Session.save()` ：保存`session`。
 
 
 
