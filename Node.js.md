@@ -342,6 +342,9 @@ Node.js中根据模块来源的不同，将模块分为了 3 大类，分别是�
 
 ### 模块化规范
 
+- AMD 和 CMD 适用于浏览器端的 Javascript 模块化；
+- CommonJS 适用于服务器端的 Javascript 模块化；
+
 服务器端规范：
 
 - [**CommonJS规范**](http://www.commonjs.org/)：是 Node.js 使用的模块化规范。

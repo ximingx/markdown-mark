@@ -918,7 +918,11 @@ export default {
 
 ### computed
 
+能够将计算结果缓存起来的属性(将行为转化成了静态的属性)
+
 计算属性就是一个提前定义好的方法, 该方法可以看作是一个特殊的值, 可以在插值表达式中使用.
+
+**计算属性的主要特性就是为了将不经常变化的计算结果进行缓存，以节约我们的系统开销；**
 
 ```js
  var app = new Vue({
@@ -1376,6 +1380,56 @@ this.$router.push({
 this.$router.replace({})
 // 设置 replace 属性的话，当点击时，会调用 router.replace() 而不是 router.push()，于是导航后不会留下 history 记录。点击返回按钮时，不会返回到这个页面。
 ```
+
+### 路由嵌套
+
+```js
+export default new VueRouter({
+  routes: [
+    {
+      path: '/main',
+      component: Main,
+      //  写入子模块
+      children: [
+        {
+          path: '/user/profile',
+          component: UserProfile,
+        }, {
+          path: '/user/list',
+          component: UserList,
+        },
+      ]
+    }
+  ]
+})
+```
+
+### 传递参数
+
+方式一
+
+```js
+{
+    // path 属性中增加了 :id 这样的占位符
+	path: '/user/profile/:id', 
+	name:'UserProfile', 
+	component: UserProfile
+}
+
+// 注意 router-link 中的 name 属性名称 一定要和 路由中的 name 属性名称 匹配
+<router-link :to="{name:'UserProfile',params:{id:1}}">个人信息</router-link>
+
+// 使用 {{$route.params.id}} 
+```
+
+### 路由模式与 404
+
+路由模式有两种
+
+- hash：路径带 # 符号，如 http://localhost/#/login
+- history：路径不带 # 符号，如 http://localhost/login
+
+
 
 
 
