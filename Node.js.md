@@ -3055,20 +3055,20 @@ script 是调用的简写
 
 # mongoose
 
-**下载**
+## **下载**
 
 ```bash
 > npm install mongoose
 ```
 
-**开启关闭数据库**
+## **开启关闭数据库**
 
 ```bash
 > net stop mongodb
 > net start mongodb
 ```
 
-**连接数据库**
+## **连接数据库**
 
 ```js
 // 连接数据库
@@ -3078,7 +3078,7 @@ mongoose.connect('mongodb://localhost/test')
   .catch((err) => console.error(err, "连接失败"));
 ```
 
-**创建集合**
+## **创建集合**
 
 ```js
 // 设定集合规则
@@ -3092,7 +3092,7 @@ mongoose.connect('mongodb://localhost/test')
  const Course = mongoose.model('Course', courseSchema); // courses
 ```
 
-**插入数据**
+## **插入数据**
 
 两种方法
 
@@ -3108,15 +3108,183 @@ const course = new Course({
 course.save()
 ```
 
+
+
 ```js
-// 参数: {插入的集合}, h
+// 参数: {插入的集合}, 回调函数
 Course.create({
   name: 'React Course',
 },(err,doc) => {
+    // 错误对象
   if(err) console.log(err);
+    // 当前插入的文档
   console.log(doc);
+})
+
+
+// 或者
+Course.create({
+  name: 'React Course',
+})
+.then(data => {
+    
+})
+.catch(err => {
+    
 })
 ```
 
+## **导入数据**
 
+**首先要将 mongodb 的 bin 目录添加到 系统环境的 path 下**
+
+```bash
+#mongoimport -d 数据库名称 -c 集合名称 --file 数据文件目录
+> mongoimport -d test -c course --file ./user.json
+```
+
+## **查询文档**
+
+```js
+// 集合对象.find() 当为空的时候, 查询全部
+// 返回的结果必然是数组
+Course.find({isPublished: true})
+  .then(result => console.log(result))
+  .catch(err => console.log(err))
+
+
+// 返回文档中的第一条, 只有一条 ~ !
+Course.findOne({name: 'React Course'})
+  .then(course => console.log(course))
+  .catch(err => console.log(err))
+
+
+// age 大于20 小于 28 的
+Course.find({age: {$gt: 20, $lt: 28}})
+  .then(course => console.log(course))
+  .catch(err => console.log(err))
+
+
+// hobbies 中匹配包含 敲代码 的文档
+Course.find({hobbies: {$in: ['敲代码']}})
+  .then(doc => console.log(doc))
+  .catch(err => console.log(err))
+
+
+// 查询某几个字段 (_id是默认查找项)
+Course.find({hobbies: {$in: ['敲代码']}})
+  .select("name age history")
+  .then(doc => console.log(doc))
+  .catch(err => console.log(err))
+
+
+// 查询结果排序
+// 从小打大
+Course.find({hobbies: {$in: ['敲代码']}})
+  .sort('age')
+  .then(doc => console.log(doc))
+  .catch(err => console.log(err))
+// 从大到小
+Course.find({hobbies: {$in: ['敲代码']}})
+  .sort('-age')
+  .then(doc => console.log(doc))
+  .catch(err => console.log(err))
+
+
+// 跳过前两条, 限制查询两条
+Course.find({hobbies: {$in: ['敲代码']}})
+  .skip(2).limit(2)
+  .then(doc => console.log(doc))
+  .catch(err => console.log(err))
+```
+
+## **删除文档**
+
+```js
+// 删除一个满足条件的文档
+Course.findOneAndDelete({ _id: '5c9d8f9c9c9d8f9c9c9d8f9c' })
+  .then(result => console.log(result))
+  .catch(err => console.log(err));
+
+// 表演一个删库跑路
+Course.deleteMany({})
+  .then(result => console.log(result));
+// { acknowledged: true, deletedCount: 5 }
+// { 成功 删除 5 个文档 }
+```
+
+## **更新文档**
+
+```js
+// 方法
+Course.updateOne({查询条件}, {要修改的值}).then(res => {
+  console.log(res)
+})
+
+// 更新一条
+Course.updateOne({name: 'lisi'}, {name: "aw"}).then(res => {
+  console.log(res)
+})
+
+// 更新多条
+Course.updateMany({name: 'lisi'}, {name: "aw"}).then(res => {
+  console.log(res)
+})
+```
+
+## **验证**
+
+```js
+// require 必传字段
+// type 类型
+// default 默认值
+// maxlength 最大长度
+// minlength 最小长度
+// trim 是否有两边空格
+// min 最小值
+// max 最大值
+// enum: ["html", "nodejs"] 只可以选择 html 或者 nodejs 这两个值
+// validate 自定义验证规则 !!!!!!!!!!!
+const courseSchema = new mongoose.Schema({
+  name: String,
+  author: String,
+  isPublished: Boolean,
+  history: {
+    createdAt: {type: Number, default: 12, require: true},
+    updatedAt: {type: Number, default: 14}
+  },
+  date: {
+      // 默认现在
+      type: Date,
+      default: Date.now    
+  }
+})
+
+// 补充写法
+const courseSchema = new mongoose.Schema({
+  aw: {
+    require: [true, '{PATH} is required'],
+  }
+})
+
+const Course = mongoose.model('Course', courseSchema);
+
+// 自定义验证规则 !!!!!!!!!
+const courseSchema = new mongoose.Schema({
+  id: {
+    type: Number,
+    validate: {
+      validator: v => {
+        // 当返回结果为 true, 满足条件
+        return v > 0;
+      },
+      message() {
+        return 'Id必须大于0';
+      }
+    }
+  }
+})
+```
+
+## **关联集合**
 
