@@ -1355,18 +1355,16 @@ app.listen(3000);
 
 ## 12. 全局变量与对象
 
-Node.js 中的全局对象是 global，所有全局变量（除了 global 本身以外）都是 global 对象的属性。
+Node.js 中的全局对象是 global，所有全局变量（除了 global 本身以外）都是 global 对象的属性, global 可以省略
 
-1. __filename 当前执行脚本的文件名（全名称），即文件所在位置的绝对路径
+### global
 
-2. __dirname 表示当前执行脚本所在的目录。
-
-3. setTimeout() / clearTimeout
-
-4. setInterval() / clearInterval
-
-5. console 
-6. process
+1. setTimeout() / clearTimeout
+2. setInterval() / clearInterval
+3. console 
+4. process
+5. __filename 当前执行脚本的文件名（全名称），即文件所在位置的绝对路径
+6. __dirname 表示当前执行脚本所在的目录。
 
 ### process
 
@@ -1383,6 +1381,62 @@ Node.js 中的全局对象是 global，所有全局变量（除了 global 本身
 - process.on(‘exit’,function(){})表示当程序退出的时候会触发	
 
 ## 13. 静态资源
+
+```js
+const http = require('http');
+const app = http.createServer();
+const url = require('url');
+app.on('request', (req, res) => {
+    let method = req.method.toLowerCase();
+    let { query, pathname } = url.parse(req.url);
+    pathname = "/" ? "/default.html" : pathname
+    let reqPath = path.join(__dirname, "public" + pathname)
+    
+    fs.readFile(reqPath, (err, data) => {
+        if (err) {
+            res.write(400, {
+            'contentType': 'text/html;charset=utf8'
+        })
+            return;
+        }
+        res.write(200, {
+            'contentType': 'text/html;charset=utf8'
+        })
+        res.end(data)
+    })
+    
+
+});
+app.listen(3000);
+```
+
+## 14. 异步编程
+
+```js
+const fs = require("fs");
+// node 内置模块 promisify, 可以返回包裹一个方法的 promise 对象
+const promisify = require("util").promisify;
+const readFile = promisify(fs.readFile);
+
+async function run () {
+    let r1 = await readFile("./1.js","ttf8")
+    let r2 = await readFile("./2.js","ttf8")
+    let r3 = await readFile("./3.js","ttf8")
+    return {
+        r1,
+        r2,
+        r3
+    }
+}
+
+run()
+  .thne(data => {
+    
+}).catch(err) {
+    
+}
+
+```
 
 
 
@@ -2939,6 +2993,8 @@ gulp.task('html', () => {
 
 其他同理, 看 npm
 
+
+
 # 项目配置
 
 ## node_modules
@@ -2994,6 +3050,73 @@ script 是调用的简写
 锁定包的版本，确保再次下载时不会因为包版本不同而产生问题
 
 加快下载速度，因为该文件中已经记录了项目所依赖第三方包的树状结构和包的下载地址，重新安装时只需下载即可，不需要做额外的工作
+
+
+
+# mongoose
+
+**下载**
+
+```bash
+> npm install mongoose
+```
+
+**开启关闭数据库**
+
+```bash
+> net stop mongodb
+> net start mongodb
+```
+
+**连接数据库**
+
+```js
+// 连接数据库
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test')
+  .then(() => console.log("连接成功"))
+  .catch((err) => console.error(err, "连接失败"));
+```
+
+**创建集合**
+
+```js
+// 设定集合规则
+ const courseSchema = new mongoose.Schema({
+     name: String,
+     author: String,
+     isPublished: Boolean
+ });
+
+  // 创建集合并应用规则 (创建时集合名称要大写)
+ const Course = mongoose.model('Course', courseSchema); // courses
+```
+
+**插入数据**
+
+两种方法
+
+```js
+// 现在仅仅是创建
+const course = new Course({
+    name: "mongose",
+    author: "aw",
+    isPublished: true
+})
+
+// 将文档插入到数据库
+course.save()
+```
+
+```js
+// 参数: {插入的集合}, h
+Course.create({
+  name: 'React Course',
+},(err,doc) => {
+  if(err) console.log(err);
+  console.log(doc);
+})
+```
 
 
 

@@ -6504,17 +6504,46 @@ thenFS.readFile("./1.text", "utf8")
 
 使用 `async/await` 简化 Promise 异步操作的示例代码如下
 
+async关键字
+
+1. 普通函数定义前加async关键字 普通函数变成异步函数
+2. 异步函数默认返回promise对象
+3. 在异步函数内部使用return关键字进行结果返回 结果会被包裹的promise对象中 return关键字代替了resolve方法
+4. 在异步函数内部使用throw关键字抛出程序异常
+5. 调用异步函数再链式调用then方法获取异步函数执行结果
+6. 调用异步函数再链式调用catch方法获取异步函数执行的错误信息
+
+await关键字
+
+1. await关键字只能出现在异步函数中
+2. await promise await后面只能写promise对象 写其他类型的API是不不可以的
+3. await关键字可是暂停异步函数向下执行 直到promise返回结果
+
 ```js
 const thenFs = require("then-fs");
 async function get() {
+  // throw 后, 后面的代码不执行
+  throw '错误';
   const r1 =  await thenFs.readFile("./yarn.lock");
   console.log(r1.toString());
   const r2 =  await thenFs.readFile("./1.js");
   console.log(r2.toString());
   const r3 =  await thenFs.readFile("./1.html");
   console.log(r3.toString());
+  return {
+      r1,
+      r2,
+      r3
+  } 
 }
-get();
+  
+    
+get()
+   .then(data => {
+    console.log(data)
+}).catch(err => {
+     console.log(err)
+});
 ```
 
 **如果在 function 中使用了 await，则 function 必须被 async 修饰；**
