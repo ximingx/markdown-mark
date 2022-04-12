@@ -333,6 +333,30 @@ Node.js中根据模块来源的不同，将模块分为了 3 大类，分别是�
 
 ---
 
+**当模块拥有路径但没有后缀时**
+
+```js
+require('./find');
+```
+
+- require方法根据模块路径查找模块，如果是完整路径，直接引入模块。
+- 如果模块后缀省略，先找同名JS文件再找同名JS文件夹
+- 如果找到了同名文件夹，找文件夹中的index.js
+- 如果文件夹中没有index.js就会去当前文件夹中的package.json文件中查找main选项中的入口文件
+- 如果找指定的入口文件不存在或者没有指定入口文件就会报错，模块没有被找到
+
+**当模块没有路径且没有后缀时**
+
+- Node.js会假设它是系统模块
+- Node.js会去node_modules文件夹中
+- 首先看是否有该名字的JS文件
+- 再看是否有该名字的文件夹
+- 如果是文件夹看里面是否有index.js
+- 如果没有index.js查看该文件夹中的package.json中的main选项确定模块入口文件
+- 否则找不到报错
+
+---
+
 ###  模块化的概念解读
 
 模块化起源于 Node.js。Node.js 中把很多 js 打包成 package，需要的时候直接通过 require 的方式进行调用（CommonJS），这就是模块化的方式。
@@ -583,6 +607,8 @@ console.log(addModule2.add());
 
 关于 Node.js 的内置模块和常见API，可以看官方文档。
 
+**node.js 内置模块的函数错误优先, err 对象没有时(即函数正常运行), 默认值为 null**
+
 
 查阅文档时，稳定指数如下：
 
@@ -674,7 +700,7 @@ const fs = require("fs");
 
 ---
 
-### Node.js 中的同步和异步的区别
+### Node.js 的同步异步的区别
 
 fs模块对文件的几乎所有操作都有同步和异步两种形式。例如：readFile() 和 readFileSync()。
 
@@ -766,14 +792,16 @@ try {
 
 ---
 
-### fs.write() 
+### fs.writeFile()
+
+可以用来记录报错日志
 
 写入文件
 
 语法格式：
 
 ```js
-fs.write(path, "要写入的文本内容"[, position[, encoding]], callback)
+fs.writeFile(path, "要写入的文本内容"[, position[, encoding]], callback)
 ```
 
 > - 参数1：必选参数，需要指定一个文件路径的字符串，表示文件的存放路径。
@@ -1117,7 +1145,7 @@ server.on('request', function (req, res) {
 // 4. 启动服务器
 // 调用服务器实例的 .listen() 方法，即可启动当前的 web 服务器实例
 // 也可以不带函数启动， 只需要端口号
-server.listen(8080, function () {
+server.listen(3000, function () {
     console.log('server running at http://127.0.0.1:8080')
 })
 ```
@@ -1136,12 +1164,63 @@ server.on('request', (req, res) => {
     const url = req.url
     // req.method 是客户端请求的 method 类型
     const method = req.method
+    // 获取请求报文
+    const headers = requ.headers
     const str = `Your request url is ${url}, and request method is ${method}`
     // 调用 res.end() 方法，向客户端响应一些内容
     res.end(str)
 })
-server.listen(80, () => {
+server.listen(3000, () => {
     console.log('server running at http://127.0.0.1')
+})
+```
+
+**get 请求**
+
+```js
+const http = require('http');
+// url 是内置模块, 用于处理 url 地址
+const url = require('url');
+const app = http.createServer();
+app.on('request', (req, res) => {
+     // 将url路径的各个部分解析出来并返回对象
+     // true 代表将参数解析为对象格式
+     // 参数: 查询的地址, query 是否返回对象的形式
+     let { query,pathname } = url.parse(req.url, true);
+     console.log(query);
+    
+    // 解决路径判断问题
+    if (pathname == "") {
+        res.send()
+    }
+    
+});
+app.listen(3000);
+```
+
+**post 请求**
+
+```js
+const http = require('http');
+const server = http.createServer();
+const queryString = require("queryString");
+server.on('request', function (req, res) {
+    
+   let postParams = ""
+   
+   req.on("data", (params) => {
+       postParams += params
+   })
+    
+   req.on("end", () => {
+       // 将处理结果对象化
+      console.log(queryString.parse(postParams))
+   })
+    
+   res.send()
+})
+server.listen(3000, function () {
+    console.log('server running at http://127.0.0.1:8080')
 })
 ```
 
@@ -1152,6 +1231,36 @@ server.listen(80, () => {
 ```js
 server.on("request",(require, response) => {
     console.log(response);
+})
+```
+
+- 200 请求成功
+- 404 请求资源错误
+- 500 服务器端
+
+```js
+server.on('request', (req, res) => {
+    // 设置状态码
+    res.writeHead(500, {
+        // 默认值
+        "content-type": "text/plain"
+    });
+})
+```
+
+- **text/html**
+- text/css
+- application/javascript
+- image/jpeg
+- application/json
+
+```js
+server.on('request', (req, res) => {
+    // 设置状态码
+    res.writeHead(200, {
+        // 默认值
+        "content-type": "text/plain;charset=utf8"
+    });
 })
 ```
 
@@ -1179,7 +1288,7 @@ server.listen(80, () => {
 })
 ```
 
-### 根据不同的 url 响应不同的 html 内容
+### 根据 url  响应 内容
 
 核心实现步骤：
 
@@ -1217,6 +1326,33 @@ server.listen(80, () => {
 })
 ```
 
+路由
+
+```js
+const http = require('http');
+const app = http.createServer();
+const url = require('url');
+app.on('request', (req, res) => {
+    let method = req.method.toLowerCase();
+    let { pathname } = url.parse(req.url);
+    res.setHeader(200, {
+        'Content-Type': 'text/html; charset=utf-8'
+    })
+    
+    if (method == "get") {
+        
+        if (pathname == "" || pathname == "index") {
+            res.send()
+        } 
+        
+    } else if (method == "post") {
+        
+    }
+    
+});
+app.listen(3000);
+```
+
 ## 12. 全局变量与对象
 
 Node.js 中的全局对象是 global，所有全局变量（除了 global 本身以外）都是 global 对象的属性。
@@ -1246,7 +1382,7 @@ Node.js 中的全局对象是 global，所有全局变量（除了 global 本身
 - process.cwd():表示当前文件的绝对路径
 - process.on(‘exit’,function(){})表示当程序退出的时候会触发	
 
-
+## 13. 静态资源
 
 
 
@@ -2678,4 +2814,186 @@ export default {
 }
 </style>
 ```
+
+# npm -g
+
+## nodemon
+
+```bash
+npm install nodemon -g
+```
+
+```bash
+nodemon app.js
+```
+
+## nrm
+
+```bash
+> npm install nrm -g
+```
+
+```bash
+// 查看下载地址列表
+nrm ls
+
+  npm ---------- https://registry.npmjs.org/
+  yarn --------- https://registry.yarnpkg.com/
+  tencent ------ https://mirrors.cloud.tencent.com/npm/
+  cnpm --------- https://r.cnpmjs.org/
+  taobao ------- https://registry.npmmirror.com/
+  npmMirror ---- https://skimdb.npmjs.com/registry/
+```
+
+```bash
+// 切换默认下载地址
+> nrm use taobao
+
+   Registry has been set to: https://registry.npmmirror.com/
+```
+
+## Gulp
+
+基于node平台开发的前端构建工具
+将机械化操作编写成任务, 想要执行机械化操作时执行一个命令行命令任务就能自动执行了, 用机器代替手工，提高开发效率。
+
+- 项目上线，HTML、CSS、JS文件压缩合并
+- 语法转换（es6、less ...）
+- 公共文件抽离
+- 修改文件浏览器自动刷新
+
+```bash
+npm install gulp
+npm install gulp-cli -g
+```
+
+1. 使用npm install gulp下载gulp库文件
+2. 在项目根目录下建立gulpfile.js文件
+3. 重构项目的文件夹结构 src目录放置源代码文件 dist目录放置构建后文件
+4. 在gulpfile.js文件中编写任务.
+5. 在命令行工具中执行gulp任务
+
+```js
+// gulp 提供的方法
+gulp.src()：获取任务要处理的文件
+gulp.dest()：输出文件
+gulp.task()：建立gulp任务
+gulp.watch()：监控文件的变化
+```
+
+```js
+// gulpfile.js
+
+const gulp = require('gulp');
+
+// 使用gulp.task()方法建立任务
+// 参数: 任务名称,回调函数
+gulp.task('first', () => {
+    // 获取要处理的文件
+    gulp.src('./src/css/base.css') 
+    
+    
+    // 操作 ~ ~ ~ 
+    
+    
+    // 将处理后的文件输出到dist/css目录
+    .pipe(gulp.dest('./dist/css'));
+});
+```
+
+```bash
+> cd ~ ~ ~ 当前项目目录
+# 执行 first 任务
+> gulp first
+```
+
+### gulp 插件
+
+- gulp-htmlmin ：html文件压缩
+- gulp-csso ：压缩css
+- gulp-babel ：JavaScript语法转化
+- gulp-less: less语法转化
+- gulp-uglify ：压缩混淆JavaScript
+- gulp-file-include 公共文件包含
+- browsersync 浏览器实时同步
+
+使用需要先安装模块
+
+```bash
+npm install gulp-htmlmin 
+```
+
+```js
+// gulpfile.js
+const gulp = require('gulp');
+const htmlmin = require('gulp-htmlmin');
+gulp.task('html', () => {
+    gulp.src('./src/*.html') 
+    .pipe(htmlmin({ collapseWhitespace: true }))
+    .pipe(gulp.dest('dist'));
+});
+
+// bash
+> gulp html
+```
+
+其他同理, 看 npm
+
+# 项目配置
+
+## node_modules
+
+- **文件夹以及文件过多过碎，当我们将项目整体拷贝给别人的时候，传输速度会很慢很慢. (所以一般不传输这个文件)**
+- 复杂的模块依赖关系需要被记录，确保模块的版本和当前保持一致，否则会导致当前项目运行报错
+
+> 所以, 在别人拿到项目后首先要
+>
+> ```bash
+> > npm install
+> # 看情况
+> # 生产环境
+> > npm install --production 
+> ```
+
+## package.json文件
+
+项目描述文件，记录了当前项目信息，例如项目名称、版本、作者、github地址、当前项目依赖了哪些第三方模块等。
+
+```bash 
+// 初始化 package.josn
+> npm init -y 
+```
+
+script 是调用的简写 
+
+```bash
+> npm run ~ ~ ~
+```
+
+## 项目依赖
+
+在项目的开发阶段和线上运营阶段，都需要依赖的第三方包，称为项目依赖
+**使用npm install 包名命令下载的文件会默认被添加到 package.json 文件的 dependencies 字段中**
+
+```js
+{
+    "dependencies": {
+        "jquery": "^3.3.1“
+    }
+} 
+```
+
+## 开发依赖
+
+在项目的开发阶段需要依赖，线上运营阶段不需要依赖的第三方包，称为开发依赖
+
+**使用npm install 包名 --save-dev命令将包添加到package.json文件的devDependencies字段中**
+
+## package-lock.json
+
+锁定包的版本，确保再次下载时不会因为包版本不同而产生问题
+
+加快下载速度，因为该文件中已经记录了项目所依赖第三方包的树状结构和包的下载地址，重新安装时只需下载即可，不需要做额外的工作
+
+
 
