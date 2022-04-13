@@ -2490,7 +2490,98 @@ router.get('/', function(req, res, next) {
 - `Session.regenerate()` ：将已有`session`初始化。
 - `Session.save()` ：保存`session`。
 
+## dateformat
 
+```js
+import dateFormat, { masks } from "dateformat";
+const now = new Date();
+
+// Basic usage
+dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+// Saturday, June 9th, 2007, 5:46:21 PM
+
+// You can use one of several named masks
+dateFormat(now, "isoDateTime");
+// 2007-06-09T17:46:21
+
+// ...Or add your own
+masks.hammerTime = 'HH:MM! "Can\'t touch this!"';
+dateFormat(now, "hammerTime");
+// 17:46! Can't touch this!
+
+// You can also provide the date as a string
+dateFormat("Jun 9 2007", "fullDate");
+// Saturday, June 9, 2007
+
+// Note that if you don't include the mask argument,
+// dateFormat.masks.default is used
+dateFormat(now);
+// Sat Jun 09 2007 17:46:21
+
+// And if you don't include the date argument,
+// the current date and time is used
+dateFormat();
+// Sat Jun 09 2007 17:46:22
+
+// You can also skip the date argument (as long as your mask doesn't
+// contain any numbers), in which case the current date/time is used
+dateFormat("longTime");
+// 5:46:22 PM EST
+
+// And finally, you can convert local time to UTC time. Simply pass in
+// true as an additional argument (no argument skipping allowed in this case):
+dateFormat(now, "longTime", true);
+// 10:46:21 PM UTC
+
+// ...Or add the prefix "UTC:" or "GMT:" to your mask.
+dateFormat(now, "UTC:h:MM:ss TT Z");
+// 10:46:21 PM UTC
+
+// You can also get the ISO 8601 week of the year:
+dateFormat(now, "W");
+// 42
+
+// and also get the ISO 8601 numeric representation of the day of the week:
+dateFormat(now, "N");
+// 6
+```
+
+## router
+
+使用步骤：
+
+- 获取路由对象
+- 调用路由对象提供的方法创建路由
+- 启用路由，使路由生效
+
+```js
+const getRouter = require('router')
+const router = getRouter();
+router.get('/add', (req, res) => {
+    res.end('Hello World!')
+}) 
+server.on('request', (req, res) => {
+    router(req, res)
+})
+```
+
+## serve-static
+
+功能：实现静态资源访问服务
+步骤：
+
+- 引入serve-static模块获取创建静态资源服务功能的方法
+- 调用方法创建静态资源服务并指定静态资源服务目录
+- 启用静态资源服务功能
+
+```js
+const serveStatic = require('serve-static')
+const serve = serveStatic('public')
+server.on('request', () => { 
+    serve(req, res)
+})
+server.listen(3000)
+```
 
 
 
@@ -3287,4 +3378,169 @@ const courseSchema = new mongoose.Schema({
 ```
 
 ## **关联集合**
+
+通常不同集合的数据之间是有关系的，例如文章信息和用户信息存储在不同集合中，但文章是某个用户发表的，要查询文章的所有信息包括发表用户，就需要用到集合关联
+
+- 使用id对集合进行关联
+- 使用populate方法进行关联集合查询
+
+| **文章集合** | **用户集合** |
+| ------------ | ------------ |
+| _id          | _id          |
+| title        | name         |
+| author       | age          |
+| content      | hobbies      |
+
+```js
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/test')
+  .then(() => console.log('Connected to MongoDB...'))
+  .catch(err => console.error('Could not connect to MongoDB...', err));
+
+const User = mongoose.model('User', new mongoose.Schema({
+  name: String,
+  age: Number
+}));
+const Post = mongoose.model('Post', new mongoose.Schema({
+  title: String,
+  content: String,
+  author: {
+    // id 的字段类型
+    type: mongoose.Schema.Types.ObjectId,
+    // 关联的模型
+    ref: 'User'
+  }
+}));
+
+// 将集合关联
+User.create({
+  name: 'John Doe',
+  age: 32
+}).then((result) => {
+  return Post.create({
+    title: 'My first post',
+    content: 'Hello world!',
+    author: result._id
+  })
+})
+
+// 查询
+Post.findOne().populate('author').then(post => {
+  console.log(post);
+})
+```
+
+# 模板引擎
+
+## art-template
+
+```bash
+npm install art-template
+```
+
+- 在命令行工具中使用 npm install art-template 命令进行下载
+- 使用const template = require('art-template')引入模板引擎
+- 告诉模板引擎要拼接的数据和模板在哪 const html = template(‘模板路径’, 数据);
+- 使用模板语法告诉模板引擎，模板与数据应该如何进行拼接 
+
+```js
+// 导入模板引擎模块
+ const template = require('art-template');
+ // 将特定模板与特定数据进行拼接
+ const html = template('./views/index.art',{
+    data: {
+        name: '张三',
+        age: 20
+    }
+ });
+
+
+// /index.art
+ <div>
+    <span>{{data.name}}</span>
+    <span>{{data.age}}</span>
+ </div>
+```
+
+art-template同时支持两种模板语法：标准语法和原始语法。
+
+标准语法可以让模板更容易读写，原始语法具有强大的逻辑处理能力。
+
+- 标准语法： {{ 数据 }}
+- 原始语法：<%=数据  %>
+
+### 解析标签
+
+```js
+ <!-- 标准语法 -->
+ <h2>{{@ value }}</h2>
+ <!-- 原始语法 -->
+ <h2><%- value %></h2>
+```
+
+### 条件判断
+
+```js
+ <!-- 标准语法 --> 
+ {{if 条件}} ... {{/if}}
+ {{if v1}} ... {{else if v2}} ... {{/if}}
+ <!-- 原始语法 -->
+ <% if (value) { %> ... <% } %>
+ <% if (v1) { %> ... <% } else if (v2) { %> ... <% } %>
+```
+
+### 循环
+
+```js
+<!-- 标准语法 -->
+ {{each target}}
+     {{$index}} {{$value}}
+ {{/each}}
+  <!-- 原始语法 -->
+ <% for(var i = 0; i < target.length; i++){ %>
+     <%= i %> <%= target[i] %>
+ <% } %>
+```
+
+### 子模版
+
+使用子模板可以将网站公共区块(头部、底部)抽离到单独的文件中。
+
+```js
+<!-- 标准语法 -->
+ {{include './header.art'}}
+  <!-- 原始语法 -->
+ <% include('./header.art') %>
+```
+
+### 模板继承
+
+![image-20220413092928612](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204130929698.png)
+
+```html
+ <!doctype html>
+ <html>
+     <head>
+         <meta charset="utf-8">
+         <title>HTML骨架模板</title>
+         {{block 'head'}}{{/block}}
+     </head>
+     <body>
+         {{block 'content'}}{{/block}}
+     </body>
+ </html>
+
+
+<!-- 填充 -->
+{{extend './layout.art'}}
+ {{block 'head'}} <link rel="stylesheet" href="custom.css"> {{/block}}
+ {{block 'content'}} <p>This is just an awesome page.</p> {{/block}}
+```
+
+### 模板配置
+
+- 向模板中导入变量 template.defaults.imports.变量名 = 变量值;
+- 设置模板根目录 template.defaults.root = 模板目录
+- 设置模板默认后缀 template.defaults.extname = '.art'
 
