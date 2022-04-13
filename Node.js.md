@@ -2203,7 +2203,21 @@ $ node ./bin/www
 
 ## body-parser
 
-**在处理程序之前在中间件中解析传入的请求主体，在`req.body`属性下可用。**
+**在处理程序之前在中间件中解析传入的请求主体，在`req.bod`**
+
+**``body-parser`是非常常用的一个`express`中间件，作用是对post请求的请求体进行解析。使用非常简单，以下两行代码已经覆盖了大部分的使用场景。y`属性下可用。**
+
+`body-parser`实现的要点如下：
+
+1. 处理不同类型的请求体：比如`text`、`json`、`urlencoded`等，对应的报文主体的格式不同。
+2. 处理不同的编码：比如`utf8`、`gbk`等。
+3. 处理不同的压缩类型：比如`gzip`、`deflare`等。
+4. 其他边界、异常的处理。
+
+```js
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+```
 
 安装
 

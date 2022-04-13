@@ -1359,6 +1359,7 @@ export default {
 this.$router.push({path: '/index'})
 
 // 通过 this.$route.params.id 接收参数
+// name 对应 router 中 index,js 里的 name
 this.$router.push({
         name: 'particulars',
         params: {
@@ -1367,7 +1368,7 @@ this.$router.push({
       })
 
 // 通过 this.$route.query.id 接收参数
-// 通过query来传递参数，这种情况下 query传递的参数会显示在url后面以?id=？形式展示。
+// 通过query来传递参数，这种情况下 query 传递的参数会显示在url后面以?id=？形式展示。
 this.$router.push({
       path: '/particulars',
       query: {
@@ -1420,6 +1421,8 @@ export default new VueRouter({
 <router-link :to="{name:'UserProfile',params:{id:1}}">个人信息</router-link>
 
 // 使用 {{$route.params.id}} 
+
+// router.push() query params
 ```
 
 ### 路由模式与 404
@@ -1428,8 +1431,6 @@ export default new VueRouter({
 
 - hash：路径带 # 符号，如 http://localhost/#/login
 - history：路径不带 # 符号，如 http://localhost/login
-
-
 
 
 
