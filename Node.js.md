@@ -1,4 +1,4 @@
-# node.js
+# Node.js
 
 Node.js 的 中文官网地址：**https://nodejs.org/zh-cn/**
 
@@ -1450,9 +1450,13 @@ run()
 
 官方给出的概念：Express 是基于 Node.js 平台，快速、开放、极简的 Web 开发框架；
 
+呜呜呜, 原生写 web 服务器真的是开发很慢  ~ ~ ~
+
 **通俗的理解：Express 的作用和 Node.js 内置的 http 模块类似，是专门用来创建 Web 服务器的；**
 
-Express 的本质：就是一个 npm 上的第三方包，提供了快速创建 Web 服务器的便捷方法；
+**Express 的本质：就是一个 npm 上的第三方包，提供了快速创建 Web 服务器的便捷方法；**
+
+router 是从 express 框架抽离出来的
 
 可以使用它来做: 
 
@@ -1530,6 +1534,8 @@ app.get('/', (require, response) => {
 
 通过 `app.post()` 方法，可以监听客户端的 `POST` 请求，具体的语法格式如下：
 
+需要使用第三方包: body-parser
+
 ```js
 app.post(" 路径 ",function(require, response) {
 	// 处理函数
@@ -1538,7 +1544,28 @@ app.post(" 路径 ",function(require, response) {
 
 ## 3. 响应给客户端消息
 
-通过 `res.send()` 方法，可以把处理好的内容，发送给客户端：
+通过 `res.send()` 方法，可以把处理好的内容，发送给客户端, 不再使用 end() 的方式
+
+**send 会自动检测响应类型, 自动设置到响应头当中, 设置相应内容编码以及类型**
+
+```js
+const express = require('express');
+const app = express();
+app.get("/", (req, res) => {
+  // 会自动设置编码格式为 Content-Type: text/html;charset=utf-8;
+  res.send("<h1>Hello World!</h1>");
+});
+app.get("/list", (req, res) => {
+  // 可以直接响应 json 对象
+  res.send({
+    name: "John",
+    age: 30
+  });
+});
+app.listen(3000, () => {
+  console.log('Server running on port http://localhost:3000')
+});
+```
 
 ```js
 // 监听客户端的 GET 和 POST 请求，并向客户端响应具体的内容
@@ -1556,6 +1583,8 @@ app.post('/user', (require, response) => {
 
 express.static()
 
+**推荐, 使用绝对路径**
+
 express 提供了一个非常好用的函数，叫做 express.static()，通过它，我们可以非常方便地创建一个静态资源服务器；
 
 例如，通过如下代码就可以将 public 目录下的图片、CSS 文件、JavaScript 文件对外开放访问了：
@@ -1564,7 +1593,7 @@ express 提供了一个非常好用的函数，叫做 express.static()，通过�
 app.use(express.static("public"));
 ```
 
-`Express` 在指定的静态目录中查找文件，并对外提供资源的访问路径。因此，存放静态文件的目录名不会出现在 URL 中。
+`Express` 在指定的静态目录中查找文件，并对外提供资源的访问路径。因此，**存放静态文件的目录名不会出现在 URL 中。**
 
 如果要托管多个静态资源目录，请多次调用 `express.static()` 函数：
 
@@ -1666,11 +1695,81 @@ const router = require('./03.router')
 app.use("/spi", router)
 ```
 
+### 二级路由
+
+```js
+const express = require('express');
+const app = express();
+const home = express.Router();
+// 一级路由
+app.use("/home", home);
+// 二级路由, 需要请求 http://localhost:3000/home/index
+home.get("/index", (req, res) => {
+    res.send("Hello World!");
+});
+```
+
+### 构建模块化
+
+```js
+// admin.js
+const express = require('express');
+const admin = express.Router();
+admin.get('/', (req, res) => {
+    res.send('admin');
+});
+admin.get('/index', (req, res) => {
+  res.send('admin index');
+});
+module.exports = admin;
+
+
+
+// home.js
+const express = require('express');
+const home = express.Router();
+home.get('/index', (req, res) => {
+    res.send('home index');
+});
+module.exports = home;
+
+
+
+// app.js
+const express = require('express');
+const app = express();
+const home = require('./home');
+const admin = require('./admin');
+app.use('/home', home);
+app.use('/admin', admin);
+app.listen(3000, () => {
+  console.log('Server running on port http://localhost:3000')
+});
+```
+
+### 请求参数
+
+```js
+// 请求: localhost:3000/find/123/ximingx
+app.get('/find/:id/:name', (req, res) => {
+     // 获取参数对象 req.params
+    res.send(req.params);
+});
+```
+
+
+
+
+
 ## 6. 中间件
 
 > 中间件（Middleware ），特指业务流程的中间处理环节业。
 
 当一个请求到达 `Express` 的服务器之后，可以连续调用多个中间件，从而对这次请求进行预处理；
+
+**相当于中间件就是一堆方法, 可以接收请求, 对请求做出响应, 也可以将请求传递得下一个中间件**
+
+app.get() 实际上也是一个中间件
 
 ![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204070910605.png)
 
@@ -1678,10 +1777,22 @@ app.use("/spi", router)
 
 `Express` 的中间件，本质上就是一个 **`function` 处理函数**，`Express` 中间件的格式如下：
 
+```js
+app.use(fn())
+
+function fn() {
+  return function (req, res, next) {
+    console.log('request received');
+    next();
+  }
+}
+```
+
 ![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204070911536.png)
 
 - 中间件函数的形参列表中，**必须包含 next 参数**。而路由处理函数中只包含 req 和 res；
 - `next 函数`是实现多个中间件连续调用的关键，它表示把流转关系转交给下一个中间件或路由；
+- 默认情况下, 请求从上到下依次匹配中间件, 一旦匹配成功, 终止匹配, 但是可以调用 next() 方法将控制权交给下一个中间件
 
 中间件的定义
 
@@ -1693,6 +1804,8 @@ const mw = function (req, res, next) {
     next()
 }
 ```
+
+### app.use()
 
 客户端发起的任何请求，到达服务器之后，都会触发的中间件，叫做**全局生效的中间件**。
 
@@ -1853,7 +1966,7 @@ router.use(function(require, response, next) {
 })
 ```
 
-**错误级别的中间件**
+### **错误级别的中间件**
 
 错误级别中间件的作用：专门用来捕获整个项目中发生的异常错误，从而防止项目异常崩溃的问题。
 
@@ -1874,8 +1987,7 @@ app.get('/', (req, res) => {
 
 // 2. 定义错误级别的中间件，捕获整个项目的异常错误，从而防止程序的崩溃
 app.use((err, req, res, next) => {
-    console.log('发生了错误！' + err.message)
-    res.send('Error：' + err.message)
+    res.status(500).send('Error：' + err.message)
 })
 
 // 调用 app.listen 方法，指定端口号并启动web服务器
@@ -1885,6 +1997,63 @@ app.listen(80, function () {
 ```
 
 **错误级别的中间件，必须注册在所有路由之后；**
+
+**但是他只能处理同步代码**
+
+```js
+// try catch 会捕获代码执行错误, 但不不能捕获回调函数异步任务的错误
+app.get('/', async (req, res, next) => {
+  try {
+    await User.find({name: "张三"})
+  } catch (error) {
+    next(error)
+  }
+})
+
+
+app.get('/admin', (req, res,next) => {
+  fs.readFile("./yarn.lock", "utf8",(err, data) => {
+    if (err) {
+       // 处理异步代码的方式
+       next(err);
+    } else {
+      res.send(data);
+    }
+  })
+});
+app.use((req, res, next) => {
+  res.status(400).send('页面不存在');
+})
+```
+
+### 案例
+
+网站维护, 登录, 请求路径不存在
+
+```js
+const express = require('express');
+const app = express();
+app.use((req, res, next) => {
+  res.send('维护中...');
+})
+app.use("/admin",((req, res, next) => {
+  let isLogin = true;
+  if (isLogin) {
+    next();
+  } else {
+    res.send("You are not login");
+  }
+}));
+app.get('/admin', (req, res) => {
+  res.send('Hello root!');
+});
+app.use((req, res, next) => {
+  res.status(400).send('页面不存在');
+})
+app.listen(3000, () => {
+  console.log('Server running on port http://localhost:3000')
+});
+```
 
 ## 7. 接口
 
@@ -2199,6 +2368,81 @@ $ node ./bin/www
 
 ![image-20220407230029657](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204072300762.png)
 
+## 11. express-art-template
+
+```bash
+> yarn add art-template express-art-template
+```
+
+```js
+const express = require('express');
+const app = express();
+// 设置默认的模板要求
+app.engine('html', require('express-art-template'));
+// 设置模板的存放路径
+app.set('views', __dirname + '/views');
+// 设置模板的默认后缀
+app.set('view engine', 'html');
+app.get("/",(req, res) => {
+    // res.render('页面的名字',  {数据});
+    res.render('index', {
+        title: 'Hello World',
+        list: [
+            {name: 'tom', age: 18},
+            {name: 'jerry', age: 20},
+            {name: 'jack', age: 22}
+        ]
+    });
+})
+app.listen(3000, () => {
+  console.log('Server running on port http://localhost:3000')
+});
+```
+
+```js
+const express = require('express');
+const app = express();
+app.engine('html', require('express-art-template'));
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+// 为 app.locals 添加 index 属性, 为所有的页面提供
+app.locals.index = {
+  title: 'Hello World',
+  list: [
+    {name: 'tom', age: 18},
+    {name: 'jerry', age: 20},
+    {name: 'jack', age: 22}
+  ]
+}
+app.get("/",(req, res) => {
+    res.render('index');
+})
+app.listen(3000, () => {
+  console.log('Server running on port http://localhost:3000')
+});
+
+
+// index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>{{ index.title }}</h1>
+    <ul>
+        {{ each index.list }}
+            <li>{{ $value.name }}</li>
+            <li>{{ $value.age }}</li>
+        {{ /each }}
+    </ul>
+</body>
+</html>
+```
+
+![image-20220414100732152](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204141007241.png)
+
 # 中间件
 
 ## body-parser
@@ -2230,6 +2474,25 @@ npm install body-parser
 ```js
 var bodyParser = require('body-parser')
 ```
+
+```js
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+// false 使用 querystring 模块 处理请求参数
+// true 使用 第三方模块 qs 处理请求参数
+app.use(bodyParser.urlencoded({ extended: false }));
+app.post('/add', (req, res) => {
+    console.log(req.body);
+    res.send(req.body);
+});
+app.listen(3000, () => {
+  console.log('Server running on port http://localhost:3000')
+});
+```
+
+
 
 ## Debug
 
