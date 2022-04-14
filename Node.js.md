@@ -1482,8 +1482,9 @@ app.listen(3000)
 > 对于接口的补充: 
 >
 > 1. 在网络技术中，端口（Port）大致有两种意思：一是物理意义上的端口，比如，ADSL Modem、集线器、交换机、路由器用于连接其他网络设备的接口，如RJ-45端口、SC端口等等。
+> 2. 二是逻辑意义上的端口，一般是指 TCP/IP 协议中的端口，端口号的范围从0到65535，比如用于浏览网页服务的80端口，用于FTP服务的21端口等等。
 >
-> 2. 二是逻辑意义上的端口，一般是指TCP/IP协议中的端口，端口号的范围从0到65535，比如用于浏览网页服务的80端口，用于FTP服务的21端口等等。
+> 
 >
 > - 21端口：21端口主要用于FTP（File Transfer Protocol，文件传输协议）服务。
 > - 23端口：23端口主要用于Telnet（远程登录）服务，是Internet上普遍采用的登录和仿真程序。
@@ -2369,6 +2370,10 @@ $ node ./bin/www
 ![image-20220407230029657](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204072300762.png)
 
 ## 11. express-art-template
+
+> **模板文件中的请求路径是相对于当前浏览器请求路径的基础上的相对路径**
+>
+> **要使用绝对路径 /**
 
 ```bash
 > yarn add art-template express-art-template
