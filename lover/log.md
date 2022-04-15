@@ -2,6 +2,8 @@
 
 @[TOC]
 
+[TOC]
+
 # 2022
 
 ## 2022.04
@@ -39,3 +41,11 @@ and 今天的睡前小故事是盗版的她的哦， 哎， 泥， 鸭
 之前我可是说不出这样的话的
 
 ![image-20220414235113840](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204142351881.png)
+
+### 2022.05.15
+
+我不是胆小鬼，但我是爱你的可爱鬼
+
+今日份官宣
+
+![image-20220415215118330](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204152151476.png)
