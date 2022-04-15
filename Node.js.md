@@ -1,3 +1,5 @@
+
+
 # Node.js
 
 Node.js 的 中文官网地址：**https://nodejs.org/zh-cn/**
@@ -1144,7 +1146,7 @@ server.on('request', function (req, res) {
 // 调用服务器实例的 .listen() 方法，即可启动当前的 web 服务器实例
 // 也可以不带函数启动， 只需要端口号
 server.listen(3000, function () {
-    console.log('server running at http://127.0.0.1:8080')
+    console.log('server running at http://127.0.0.1:3000')
 })
 ```
 
@@ -1163,7 +1165,7 @@ server.on('request', (req, res) => {
     // req.method 是客户端请求的 method 类型
     const method = req.method
     // 获取请求报文
-    const headers = requ.headers
+    const headers = req.headers
     const str = `Your request url is ${url}, and request method is ${method}`
     // 调用 res.end() 方法，向客户端响应一些内容
     res.end(str)
@@ -1246,6 +1248,7 @@ server.on('request', (req, res) => {
 })
 ```
 
+类型
 - **text/html**
 - text/css
 - application/javascript
@@ -1427,13 +1430,7 @@ async function run () {
     }
 }
 
-run()
-  .thne(data => {
-    
-}).catch(err) {
-    
-}
-
+let result = run()
 ```
 
 
@@ -1448,7 +1445,7 @@ run()
 
 官方给出的概念：Express 是基于 Node.js 平台，快速、开放、极简的 Web 开发框架；
 
-呜呜呜, 原生写 web 服务器真的是开发很慢  ~ ~ ~
+呜呜呜, node 原生写 web 服务器真的是开发很慢  ~ ~ ~
 
 **通俗的理解：Express 的作用和 Node.js 内置的 http 模块类似，是专门用来创建 Web 服务器的；**
 
@@ -1477,7 +1474,7 @@ const app = express();
 app.listen(3000) 
 ```
 
-> 对于接口的补充: 
+> 对于端口的补充: 
 >
 > 1. 在网络技术中，端口（Port）大致有两种意思：一是物理意义上的端口，比如，ADSL Modem、集线器、交换机、路由器用于连接其他网络设备的接口，如RJ-45端口、SC端口等等。
 >
@@ -1501,7 +1498,7 @@ app.listen(3000)
 > - 139端口：139端口是为“NetBIOS Session Service”提供的，主要用于提供Windows文件和打印机共享以及Unix中的Samba服务。
 > - 143端口：143端口主要是用于“Internet Message Access Protocol”v2（Internet消息访问协议，简称IMAP）。
 > - 161端口：161端口是用于“Simple Network Management Protocol”（简单网络管理协议，简称SNMP）。
-> - **443端口：43端口即网页浏览端口，主要是用于HTTPS服务，是提供加密和通过安全端口传输的另一种HTTP。**
+> - **443端口：443端口即网页浏览端口，主要是用于HTTPS服务，是提供加密和通过安全端口传输的另一种HTTP。**
 > - 554端口：554端口默认情况下用于“Real Time Streaming Protocol”（实时流协议，简称RTSP）。
 > - 1024端口：1024端口一般不固定分配给某个服务，在英文中的解释是“Reserved”（保留）。
 > - 1080端口：1080端口是Socks代理服务使用的端口，大家平时上网使用的WWW服务使用的是HTTP协议的代理服务。
@@ -1532,7 +1529,7 @@ app.get('/', (require, response) => {
 
 通过 `app.post()` 方法，可以监听客户端的 `POST` 请求，具体的语法格式如下：
 
-需要使用第三方包: body-parser
+需要使用第三方包: body-parser 解析传递的参数
 
 ```js
 app.post(" 路径 ",function(require, response) {
@@ -1767,11 +1764,9 @@ app.get('/find/:id/:name', (req, res) => {
 
 **相当于中间件就是一堆方法, 可以接收请求, 对请求做出响应, 也可以将请求传递得下一个中间件**
 
-app.get() 实际上也是一个中间件
+app.get() 实际上也是一个中间件，但是他没事使用 next() ，而是将它作为最后的处理函数
 
 ![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204070910605.png)
-
-
 
 `Express` 的中间件，本质上就是一个 **`function` 处理函数**，`Express` 中间件的格式如下：
 
@@ -1819,7 +1814,7 @@ const mw = function (req, res, next) {
 app.use(mw)
 ```
 
-简化形式
+**简化形式**
 
 ```js
 app.use((req, res, next) => {
@@ -1828,7 +1823,7 @@ app.use((req, res, next) => {
 })
 ```
 
-多个中间件之间，共享同一份 `req` 和 `res`。基于这样的特性，我们可以在上游的中间件中，统一为 `req` 或 `res` 对象添加自定义的属性或方法，供下游的中间件或路由进行使用。
+**多个中间件之间，共享同一份 `req` 和 `res`。**基于这样的特性，我们可以在上游的中间件中，统一为 `req` 或 `res` 对象添加自定义的属性或方法，供下游的中间件或路由进行使用。
 
 ```js
 const express = require('express')
@@ -3389,10 +3384,12 @@ gulp.task('html', () => {
 script 是调用的简写 
 
 ```bash
-> npm run ~ ~ ~
+> npm run （script中的简写）
 ```
 
 ## 项目依赖
+
+在现在下载的较高版本的 node 安装项目依赖的时候，已经不需要我们使用 --save 来保存依赖了
 
 在项目的开发阶段和线上运营阶段，都需要依赖的第三方包，称为项目依赖
 **使用npm install 包名命令下载的文件会默认被添加到 package.json 文件的 dependencies 字段中**
