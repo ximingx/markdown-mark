@@ -186,7 +186,20 @@ Node.js 的性能和效率非常高。
 > 偶数版本为稳定版（0.6.x ，0.8.x ，8.10.x）
 > 奇数版本为非稳定版（0.7.x ，0.9.x ，9.11.x）
 
-安装完毕后, 可以打开终端，在终端输入命令 `node –v` 后，按下回车键，即可查看已安装的 Node.js 的版本号；
+### 安装过程
+
+1. 打开官网下载链接:https://nodejs.org/en/download/ 
+2. 选择自己需要的版本， 不建议版本太高
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204150834938.png)
+
+3. 点击安装包
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204150834155.png)
+
+4. 一路 next 下去就可以啦
+
+5. 安装完毕后, 可以打开终端，在终端输入命令 `node –v` 后，按下回车键，即可查看已安装的 Node.js 的版本号；
 
 ![image-20220407144331354](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204071443400.png)
 
@@ -197,11 +210,34 @@ Node.js 的性能和效率非常高。
 - 使用 esc 键，能够快速清空当前已输入的命令；
 - 输入 cls 命令，可以清空终端；
 
-如果主[Node](https://so.csdn.net/so/search?q=Node&spm=1001.2101.3001.7020).js应用程序文件是 app.js，则可以通过键入以下命令调用它：
+6. 打开 node 的安装目录
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204150835091.png)
+
+7. 配置： 在我安装的文件夹【D:\Develop\nodejs】下创建两个文件夹【node_global】及【node_cache】如下图：
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204150836653.png)
+
+8. 命令行输入
 
 ```bash
-node app.js
-# 命令行使用 ctrl+c 可以停止node.js程序
+npm config set prefix "D:\Develop\nodejs\node_global"
+npm config set cache "D:\Develop\nodejs\node_cache"
+```
+
+9. 环境配置
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204150837796.png)
+
+进入环境变量对话框，在【系统变量】下新建【NODE_PATH】，输入【D:\Develop\nodejs\node_global\node_modules】，将【用户变量】下的【Path】修改为【D:\Develop\nodejs\node_global】
+
+10. 测试
+
+配置完后，安装个module测试下，我们就安装最常用的express模块，打开cmd窗口，
+输入如下命令进行模块的全局安装：
+
+```bash
+npm install express -g     # -g是全局安装的意思
 ```
 
 ## 4. 包和 NPM
