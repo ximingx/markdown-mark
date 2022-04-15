@@ -3271,6 +3271,39 @@ export default {
 </style>
 ```
 
+## 3. 简单的登录
+
+```js
+const express = require('express');
+const app = express();
+const BodyParser = require('body-parser');
+app.use(BodyParser.json());
+app.use(BodyParser.urlencoded({ extended: false }));
+const User = require('./db/user');
+app.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+    if (username.trim().length == 0 || password.trim().length == 0) {
+        return res.status(400).send("Invalid username or password");
+    }
+    else {
+        let user = await User.findOne({ username });
+        if (user) {
+            if (user.password == password) {
+                return res.status(200).send("Login success");
+            }
+            else {
+                return res.status(400).send("Invalid username or password");
+            }
+        }
+        else {
+            return res.status(400).send("Invalid username or password");
+        }
+    }
+});
+```
+
+
+
 # npm -g
 
 ## nodemon
@@ -3640,6 +3673,7 @@ Course.updateMany({name: 'lisi'}, {name: "aw"}).then(res => {
 
 ```js
 // require 必传字段
+// unique 唯一不重复
 // type 类型
 // default 默认值
 // maxlength 最大长度
@@ -3743,6 +3777,21 @@ Post.findOne().populate('author').then(post => {
   console.log(post);
 })
 ```
+
+## 模块化
+
+```js
+const mongoose = require("mongoose");
+const userSchema = new mongoose.Schema({
+    // 拉吧拉吧
+});
+const User = mongoose.model('User','userSchema');
+module.exports = {
+    User
+}
+```
+
+
 
 # 模板引擎
 
@@ -3856,4 +3905,58 @@ art-template同时支持两种模板语法：标准语法和原始语法。
 - 向模板中导入变量 template.defaults.imports.变量名 = 变量值;
 - 设置模板根目录 template.defaults.root = 模板目录
 - 设置模板默认后缀 template.defaults.extname = '.art'
+
+# 加密
+
+## bcrypt
+
+**使用 hash 算法实现, 只能加密, 不能解密**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
