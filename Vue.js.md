@@ -10,6 +10,26 @@
 
 官方定义： Vue（读作 /vjuː/，类似视图）是一个帮助用户制造界面的 JavaScript 框架。它在标准 HTML、CSS 和 JavaScript 中创建，并提供了一个声明性和基于组件的编程模型，可有效开发地简单或复杂的用户界面。
 
+前端开发者最主要的工作，就是为网站的使用者（又称为：网站的用户）构建出美观、舒适、好用的网页。
+
+官方给 vue 的定位是前端框架，因为它提供了构建用户界面的一整套解决方案（俗称 vue 全家桶）：
+
+- vue（核心库）
+- vue-router（路由方案）
+- vuex（状态管理方案）
+- vue 组件库（快速搭建页面UI 效果的方案）
+
+以及辅助 vue 项目开发的一系列工具：
+
+- **vue-cli（npm 全局包：一键生成工程化的 vue 项目 - 基于 webpack、大而全）**
+- **vite（npm 全局包：一键生成工程化的 vue 项目 - 小而巧）**
+- vue-devtools（浏览器插件：辅助调试的工具）
+- vetur（vscode 插件：提供语法高亮和智能提示）
+
+两种实现方式
+
+sfc 
+
 ```html
 // .vue 文件
 <template>
@@ -25,7 +45,49 @@
 </style>
 ```
 
+html 页面中实现
+
+1. 导入 vue.js 的 script 脚本文件
+2. 在页面中声明一个将要被 vue 所控制的 DOM 区域
+3. 创建 vm 实例对象（vue 实例对象）
+
+```js
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- 2. 声明要被 vue 所控制的 DOM 区域 -->
+    <div id="app">{{ username }}</div>
+
+    <!-- 1. 导入 vue 的脚本文件 -->
+    <script src="./lib/vue-2.6.12.js"></script>
+
+    <!-- 3. 创建 vue 的实例对象 -->
+    <script>
+        const vm = new Vue({
+            // 3.1 使用 el 属性，指定 vue 要控制的区域
+            el: '#app',
+            // 3.2 数据源
+            // data 对象就是要渲染到页面上的数据
+            data: {
+                username: 'zs'
+            }
+        })
+    </script>
+</body>
+
+</html>
+```
+
  在Vue中，一个核心的概念就是：**数据驱动，避免手动操作DOM元素**。这样的话，可以更多的时间去关注数据的业务逻辑，而不是关心 DOM 是如何渲染的了。
+
+**数据驱动视图是单向的数据绑定。**
 
 ```html
 <script>
@@ -350,6 +412,17 @@ app.mount('#app')
 
 ## 3. vue 系统指令
 
+指令（Directives）是 vue 为开发者提供的模板语法，用于辅助开发者渲染页面的基本结构。
+
+vue 中的指令按照不同的用途可以分为如下 6 大类：
+
+- 内容渲染指令
+- 属性绑定指令
+- 事件绑定指令
+- 双向绑定指令
+- 条件渲染指令
+- 列表渲染指令
+
 Vue 使用基于 HTML 的模板语法，允许您以声明方式将渲染的 DOM 绑定到底层组件实例的数据。所有 Vue 模板都是语法上有效的 HTML，可以被符合规范的浏览器和 HTML 解析器解析。
 
 指令是带有`v-`前缀的特殊属性。Vue 提供了许多内置指令`v-html`
@@ -533,14 +606,14 @@ vue为v-on提供了事件修饰符，通过点(.)表示的指令后缀来调用�
 
 在监听键盘事件时，我们经常需要检查特定的键。Vue 允许为`v-on`或`@`在监听键事件时添加键修饰符：
 
-```
+```html
 <!-- only call `vm.submit()` when the `key` is `Enter` -->
 <input @keyup.enter="submit" />
 ```
 
 您可以直接使用通过`KeyboardEvent.key` 修饰符公开的任何有效键名，方法是将它们转换为 kebab-case。
 
-```
+```html
 <input @keyup.page-down="onPageDown" />
 ```
 
@@ -555,6 +628,24 @@ Vue 为最常用的键提供别名：
 - `.down`
 - `.left`
 - `.right`
+
+在原生的 DOM 事件绑定中，可以在事件处理函数的形参处，接收事件参数对象 event。同理，在 `v-on` 指令（简写为 `@` ）所绑定的事件处理函数中，同样可以接收到事件参数对象 event，示例代码如下：
+
+`$event` 是 vue 提供的特殊变量，用来表示原生的事件参数对象 event。`$event` 可以解决事件参数对象event被覆盖的问题。
+
+```js
+<!-- vue 提供了内置变量，名字叫做 $event，它就是原生 DOM 的事件对象 e -->
+<button @click="add($event, 1)">+N</button>
+
+
+methods: {
+  currentEvent: add (event, number) {
+      console.log(event)
+  }
+}
+```
+
+
 
 ---
 
@@ -733,7 +824,7 @@ export default {
 <label for="mike">Mike</label>
 ```
 
-### .lazy
+#### .lazy
 
 默认情况下，`v-model`在每个事件之后将输入与数据同步（[上述](https://vuejs.org/guide/essentials/forms.html#vmodel-ime-tip)`input`IME 组合除外）。您可以添加修饰符以改为在事件后同步：`lazy``change`
 
@@ -742,7 +833,7 @@ export default {
 <input v-model.lazy="msg" />
 ```
 
-### .number
+#### .number
 
 如果您希望用户输入自动转换为数字，您可以将`number`修饰符添加到`v-model`托管输入：
 
@@ -754,7 +845,7 @@ export default {
 
 如果输入有，`number`则自动应用修饰符`type="number"`。
 
-### .trim
+#### 3 .trim
 
 如果您希望自动修剪用户输入中的空白，您可以将`trim`修饰符添加到您的`v-model`-managed 输入中：
 
@@ -825,7 +916,11 @@ data() {
 
 > 为了给 Vue 一个提示，**以便它能跟踪每个节点的身份，从而重用和重新排序现有元素**，你需要为每项提供一个唯一 key 属性。
 
-key的类型只能是：string/number，而且要通过 v-bind 来指定。
+- key 的值只能是字符串或数字类型
+- key 的值必须具有唯一性（即：key 的值不能重复）
+- 建议把数据项 id 属性的值作为 key 的值（因为 id 属性的值具有唯一性）
+- **使用 index 的值当作 key 的值没有任何意义（因为index 的值不具有唯一性）**
+- **建议使用 v-for 指令时一定要指定 key 的值（既提升性能、又防止列表状态紊乱）, 最主要的是， 他不会给你警告， 看的心烦哎**
 
 ---
 
