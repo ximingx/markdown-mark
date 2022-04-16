@@ -1800,7 +1800,21 @@ app.get('/find/:id/:name', (req, res) => {
 });
 ```
 
+### 全局数据
 
+```js
+req.app.locals
+```
+
+### 重定向
+
+express 框架提供的
+
+```js
+res.redirect('/admin')
+```
+
+ 
 
 
 
@@ -2662,155 +2676,6 @@ app.use(cookiePareser());
 //若需要使用签名，需要指定一个secret,字符串,否者会报错
 app.use(cookiePareser('Simon'));
 ```
-
-## express-session
-
-身份认证的方式
-
-- 服务器渲染推荐使用Session认证机制
-- 前后端分离推荐使用JWT认证机制
-
-Cookie的几大特性：
-
-- 自动发送
-- 域名独立
-- 过期时限
-- 4KB限制
-
-**session 是另一种记录客户状态的机制，不同的是 Cookie 保存在客户端浏览器中，而 session 保存在服务器上。**
-
-Session的用途：
-
-- session运行在服务器端，当客户端第一次访问服务器时，可以将客户的登录信息保存。
-- 当客户访问其他页面时，可以判断客户的登录状态，做出提示，相当于登录拦截。
-- session可以和Redis或者数据库等结合做持久化操作，当服务器挂掉时也不会导致某些客户信息（购物车）
-  丢失。
-
-当浏览器访问服务器并发送第一次请求时，服务器端会创建一个session对象，生成一个类似于key,value的键值对，然后将key(cookie)返回到浏览器(客户)端，浏览器下次再访问时，携带key(cookie)，找到对应的session(value)。 客户的信息都保存在session中
-
-在express项目中，只需要安装express-session中间件，即可在项目中使用Session认证：
-
-```bash
-npm install express-session
-```
-
-```js
-// 设置官方文档提供的中间件
-var session=require('express-session')
-app.use(session({
-  secret: 'aaa',//签名，与上文中cookie设置的签名字符串一致
-  resave: false,// 一个请求在另一个请求结束时对session进行修改覆盖并保存，默认值为true。建议设为false
-  saveUninitialized: true,//无论是否使用session,默认只要对页面发起请求，都会给客户端一个cookie  
-  name: 'connect.sid', // // 在浏览器中生成cookie的名称key，默认是connect.sid
-  cookie:{
-   maxAge:1000*60 // session 的有效时长
-  }
-}))
-// 这段代码放在路由前面
-```
-
-使用
-
-```js
- console.log(req.session.username)
-```
-
-示例 demo1
-
-```js
-    var express = require("express");
-    var app = express();
-    var session = require("express-session");
-    //配置中间件
-    app.use(session({
-        secret: 'keyboard cat',
-        resave: false,
-        saveUninitialized: true
-        //cookie: { secure: true }   /*secure https这样的情况才可以访问cookie*/
-    }))
-    app.get("/",function(req,res){
-        //获取sesssion
-        if(req.session.userinfo){  /*获取*/
-            res.send('你好'+req.session.userinfo+'欢迎回来');
-        }else{
-            res.send('未登录');
-        }
-    });
-
-    app.get("/login",function(req,res){
-        req.session.userinfo="zhangsan111"; /*设置session*/
-        res.send('登录成功');
-    });
-
-    app.get("/news",function(req,res){
-        //获取sesssion
-        if(req.session.userinfo){  /*获取*/
-            res.send('你好'+req.session.userinfo+'欢迎回来 news');
-        }else{
-            res.send('未登录 news');
-        }
-    });
-
-    app.listen(3000);
-```
-
-示例demo 2
-
-```js
-//app.js中添加如下代码(已有的不用添加)
-var express = require('express');
-var cookieParser = require('cookie-parser');
-var session = require('express-session');
- 
-app.use(cookieParser('sessiontest'));
-app.use(session({
- secret: 'sessiontest',//与cookieParser中的一致
- resave: true,
- saveUninitialized:true
-}));
-```
-
-```js
-//修改router/index.js,第一次请求时我们保存一条用户信息。
-router.get('/', function(req, res, next) {
- var user={
-  name:"Chen-xy",
-  age:"22",
-  address:"bj"
- }
- req.session.user=user;
- res.render('index', {
-  title: 'the test for nodejs session' ,
-  name:'sessiontest'
- });
-});
-```
-
-```js
-//修改router/users.js，判断用户是否登陆。
-router.get('/', function(req, res, next) {
- if(req.session.user){
-  var user=req.session.user;
-  var name=user.name;
-  res.send('你好'+name+'，欢迎来到我的家园。');
- }else{
-  res.send('你还没有登录，先登录下再试试！');
- }
-});
-```
-
-`secret`:一个`String`类型的字符串，作为服务器端生成`session`的签名。
-`name`:返回客户端的key的名称，默认为`connect.sid`,也可以自己设置。
-`resave`:(是否允许)当客户端并行发送多个请求时，其中一个请求在另一个请求结束时对`session`进行修改覆盖并保存。
-默认为`true`。但是(后续版本)有可能默认失效，所以最好手动添加。
-`saveUninitialized`:初始化session时是否保存到存储。默认为`true`， 但是(后续版本)有可能默认失效，所以最好手动添加。
-`cookie`:设置返回到前端key的属性，默认值为`{ path: ‘/', httpOnly: true, secure: false, maxAge: null }` 。
-
-- `express-session`的一些方法:
-- `Session.destroy()` :删除`session`，当检测到客户端关闭时调用。
-- `Session.reload()` :当`session`有修改时，刷新`session`。
-- `Session.regenerate()` ：将已有`session`初始化。
-- `Session.save()` ：保存`session`。
 
 ## dateformat
 
@@ -3917,37 +3782,283 @@ art-template同时支持两种模板语法：标准语法和原始语法。
 - 设置模板根目录 template.defaults.root = 模板目录
 - 设置模板默认后缀 template.defaults.extname = '.art'
 
-# 加密
+# 加密 身份验证
 
 ## bcrypt
 
 **使用 hash 算法实现, 只能加密, 不能解密**
 
+在数据库中使用明文很不安全
+
+```js
+> python2.x
+> yarn add node-gyp -g
+> yarn add windows-build-tools --global --production
+# 依赖的三个环境
+> yarn add bcrypt
+```
+
+```js
+const bcrypt = require('bcrypt');
+
+async function encrypt(message) {
+    // 生成随机字符串 参数: 复杂度的难度(默认: 10)
+    // 返回生成的随机字符串
+    const salt = await bcrypt.genSalt(10);
+    // salt: $2b$10$eNXayg7qjbZccgDIB1AKlu
+
+    // 对密码进行加密
+    // 对密码进行加密 参数: 密码, 加密的难度
+    // 对密码进行加密
+    // 参数1: 要进行加密的明文密码
+    // 参数2: 加密的随机字符串
+    // 返回的是加密后的密码
+    const result = await bcrypt.hash(message, salt);
+    console.log(`salt: ${salt}`);
+    console.log(`result: ${result}`);
+    // salt: $2b$10$IwMRYn2.sQ3thmksLnekWe
+    // result: $2b$10$IwMRYn2.sQ3thmksLnekWeJDxm6yn32xi/INBSW/plvorEfNAujti
+    return result;
+}
+
+async function verify(message, hash) {
+    // 密码的验证
+    return !!(await bcrypt.compareSync(message, hash));
+}
+
+module.exports = {
+    encrypt,
+    verify
+};
+```
+
+## cookie session
+
+cookie：浏览器在电脑硬盘中开辟的一块空间，主要供服务器端存储数据。
+
+- cookie中的数据是以域名的形式进行区分的。
+- cookie中的数据是有过期时间的，超过时间数据会被浏览器自动删除。
+- **cookie中的数据会随着请求被自动发送到服务器端。**\
+- 4KB限制
+
+
+
+![image-20220416101248018](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204161012101.png)
+
+session：实际上就是一个对象，存储在服务器端的内存中，**在session对象中也可以存储多条数据，每一条数据都有一个sessionid做为唯一标识。**
+
+当浏览器访问服务器并发送第一次请求时，服务器端会创建一个session对象，生成一个类似于key,value的键值对，然后将key(cookie)返回到浏览器(客户)端，浏览器下次再访问时，携带key(cookie)，找到对应的session(value)。 客户的信息都保存在session中
+
+Session的用途：
+
+- **session运行在服务器端，当客户端第一次访问服务器时，可以将客户的登录信息保存。**
+- **当客户访问其他页面时，可以判断客户的登录状态，做出提示，相当于登录拦截。**
+- **session可以和Redis或者数据库等结合做持久化操作，当服务器挂掉时也不会导致某些客户信息（购物车）**
+  **丢失。**
+
+![image-20220416102220168](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204161022250.png)
+
+## express-session
+
+在express项目中，只需要安装express-session中间件，即可在项目中使用 Session：
+
+```bash
+> npm install express-session
+> yarn add express-session
+```
+
+```js
+// 设置官方文档提供的中间件
+var session=require('express-session')
+app.use(session({
+  secret: 'sercet key',//签名，与 cookie 设置的签名字符串一致
+  resave: false,// 一个请求在另一个请求结束时对 session 进行修改覆盖并保存，默认值为true。建议设为false
+  saveUninitialized: true,//无论是否使用 session ,默认只要对页面发起请求，都会给客户端一个cookie  
+  name: 'connect.sid', // // 在浏览器中生成 cookie 的名称 key ，默认是connect.sid
+  cookie:{
+   maxAge:1000*60 // session 的有效时长
+  }
+}))
+// 这段代码放在路由前面
+```
+
+`secret`:一个`String`类型的字符串，作为服务器端生成`session`的签名。
+`name`:返回客户端的key的名称，默认为`connect.sid`,也可以自己设置。
+`resave`:(是否允许)当客户端并行发送多个请求时，其中一个请求在另一个请求结束时对`session`进行修改覆盖并保存。
+默认为`true`。但是(后续版本)有可能默认失效，所以最好手动添加。
+`saveUninitialized`:初始化session时是否保存到存储。默认为`true`， 但是(后续版本)有可能默认失效，所以最好手动添加。
+`cookie`:设置返回到前端key的属性，默认值为`{ path: ‘/', httpOnly: true, secure: false, maxAge: null }` 。
+
+- `express-session`的一些方法:
+- `Session.destroy()` :删除`session`，当检测到客户端关闭时调用。
+- `Session.reload()` :当`session`有修改时，刷新`session`。
+- `Session.regenerate()` ：将已有`session`初始化。
+- `Session.save()` ：保存`session`。
+
+使用
+
+```js
+req.session.username
+```
+
+
+
+
+
+示例 demo1
+
+```js
+    var express = require("express");
+    var app = express();
+    var session = require("express-session");
+    //配置中间件
+    app.use(session({
+        secret: 'keyboard cat',
+        resave: false,
+        saveUninitialized: true
+        //cookie: { secure: true }   /*secure https这样的情况才可以访问cookie*/
+    }))
+    app.get("/",function(req,res){
+        //获取sesssion
+        if(req.session.userinfo){  /*获取*/
+            res.send('你好'+req.session.userinfo+'欢迎回来');
+        }else{
+            res.send('未登录');
+        }
+    });
+
+    app.get("/login",function(req,res){
+        req.session.userinfo="zhangsan111"; /*设置session*/
+        res.send('登录成功');
+    });
+
+    app.get("/news",function(req,res){
+        //获取sesssion
+        if(req.session.userinfo){  /*获取*/
+            res.send('你好'+req.session.userinfo+'欢迎回来 news');
+        }else{
+            res.send('未登录 news');
+        }
+    });
+
+    app.listen(3000);
+```
+
+示例demo 2
+
+```js
+//app.js中添加如下代码(已有的不用添加)
+var express = require('express');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+ 
+app.use(cookieParser('sessiontest'));
+app.use(session({
+ secret: 'sessiontest',//与cookieParser中的一致
+ resave: true,
+ saveUninitialized:true
+}));
+```
+
+```js
+//修改router/index.js,第一次请求时我们保存一条用户信息。
+router.get('/', function(req, res, next) {
+ var user={
+  name:"Chen-xy",
+  age:"22",
+  address:"bj"
+ }
+ req.session.user=user;
+ res.render('index', {
+  title: 'the test for nodejs session' ,
+  name:'sessiontest'
+ });
+});
+```
+
+```js
+//修改router/users.js，判断用户是否登陆。
+router.get('/', function(req, res, next) {
+ if(req.session.user){
+  var user=req.session.user;
+  var name=user.name;
+  res.send('你好'+name+'，欢迎来到我的家园。');
+ }else{
+  res.send('你还没有登录，先登录下再试试！');
+ }
+});
+```
+
+
+
+### 登录拦截
+
+```js
+app.use('/admin', (req, res, next) => {
+  if (req.url != '/login' && !req.session.user) {
+    res.redirect('/admin/login');
+  } else {
+    next();
+  }
+})
+```
+
+## joi 格式验证
+
+```js
+const Joi = require('joi');
+
+const schema = Joi.object({
+    username: Joi.string() // 必须是字符串
+        .alphanum()
+        .min(3)  // 最小长度
+        .max(30) // 最大长度
+        .required(), // 必填
+
+    password: Joi.string()
+        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')), // 正则表达式
+
+    repeat_password: Joi.ref('password'),
+
+    // [] 里面的都是可选项
+    access_token: [
+        Joi.string(),
+        Joi.number()
+    ],
+
+    birth_year: Joi.number()
+        .integer()
+        .min(1900)
+        .max(2013),
+
+    email: Joi.string()
+        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }) // 邮箱验证
+})
+    .with('username', 'birth_year')
+    .xor('password', 'access_token')
+    .with('password', 'repeat_password');
 
 
 
 
 
 
+// 方式一: 
+schema.validate({ username: 'abc', birth_year: 1994 });
+// -> { value: { username: 'abc', birth_year: 1994 } }
+
+schema.validate({});
+// -> { value: {}, error: '"username" is required' }
 
 
+// 方式二:
+try {
+    const value = await schema.validateAsync({ username: 'abc', birth_year: 1994 });
+}
+catch (err) { 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
+```
 
 
 
