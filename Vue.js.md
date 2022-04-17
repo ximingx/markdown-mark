@@ -2210,3 +2210,34 @@ import 'normalize.css/normalize.css'
 
 包裹动态组件时，会缓存不活动的组件实例，主要用于**保留组件状态**或**避免重新渲染**。
 
+# Element
+
+官网对vue3+vuecli4的「自动导入」说的不是很清楚，导致自己踩坑配置了很久，特此写下文章记录
+
+1. 安装unplugin-vue-components
+
+```bash
+> npm i unplugin-vue-components -D
+```
+
+2. 配置config(vuecli配置的是vue.config.js)
+
+```js
+// vue.config.js
+const Components = require('unplugin-vue-components/webpack')
+const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
+module.exports = {
+    configureWebpack: {
+      plugins: [
+        require('unplugin-vue-components/webpack')({ /* options */
+        }),
+        Components({
+            resolvers:[ElementPlusResolver()],
+        })
+    ],
+
+    },
+  }
+
+```
+

@@ -5175,6 +5175,168 @@ CSS Animation就是为了解决这些问题而提出的,完美的解决了这些
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/4f0b464cb78945d6a29463ad5b2d89d3.gif#pic_center)
 
+
+
+## 循环遍历
+
+### 1. for
+
+普通for循环 是最早出现的遍历语句，能满足开发人员的绝大多数需求。
+
+```js
+// 遍历数组
+let arr = [1,2,3,4,5];
+for(let i = 0; i < arr.length; i++){
+    console.log(i);   // 索引，数组下标 0 1 2 3 4
+    console.log(arr[i]);   // 数组下标所对应的元素 1 2 3 4 5
+}
+ 
+// 遍历对象
+let obj = {name:"leo", age:20, country:"China"};
+for(let i = 0, keys = Object.keys(obj); i < keys.length; i++){
+    console.log(keys[i]);   // 对象的键值 name age country
+    console.log(obj[keys[i]]);   // 对象的键对应的值 leo 20 China
+}
+ 
+// 遍历字符串
+let str = "abcdef";
+for(let i = 0; i < str.length; i++){
+    console.log(i);   // 索引，字符串的下标 0 1 2 3 4 5
+    console.log(str[i]);   // 字符串下标所对应的元素 a b c d e f
+}
+```
+
+### 2. forEach
+
+forEach 是ES5版本发布的，按升序为数组中含有效值的每一项执行一次回调函数，那些已删除或者未初始化的项将被跳过（例如在稀疏数组上），一般认为是 普通for循环 的加强版。
+
+```js
+// 遍历数组
+let arr = [1,2,3,4,5];
+arr.forEach(item => {
+    console.log(item);   // 直接输出了数组的元素 1 2 3 4 5
+});
+ 
+// 遍历对象
+let obj = {name:"leo", age:20, country:"China"};
+let keys = Object.keys(obj);
+keys.forEach(i => {
+    console.log(i);   // 对象的键值 name age country
+    console.log(obj[i]);   // 对象的键对应的值 leo 20 China
+});
+```
+
+### 3. map
+
+map 是ES5版本发布的，遍历时可以返回一个新数组，新数组的结果是原数组中的每个元素都调用一次提供的函数后的返回值。
+
+```js
+let arr = [1,2,3,4,5];
+let newArr = arr.map(i => i * i);
+ 
+console.log(newArr);   // [1, 4, 9, 16, 25]
+```
+
+### 4. for in
+
+for in 是ES5版本发布的，以随机顺序遍历一个对象中除 Symbol 以外的可枚举属性（包括原型对象上的可枚举属性）。
+
+```js
+// 遍历数组
+let arr = [1,2,3,4,5];
+for(let i in arr){
+    console.log(i);   // 索引，数组下标 0 1 2 3 4
+    console.log(arr[i]);   // 数组下标所对应的元素 1 2 3 4 5
+}
+ 
+// 遍历对象
+let obj = {name:"leo", age:20, country:"China"};
+for(let key in obj){
+    console.log(key);   // 对象的键 name age country
+    console.log(obj[key]);   // 对象的键对应的值 leo 20 China
+}
+ 
+// 遍历字符串
+let str = "abcdef";
+for(let i in str){
+    console.log(i);   // 索引，字符串下标 0 1 2 3 4 5
+    console.log(str[i]);   // 字符串下标所对应的元素 a b c d e f
+}
+```
+
+### 5. for of
+
+for of 是ES6版本发布的，在可迭代对象（包括 Array，Map，Set，String，TypedArray，arguments 对象等）上创建一个迭代循环，调用自定义迭代钩子，并为每个不同属性的值执行语句。
+
+```javascript
+// 迭代数组
+let arr = [1,2,3,4,5];
+for(let item of arr){
+    console.log(item);   // 遍历数组元素 1 2 3 4 5
+}
+ 
+// 迭代字符串
+let str = "abcdef";
+for(let item of str) {
+    console.log(item);   // 遍历字符串元素 a b c d e f
+}
+ 
+// 迭代Map
+let iterable = new Map([["a", 1], ["b", 2], ["c", 3]]);
+for (let entry of iterable) {
+    console.log(entry);  // 遍历Map中可迭代元素 ["a", 1] ["b", 2] ["c", 3]
+}
+ 
+// 迭代Set
+let iterable = new Set([1, 1, 2, 2, 3, 3,4]);
+for (let value of iterable) {
+    console.log(value);   // 遍历Set中可迭代元素 1 2 3 4
+}
+ 
+// 迭代arguments类数组对象
+function fn(){
+  for (let argument of arguments) {
+    console.log(argument);
+  }
+}
+fn(1, 2, 3);   // 1 2 3
+```
+
+### 场景差异
+
+普通for循环 是最原始的循环语句。定义一个变量 i（数字类型，表示数组的下标），按照一定的条件，对 i 进行循环累加。条件通常为循环数组的长度，当超过长度就停止循环。因为对象无法判断长度，所以通常搭配 Object.keys() 使用。
+
+forEach 一般认为是 普通for循环 的加强版，可以发现它比 普通for循环 在写法上简单了不少，但是本质上也是数组的循环。每个数组元素执行一次回调函数，不改变原数组，返回值是 undefined。
+
+map 给原数组中的每个元素都按顺序调用一次回调函数，返回一个新数组，不改变调用它的原数组本身。
+
+for in 遍历对象上的可枚举属性，包括原型对象上的属性，且按任意顺序进行遍历，即顺序不固定。遍历数组时把数组的下标当作键值，此时的 i 是个字符串型的。它是为遍历对象属性而构建的，不建议与数组一起使用。
+
+for of 用于遍历可迭代对象的数据。
+
+### 跳出循环体
+
+在循环中满足一定条件就跳出循环体，或者跳过不符合条件的数据继续循环其它数据，是经常会遇到的需求。常用的语句是 break、return。
+
+**注意：forEach 和 map 不支持跳出循环体，其它三种方法均支持。**
+
+### 性能比较
+在测试环境、测试数据等条件一致的情况下，性能排序基本为：
+
+```js
+for > for of > forEach > map > for in
+```
+
+1、普通for循环 当然是最快的，因为它没有任何额外的函数调用栈和上下文。
+
+2、for of 是具有 Iterator 接口的数据结构，都可以使用它来迭代成员。它直接读取的是键值。
+
+3、forEach 其实比我们想象得要复杂一些，它实际上是 array.forEach(function(currentValue, index, arr), thisValue)，它不是普通的 for循环 语法糖，还有诸多参数和上下文需要在执行的时候考虑进来，因此会拖慢性能。
+
+4、map 随其后，因为它的返回值是一个等长的全新数组，数组创建和赋值产生的性能开销较大。
+
+5、for in 性能最差，因为它需要穷举对象的所有属性，包括自身存在的、自定义添加的、以及原型对象上的，都会遍历到，且 key 是 String 类型，有转换过程，开销比较大。
+
 ## 2D 转换 (transfrom)
 
 **转换**是 CSS3 中具有颠覆性的一个特征，可以实现元素的**位移、旋转、变形、缩放**，甚至支持矩阵方式。
@@ -6843,6 +7005,87 @@ var a = function a(item) {
 };
 console.log(a(4));
 ```
+
+### ES6 模块化
+
+ES6 模块化规范是浏览器端与服务器端通用的模块化开发规范。它的出现极大的降低了前端开发者的模块化学习成本，开发者不需再额外学习 AMD、CMD 或 CommonJS 等模块化规范。
+
+ES6 模块化规范中定义：
+
+- 每个 js 文件都是一个独立的模块
+- 导入其它模块成员使用 import 关键字
+- 向外共享模块成员使用 export 关键字
+
+node.js 中默认仅支持 CommonJS 模块化规范，若想基于 node.js 体验与学习 ES6 的模块化语法，可以按照如下两个步骤进行配置：
+
+- 确保安装了 v14.15.1 或更高版本的 node.js；
+- 在 package.json 的根节点中添加 "type": "module" 节点；
+
+ES6 的模块化主要包含如下 3 种用法：
+
+1. 默认导出与默认导入
+2. 按需导出与按需导入
+3. 直接导入并执行模块中的代码
+
+#### 默认导入默认导出
+
+默认导出的语法：**export default 默认导出的成员**
+
+```js
+let n1 = 1;
+function foo() {
+  
+}
+export default {
+  n1,
+  foo
+}
+```
+
+默认导出的注意事项：每个模块中，只允许使用唯一的一次 export default，否则会报错！
+
+默认导入的语法：**import 接收名称 from ‘模块标识符’**
+
+```js
+import m1 from "./1.js"
+
+m1.n1
+
+m1.foo()
+```
+
+默认导入时的接收名称可以任意名称，只要是合法的成员名称即可；
+
+#### 按需导出与按需导入
+
+按需导出的语法：**export 按需导出的成员**
+
+```js
+export let s1 = 1;
+export function add() {
+  
+}
+
+
+// 导入
+import { s1,add } from "./1.js"
+```
+
+1. 每个模块中可以使用多次按需导出；
+2. **按需导入的成员名称必须和按需导出的名称保持一致；**
+3. **按需导入时，可以使用 as 关键字进行重命名；**
+4. 按需导入可以和默认导入一起使用；
+
+#### 直接导入并执行模块中的代码
+
+如果只想单纯地执行某个模块中的代码，并不需要得到模块中向外共享的成员。
+
+```js
+import "./1.js"
+```
+
+
+
 
 
 ## 作用域（Scope）的概念和分类

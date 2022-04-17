@@ -53,6 +53,66 @@ git config --global user.email "email@example.com"
 git config --list --global
 ```
 
+## Git 基本操作
+
+获取 Git 仓库的两种方式
+
+- 将尚未进行版本控制的本地目录转换为 Git 仓库；
+
+- 从其它服务器克隆一个已存在的 Git 仓库；
+
+在现有目录中初始化仓库
+如果自己有一个尚未进行版本控制的项目目录，想要用 Git 来控制它，需要执行如下两个步骤：
+
+- 在项目目录中，通过鼠标右键打开“Git Bash”；
+- 执行 git init 命令将当前的目录转化为 Git 仓库；
+- **git init 命令会创建一个名为 .git 的隐藏目录，这个 .git 目录就是当前项目的 Git 仓库，里面包含了初始的必要文件，这些文件是 Git 仓库的必要组成部分。**
+
+检查文件的状态
+
+```bash
+# 查看指定文件状态
+git status [file-name]
+
+# 查看所有文件状态
+git status
+
+# 以精简的方式显示文件的状态
+git status -s
+git status --short
+```
+
+- 如果在状态报告中可以看到有文件出现在Untracked files（未跟踪的文件）下面，则说明该文件为未跟踪的文件；
+
+- 未跟踪的文件(**未跟踪文件前面有红色的 ?? 标记；**)意味着 Git 在之前的快照（提交）中没有这些文件；Git 不会自动将之纳入跟踪范围，除非明确地告诉它“我需要使用 Git 跟踪管理该文件”；
+
+- 一般使用使用命令 `git add` 开始跟踪一个文件。
+
+移除文件
+
+```bash
+# 从 Git 仓库和工作区中同时移除对应的文件
+git rm -f [file-name]
+
+# 只从 Git 仓库中移除指定的文件，但保留工作区中对应的文件
+git rm --cached [file-name]
+```
+
+如果希望回顾项目的提交历史，可以使用 `git log` 这个简单且有效的命令；
+
+```bash
+# 显示最近两次的提交历史
+git log -2 
+```
+
+回退
+
+```bash
+git log --pretty=oneline
+
+git reset --hard 指定的id号
+```
+
 ## 基本 Git 命令
 
 为使用 Git，开发人员使用特定命令来复制、创建、更改和合并代码。 这些命令可以直接从命令行执行，也可以使用 GitHub Desktop 等应用程序执行。 以下是使用 Git 的一些常用命令：
@@ -213,3 +273,41 @@ git merge [branchname]
 # 删除分支
 git branch -d [branchname]
 ```
+
+## 远程分支操作
+
+查看远程仓库中，所有的分支列表的信息：
+
+```bash
+git remote show 远程仓库名称
+```
+
+如果是第一次将本地分支推送到远程仓库，需要运行如下的命令：
+
+```bash
+# 把本地分支与远程分支关联
+git push -u 远程仓库的别名 本地分支的名称：远程分支名称
+
+eg： git push -u origin master:master
+
+# 简化
+eg： git push -u origin master
+
+# 第一次推送分支需要带 -u 参数，此后可以直接使用 git push 推送代码到远程分支；
+```
+
+可以使用如下的命令，把远程分支最新的代码下载到本地对应的分支中：
+
+```bash
+# 从远程仓库，拉取当前分支最新的代码，保持当前分支的代码和远程分支代码一致
+git pull
+```
+
+可以使用如下的命令，删除远程仓库中指定的分支：
+
+```bash
+# 删除远程分支，指定名称的远程分支
+# 远程仓库默认为：origin
+git push 远程仓库名称 --delete [branchname]
+```
+
