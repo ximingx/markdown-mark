@@ -42,10 +42,42 @@ and 今天的睡前小故事是盗版的她的哦， 哎， 泥， 鸭
 
 ![image-20220414235113840](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204142351881.png)
 
-### 2022.05.15
+### 2022.04.15 官宣
 
 我不是胆小鬼，但我是爱你的可爱鬼
 
 今日份官宣
 
 ![image-20220415215118330](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204152151476.png)
+
+而且换了头像， 用的是物久保的画哦
+
+![image-20220417230500590](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204172305654.png)
+
+### 2022.04.17
+
+我不知道今天见你是好事情还是坏事情。
+
+今天牵你的手在下面公园走了很久，我感觉很温暖， 我和你在坐在椅子上晒太阳，你的头放到我的肩上，待了好久，我真的好喜欢你，女孩子的手真的是软软的，最后的回家之前你给了我一个抱抱。
+
+![image-20220417230304257](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204172303290.png)
+
+![image-20220417230313570](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204172303614.png)
+
+这时候你还一切都很正常。
+
+但是晚上，感觉你身体不舒服，我真的很担心，给你哼了一会歌，你咳嗽了好久，早早的睡了，晚上睡前你和我说， 玫瑰到了花期，这是今天的情话。我有点害怕，我第一时间想到的是凋谢，我不知道为什么会有这个想法，但我真的很害怕。
+
+![image-20220417230242902](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204172302065.png)
+
+我真的觉得你今天晚上说的话很不对劲，但是我没办法，我想见你，我想念你，虽然才刚刚分开几小时。
+
+你说外面下雨， 哎， 我也不知道为什么， 好乱。
+
+又没什么办法。
+
+玫瑰到了花期， 我很想你
+
+玫瑰到了花期， 凋零已成定局
+
+明天， 我希望去见你， 我真的很害怕
