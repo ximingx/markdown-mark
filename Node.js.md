@@ -2025,6 +2025,8 @@ router.use(function(require, response, next) {
 
 错误级别中间件的作用：专门用来捕获整个项目中发生的异常错误，从而防止项目异常崩溃的问题。
 
+**next() 只接收一个参数, 且只能为字符串**
+
 格式：错误级别中间件的 `function` 处理函数中，**必须有 4 个形参**，形参顺序从前到后，分别是 (**err**, req, res, next)。
 
 ```js
@@ -2770,6 +2772,24 @@ server.on('request', () => {
 server.listen(3000)
 ```
 
+## 
+
+```js
+ // 引入formidable模块
+ const formida ble = require('formidable');
+ // 创建表单解析对象
+ const form = new formidable.IncomingForm();
+ // 设置文件上传路径
+ form.uploadDir = "/my/dir";
+ // 是否保留表单上传文件的扩展名
+ form.keepExtensions = false;
+ // 对表单进行解析
+ form.parse(req, (err, fields, files) => {
+     // fields 存储普通请求参数
+         // files 存储上传的文件信息
+ });
+```
+
 
 
 
@@ -3178,6 +3198,12 @@ app.post("/login", async (req, res) => {
 });
 ```
 
+4. 数据fye
+
+```js
+
+```
+
 
 
 # npm -g
@@ -3509,6 +3535,9 @@ Course.find({hobbies: {$in: ['敲代码']}})
   .skip(2).limit(2)
   .then(doc => console.log(doc))
   .catch(err => console.log(err))
+
+// 查询文档的总数
+Course.countDocument({})
 ```
 
 ## **删除文档**
@@ -4014,6 +4043,7 @@ const schema = Joi.object({
         .min(3)  // 最小长度
         .max(30) // 最大长度
         .required(), // 必填
+    	.valid('0', '1') // 只能选择 0 或者 1
 
     password: Joi.string()
         .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')), // 正则表达式
