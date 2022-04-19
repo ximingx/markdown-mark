@@ -130,7 +130,7 @@ npm install mongoose
 
 **简单无约束的使用**
 
-添加数据库账号
+### 添加数据库账号
 
 ```bash
 # 连接MongoDB数据库
@@ -170,8 +170,6 @@ MongoDB Server (MongoDB) 服务已成功停止。
 > net start mongod
 ```
 
-
-
 ```js
 const mongoose = require('mongoose');
 // 连接集数据库
@@ -204,7 +202,7 @@ cats
 { "_id" : ObjectId("618a55b5c65e76624f7eb9ec"), "name" : "Zildjian", "__v" : 0 }
 ```
 
-**设计约束**
+### 设计约束
 
 ```js
 const mongoose = require('mongoose')
@@ -232,156 +230,22 @@ const userSchema = new Schema({
 // 简单地说 , 用这个约束模型 创建一个 users 集合
 const User = mongoose.model('User',userSchema)
 // 操作数据
+
+
+
+
+// 设定集合规则
+ const courseSchema = new mongoose.Schema({
+     name: String,
+     author: String,
+     isPublished: Boolean
+ });
+
+  // 创建集合并应用规则 (创建时集合名称要大写)
+ const Course = mongoose.model('Course', courseSchema); // courses
 ```
 
-**增**
-
-```js
-User.insertMany([
-	{
-          username: 'adawdin',
-  		  password: '123456',
-  		  email: ''
-    },
-    {
-          username: 'adawdin',
-  		  password: '123456',
-  		  email: ''
-    }
-]).then((res)=>{
-    console.log('添加成功')
-}).catch((err)=>{
-    console.log('失败了')
-})
-
-```
-
-```js
-// 需要先 new 一个实例
-const admin = new User({
-  username: 'admin',
-  password: '123456',
-  email: ''
-})
-// 然后才可以增加
-admin.save(function (err,result) {
-  if (err) {
-    console.log("保存失败")
-  } else {
-    console.log('保存成功')
-  }
-})
-```
-
-**查**
-
-```js
-User.find(function (err,result) {
-  if (err) {
-    console.log("查询失败")
-  } else {
-    console.log(result)
-  }
-})
-// [
-//   {
-//     _id: new ObjectId("618a5f40969aa535f8a22f23"),
-//     username: 'admin',
-//     password: '123456',
-//     email: '',
-//     __v: 0
-//   }
-// ]
-
-// 带条件查询
-User.find({
-  username: 'admin'
-},function (err,result) {
-  if (err) {
-    console.log("查询失败")
-  } else {
-    console.log(result)
-  }
-})
-// 外层是数组
-// [
-//   {
-//     _id: new ObjectId("618a5f40969aa535f8a22f23"),
-//     username: 'admin',
-//     password: '123456',
-//     email: '',
-//     __v: 0
-//   }
-// ]
-
-// 查询找到的第一条数据
-User.findOne(function (err,result) {
-  if (err) {
-    console.log("查询失败")
-  } else {
-    console.log(result)
-  }
-})
-// 直接是一个对象
-// {
-//   _id: new ObjectId("618a5f40969aa535f8a22f23"),
-//   username: 'admin',
-//   password: '123456',
-//   email: '',
-//   __v: 0
-// }
-```
-
-**删**
-
-```js
-// 删除数据
-User.remove({
-  username: 'adawdn'
-},function (err,result) {
-  if (err) {
-    console.log("删除失败")
-  } else {
-    console.log("删除成功")
-  }
-})
-// 清空当前集合所有数据 remove
-User.remove().then((res)=>{
-	console.log('删除成功')
-})
-// 删除满足条件的一条数据 deleteOne
-User.deleteOne({name:'lili'}).then((res)=>{
-	console.log('删除成功')
-})
-// 删除满足条件的多条数据 deleteMany
-User.deleteMany({sex:'boy'}).then((res)=>{
-	console.log('删除成功')
-})
-```
-
-**改**
-
-```js
-User.findByIdAndUpdate('618a5f40969aa535f8a22f23',{
-  password: '12345678'
-},function (err,result) {
-  if (err) {
-    console.log("修改失败")
-  } else {
-    console.log("修改成功")
-  }
-})
-// 更新一条数据 update
-User.update({name:'Max'},{age:23}).then((res)=>{
-	console.log('update')
-})
-// 更新满足条件的多条数据 updateMany
-User.updateMany({name:'Max'},{age:23}).then((res)=>{
-    console.log('update')
-})
-```
-
-## 连接数据库
+### 连接数据库
 
 ```js
 // 默认没有密码
@@ -399,21 +263,7 @@ mongoose.connect('mongodb://root:root@localhost:27017/test')
   .catch((err) => console.error(err, "连接失败"));
 ```
 
-## 创建集合
-
-```js
-// 设定集合规则
- const courseSchema = new mongoose.Schema({
-     name: String,
-     author: String,
-     isPublished: Boolean
- });
-
-  // 创建集合并应用规则 (创建时集合名称要大写)
- const Course = mongoose.model('Course', courseSchema); // courses
-```
-
-## 插入数据
+### 插入数据
 
 两种方法
 
@@ -455,7 +305,7 @@ Course.create({
 })
 ```
 
-## 导入数据
+### 导入数据
 
 **首先要将 mongodb 的 bin 目录添加到 系统环境的 path 下**
 
@@ -464,7 +314,7 @@ Course.create({
 > mongoimport -d test -c course --file ./user.json
 ```
 
-## 查询文档
+### 查询文档
 
 ```js
 // 集合对象.find() 当为空的时候, 查询全部
@@ -522,7 +372,7 @@ Course.find({hobbies: {$in: ['敲代码']}})
 Course.countDocument({})
 ```
 
-## 删除文档
+### 删除文档
 
 ```js
 // 删除一个满足条件的文档
@@ -537,7 +387,7 @@ Course.deleteMany({})
 // { 成功 删除 5 个文档 }
 ```
 
-## 更新文档
+### 更新文档
 
 ```js
 // 方法
@@ -556,7 +406,7 @@ Course.updateMany({name: 'lisi'}, {name: "aw"}).then(res => {
 })
 ```
 
-## 验证
+### 验证
 
 ```js
 // require 必传字段
@@ -611,7 +461,7 @@ const courseSchema = new mongoose.Schema({
 })
 ```
 
-## 关联集合
+### 关联集合
 
 通常不同集合的数据之间是有关系的，例如文章信息和用户信息存储在不同集合中，但文章是某个用户发表的，要查询文章的所有信息包括发表用户，就需要用到集合关联
 
@@ -665,7 +515,7 @@ Post.findOne().populate('author').then(post => {
 })
 ```
 
-## 模块化
+### 模块化
 
 ```js
 const mongoose = require("mongoose");
@@ -686,11 +536,10 @@ module.exports = {
 
 ```sql
 //连接数据库
-mysql -uroot -p
+mysql -u root -p
 
 //修改用户密码
-update mysql.user set authentication_string=password('n') 
-where user='root' and Host = 'localhost';
+update mysql.user set authentication_string=password('n') where user='root' and Host = 'localhost';
 
 //刷新权限
 flush privileges
@@ -977,28 +826,33 @@ select version()
 
 ## Node.js 操作MySQL
 
+首先需要安装 
+
+```bash
+$ npm install mysql
+```
+
+### 基础的使用
+
 ```js
-// npm i mysql
-const mysql = require('mysql');
-const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '123456',
-  database: 'node'
+var mysql = require('mysql');
+var connection = mysql.createConnection({
+    host: 'localhost',
+    user: 'me',
+    password: 'secret',
+    database: 'my_db'
 });
 
-connection.connect(function (err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
-  console.log('connected');
+connection.connect();
+
+connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+    if (error) throw error;
+    console.log('The solution is: ', results[0].solution);
 });
-// 执行 MySQL 语句
-connection.query('SELECT * FROM `sc`', function (error, results, fields) {
-  if (error) throw error;
-  console.log(results)
-});
+
+connection.end();
+// 您在连接上调用的每个方法都会排队并按顺序执行。
+// 关闭连接使用end(), 确保在向 mysql 服务器发送退出数据包之前执行所有剩余查询。
 ```
 
 
@@ -1008,8 +862,12 @@ connection.query('SELECT * FROM `sc`', function (error, results, fields) {
 connection.end(function(err) {
   // The connection is terminated now
 });
+
+connection.destroy();
+// 这将导致底层套接字立即终止。另外destroy()保证不会为连接触发更多事件或回调。
 ```
-一个实例
+### 直接连接数据库进行操作
+
 ```js
 const express = require('express')
 const app = express();
@@ -1115,5 +973,25 @@ app.listen(3000,function () {
 });
 ```
 
+### 池化链接
 
+该模块不是一个接一个地创建和管理连接，而是使用`mysql.createPool(config)`
+
+创建一个池并直接使用它：
+
+```js
+var mysql = require('mysql');
+var pool = mysql.createPool({
+    connectionLimit: 10,
+    host: 'localhost',
+    user: 'bob',
+    password: 'secret',
+    database: 'my_db'
+});
+
+pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+    if (error) throw error;
+    console.log('The solution is: ', results[0].solution);
+});
+```
 
