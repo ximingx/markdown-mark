@@ -1408,14 +1408,24 @@ Node.js 中的全局对象是 global，所有全局变量（除了 global 本身
 **它用来描述当前Node.js进程状态的对象**，提供了一个与操作系统的简单接口，通常写`本地命令行`的程序的时候都会用到它。
 
 - process.argv：返回一个数组，成员是当前进程的所有命令行参数。
-- process.env：返回一个对象，成员为当前Shell的环境变量，比如process.env.HOME。
+- **process.env：返回一个对象，成员为当前Shell的环境变量，比如process.env.HOME。**
 - process.installPrefix：返回一个字符串，表示 Node 安装路径的前缀，比如/usr/local。相应地，Node 的执行文件目录为/usr/local/bin/node。
 - process.pid：返回一个数字，表示当前进程的进程号。
 - process.platform：返回一个字符串，表示当前的操作系统，比如Linux。
 - process.title：返回一个字符串，默认值为node，可以自定义该值。
 - process.version：返回一个字符串，表示当前使用的 Node 版本，比如v7.10.0。
 - process.cwd():表示当前文件的绝对路径
-- process.on(‘exit’,function(){})表示当程序退出的时候会触发	
+- process.on(‘exit’,function(){})表示当程序退出的时候会触发	\
+
+![image-20220418151256489](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204181512557.png)
+
+```JS
+console.log(process.env.Lover)
+// 电脑中环境变量中的 Lover 的值
+// 可以用去区分开发环境与生产环境
+```
+
+![image-20220418151403391](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204181514442.png)
 
 ## 13. 静态资源
 
@@ -2504,296 +2514,6 @@ app.listen(3000, () => {
 
 ![image-20220414100732152](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204141007241.png)
 
-# 中间件
-
-## body-parser
-
-**在处理程序之前在中间件中解析传入的请求主体，在`req.bod`**
-
-**``body-parser`是非常常用的一个`express`中间件，作用是对post请求的请求体进行解析。使用非常简单，以下两行代码已经覆盖了大部分的使用场景。y`属性下可用。**
-
-`body-parser`实现的要点如下：
-
-1. 处理不同类型的请求体：比如`text`、`json`、`urlencoded`等，对应的报文主体的格式不同。
-2. 处理不同的编码：比如`utf8`、`gbk`等。
-3. 处理不同的压缩类型：比如`gzip`、`deflare`等。
-4. 其他边界、异常的处理。
-
-```js
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-```
-
-安装
-
-```bash
-npm install body-parser
-```
-
-使用
-
-```js
-var bodyParser = require('body-parser')
-```
-
-```js
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-// false 使用 querystring 模块 处理请求参数
-// true 使用 第三方模块 qs 处理请求参数
-app.use(bodyParser.urlencoded({ extended: false }));
-app.post('/add', (req, res) => {
-    console.log(req.body);
-    res.send(req.body);
-});
-app.listen(3000, () => {
-  console.log('Server running on port http://localhost:3000')
-});
-```
-
-
-
-## Debug
-
-Express 在内部使用[调试](https://www.npmjs.com/package/debug)模块来**记录关于路由匹配、使用的中间件函数、应用程序模式以及请求/响应循环流程的信息。**
-
-要查看 Express 中使用的所有内部日志，在启动应用程序时，请将 `DEBUG` 环境变量设置为 `express:*`。
-
-```bash
-$ DEBUG=express:* node index.js
-```
-
-在 Windows 上，使用对应的命令。
-
-```bash
-> set DEBUG=express:* & node index.js
-```
-
-## cookie-parser
-
-express直接提供了api,只需要在需要使用的地方调用如下api即可
-
-```js
-// 一: 没有使用签名
-var express = require('express');
-var router = express.Router();
- 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-  console.log(req.cookies)
-  console.log(req.cookies.username)
-});
-router.get('/a', function(req, res, next) {
-  
-  res.cookie('username','张三',{maxAge:1000*10})
-  res.cookie('password','123',{maxAge:1000*10})
- 
-  res.redirect('/users')
-});
-module.exports = router;
-
-
-// 二: 使用签名
-var express = require('express');
-var router = express.Router();
- 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
- 
-  console.log(req.signedCookies)
-  console.log(req.signedCookies.username)
-});
-router.get('/a', function(req, res, next) {
- 
-  res.cookie('username','张三',{maxAge:1000*10,signed:true})
-  res.cookie('password','123',{maxAge:1000*10,signed:true})
- 
-  res.redirect('/users')
-});
-module.exports = router;
-
-// s
- res.clearCookie('age')
-```
-
-**express就会将其填入 Response Header 中的Set-Cookie，达到在浏览器中设置cookie的作用。**
-
-- name: 类型为String
-- value: 类型为String和Object，**如果是Object会在cookie.serialize()之前自动调用JSON.stringify对其进行处理**
-- Option: 类型为对象，可使用的属性如下
-
-```js
--   domain：cookie在什么域名下有效，类型为String,。默认为网站域名
--   expires: cookie过期时间，类型为Date。如果没有设置或者设置为0，那么该cookie只在这个这个session有效，即关闭浏览器后，这个cookie会被浏览器删除。
--   httpOnly: 只能被web server访问，类型Boolean。
--   maxAge: 实现expires的功能，设置cookie过期的时间，类型为String，指明从现在开始，多少毫秒以后，cookie到期。
--   path: cookie在什么路径下有效，默认为'/'，类型为String
--   secure：只能被HTTPS使用，类型Boolean，默认为false
--   signed:使用签名，类型Boolean，默认为false。`express会使用req.secret来完成签名，需要cookie-parser配合使用`
-```
-
-```js
-res.cookie('name', 'koby', { domain: '.example.com', path: '/admin', secure: true });
-//cookie的有效期为900000ms
-res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
-//cookie的有效期为900000ms
-res.cookie('rememberme', '1', { maxAge: 900000, httpOnly: true });
- 
-//cookie的value为对象
-res.cookie('cart', { items: [1,2,3] });
-res.cookie('cart', { items: [1,2,3] }, { maxAge: 900000 });
- 
-res.cookie('name', 'tobi', { signed: true });
-```
-
-**cookie的删除**
-express直接提供了api删除浏览器中的cookie,只需要在需要使用的地方调用如下api即可
-
-```javascript
-    function(req, res, next){
-        res.clearCookie(name [, options]);
-    }
-```
-
-npm 安装 `cookie-parser` 命令
-
-```ruby
-$ npm install cookie-parser --save
-```
-
-使用方式
-
-```js
-var express = require('express');
-var cookieParser = require('cookie-parser');
- 
-var app = express();
-//不使用签名
-app.use(cookiePareser());
- 
-//若需要使用签名，需要指定一个secret,字符串,否者会报错
-app.use(cookiePareser('Simon'));
-```
-
-## dateformat
-
-```js
-import dateFormat, { masks } from "dateformat";
-const now = new Date();
-
-// Basic usage
-dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
-// Saturday, June 9th, 2007, 5:46:21 PM
-
-// You can use one of several named masks
-dateFormat(now, "isoDateTime");
-// 2007-06-09T17:46:21
-
-// ...Or add your own
-masks.hammerTime = 'HH:MM! "Can\'t touch this!"';
-dateFormat(now, "hammerTime");
-// 17:46! Can't touch this!
-
-// You can also provide the date as a string
-dateFormat("Jun 9 2007", "fullDate");
-// Saturday, June 9, 2007
-
-// Note that if you don't include the mask argument,
-// dateFormat.masks.default is used
-dateFormat(now);
-// Sat Jun 09 2007 17:46:21
-
-// And if you don't include the date argument,
-// the current date and time is used
-dateFormat();
-// Sat Jun 09 2007 17:46:22
-
-// You can also skip the date argument (as long as your mask doesn't
-// contain any numbers), in which case the current date/time is used
-dateFormat("longTime");
-// 5:46:22 PM EST
-
-// And finally, you can convert local time to UTC time. Simply pass in
-// true as an additional argument (no argument skipping allowed in this case):
-dateFormat(now, "longTime", true);
-// 10:46:21 PM UTC
-
-// ...Or add the prefix "UTC:" or "GMT:" to your mask.
-dateFormat(now, "UTC:h:MM:ss TT Z");
-// 10:46:21 PM UTC
-
-// You can also get the ISO 8601 week of the year:
-dateFormat(now, "W");
-// 42
-
-// and also get the ISO 8601 numeric representation of the day of the week:
-dateFormat(now, "N");
-// 6
-```
-
-## router
-
-使用步骤：
-
-- 获取路由对象
-- 调用路由对象提供的方法创建路由
-- 启用路由，使路由生效
-
-```js
-const getRouter = require('router')
-const router = getRouter();
-router.get('/add', (req, res) => {
-    res.end('Hello World!')
-}) 
-server.on('request', (req, res) => {
-    router(req, res)
-})
-```
-
-## serve-static
-
-功能：实现静态资源访问服务
-步骤：
-
-- 引入serve-static模块获取创建静态资源服务功能的方法
-- 调用方法创建静态资源服务并指定静态资源服务目录
-- 启用静态资源服务功能
-
-```js
-const serveStatic = require('serve-static')
-const serve = serveStatic('public')
-server.on('request', () => { 
-    serve(req, res)
-})
-server.listen(3000)
-```
-
-## 
-
-```js
- // 引入formidable模块
- const formida ble = require('formidable');
- // 创建表单解析对象
- const form = new formidable.IncomingForm();
- // 设置文件上传路径
- form.uploadDir = "/my/dir";
- // 是否保留表单上传文件的扩展名
- form.keepExtensions = false;
- // 对表单进行解析
- form.parse(req, (err, fields, files) => {
-     // fields 存储普通请求参数
-         // files 存储上传的文件信息
- });
-```
-
-
-
-
-
 # 案例
 
 ## 1. 内网穿透
@@ -3390,314 +3110,6 @@ script 是调用的简写
 
 加快下载速度，因为该文件中已经记录了项目所依赖第三方包的树状结构和包的下载地址，重新安装时只需下载即可，不需要做额外的工作
 
-
-
-# mongoose
-
-## **下载**
-
-```bash
-> npm install mongoose
-```
-
-## **开启关闭数据库**
-
-```bash
-> net stop mongodb
-> net start mongodb
-```
-
-## **连接数据库**
-
-```js
-// 连接数据库
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test')
-  .then(() => console.log("连接成功"))
-  .catch((err) => console.error(err, "连接失败"));
-```
-
-## **创建集合**
-
-```js
-// 设定集合规则
- const courseSchema = new mongoose.Schema({
-     name: String,
-     author: String,
-     isPublished: Boolean
- });
-
-  // 创建集合并应用规则 (创建时集合名称要大写)
- const Course = mongoose.model('Course', courseSchema); // courses
-```
-
-## **插入数据**
-
-两种方法
-
-```js
-// 现在仅仅是创建
-const course = new Course({
-    name: "mongose",
-    author: "aw",
-    isPublished: true
-})
-
-// 将文档插入到数据库
-course.save()
-```
-
-
-
-```js
-// 参数: {插入的集合}, 回调函数
-Course.create({
-  name: 'React Course',
-},(err,doc) => {
-    // 错误对象
-  if(err) console.log(err);
-    // 当前插入的文档
-  console.log(doc);
-})
-
-
-// 或者
-Course.create({
-  name: 'React Course',
-})
-.then(data => {
-    
-})
-.catch(err => {
-    
-})
-```
-
-## **导入数据**
-
-**首先要将 mongodb 的 bin 目录添加到 系统环境的 path 下**
-
-```bash
-#mongoimport -d 数据库名称 -c 集合名称 --file 数据文件目录
-> mongoimport -d test -c course --file ./user.json
-```
-
-## **查询文档**
-
-```js
-// 集合对象.find() 当为空的时候, 查询全部
-// 返回的结果必然是数组
-Course.find({isPublished: true})
-  .then(result => console.log(result))
-  .catch(err => console.log(err))
-
-
-// 返回文档中的第一条, 只有一条 ~ !
-Course.findOne({name: 'React Course'})
-  .then(course => console.log(course))
-  .catch(err => console.log(err))
-
-
-// age 大于20 小于 28 的
-Course.find({age: {$gt: 20, $lt: 28}})
-  .then(course => console.log(course))
-  .catch(err => console.log(err))
-
-
-// hobbies 中匹配包含 敲代码 的文档
-Course.find({hobbies: {$in: ['敲代码']}})
-  .then(doc => console.log(doc))
-  .catch(err => console.log(err))
-
-
-// 查询某几个字段 (_id是默认查找项)
-Course.find({hobbies: {$in: ['敲代码']}})
-  .select("name age history")
-  .then(doc => console.log(doc))
-  .catch(err => console.log(err))
-
-
-// 查询结果排序
-// 从小打大
-Course.find({hobbies: {$in: ['敲代码']}})
-  .sort('age')
-  .then(doc => console.log(doc))
-  .catch(err => console.log(err))
-// 从大到小
-Course.find({hobbies: {$in: ['敲代码']}})
-  .sort('-age')
-  .then(doc => console.log(doc))
-  .catch(err => console.log(err))
-
-
-// 跳过前两条, 限制查询两条
-Course.find({hobbies: {$in: ['敲代码']}})
-  .skip(2).limit(2)
-  .then(doc => console.log(doc))
-  .catch(err => console.log(err))
-
-// 查询文档的总数
-Course.countDocument({})
-```
-
-## **删除文档**
-
-```js
-// 删除一个满足条件的文档
-Course.findOneAndDelete({ _id: '5c9d8f9c9c9d8f9c9c9d8f9c' })
-  .then(result => console.log(result))
-  .catch(err => console.log(err));
-
-// 表演一个删库跑路
-Course.deleteMany({})
-  .then(result => console.log(result));
-// { acknowledged: true, deletedCount: 5 }
-// { 成功 删除 5 个文档 }
-```
-
-## **更新文档**
-
-```js
-// 方法
-Course.updateOne({查询条件}, {要修改的值}).then(res => {
-  console.log(res)
-})
-
-// 更新一条
-Course.updateOne({name: 'lisi'}, {name: "aw"}).then(res => {
-  console.log(res)
-})
-
-// 更新多条
-Course.updateMany({name: 'lisi'}, {name: "aw"}).then(res => {
-  console.log(res)
-})
-```
-
-## **验证**
-
-```js
-// require 必传字段
-// unique 唯一不重复
-// type 类型
-// default 默认值
-// maxlength 最大长度
-// minlength 最小长度
-// trim 是否有两边空格
-// min 最小值
-// max 最大值
-// enum: ["html", "nodejs"] 只可以选择 html 或者 nodejs 这两个值
-// validate 自定义验证规则 !!!!!!!!!!!
-const courseSchema = new mongoose.Schema({
-  name: String,
-  author: String,
-  isPublished: Boolean,
-  history: {
-    createdAt: {type: Number, default: 12, require: true},
-    updatedAt: {type: Number, default: 14}
-  },
-  date: {
-      // 默认现在
-      type: Date,
-      default: Date.now    
-  }
-})
-
-// 补充写法
-const courseSchema = new mongoose.Schema({
-  aw: {
-    require: [true, '{PATH} is required'],
-  }
-})
-
-const Course = mongoose.model('Course', courseSchema);
-
-// 自定义验证规则 !!!!!!!!!
-const courseSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    validate: {
-      validator: v => {
-        // 当返回结果为 true, 满足条件
-        return v > 0;
-      },
-      message() {
-        return 'Id必须大于0';
-      }
-    }
-  }
-})
-```
-
-## **关联集合**
-
-通常不同集合的数据之间是有关系的，例如文章信息和用户信息存储在不同集合中，但文章是某个用户发表的，要查询文章的所有信息包括发表用户，就需要用到集合关联
-
-- 使用id对集合进行关联
-- 使用populate方法进行关联集合查询
-
-| **文章集合** | **用户集合** |
-| ------------ | ------------ |
-| _id          | _id          |
-| title        | name         |
-| author       | age          |
-| content      | hobbies      |
-
-```js
-const mongoose = require('mongoose');
-
-mongoose.connect('mongodb://localhost/test')
-  .then(() => console.log('Connected to MongoDB...'))
-  .catch(err => console.error('Could not connect to MongoDB...', err));
-
-const User = mongoose.model('User', new mongoose.Schema({
-  name: String,
-  age: Number
-}));
-const Post = mongoose.model('Post', new mongoose.Schema({
-  title: String,
-  content: String,
-  author: {
-    // id 的字段类型
-    type: mongoose.Schema.Types.ObjectId,
-    // 关联的模型
-    ref: 'User'
-  }
-}));
-
-// 将集合关联
-User.create({
-  name: 'John Doe',
-  age: 32
-}).then((result) => {
-  return Post.create({
-    title: 'My first post',
-    content: 'Hello world!',
-    author: result._id
-  })
-})
-
-// 查询
-Post.findOne().populate('author').then(post => {
-  console.log(post);
-})
-```
-
-## 模块化
-
-```js
-const mongoose = require("mongoose");
-const userSchema = new mongoose.Schema({
-    // 拉吧拉吧
-});
-const User = mongoose.model('User','userSchema');
-module.exports = {
-    User
-}
-```
-
-
-
 # 模板引擎
 
 ## art-template
@@ -3930,10 +3342,6 @@ app.use(session({
 req.session.username
 ```
 
-
-
-
-
 示例 demo1
 
 ```js
@@ -4018,7 +3426,115 @@ router.get('/', function(req, res, next) {
 });
 ```
 
+## cookie-parser
 
+express直接提供了api,只需要在需要使用的地方调用如下api即可
+
+```js
+// 一: 没有使用签名
+var express = require('express');
+var router = express.Router();
+ 
+/* GET users listing. */
+router.get('/', function(req, res, next) {
+  res.send('respond with a resource');
+  console.log(req.cookies)
+  console.log(req.cookies.username)
+});
+router.get('/a', function(req, res, next) {
+  
+  res.cookie('username','张三',{maxAge:1000*10})
+  res.cookie('password','123',{maxAge:1000*10})
+ 
+  res.redirect('/users')
+});
+module.exports = router;
+
+
+// 二: 使用签名
+var express = require('express');
+var router = express.Router();
+ 
+/* GET users listing. */
+router.get('/', function(req, res, next) {
+  res.send('respond with a resource');
+ 
+  console.log(req.signedCookies)
+  console.log(req.signedCookies.username)
+});
+router.get('/a', function(req, res, next) {
+ 
+  res.cookie('username','张三',{maxAge:1000*10,signed:true})
+  res.cookie('password','123',{maxAge:1000*10,signed:true})
+ 
+  res.redirect('/users')
+});
+module.exports = router;
+
+// s
+ res.clearCookie('age')
+```
+
+**express就会将其填入 Response Header 中的Set-Cookie，达到在浏览器中设置cookie的作用。**
+
+- name: 类型为String
+- value: 类型为String和Object，**如果是Object会在cookie.serialize()之前自动调用JSON.stringify对其进行处理**
+- Option: 类型为对象，可使用的属性如下
+
+```js
+-   domain：cookie在什么域名下有效，类型为String,。默认为网站域名
+-   expires: cookie过期时间，类型为Date。如果没有设置或者设置为0，那么该cookie只在这个这个session有效，即关闭浏览器后，这个cookie会被浏览器删除。
+-   httpOnly: 只能被web server访问，类型Boolean。
+-   maxAge: 实现expires的功能，设置cookie过期的时间，类型为String，指明从现在开始，多少毫秒以后，cookie到期。
+-   path: cookie在什么路径下有效，默认为'/'，类型为String
+-   secure：只能被HTTPS使用，类型Boolean，默认为false
+-   signed:使用签名，类型Boolean，默认为false。`express会使用req.secret来完成签名，需要cookie-parser配合使用`
+```
+
+```js
+res.cookie('name', 'koby', { domain: '.example.com', path: '/admin', secure: true });
+//cookie的有效期为900000ms
+res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
+//cookie的有效期为900000ms
+res.cookie('rememberme', '1', { maxAge: 900000, httpOnly: true });
+ 
+//cookie的value为对象
+res.cookie('cart', { items: [1,2,3] });
+res.cookie('cart', { items: [1,2,3] }, { maxAge: 900000 });
+ 
+res.cookie('name', 'tobi', { signed: true });
+```
+
+**cookie的删除**
+express直接提供了api删除浏览器中的cookie,只需要在需要使用的地方调用如下api即可
+
+```javascript
+    function(req, res, next){
+        res.clearCookie(name [, options]);
+    }
+```
+
+npm 安装 `cookie-parser` 命令
+
+```ruby
+$ npm install cookie-parser --save
+```
+
+使用方式
+
+```js
+var express = require('express');
+var cookieParser = require('cookie-parser');
+ 
+var app = express();
+//不使用签名
+app.use(cookiePareser());
+ 
+//若需要使用签名，需要指定一个secret,字符串,否者会报错
+app.use(cookiePareser('Simon'));
+```
+
+#
 
 ### 登录拦截
 
@@ -4090,6 +3606,118 @@ catch (err) {
 }
 ```
 
+# 解析请求
+
+## body-parser
+
+**在处理程序之前在中间件中解析传入的请求主体，在`req.bod`**
+
+**``body-parser`是非常常用的一个`express`中间件，作用是对post请求的请求体进行解析。使用非常简单，以下两行代码已经覆盖了大部分的使用场景。y`属性下可用。**
+
+`body-parser`实现的要点如下：
+
+1. 处理不同类型的请求体：比如`text`、`json`、`urlencoded`等，对应的报文主体的格式不同。
+2. 处理不同的编码：比如`utf8`、`gbk`等。
+3. 处理不同的压缩类型：比如`gzip`、`deflare`等。
+4. 其他边界、异常的处理。
+
+```js
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+```
+
+安装
+
+```bash
+npm install body-parser
+```
+
+使用
+
+```js
+var bodyParser = require('body-parser')
+```
+
+```js
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+// false 使用 querystring 模块 处理请求参数
+// true 使用 第三方模块 qs 处理请求参数
+app.use(bodyParser.urlencoded({ extended: false }));
+app.post('/add', (req, res) => {
+    console.log(req.body);
+    res.send(req.body);
+});
+app.listen(3000, () => {
+  console.log('Server running on port http://localhost:3000')
+});
+```
+
+## formidable
+
+```bash
+> yarn add formidable
+```
+
+作用：解析表单，支持get请求参数，post请求参数、文件上传,  文件上传
+
+```js
+// 引入formidable模块
+ const formidable = require('formidable');
+ // 创建表单解析对象
+ const form = new formidable.IncomingForm();
+ // 设置文件上传路径
+ form.uploadDir = "";
+ // 是否保留表单上传文件的扩展名
+ form.keepExtensions = true;
+ // 对表单进行解析
+ form.parse(req, async (err, fields, files) => {
+     // fields 存储普通请求参数
+     // files 存储上传的文件信息
+     // 保存的路径
+     await Article.create({
+         title: fields.title,
+         author: fields.author,
+         img: siles.cover.path.split('public')[1],
+         conteng: fields.conteng,
+     })
+     res.redirect("/index")
+ });
+```
+
+## file-reader
+
+文件读取
+
+在 js 中 文件上传的按钮添加事件
+
+```bash
+>  yarn add file-reader
+```
+
+异步方法
+
+```js
+var reader = new FileReader();
+ reader.readAsDataURL('文件');
+ reader.onload = function () {
+     console.log(reader.result); 
+ }
+```
+
+```js
+let file = document.querySelector("#file")
+let img = document.querySelector("#img")
+file.onchange = function() {
+    let reader = new FileReader();
+    reader.readsDataURL(this.files[0]);
+	   reader.onload = function () {
+       	img.src = reader.result
+    }
+}
+```
 
 
 
@@ -4097,16 +3725,199 @@ catch (err) {
 
 
 
+# 通用第三方模块
+
+## dateformat
+
+```js
+import dateFormat, { masks } from "dateformat";
+const now = new Date();
+
+// Basic usage
+dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
+// Saturday, June 9th, 2007, 5:46:21 PM
+
+// You can use one of several named masks
+dateFormat(now, "isoDateTime");
+// 2007-06-09T17:46:21
+
+// ...Or add your own
+masks.hammerTime = 'HH:MM! "Can\'t touch this!"';
+dateFormat(now, "hammerTime");
+// 17:46! Can't touch this!
+
+// You can also provide the date as a string
+dateFormat("Jun 9 2007", "fullDate");
+// Saturday, June 9, 2007
+
+// Note that if you don't include the mask argument,
+// dateFormat.masks.default is used
+dateFormat(now);
+// Sat Jun 09 2007 17:46:21
+
+// And if you don't include the date argument,
+// the current date and time is used
+dateFormat();
+// Sat Jun 09 2007 17:46:22
+
+// You can also skip the date argument (as long as your mask doesn't
+// contain any numbers), in which case the current date/time is used
+dateFormat("longTime");
+// 5:46:22 PM EST
+
+// And finally, you can convert local time to UTC time. Simply pass in
+// true as an additional argument (no argument skipping allowed in this case):
+dateFormat(now, "longTime", true);
+// 10:46:21 PM UTC
+
+// ...Or add the prefix "UTC:" or "GMT:" to your mask.
+dateFormat(now, "UTC:h:MM:ss TT Z");
+// 10:46:21 PM UTC
+
+// You can also get the ISO 8601 week of the year:
+dateFormat(now, "W");
+// 42
+
+// and also get the ISO 8601 numeric representation of the day of the week:
+dateFormat(now, "N");
+// 6
+```
+
+## router
+
+使用步骤：
+
+- 获取路由对象
+- 调用路由对象提供的方法创建路由
+- 启用路由，使路由生效
+
+```js
+const getRouter = require('router')
+const router = getRouter();
+router.get('/add', (req, res) => {
+    res.end('Hello World!')
+}) 
+server.on('request', (req, res) => {
+    router(req, res)
+})
+```
+
+## serve-static
+
+功能：实现静态资源访问服务
+步骤：
+
+- 引入serve-static模块获取创建静态资源服务功能的方法
+- 调用方法创建静态资源服务并指定静态资源服务目录
+- 启用静态资源服务功能
+
+```js
+const serveStatic = require('serve-static')
+const serve = serveStatic('public')
+server.on('request', () => { 
+    serve(req, res)
+})
+server.listen(3000)
+```
+
+```js
+ // 引入formidable模块
+ const formida ble = require('formidable');
+ // 创建表单解析对象
+ const form = new formidable.IncomingForm();
+ // 设置文件上传路径
+ form.uploadDir = "/my/dir";
+ // 是否保留表单上传文件的扩展名
+ form.keepExtensions = false;
+ // 对表单进行解析
+ form.parse(req, (err, fields, files) => {
+     // fields 存储普通请求参数
+         // files 存储上传的文件信息
+ });
+```
+
+## mongoose-sex-page
+
+分页功能
+
+```js
+const pagination = require('mongoose-sex-page');
+pagination(集合构造函数).page(1) .size(20) .display(8) .exec();
+```
+
+## config
+
+可以自动判断当前的运行环境, 获取配置信息
+
+```bash
+# 安装
+yarn add config
+# 在项目的根目录创建 config 文件夹
+# config 里面新建 default.json development.json production.json
+
+# require
+const config = require('config');
+# 获取信息
+config.get()将为未定义的键抛出异常，以帮助捕获拼写错误和缺失值。
+config.has()测试是否定义了配置值。
+```
+
+### production.json
+
+```json
+{
+  "dbConfig": {
+    "host": "localhost",
+    "port": 27017,
+    "dbName": "customers"
+  }
+}
+```
+
+#### 
+
+敏感信息
 
 
 
+# 测试
+
+## Debug
+
+Express 在内部使用[调试](https://www.npmjs.com/package/debug)模块来**记录关于路由匹配、使用的中间件函数、应用程序模式以及请求/响应循环流程的信息。**
+
+要查看 Express 中使用的所有内部日志，在启动应用程序时，请将 `DEBUG` 环境变量设置为 `express:*`。
+
+```bash
+$ DEBUG=express:* node index.js
+```
+
+在 Windows 上，使用对应的命令。
+
+```bash
+> set DEBUG=express:* & node index.js
+```
 
 
 
+# 开发环境生产环境
 
+## morgan
 
-
-
+  ```js
+  // 将访问请求打印到控制台
+  const morgan = require("margan")
+  app.use(morgan('dev'))
+  // 使用场景
+  // 不同的开发环境做不同的事情
+  const morgan = require('morgan');
+  if (process.env.NODE_ENV === 'production') {
+      // app.use(morgan('dev'));
+    	module.exports = require('./prod');
+  } else {
+    	module.exports = require('./dev');
+  }
+  ```
 
 
 

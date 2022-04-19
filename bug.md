@@ -105,3 +105,28 @@ npm ERR!     F:\environment\node\node_cache\_logs\2022-04-08T12_51_37_004Z-debug
 
 ```
 
+# Mongodb
+
+## MongoDB 服务无法启动。
+
+```bash
+> C:\WINDOWS\system32>net start mongodb
+MongoDB 服务正在启动 .
+MongoDB 服务无法启动。
+
+发生服务特定错误: 100.
+```
+
+![image-20220418145143740](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204181451767.png)
+
+```bash
+# 确保包含有 data 文件
+# 解决方案：进入db文件夹，删除mongod.lock文件，然后重新启动服务即可
+> C:\WINDOWS\system32>mongod --logpath="F:\environment\mongodb\mongod.log" --dbpath="F:\environment\mongodb\data" --install --auth
+{"t":{"$date":"2022-04-18T06:50:16.538Z"},"s":"I",  "c":"CONTROL",  "id":20697,   "ctx":"-","msg":"Renamed existing log file","attr":{"oldLogPath":"F:\\environment\\mongodb\\mongod.log","newLogPath":"F:\\environment\\mongodb\\mongod.log.2022-04-18T06-50-16"}}
+
+> C:\WINDOWS\system32>net start mongodb
+MongoDB 服务正在启动 .
+MongoDB 服务已经启动成功。
+```
+

@@ -81,3 +81,8 @@ and 今天的睡前小故事是盗版的她的哦， 哎， 泥， 鸭
 玫瑰到了花期， 凋零已成定局
 
 明天， 我希望去见你， 我真的很害怕
+
+### 2022.04.18
+
+![image-20220418140531955](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204181405083.png)
+

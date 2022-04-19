@@ -130,6 +130,48 @@ npm install mongoose
 
 **简单无约束的使用**
 
+添加数据库账号
+
+```bash
+# 连接MongoDB数据库
+> mongo
+# 显示数据库
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+test    0.000GB
+# 切换使用的数据库
+> use admin
+switched to db admin
+# 创建超级管理员
+> db.createUser({user: 'root', pwd: 'root', roles: ['root']})
+Successfully added user: { "user" : "root", "roles" : [ "root" ] }
+# 退出
+> exit
+# 关闭数据库服务
+> net stop mongodb
+MongoDB Server (MongoDB) 服务正在停止.
+MongoDB Server (MongoDB) 服务已成功停止。
+# 卸载服务
+> mongod --remove
+{"t":{"$date":"2022-04-18T14:45:08.562+08:00"},"s":"I",  "c":"CONTROL",  "id":23285,   "ctx":"-","msg":"Automatically disabling TLS 1.0, to force-enable TLS 1.0 specify --sslDisabledProtocols 'none'"}
+{"t":{"$date":"2022-04-18T14:45:08.562+08:00"},"s":"I",  "c":"NETWORK",  "id":4915701, "ctx":"-","msg":"Initialized wire specification","attr":{"spec":{"incomingExternalClient":{"minWireVersion":0,"maxWireVersion":13},"incomingInternalClient":{"minWireVersion":0,"maxWireVersion":13},"outgoing":{"minWireVersion":0,"maxWireVersion":13},"isInternalClient":true}}}
+{"t":{"$date":"2022-04-18T14:45:09.015+08:00"},"s":"W",  "c":"ASIO",     "id":22601,   "ctx":"main","msg":"No TransportLayer configured during NetworkInterface startup"}
+{"t":{"$date":"2022-04-18T14:45:09.015+08:00"},"s":"I",  "c":"NETWORK",  "id":4648602, "ctx":"main","msg":"Implicit TCP FastOpen in use."}
+{"t":{"$date":"2022-04-18T14:45:09.018+08:00"},"s":"W",  "c":"ASIO",     "id":22601,   "ctx":"main","msg":"No TransportLayer configured during NetworkInterface startup"}
+{"t":{"$date":"2022-04-18T14:45:09.018+08:00"},"s":"I",  "c":"REPL",     "id":5123008, "ctx":"main","msg":"Successfully registered PrimaryOnlyService","attr":{"service":"TenantMigrationDonorService","ns":"config.tenantMigrationDonors"}}
+{"t":{"$date":"2022-04-18T14:45:09.018+08:00"},"s":"I",  "c":"REPL",     "id":5123008, "ctx":"main","msg":"Successfully registered PrimaryOnlyService","attr":{"service":"TenantMigrationRecipientService","ns":"config.tenantMigrationRecipients"}}
+{"t":{"$date":"2022-04-18T14:45:09.018+08:00"},"s":"I",  "c":"CONTROL",  "id":23307,   "ctx":"main","msg":"Trying to remove Windows service","attr":{"name":"MongoDB"}}
+{"t":{"$date":"2022-04-18T14:45:09.020+08:00"},"s":"I",  "c":"CONTROL",  "id":23312,   "ctx":"main","msg":"Service removed","attr":{"serviceName":"MongoDB"}}
+# 安装服务
+> mongod --logpath="F:\environment\mongodb\mongod.log" --dbpath="F:\environment\mongodb\data" --install –-auth
+# c
+> net start mongod
+```
+
+
+
 ```js
 const mongoose = require('mongoose');
 // 连接集数据库
@@ -337,6 +379,303 @@ User.update({name:'Max'},{age:23}).then((res)=>{
 User.updateMany({name:'Max'},{age:23}).then((res)=>{
     console.log('update')
 })
+```
+
+## 连接数据库
+
+```js
+// 默认没有密码
+// 连接数据库
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test')
+  .then(() => console.log("连接成功"))
+  .catch((err) => console.error(err, "连接失败"));
+
+// 设置了密码之后
+// 连接数据库
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://root:root@localhost:27017/test')
+  .then(() => console.log("连接成功"))
+  .catch((err) => console.error(err, "连接失败"));
+```
+
+## 创建集合
+
+```js
+// 设定集合规则
+ const courseSchema = new mongoose.Schema({
+     name: String,
+     author: String,
+     isPublished: Boolean
+ });
+
+  // 创建集合并应用规则 (创建时集合名称要大写)
+ const Course = mongoose.model('Course', courseSchema); // courses
+```
+
+## 插入数据
+
+两种方法
+
+```js
+// 现在仅仅是创建
+const course = new Course({
+    name: "mongose",
+    author: "aw",
+    isPublished: true
+})
+
+// 将文档插入到数据库
+course.save()
+```
+
+
+
+```js
+// 参数: {插入的集合}, 回调函数
+Course.create({
+  name: 'React Course',
+},(err,doc) => {
+    // 错误对象
+  if(err) console.log(err);
+    // 当前插入的文档
+  console.log(doc);
+})
+
+
+// 或者
+Course.create({
+  name: 'React Course',
+})
+.then(data => {
+    
+})
+.catch(err => {
+    
+})
+```
+
+## 导入数据
+
+**首先要将 mongodb 的 bin 目录添加到 系统环境的 path 下**
+
+```bash
+#mongoimport -d 数据库名称 -c 集合名称 --file 数据文件目录
+> mongoimport -d test -c course --file ./user.json
+```
+
+## 查询文档
+
+```js
+// 集合对象.find() 当为空的时候, 查询全部
+// 返回的结果必然是数组
+Course.find({isPublished: true})
+  .then(result => console.log(result))
+  .catch(err => console.log(err))
+
+
+// 返回文档中的第一条, 只有一条 ~ !
+Course.findOne({name: 'React Course'})
+  .then(course => console.log(course))
+  .catch(err => console.log(err))
+
+
+// age 大于20 小于 28 的
+Course.find({age: {$gt: 20, $lt: 28}})
+  .then(course => console.log(course))
+  .catch(err => console.log(err))
+
+
+// hobbies 中匹配包含 敲代码 的文档
+Course.find({hobbies: {$in: ['敲代码']}})
+  .then(doc => console.log(doc))
+  .catch(err => console.log(err))
+
+
+// 查询某几个字段 (_id是默认查找项)
+Course.find({hobbies: {$in: ['敲代码']}})
+  .select("name age history")
+  .then(doc => console.log(doc))
+  .catch(err => console.log(err))
+
+
+// 查询结果排序
+// 从小打大
+Course.find({hobbies: {$in: ['敲代码']}})
+  .sort('age')
+  .then(doc => console.log(doc))
+  .catch(err => console.log(err))
+// 从大到小
+Course.find({hobbies: {$in: ['敲代码']}})
+  .sort('-age')
+  .then(doc => console.log(doc))
+  .catch(err => console.log(err))
+
+
+// 跳过前两条, 限制查询两条
+Course.find({hobbies: {$in: ['敲代码']}})
+  .skip(2).limit(2)
+  .then(doc => console.log(doc))
+  .catch(err => console.log(err))
+
+// 查询文档的总数
+Course.countDocument({})
+```
+
+## 删除文档
+
+```js
+// 删除一个满足条件的文档
+Course.findOneAndDelete({ _id: '5c9d8f9c9c9d8f9c9c9d8f9c' })
+  .then(result => console.log(result))
+  .catch(err => console.log(err));
+
+// 表演一个删库跑路
+Course.deleteMany({})
+  .then(result => console.log(result));
+// { acknowledged: true, deletedCount: 5 }
+// { 成功 删除 5 个文档 }
+```
+
+## 更新文档
+
+```js
+// 方法
+Course.updateOne({查询条件}, {要修改的值}).then(res => {
+  console.log(res)
+})
+
+// 更新一条
+Course.updateOne({name: 'lisi'}, {name: "aw"}).then(res => {
+  console.log(res)
+})
+
+// 更新多条
+Course.updateMany({name: 'lisi'}, {name: "aw"}).then(res => {
+  console.log(res)
+})
+```
+
+## 验证
+
+```js
+// require 必传字段
+// unique 唯一不重复
+// type 类型
+// default 默认值
+// maxlength 最大长度
+// minlength 最小长度
+// trim 是否有两边空格
+// min 最小值
+// max 最大值
+// enum: ["html", "nodejs"] 只可以选择 html 或者 nodejs 这两个值
+// validate 自定义验证规则 !!!!!!!!!!!
+const courseSchema = new mongoose.Schema({
+  name: String,
+  author: String,
+  isPublished: Boolean,
+  history: {
+    createdAt: {type: Number, default: 12, require: true},
+    updatedAt: {type: Number, default: 14}
+  },
+  date: {
+      // 默认现在
+      type: Date,
+      default: Date.now    
+  }
+})
+
+// 补充写法
+const courseSchema = new mongoose.Schema({
+  aw: {
+    require: [true, '{PATH} is required'],
+  }
+})
+
+const Course = mongoose.model('Course', courseSchema);
+
+// 自定义验证规则 !!!!!!!!!
+const courseSchema = new mongoose.Schema({
+  id: {
+    type: Number,
+    validate: {
+      validator: v => {
+        // 当返回结果为 true, 满足条件
+        return v > 0;
+      },
+      message() {
+        return 'Id必须大于0';
+      }
+    }
+  }
+})
+```
+
+## 关联集合
+
+通常不同集合的数据之间是有关系的，例如文章信息和用户信息存储在不同集合中，但文章是某个用户发表的，要查询文章的所有信息包括发表用户，就需要用到集合关联
+
+- 使用id对集合进行关联
+- 使用populate方法进行关联集合查询
+
+| **文章集合** | **用户集合** |
+| ------------ | ------------ |
+| _id          | _id          |
+| title        | name         |
+| author       | age          |
+| content      | hobbies      |
+
+```js
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/test')
+  .then(() => console.log('Connected to MongoDB...'))
+  .catch(err => console.error('Could not connect to MongoDB...', err));
+
+const User = mongoose.model('User', new mongoose.Schema({
+  name: String,
+  age: Number
+}));
+const Post = mongoose.model('Post', new mongoose.Schema({
+  title: String,
+  content: String,
+  author: {
+    // id 的字段类型
+    type: mongoose.Schema.Types.ObjectId,
+    // 关联的模型
+    ref: 'User'
+  }
+}));
+
+// 将集合关联
+User.create({
+  name: 'John Doe',
+  age: 32
+}).then((result) => {
+  return Post.create({
+    title: 'My first post',
+    content: 'Hello world!',
+    author: result._id
+  })
+})
+
+// 查询
+Post.findOne().populate('author').then(post => {
+  console.log(post);
+})
+```
+
+## 模块化
+
+```js
+const mongoose = require("mongoose");
+const userSchema = new mongoose.Schema({
+    // 拉吧拉吧
+});
+const User = mongoose.model('User','userSchema');
+module.exports = {
+    User
+}
 ```
 
 
@@ -775,3 +1114,6 @@ app.listen(3000,function () {
   console.log("port 3000 is listening")
 });
 ```
+
+
+
