@@ -753,10 +753,10 @@ console.log(a); // 打印报错：Uncaught ReferenceError: a is not defined
 function fn1() {
     let a = 10;
 
-    function fn2() {
+    return function fn2() {
         console.log(a);
     }
-    fn2();
+   
 }
 
 fn1();
@@ -1114,6 +1114,21 @@ var f = fn.bind(o, 1, 2); //此处的f是bind返回的新函数
 f(); //调用新函数  this指向的是对象o 参数使用逗号隔开
 // {name: 'andy'}
 // 3
+```
+
+```html
+<!-- 使用场景 -->
+<button></button>
+
+<script>
+    let btn = document.querySelector("button");
+    btn.onlick = function() {
+        this.disabled = "false";
+        setTimeout(function() {
+            this.disabled = "true"
+        }.bind(this), 3000)
+    }
+</script>
 ```
 
 ### call、apply、bind三者的异同
