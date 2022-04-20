@@ -17,7 +17,7 @@
 | 优点 | 性能比面向对象高，适合跟硬件联系很紧密的东西，例如单片机就采用的面向过程编程。 | 易维护、易复用、易扩展，由于面向对象有封装、继承、多态性的特性，可以设计出低耦合的系统，使系统 更加灵活、更加易于维护 |
 | 缺点 | 不易维护、不易复用、不易扩展                                 | 性能比面向过程低                                             |
 
-## 构造函数 (ES5)
+## 2. 构造函数 (ES5)
 
 ### 对象的三种创建方式
 
@@ -113,7 +113,7 @@ Star.prototype.sing = function() {
 
 constructor 主要用于记录该对象引用于哪个构造函数，它可以让原型对象重新指向原来的构造函数。
 
-一般情况下，对象的方法都在构造函数的原型对象中设置。如果有多个对象的方法，我们可以给原型对象采取对象形式赋值，但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 constructor  就不再指向当前构造函数了。此时，我们可以在修改后的原型对象中，添加一个 constructor 指向原来的构造函数。
+一般情况下，对象的方法都在构造函数的原型对象中设置。**如果有多个对象的方法，我们可以给原型对象采取对象形式赋值，但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 constructor  就不再指向当前构造函数了。此时，我们可以在修改后的原型对象中，添加一个 constructor 指向原来的构造函数。**
 
 ```js
  function Star(uname, age) {
@@ -122,7 +122,7 @@ constructor 主要用于记录该对象引用于哪个构造函数，它可以�
  }
  // 很多情况下,我们需要手动的利用constructor 这个属性指回 原来的构造函数
  Star.prototype = {
- // 如果我们修改了原来的原型对象,给原型对象赋值的是一个对象,则必须手动的利用constructor指回原来的构造函数
+   // 如果我们修改了原来的原型对象,给原型对象赋值的是一个对象,则必须手动的利用constructor指回原来的构造函数
    constructor: Star, // 手动设置指回原来的构造函数
    sing: function() {
      console.log('我会唱歌');
@@ -141,6 +141,14 @@ console.log(zxy)
 
 ![](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204201418663.png)
 
+### js 成员查找机制
+
+- 当访问一个对象的属性（包括方法）时，首先查找这个对象自身有没有该属性。
+- 如果没有就查找它的原型（也就是 __proto__指向的 prototype 原型对象）。
+- 如果还没有就查找原型对象的原型（Object的原型对象）。
+- 依此类推一直找到 Object 为止（null）。
+- __proto__对象原型的意义就在于为对象成员查找机制提供一个方向，或者说一条路线。
+
 ### 三角关系
 
 - 构造函数的prototype属性指向了构造函数原型对象
@@ -149,9 +157,120 @@ console.log(zxy)
 
 ![](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204201418072.png)
 
+### this 指向
 
+**构造函数中的this和原型对象的this,都指向我们 new 出来的实例对象**
 
+ ```js
+ function Star(uname, age) {
+     this.uname = uname;
+     this.age = age;
+ }
  
+ var that;
+ Star.prototype.sing = function() {
+     console.log('我会唱歌');
+     that = this;
+ }
+ 
+ var ldh = new Star('刘德华', 18);
+ // 1. 在构造函数中,里面this指向的是对象实例 ldh
+ console.log(that === ldh);//true
+ // 2.原型对象函数里面的this 指向的是 实例对象 ldh
+ ```
+
+### 通过原型为数组扩展内置方法
+
+```js
+ Array.prototype.sum = function() {
+   var sum = 0;
+   for (var i = 0; i < this.length; i++) {
+   sum += this[i];
+   }
+   return sum;
+ };
+
+ //此时数组对象中已经存在sum()方法了  可以始终 数组.sum()进行数据的求
+```
+
+### function.call()
+
+- call()可以调用函数
+- **call()可以修改this的指向,使用call()的时候 参数一是修改后的this指向**,参数2,参数3..使用逗号隔开连接
+
+```js
+ function fn(x, y) {
+     console.log(this);
+     console.log(x + y);
+}
+  var o = {
+  	name: 'andy'
+  };
+
+  fn(1,2) // 调用了函数此时的this指向了 window
+  fn.call(o, 1, 2); // 调用了函数此时的this指向了对象o,
+```
+
+### 组合继承
+
+#### 继承属性
+
+1. 先定义一个父构造函数
+2. 再定义一个子构造函数
+3. 子构造函数继承父构造函数的属性(使用call方法)
+
+```js
+ // 1. 父构造函数
+ function Father(uname, age) {
+   // this 指向父构造函数的对象实例
+   this.uname = uname;
+   this.age = age;
+ }
+
+  // 2 .子构造函数 
+function Son(uname, age, score) {
+  // this 指向子构造函数的对象实例
+  3.使用call方式实现子继承父的属性
+  Father.call(this, uname, age);
+  this.score = score;
+}
+
+var son = new Son('刘德华', 18, 100);
+```
+
+#### 继承方法
+
+```js
+ // 1. 父构造函数
+ function Father(uname, age) {
+   // this 指向父构造函数的对象实例
+   this.uname = uname;
+   this.age = age;
+ }
+
+Father.prototype.money = function() {
+  console.log(100000);
+ };
+
+  // 2 .子构造函数 
+function Son(uname, age, score) {
+  // this 指向子构造函数的对象实例
+  3.使用call方式实现子继承父的属性
+  Father.call(this, uname, age);
+  this.score = score;
+}
+
+// Son.prototype = Father.prototype;  这样直接赋值会有问题,如果修改了子原型对象,父原型对象也会跟着一起变化
+Son.prototype = new Father();
+// 如果利用对象的形式修改了原型对象,别忘了利用constructor 指回原来的构造函数
+Son.prototype.constructor = Son;
+// 这个是子构造函数专门的方法
+Son.prototype.exam = function() {
+	console.log('孩子要考试');
+}
+
+var son = new Son('刘德华', 18, 100);
+```
 
 
 
@@ -165,7 +284,7 @@ console.log(zxy)
 
 
 
-## 对象与类 (ES6)
+## 3. 对象与类 (ES6)
 
 对象是由属性和方法组成的：是一个无序键值对的集合,指的是一个具体的事物
 
