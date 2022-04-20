@@ -2184,6 +2184,71 @@ export default {
 }
 ```
 
+## 12. vue.config.js
+
+`vue.config.js` 是一个可选的配置文件，如果项目的 (和 `package.json` 同级的) 根目录中存在这个文件，那么它会被 `@vue/cli-service` 自动加载。
+
+这个文件应该导出一个包含了选项的对象：
+
+```js
+const { defineConfig } = require('@vue/cli-service')
+// alias 中使用
+const path = require('path');
+function resolve (dir) {
+  return path.join(__dirname, dir)
+}
+module.exports = defineConfig({
+  // 部署应用包时的基本 URL。
+  publicPath: "/",
+  // 当运行 vue-cli-service build 时生成的生产环境构建文件的目录。注意目标目录的内容在构建之前会被清除
+  outputDir: "dist",
+  // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录。
+  assetsDir: "",
+  // 指定生成的 index.html 的输出路径 (相对于 outputDir)。
+  indexPath: 'index.html',
+  // 设置为 true 或 'warning' 时，eslint-loader 会将 lint 错误输出为编译警告。默认情况下，警告仅仅会被输出到命令行，且不会使得编译失败。
+  lintOnSave: 'default',
+  // 如果你不需要生产环境的 source map，可以将其设置为 false 以加速生产环境构建。
+  productionSourceMap: "false",
+  // 文件hash
+  filenameHashing: true,
+  //  ( 注意看清楚这里 ) 如果你的前端应用和后端 API 服务器没有运行在同一个主机上，你需要在开发环境下将 API 请求代理到 API 服务器。 使用proxy
+  devServer: {
+    port: 8080, // 端口
+    host: "localhost", // 域名
+    https: false, // 是否开启https
+    open: true,	// 是否在开启服务器后自动打开浏览器访问该服务器
+    // 这会告诉开发服务器将任何未知请求 (没有匹配到静态文件的请求)
+    proxy: {
+      // 只要请求中带有/api的url,就会经过这里请求
+      '/api': {
+        // //目标请求地址
+        target: 'http://ximingx.com',
+        ws: true,
+        // true为可以跨域  
+        changeOrigin: true
+      }
+    }
+  },
+  // 在这里对 webpack 进行设置
+  configureWebpack: {
+    resolve: {
+      alias: {
+         // 配置别名
+        '@': resolve('src'),
+        'components': resolve('@/components'),
+        'views': resolve('@/views'),
+        'assets': resolve('@/assets'),
+      }
+    }
+  },
+})
+```
+
+
+
+
+
 
 
 ## @补充
@@ -2217,7 +2282,8 @@ import 'normalize.css/normalize.css'
 1. 安装unplugin-vue-components
 
 ```bash
-> npm i unplugin-vue-components -D
+> yarn add element-plus
+> yarn add -D unplugin-vue-components unplugin-auto-import
 ```
 
 2. 配置config(vuecli配置的是vue.config.js)
@@ -2238,6 +2304,61 @@ module.exports = {
 
     },
   }
+```
 
+3. main.js
+
+```js
+import 'normalize.css/normalize.css'
+```
+
+**常用配置**
+
+```js
+const { defineConfig } = require('@vue/cli-service')
+const path = require('path');
+const Components = require('unplugin-vue-components/webpack')
+const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
+function resolve (dir) {
+  return path.join(__dirname, dir)
+}
+module.exports = defineConfig({
+  publicPath: "/",
+  outputDir: "dist",
+  assetsDir: "",
+  indexPath: 'index.html',
+  lintOnSave: 'default',
+  productionSourceMap: "false",
+  filenameHashing: true,
+  devServer: {
+    port: 8080,
+    host: "localhost",
+    https: false, 
+    open: true,	
+    proxy: {
+      '/api': {
+        target: 'http://ximingx.com',
+        ws: true,
+        changeOrigin: true
+      }
+    }
+  },
+  configureWebpack: {
+    plugins: [
+      require('unplugin-vue-components/webpack')(),
+      Components({
+        resolvers:[ElementPlusResolver()],
+      })
+    ],
+    resolve: {
+      alias: {
+        '@': resolve('src'),
+        'components': resolve('@/components'),
+        'views': resolve('@/views'),
+        'assets': resolve('@/assets'),
+      }
+    }
+  },
+})
 ```
 

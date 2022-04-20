@@ -780,3 +780,42 @@ btn.onclick = function () {
 ### CORS 跨域资源共享
 
 CORS：全称为 Cross-origin resource sharing，即跨域资源共享，它允许浏览器向跨域服务器发送 Ajax 请求，克服了 Ajax 只能同源使用的限制。
+
+```js
+app.use(function(, req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  next()
+});
+```
+
+### $.ajax()
+
+```js
+			$.ajax({
+				// 请求方式
+			    type: 'post',
+				// 请求地址
+			    url: '/user',
+                 data: JSON.striify({
+                     
+                 }),
+                 contenType: "application/json"
+				// 在请求发送之前调用
+				beforeSend: function () {
+					alert('请求不会被发送')
+					// 请求不会被发送
+					return false;
+				},
+				// 请求成功以后函数被调用
+				success: function (response) {
+					// response为服务器端返回的数据
+					// 方法内部会自动将json字符串转换为json对象
+					console.log(response);
+				}
+                  error: function (xhr) {
+					console.log(xhr);
+				}
+			})
+```
+
