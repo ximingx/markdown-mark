@@ -1178,3 +1178,54 @@ function fb(n) {
 }
 console.log(fb(3));
 ```
+
+## 箭头函数
+
+ES6中新增的定义函数的方式。
+
+```javascript
+() => {} //()：代表是函数； =>：必须要的符号，指向哪一个代码块；{}：函数体
+const fn = () => {}//代表把一个函数赋值给fn
+```
+
+函数体中只有一句代码，且代码的执行结果就是返回值，可以省略大括号
+
+```javascript
+ function sum(num1, num2) { 
+     return num1 + num2; 
+ }
+ //es6写法
+ const sum = (num1, num2) => num1 + num2; 
+
+```
+
+如果形参只有一个，可以省略小括号
+
+```javascript
+ function fn (v) {
+     return v;
+ } 
+//es6写法
+ const fn = v => v;
+
+```
+
+箭头函数不绑定this关键字，箭头函数中的this，指向的是函数定义位置的上下文this
+
+```javascript
+const obj = { name: '张三'} 
+ function fn () { 
+     console.log(this);//this 指向 是obj对象
+     return () => { 
+         console.log(this);//this 指向 的是箭头函数定义的位置，那么这个箭头函数定义在fn里面，而这个fn指向是的obj对象，所以这个this也指向是obj对象
+     } 
+ } 
+ const resFn = fn.call(obj); 
+ resFn();
+
+```
+
+#### 小结
+
+- 箭头函数中不绑定this，箭头函数中的this指向是它所定义的位置，可以简单理解成，定义箭头函数中的作用域的this指向谁，它就指向谁
+- 箭头函数的优点在于解决了this执行环境所造成的一些问题。比如：解决了匿名函数this指向的问题（匿名函数的执行环境具有全局性），包括setTimeout和setInterval中使用this所造成的问题

@@ -520,3 +520,27 @@ p2.name = 'rose';
 ```
 
 实际开发中，可能这种方式用的更多一些，比如把一些数据转成json存储到本地缓存，需要用到的时候，我们再反序列化。
+
+## 扩展
+
+### 剩余参数
+
+剩余参数语法允许我们将一个不定数量的参数表示为一个数组，不定参数定义方式，这种方式很方便的去声明不知道参数情况下的一个函数
+
+```javascript
+function sum (first, ...args) {
+     console.log(first); // 10
+     console.log(args); // [20, 30] 
+ }
+ sum(10, 20, 30)
+```
+
+### 剩余参数和解构配合使用
+
+```javascript
+let students = ['wangwu', 'zhangsan', 'lisi'];
+let [s1, ...s2] = students; 
+console.log(s1);  // 'wangwu' 
+console.log(s2);  // ['zhangsan', 'lisi']
+```
+

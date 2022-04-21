@@ -552,111 +552,44 @@ console.log(article.toUpperCase())
 // THIS IS PINK
 ```
 
-##  扩展运算符
+## 模板字符串
 
-扩展运算符和剩余参数是相反的。
-
-剩余参数是将剩余的元素放到一个数组中；而扩展运算符是将数组或者对象拆分成逗号分隔的参数序列。
-
-代码举例：
-
-```js
-const arr = [10, 20, 30];
-...arr // 10, 20, 30      注意，这一行是伪代码，这里用到了扩展运算符
-console.log(...arr); // 10 20 30
-
-console.log(10, 20, 30); // 10 20 30
-```
-
-上面的代码要仔细看：
-
-`arr`是一个数组，而`...arr`则表示`10, 20, 30`这样的序列。
-
-我们把`...arr` 打印出来，发现打印结果竟然是 `10 20 30`，为啥逗号不见了呢？因为逗号被当作了 console.log 的参数分隔符。如果你不信，可以直接打印 `console.log(10, 20, 30)` 看看。
-
-接下来，我们看一下扩展运算符的应用。
-
-### 数组赋值
-
-数组赋值的代码举例：
-
-```js
-let arr2 = [...arr1]; // 将 arr1 赋值给 arr2
-```
-
-为了理解上面这行代码，我们先来分析一段代码：（将数组 arr1 赋值给 arr2）
+ES6新增的创建字符串的方式，使用反引号定义
 
 ```javascript
-let arr1 = ['www', 'smyhvae', 'com'];
-let arr2 = arr1; // 将 arr1 赋值给 arr2，其实是让 arr2 指向 arr1 的内存地址
-console.log('arr1:' + arr1);
-console.log('arr2:' + arr2);
-console.log('---------------------');
+let name = `zhangsan`;
 
-arr2.push('你懂得'); //往 arr2 里添加一部分内容
-console.log('arr1:' + arr1);
-console.log('arr2:' + arr2);
 ```
 
-运行结果：
-
-![](https://img-blog.csdnimg.cn/img_convert/175332a5ca4db42a2c38ff9497083235.png)
-
-上方代码中，我们往往 arr2 里添加了`你懂的`，却发现，arr1 里也有这个内容。原因是：`let arr2 = arr1;`**其实是让 arr2 指向 arr1 的地址。也就是说，二者指向的是同一个内存地址。**
-
-如果不想让 arr1 和 arr2 指向同一个内存地址，我们可以借助**扩展运算符**来做：
+### 模板字符串中可以解析变量
 
 ```javascript
-let arr1 = ['www', 'smyhvae', 'com'];
-let arr2 = [...arr1]; //【重要代码】arr2 会重新开辟内存地址
-console.log('arr1:' + arr1);
-console.log('arr2:' + arr2);
-console.log('---------------------');
-
-arr2.push('你懂得'); //往arr2 里添加一部分内容
-console.log('arr1:' + arr1);
-console.log('arr2:' + arr2);
+let name = '张三'; let sayHello = `hello,my name is ${name}`; // hello, my name is zhangsan
 ```
 
-运行结果：
+### 模板字符串中可以换行
 
-```bash
-arr1:www,smyhvae,com
-arr2:www,smyhvae,com
----------------------
-arr1:www,smyhvae,com
-arr2:www,smyhvae,com,你懂得
+```javascript
+ let result = { 
+     name: 'zhangsan', 
+     age: 20,
+     sex: '男' 
+ } 
+ let html = ` <div>
+     <span>${result.name}</span>
+     <span>${result.age}</span>
+     <span>${result.sex}</span>
+ </div> `;
+
 ```
 
-我们明白了这个例子，就可以避免开发中的很多业务逻辑上的 bug。
+### 在模板字符串中可以调用函数
 
-### 合并数组
-
-代码举例：
-
-```js
-let arr1 = ['王一', '王二', '王三'];
-let arr2 = ['王四', '王五', '王六'];
-// ...arr1  // '王一','王二','王三'
-// ...arr2  // '王四','王五','王六'
-
-// 方法1
-let arr3 = [...arr1, ...arr2];
-console.log(arr3); // ["王一", "王二", "王三", "王四", "王五", "王六"]
-
-// 方法2
-arr1.push(...arr2);
-console.log(arr1); // ["王一", "王二", "王三", "王四", "王五", "王六"]
+```javascript
+const sayHello = function () {     return '哈哈哈哈 追不到我吧 我就是这么强大'; };  let greet = `${sayHello()} 哈哈哈哈`; console.log(greet); // 哈哈哈哈 追不到我吧 我就是这么强大 哈哈哈哈
 ```
 
-### 将伪数组或者可遍历对象转换为真正的数组
 
-代码举例：
-
-```js
-const myDivs = document.getElementsByClassName('div');
-const divArr = [...myDivs]; // 利用扩展运算符，将伪数组转为真正的数组
-```
 
 
 

@@ -104,79 +104,111 @@ module.exports = {
 
 
 
+## Babel
 
+> 掌握 ES6 之后，如果你的业务需要考虑 ES5 的兼容性，则可以这样做：写 ES6 语法的 js 代码，然后通过 `Babel`将 ES6 转换为 ES5。如果没有这样的需要，那么下面的内容，了解即可。
 
-## ES6 模块化的基本语法
+babel 的作用是将 ES6 语法转为 ES5 语法，支持低端浏览器。
 
-ES6 的模块化主要包含如下 3 种用法：
+以一个简单的案例说明
 
-1. 默认导出与默认导入
-2. 按需导出与按需导入
-3. 直接导入并执行模块中的代码
+### 1. 先创建一个项目的目录
 
----
-
-默认导出的语法：**export default 默认导出的成员**
+![在这里插入图片描述](https://img-blog.csdnimg.cn/bdd90d76902b4db0afddebd454609192.png)
+在 index.js 写入
 
 ```js
-// log.js
-let name = "ximingx"
-function log () {
-    console.log("export default 默认导出成员")
+let a = item => item + 2
+console.log(a(4))
+```
+
+这个文件是一个 ES6 语法 的 js 文件，稍后，我们尝试把这个 ES6 语法的 js 文件转化为 ES5 的 js 文件。
+
+
+
+### 2. 安装 Babel-cli
+
+初始化项目：
+
+在安装 Babel 之前，需要先用 npm init 先初始化我们的项目。打开终端或者通过 cmd 打开命令行工具，进入项目目录，输入如下命令：
+
+```bash
+	npm init -y
+```
+
+上方代码中，`-y` 代表全部默认同意，就不用一次次按回车了（稍后再根据需要，在文件中手动修改）。命令执行完成后，会在项目的根目录下生成 package.json 文件：
+
+```json
+{
+  "name": "babel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
-export default {
-    name,
-    log
+
+```
+
+### 3. 本地安装
+
+```bash
+	npm install --save-dev babel-preset-es2015 babel-cli
+```
+
+### 4. 新建.babelrc：
+
+在根目录下新建文件`.babelrc`，输入如下内容：
+
+```js
+{
+    "presets":[
+        "es2015"
+    ],
+    "plugins":[]
 }
 ```
 
-默认导出的注意事项：每个模块中，只允许使用唯一的一次 export default，否则会报错！
+### 5. 开始转换：
 
-默认导入的语法：**import 接收名称 from ‘模块标识符’**
+现在，我们应该可以将 ES6 的文件转化为 ES5 的文件了，命令如下：（此命令略显复杂）
 
-默认导入时的接收名称可以任意名称，只要是合法的成员名称即可；
-
-```js
-// main.js
-import m1 from "./log.js"
-
-console.log(m1.name)
-m1.log()
+```bash
+	babel src/index.js -o dist/index.js
 ```
 
----
+我们可以将上面这个命令进行简化一下。操作如下：
 
-按需导出的语法：**export 按需导出的成员**
+在文件 `package.json` 中修改键 `scripts`中的内容：
 
-```js
-// log.js
-export let name = "ximingx"
-export function get() {
-    
-}
+```json
+  "scripts": {
+    "build": "babel src/index.js -o dist/index.js"
+  },
 ```
 
-按需导入的语法：**import { s1 } from ‘模块标识符’**
+目前为止，环境配置好了。以后，我们执行如下命令，即可将`src/index.js`这个 ES6 文件转化为 `dist/index.js`这个 ES5 文件：
 
-```js
-x // main.js
-import { name,get } from "./log.js"
+```bash
+	npm run build
 ```
 
-1. 每个模块中可以使用多次按需导出；
-2. **按需导入的成员名称必须和按需导出的名称保持一致；**
-3. **按需导入时，可以使用 as 关键字进行重命名；**
-4. 按需导入可以和默认导入一起使用；
+我们执行上面的命令之后，会发现， dist 目录下会生成 ES5 的 js 文件：
 
----
-
-如果只想单纯地执行某个模块中的代码，并不需要得到模块中向外共享的成员。此时，可以直接导入并执行模块代码
+之后我们就可以在 index.html 中使用 es5的语法了
 
 ```js
-import "./module."
+"use strict";
+
+var a = function a(item) {
+  return item + 2;
+};
+console.log(a(4));
 ```
-
-
 
 
 

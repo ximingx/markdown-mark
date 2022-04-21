@@ -39,6 +39,8 @@ console.log([...set2]); // ["张三", "李四", "王五"]
 
 ```js
 set.delete（item）
+
+s.clear() // 清除set 结构中的所有值
 ```
 
 ### 添加元素
@@ -57,5 +59,13 @@ set.has(item) // 返回 true or false
 
 ```js
 set.size
+```
+
+### 遍历
+
+Set 结构的实例与数组一样，也拥有forEach方法，用于对每个成员执行某种操作，没有返回值。
+
+```javascript
+s.forEach(value => console.log(value))
 ```
 
