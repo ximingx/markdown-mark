@@ -82,4 +82,13 @@ setTimeout(function() {
 }, 2000);  
 ```
 
+## 严格模式中一些重要的限制
+
+- 不允许使用一个没有声明的变量
+- 不允许修改只读属性的值
+- 不允许修改不可扩展的属性
+- 在一个对象文本中多次定义某个属性
+- **无法使用标识符的未来保留字，严格模式下将保留标识符名称**
+- 不允许使用八进制数字参数和转义字符
+
 [更多严格模式要求参考](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode)
