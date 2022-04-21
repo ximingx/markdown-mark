@@ -2102,7 +2102,7 @@ state辅助函数为mapState，actions辅助函数为mapActions，mutations辅�
 
 Pinia 是 Vue 的存储库，它允许您跨组件/页面共享状态。
 
-Pinia 最初是为了探索 Vuex 的下一次迭代可能会是什么样子，结合了 Vuex 5 核心团队讨论中的许多想法。最终，我们意识到 Pinia 已经实现了我们在 Vuex 5 中想要的大部分内容，并决定实现它取而代之的是新的建议。
+Pinia 最初是为了探索 Vuex 的下一次迭代可能会是什么样子，结合了 Vuex 5 核心团队讨论中的许多想法。
 
 **与 Vuex 相比，Pinia 提供了一个更简单的 API，具有更少的仪式，提供了 Composition-API 风格的 API，最重要的是，在与 TypeScript 一起使用时具有可靠的类型推断支持。**
 
@@ -2124,17 +2124,18 @@ export const useCounterStore = defineStore('counter', {
   },
 })
 
+
 // 组件中使用
 import { useCounterStore } from '@/stores/counter'
 export default {
   setup() {
-    const counter = useCounterStore()
+    const store = useCounterStore()
 
-    counter.count++
+    store.count++
     // with autocompletion ✨
-    counter.$patch({ count: counter.count + 1 })
+    store.$patch({ count: counter.count + 1 })
     // or using an action instead
-    counter.increment()
+    store.increment()
   },
 }
 ```
@@ -2142,47 +2143,45 @@ export default {
 ### 安装使用
 
 ```bash
-yarn add pinia
+yarn add pinia@next
 # or with npm
-npm install pinia
+npm install pinia@next
 ```
 
-使用
+在 main.js 中引入 pinia 并创建容器挂载到根实例上
 
 ```js
-import { createPinia } from 'pinia'
+import { createApp } from 'vue'
+import App from './App.vue'
 
-app.use(createPinia())
+import { createPinia } from "pinia";
+
+createApp(App).use(pinia()).mount('#app');
 ```
 
+在上面的片段中，你将Pinia添加到Vue.js项目中，这样你就可以在你的代码中使用Pinia的全局对象。
+
 ### defineStore（）
+
+创建 store / index.js
+
+为了创建一个store，你用一个包含创建一个基本store所需的states、actions和getters的对象来调用 `defineStore` 方法。
 
 存储是使用定义的`defineStore()`，并且它需要一个**唯一的**名称，作为第一个参数传递：
 
 ```js
+// stores/todo.js
 import { defineStore } from 'pinia'
 
-// main 这个名称，也称为id，是必要的，是唯一的
-export const useStore = defineStore('main', {
- 
+export const useTodoStore = defineStore({
+  id: 'todo',
+  state: () => ({ count: 0, title: "Cook noodles", done:false })
 })
 ```
 
-我们正在*定义*`useStore()`一个 store ，因为商店在被调用之前不会被创建`setup()`：
 
-```js
-import { useStore } from '@/stores/counter'
 
-export default {
-  setup() {
-    const store = useStore()
 
-    return {
-      store,
-    }
-  },
-}
-```
 
 ## 12. vue.config.js
 
