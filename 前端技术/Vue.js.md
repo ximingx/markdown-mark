@@ -3,14 +3,34 @@
 > 本文主要是学习 vue3 
 >
 > 选择 **Options API** 代码风格编写案例
+>
+> **这是一篇平平无奇, 但是非常长的文章, 长到你可能看一眼就会跳出去的文章, 但是我能有什么坏心思呢, 我只是单纯的懒得拆分开**
+
+[TOC]
+
+
 
 # Vue.js
 
+官网：https://vuejs.org/
+中文官网：https://cn.vuejs.org/
+中文官网vue3：https://v3.cn.vuejs.org/
+菜鸟教程：https://www.runoob.com/vue3/vue3-tutorial.html
+W3CSchool: https://www.w3cschool.cn/vuejs3/
+
 ## 1. 初步了解 vue.js
 
-官方定义： Vue（读作 /vjuː/，类似视图）是一个帮助用户制造界面的 JavaScript 框架。它在标准 HTML、CSS 和 JavaScript 中创建，并提供了一个声明性和基于组件的编程模型，可有效开发地简单或复杂的用户界面。
+官方定义： Vue（读作 /vjuː/，类似 ivew ）是一个帮助用户制造界面的 JavaScript 框架。它在标准 HTML、CSS 和 JavaScript 中创建，并提供了一个声明性和基于组件的编程模型，可有效开发地简单或复杂的用户界面。
+
+传统的网站开发一般采用HTML+CSS+JS作为技术架构，而vue立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心，极大的简化了开发流程。
+**使用vue技术栈，可以在几分钟内搭建出一个完整的前端项目。**
 
 前端开发者最主要的工作，就是为网站的使用者（又称为：网站的用户）构建出美观、舒适、好用的网页。
+
+与其它框架的关联:
+
+- 借鉴angular的模板和数据绑定技术
+- 借鉴react的组件化和虚拟DOM技术
 
 官方给 vue 的定位是前端框架，因为它提供了构建用户界面的一整套解决方案（俗称 vue 全家桶）：
 
@@ -25,6 +45,13 @@
 - **vite（npm 全局包：一键生成工程化的 vue 项目 - 小而巧）**
 - vue-devtools（浏览器插件：辅助调试的工具）
 - vetur（vscode 插件：提供语法高亮和智能提示）
+- **axios: ajax请求**
+- **vue-router: 路由**
+- **vuex: 状态管理**
+- vue-lazyload: 图片懒加载
+- vue-scroller: 页面滑动相关
+- mint-ui: 基于vue的组件库(移动端)
+- **element-plus: 基于vue的组件库(PC端)**
 
 两种实现方式
 
@@ -66,7 +93,7 @@ html 页面中实现
     <div id="app">{{ username }}</div>
 
     <!-- 1. 导入 vue 的脚本文件 -->
-    <script src="./lib/vue-2.6.12.js"></script>
+    <script src="./lib/vue-3.0.12.js"></script>
 
     <!-- 3. 创建 vue 的实例对象 -->
     <script>
@@ -84,6 +111,8 @@ html 页面中实现
 
 </html>
 ```
+
+<img  src="https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204221508594.png"  >
 
  在Vue中，一个核心的概念就是：**数据驱动，避免手动操作DOM元素**。这样的话，可以更多的时间去关注数据的业务逻辑，而不是关心 DOM 是如何渲染的了。
 
@@ -111,7 +140,7 @@ export default {
 
 ---
 
-### 提高开发效率的发展历程
+### 提高效率的发展历程
 
 原生JS -> Jquery之类的类库 -> 前端模板引擎 -> Angular.js / Vue.js（能够帮助我们减少不必要的DOM操作；提高渲染效率；双向数据绑定的概念）
 
@@ -119,7 +148,7 @@ Vue.js 中我们有自己操作 DOM 的方式， 可以不再使用原生方法
 
 ---
 
-### 什么是虚拟 DOM
+### 虚拟 DOM
 
 传统的web开发，是利用 jQuery操作DOM，这是非常耗资源的。
 
@@ -140,7 +169,7 @@ vue 一般使用场景：数据操作比较多、频繁的场景，更加便捷�
 
 - **响应式的更新机制：数据改变之后，视图会自动刷新。**
 
-- 渐进式框架 （在任何页面上嵌入为 Web 组件）
+- 渐进式框架 （在任何页面上嵌入为 Web 组件） , vue 的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合
 
 - 组件化/模块化 （确实使代码结构页面看起来清楚）
 
@@ -158,7 +187,7 @@ Vue实例是作用于某一个HTML元素上的，这个元素可以是HTML的 bo
 
 **当创建了ViewModel后，双向绑定是如何达成的呢？**
 
-首先，我们将上图中的DOM Listeners和Data Bindings看作两个工具，它们是实现双向绑定的关键。 
+首先，我们将上图中的**DOM Listeners和Data Bindings**看作两个工具，它们是实现双向绑定的关键。 
 
 从View侧看，ViewModel中的**DOM Listeners工具会帮我们监测页面上DOM元素的变化**，如果有变化，则更改Model中的数据； 
 
@@ -210,7 +239,7 @@ export default {
 
 ---
 
-### 引用 Vue.js 文件
+### 引用 Vue.js 
 
 **首先介绍的方式都是直接在 `html` 文件中使用**
 
@@ -273,7 +302,7 @@ $ npm install vue
 
 ---
 
-### 利用 vue-cli 新建项目
+### 利用 vue-cli 
 
 Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该工具为现代化的前端开发工作流提供了开箱即用的构建配置。只需几分钟即可创建并启动一个带热重载、保存时静态检查以及可用于生产环境的构建配置的项目。
 
@@ -319,7 +348,7 @@ Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该�
 
 ---
 
-### 使用 vite （官方推荐）
+### 使用 vite 
 
 官方的 Vue 构建设置基于[Vite](https://vitejs.dev/)，这是一个现代、轻量级且速度极快的前端构建工具。
 
@@ -357,7 +386,7 @@ Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该�
 
 ---
 
-### vue 实例的解释
+### 实例的解释
 
 每个 Vue 应用程序首先使用以下函数创建一个新的**应用程序实例**[`createApp`](https://vuejs.org/api/application.html#createapp)：
 
@@ -410,6 +439,21 @@ app.mount('#app')
 
 ---
 
+### 应用介绍
+
+- createApp() ：创建一个应用，每个 Vue 应用都是通过用 createApp 函数创建一个新的应用实例开始的：；
+- data(){} ： data方法，用于在vue中声明数据,对象或函数类型,页面中可以直接访问使用；
+- methods:{} ： methods属性，用于编写vue中的方法,所有的方法由vue对象来调用, 访问data中的属性直接使用this.xxx；
+- computed:{} 计算属性：根据数据，自动进行计算，经常用于数值计算；
+- watch:{}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ：属性说明：监听属性，属性变化时，制动执行里面的函数，可以根据变量的改变，作异步操作和页面样的改变；
+
+注意：
+
+- computed和method都能实现的功能，建议使用computed, 因为有缓存；
+- computed和watcher都能实现的工呢，建议使用computed, 因为更加简洁；
+
+---
+
 ## 3. vue 系统指令
 
 指令（Directives）是 vue 为开发者提供的模板语法，用于辅助开发者渲染页面的基本结构。
@@ -429,7 +473,7 @@ Vue 使用基于 HTML 的模板语法，允许您以声明方式将渲染的 DOM
 
 **指令的工作是在其表达式的值发生变化时对 DOM 进行响应式更新。**
 
-###  插值表达式 {{ }}
+###  {{ }}
 
 数据绑定最常见的形式就是使用 “**Mustache**” 语法（双大括号）的文本插值，在标签中使用。例如：
 
@@ -440,6 +484,8 @@ Vue 使用基于 HTML 的模板语法，允许您以声明方式将渲染的 DOM
 Mustache 标签将会被替代为对应数据对象上 msg 属性（msg定义在data对象中）的值。
 
 无论何时，绑定的数据对象上 msg 属性发生了改变，插值处的内容都会**自动更新**。
+
+**{{ 内容 }} 在初始化页面的时候最先会保留 {{  内容 }}, 然后被数据中的值替换**
 
 `{{  }}`对JavaScript 表达式支持，例如：
 
@@ -473,6 +519,8 @@ Mustache 标签将会被替代为对应数据对象上 msg 属性（msg定义在
 v-cloak指令和CSS 规则一起用的时候，能够**解决差值表达式闪烁的问题**（即：可以隐藏未编译的标签直到实例准备完毕）。
 
 **在网速很慢的情况下，一开始会直接显示`{{name}}`这个内容** ，等网络加载完成了，才会显示`name` 属性的值。
+
+**原理: 先通过样式隐藏内容, 然后在内存中进行值的替换, 替换好之后再显示最后的结果**
 
 ```html
 <html lang="en">
@@ -513,6 +561,37 @@ v-text可以将一个变量的值渲染到指定的元素中。
 
 与插值表达式的区别: 插值表达式只会**替换自己的这个占位符**，并不会把整个元素的内容清空。v-text 会**覆盖**元素中原本的内容。
 
+没有闪动问题
+
+- v-text指令用于将数据填充到标签中，作用于插值表达式类似，但是没有闪动问题
+- 如果数据中有HTML标签会将html标签一并输出
+- 注意：此处为单向绑定，数据对象上的值改变，插值会发生变化；但是当插值发生变化并不会影响数据对象的值
+
+```html
+<div id="app">
+    <!--  
+		注意:在指令中不要写插值语法  直接写对应的变量名称 
+         在 v-text 中 赋值的时候不要在写 插值语法
+		一般属性中不加 {{}}  直接写 对应 的数据名 
+	-->
+    <p v-text="msg"></p>
+    <p>
+        <!-- Vue  中只有在标签的 内容中 才用插值语法 -->
+        {{msg}}
+    </p>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            msg: 'Hello Vue.js'
+        }
+    });
+
+</script>
+```
+
 ---
 
 ### v-html
@@ -520,7 +599,7 @@ v-text可以将一个变量的值渲染到指定的元素中。
 
 `v-text`是纯文本，而`v-html`会被解析成html元素。
 
-注意：使用v-html渲染数据可能会非常危险，因为它很容易导致 XSS（跨站脚本） 攻击，使用的时候请谨慎，能够使用{{}}或者v-text实现的不要使用v-html。
+**注意：使用v-html渲染数据可能会非常危险，因为它很容易导致 XSS（跨站脚本） 攻击，使用的时候请谨慎，能够使用{{}}或者v-text实现的不要使用v-html。**
 
 v-text和v-html专门用来展示数据, 其作用和插值表达式类似。**v-text和v-html可以避免插值闪烁问题.**
 
@@ -528,48 +607,128 @@ v-text和v-html专门用来展示数据, 其作用和插值表达式类似。**v
 
 插值闪烁: 在数据未加载完成时，页面会显示出原始的{undefined{}}, 过一会才会展示正常数据.
 
+```js
+<div id="app">
+　　<p v-html="html"></p> <!-- 输出：html标签在渲染的时候被解析 -->
+    
+    <p>{{message}}</p> <!-- 输出：<span>通过双括号绑定</span> -->
+    
+　　<p v-text="text"></p> <!-- 输出：<span>html标签在渲染的时候被源码输出</span> -->
+</div>
+<script>
+　　let app = new Vue({
+　　el: "#app",
+　　data: {
+　　　　message: "<span>通过双括号绑定</span>",
+　　　　html: "<span>html标签在渲染的时候被解析</span>",
+　　　　text: "<span>html标签在渲染的时候被源码输出</span>",
+　　}
+ });
+</script>
+```
+
 ---
 
-### v-on: 事件绑定
+###  v-pre
+
+- 显示原始信息跳过编译过程
+- 跳过这个元素和它的子元素的编译过程。
+- **一些静态的内容不需要编译加这个指令可以加快渲染**
+
+```html
+    <span v-pre>{{ this will not be compiled }}</span>    
+	<!--  显示的是{{ this will not be compiled }}  -->
+	<span v-pre>{{msg}}</span>  
+     <!--   即使data里面定义了msg这里仍然是显示的 {{msg}}  -->
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            msg: 'Hello Vue.js'
+        }
+    });
+
+</script>
+```
+
+### v-once
+
+- 执行一次性的插值【当数据改变时，插值处的内容不会继续更新】
+- 可以提高性能
+
+```html
+  <!-- 即使data里面定义了msg 后期我们修改了 仍然显示的是第一次data里面存储的数据即 Hello Vue.js  -->
+     <span v-once>{{ msg}}</span>    
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            msg: 'Hello Vue.js'
+        }
+    });
+</script>
+```
+
+---
+
+### v-on
+
+事件绑定
 
 ![指令语法图](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/directive.69c37117%20%E4%B8%8B%E5%8D%884.18.55.png)
 
 例如：
 
 ```html
-    <button v-on:click="change">改变name的值</button>
+	<button v-on:click="num++">{{ num }}</button>
 ```
 
 可以简写成：
 
 ```html
-	// change 是写在下面的方法
-    <button @click="change">改变name的值</button>
+    <button @click="num++">{{ num }}</button>
 ```
 
-这里的 change 是写在 vue是 实例对象里的 methods 里的方法
+**事件对象的名称必须是 $event** 
 
-```js
-<script>
-  var myVue = new Vue({
-    el: '#div1',
-    data: { 
-      name: 'ximingx'
-    },
-    //注意，下方这个 `methods` 是Vue中定义方法的关键字，不能改
-    //这个 methods 属性中定义了当前Vue实例所有可用的方法
-    methods: {
-      change: function() { //上面的button按钮的点击事件
-        this.name += '1';
-      }
-    }
-  });
-</script>
+```html
+
+<body>
+    <div id="app">
+        <div>{{num}}</div>
+        <div>
+            <!-- 如果事件直接绑定函数名称，那么默认会传递事件对象作为事件函数的第一个参数 -->
+            <button v-on:click='handle1'>点击1</button>
+            <!-- 2、如果事件绑定函数调用，那么事件对象必须作为最后一个参数显示传递，
+                 并且事件对象的名称必须是 $event 
+            -->
+            <button v-on:click='handle2(123, 456, $event)'>点击2</button>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                num: 0
+            },
+            methods: {
+                handle1: function(event) {
+                    console.log(event.target.innerHTML)
+                },
+                handle2: function(p, p1, event) {
+                    console.log(p, p1)
+                    console.log(event.target.innerHTML)
+                    this.num++;
+                }
+            }
+        });
+    </script>
 ```
 
-v-on的常用事件
+`$event` 是 vue 提供的特殊变量，用来表示原生的事件参数对象 event。`$event` 可以解决事件参数对象event被覆盖的问题。
 
-v-on 提供了click 事件，也提供了一些其他的事件。
+**v-on 提供了click 事件，也提供了一些其他的事件。**
 
 
 - v-on:click
@@ -584,11 +743,13 @@ v-on 提供了click 事件，也提供了一些其他的事件。
 
 - v-on:submit
 
-v-on的常见事件修饰符
+**v-on的常见事件修饰符**
+
+Vue 不推荐我们操作DOM    为了解决这个问题，Vue.js 为 `v-on` 提供了**事件修饰符**
 
 vue为v-on提供了事件修饰符，通过点(.)表示的指令后缀来调用修饰符。
 
-注：使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生。
+**注：使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生。**
 
 `v-on` 提供了很多事件修饰符来辅助实现一些功能。事件修饰符有如下：
 
@@ -602,7 +763,24 @@ vue为v-on提供了事件修饰符，通过点(.)表示的指令后缀来调用�
 - `.{keyCode | keyAlias}`   只当事件是从侦听器绑定的元素本身触发时，才触发回调。
 - `.native` 监听组件根元素的原生事件。
 
-关键修饰符
+```html
+<!-- 阻止单击事件继续传播 -->
+<a v-on:click.stop="doThis"></a>
+
+<!-- 提交事件不再重载页面 -->
+<form v-on:submit.prevent="onSubmit"></form>
+
+<!-- 修饰符可以串联   即阻止冒泡也阻止默认事件 -->
+<a v-on:click.stop.prevent="doThat"></a>
+
+<!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
+<!-- 即事件不是从内部元素触发的 -->
+<div v-on:click.self="doThat">...</div>
+
+使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生。因此，用 v-on:click.prevent.self 会阻止所有的点击，而 v-on:click.self.prevent 只会阻止对元素自身的点击。
+```
+
+**关键修饰符**
 
 在监听键盘事件时，我们经常需要检查特定的键。Vue 允许为`v-on`或`@`在监听键事件时添加键修饰符：
 
@@ -629,28 +807,46 @@ Vue 为最常用的键提供别名：
 - `.left`
 - `.right`
 
-在原生的 DOM 事件绑定中，可以在事件处理函数的形参处，接收事件参数对象 event。同理，在 `v-on` 指令（简写为 `@` ）所绑定的事件处理函数中，同样可以接收到事件参数对象 event，示例代码如下：
+```html
+<!-- 只有在 `keyCode` 是 13 时调用 `vm.submit()` -->
+<input v-on:keyup.13="submit">
 
-`$event` 是 vue 提供的特殊变量，用来表示原生的事件参数对象 event。`$event` 可以解决事件参数对象event被覆盖的问题。
+<!-- -当点击enter 时调用 `vm.submit()` -->
+<input v-on:keyup.enter="submit">
 
-```js
-<!-- vue 提供了内置变量，名字叫做 $event，它就是原生 DOM 的事件对象 e -->
-<button @click="add($event, 1)">+N</button>
+<!--当点击enter或者space时  时调用 `vm.alertMe()`   -->
+<input type="text" v-on:keyup.enter.space="alertMe" >
 
+常用的按键修饰符
+.enter =>    enter键
+.tab => tab键
+.delete (捕获“删除”和“退格”按键) =>  删除键
+.esc => 取消键
+.space =>  空格键
+.up =>  上
+.down =>  下
+.left =>  左
+.right =>  右
 
-methods: {
-  currentEvent: add (event, number) {
-      console.log(event)
-  }
-}
+<script>
+	var vm = new Vue({
+        el:"#app",
+        methods: {
+              submit:function(){},
+              alertMe:function(){},
+        }
+    })
+
+</script>
 ```
 
-
+在原生的 DOM 事件绑定中，可以在事件处理函数的形参处，接收事件参数对象 event。同理，在 `v-on` 指令（简写为 `@` ）所绑定的事件处理函数中，同样可以接收到事件参数对象 event，示例代码如下：
 
 ---
 
+### v-bind
 
-### v-bind：属性绑定机制
+属性绑定机制
 
 不能在 HTML 属性中使用胡须。相反， `v-bind`：用于绑定**属性**。动态的获取属性的值， 不再是一个固定的值
 
@@ -749,7 +945,12 @@ Vue中通过属性绑定为元素设置class 类样式
 
 
 ```html
-<!-- 在为 class 使用 v-bind 绑定 对象的时候，对象的属性是类名。由于 对象的属性名可带引号，也可不带引号，所以 这里我没写引号；  属性的值 是一个标识符 -->
+<!-- 
+	 在为 class 使用 v-bind 绑定 对象的时候，对象的属性是类名。
+  	 由于 对象的属性名可带引号，也可不带引号，所以 这里我没写引号；  属性的值 是一个标识符 
+-->
+
+<!-- { 类名: Boolean } -->
  <h1 :class="{style1: true, style2: false}"></h1>
 ```
 
@@ -778,11 +979,13 @@ data() {
 </span>
 ```
 
-> 每次组件更新时都会调用内部绑定表达式的函数，因此它们没有任何副作用，例如更改数据或触发异步操作。
+> **每次组件更新时都会调用内部绑定表达式的函数，因此它们没有任何副作用，例如更改数据或触发异步操作。**
 
 ---
 
-### v-model：双向数据绑定
+### v-model
+
+双向数据绑定
 
 
 > 重点：**双向数据绑定，只能用于表单元素，或者用于自定义组件**。
@@ -801,6 +1004,11 @@ data() {
 **注意**：v-model 只能运用在**表单元素中，或者用于自定义组件**。常见的表单元素包括：input(radio, text, address, email....) 、select、checkbox 、textarea。
 
 我们还可以将多个复选框绑定到同一个数组或[Set](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set)值：
+
+简单的描述
+
+- 当数据发生变化的时候，视图也就发生变化
+- 当视图发生变化的时候，数据也会跟着同步变化
 
 ```html
 <script>
@@ -824,7 +1032,7 @@ export default {
 <label for="mike">Mike</label>
 ```
 
-#### .lazy
+.lazy
 
 默认情况下，`v-model`在每个事件之后将输入与数据同步（[上述](https://vuejs.org/guide/essentials/forms.html#vmodel-ime-tip)`input`IME 组合除外）。您可以添加修饰符以改为在事件后同步：`lazy``change`
 
@@ -833,7 +1041,7 @@ export default {
 <input v-model.lazy="msg" />
 ```
 
-#### .number
+.number
 
 如果您希望用户输入自动转换为数字，您可以将`number`修饰符添加到`v-model`托管输入：
 
@@ -845,7 +1053,7 @@ export default {
 
 如果输入有，`number`则自动应用修饰符`type="number"`。
 
-#### 3 .trim
+.trim
 
 如果您希望自动修剪用户输入中的空白，您可以将`trim`修饰符添加到您的`v-model`-managed 输入中：
 
@@ -853,9 +1061,18 @@ export default {
 <input v-model.trim="msg" />
 ```
 
+**拓展: v-model 的实现原理**
+
+```html
+<input :value="msg" @imput="msg = @event.target.value">{{ msg }}</input>
+```
+
 ---
 
-### v-for 循环遍历
+### v-for 
+
+- **不推荐**同时使用 `v-if` 和 `v-for`
+- 当 `v-if` 与 `v-for` 一起使用时，`v-for` 具有比 `v-if` 更高的优先级。
 
 我们可以使用该v-for指令基于数组呈现项目列表。该v-for指令需要格式为 的特殊语法`item in items`，其中`items`是源数据数组，`item`是被迭代的数组元素的别名：
 
@@ -888,8 +1105,6 @@ data() {
     });
 </script>
 ```
-
-![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/3d4cfb9d1026470cbf4961f96d8db39a%20%E4%B8%8B%E5%8D%884.18.54.png)
 
 与 template 类似`v-if`，您也可以使用`<template>`标签 with`v-for`来渲染一个包含多个元素的块。例如：
 
@@ -924,7 +1139,9 @@ data() {
 
 ---
 
-### v-if：设置元素的显示和隐藏
+### v-if
+
+设置元素的显示和隐藏
 
 **作用**：根据表达式的值的真假条件，来决定是否渲染元素，如果为false则不渲染（达到隐藏元素的目的），如果为true则渲染。
 
@@ -946,7 +1163,9 @@ data() {
 
 ---
 
-### v-show：元素的显示和隐藏
+### v-show
+
+元素的显示和隐藏
 
 **作用**：根据表达式的真假条件，来切换元素的 display 属性。如果为false，则在元素上添加 `display:none`属性；否则移除`display:none`属性。
 
@@ -955,7 +1174,7 @@ data() {
 
 ---
 
-### v-if和v-show的区别
+### v-if v-show 
 
 `v-if`和`v-show`都能够实现对一个元素的隐藏和显示操作。
 

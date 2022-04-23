@@ -1,7 +1,5 @@
 # MongoDB
 
-[MySQL这篇写的很烂,看他的,啊呜](https://blog.csdn.net/weixin_45851945/article/details/114287877)
-[要不看这篇也行,也很不错](https://ximingx.blog.csdn.net/article/details/122157925)
 ## 介绍
 
 **存储结构**
@@ -18,6 +16,8 @@
 | collection | 集合，一组数据的集合，可以理解为JavaScript中的数组       |
 | document   | 文档，一条具体的数据，可以理解为JavaScript中的对象       |
 | field      | 字段，文档中的属性名称，可以理解为JavaScript中的对象属性 |
+
+### 结构
 
 ```json
 {
@@ -74,63 +74,7 @@ mongo
 //连接后可以通过exit退出连接
 ```
 
-## 基本命令
-
-查看显示所有数据库 **show dbs**
-
-```bash
-> show dbs
-admin   0.000GB
-config  0.000GB
-local   0.000GB
-```
-
-切换到指定的数据库(如果没有,会先切换,在添加数据后新建) **use `数据库名称`**
-
-```bash
-> use itcast
-switched to db itcast
-> db
-itcast
-```
-
-查看当前操作的数据库 **db**
-
-```bash
-> db
-itcast
-```
-
-插入数据 db.`集合名`.insertOne()
-
-```bash
-> db.students.insertOne({"name":"ximingx查看当前操作的数据库 **db**"})
-{
-        "acknowledged" : true,
-        "insertedId" : ObjectId("618a5089fe5d81bd4404a9a1")
-}
-```
-
-查看数据 db.`集合名`.find()
-
-```bash
-> show collections
-students
-> db.students.find()
-{ "_id" : ObjectId("618a5089fe5d81bd4404a9a1"), "name" : "ximingx查看当前操作的数据库 **db**" }
-```
-
-## Node.js 操作MongoDB
-
-安装依赖
-
-```bash
-npm install mongoose
-```
-
-**简单无约束的使用**
-
-### 添加数据库账号
+### 常用操作
 
 ```bash
 # 连接MongoDB数据库
@@ -170,36 +114,132 @@ MongoDB Server (MongoDB) 服务已成功停止。
 > net start mongod
 ```
 
-```js
-const mongoose = require('mongoose');
-// 连接集数据库
-mongoose.connect('mongodb://localhost:27017/test');
-// 创建一个模型,设计数据库
-// 要求 cat 这个表中,name的值是字符串格式
-const Cat = mongoose.model('Cat', {name: String});
-for (let i = 0; i < 100; i++) {
-  // 实例化一个 Cat
-  const kitty = new Cat({name: 'mm' + i});
-  // 持久化保存实例
-  kitty.save().then(() => console.log('meow'));
-}
-```
+## 基本命令
+
+### 查看所有数据库
+
+**show dbs**
 
 ```bash
 > show dbs
 admin   0.000GB
 config  0.000GB
-itcast  0.000GB
 local   0.000GB
-test    0.000GB
+```
+
+### 切换到指定的数据库
+
+如果没有,会先切换,在添加数据后新建 **use `数据库名称`**
+
+```bash
+> use itcast
+switched to db itcast
+```
+
+### 查看当前操作的数据库 
+
+**db**
+
+```bash
 > db
 itcast
-> use test
-switched to db test
+```
+
+### 插入数据
+
+ db.`集合名`.insertOne()
+
+```bash
+> db.students.insertOne({"name":"ximingx查看当前操作的数据库 **db**"})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("618a5089fe5d81bd4404a9a1")
+}
+```
+
+### 查看数据
+
+db.`集合名`.find()
+
+```bash
 > show collections
-cats
-> db.cats.find()
-{ "_id" : ObjectId("618a55b5c65e76624f7eb9ec"), "name" : "Zildjian", "__v" : 0 }
+students
+> db.students.find()
+{ "_id" : ObjectId("618a5089fe5d81bd4404a9a1"), "name" : "ximingx查看当前操作的数据库 **db**" }
+```
+
+### 用户的增删
+
+```bash
+> use admin
+# 创建 root 用户
+> db.createUser({user:"root用户名",pwd:"root密码",roles:["root"] })
+# 验证
+> db.auth("root用户名","root密码")
+# 创建一般用户
+# 先到要创建用户使用的数据库
+> use test
+# <role> admin 库添加用户和读写权限 
+# 1.数据库用户角色：read、readWrite;
+# 2.数据库管理角色：dbAdmin、dbOwner、userAdmin；
+# 3.集群管理角色：clusterAdmin、clusterManager、clusterMonitor、hostManager；
+# 4.备份恢复角色：backup、restore
+# 5.所有数据库角色：readAnyDatabase、readWriteAnyDatabase、userAdminAnyDatabase、dbAdminAnyDatabase
+# 6.超级用户角色：root
+> db.createUser({user:"users",pwd:"users",roles[{role:"readWrite",db:"users"}]})
+db.createUser({user:'user',pwd:'user',roles:[{role:'readWrite',db:'u'}]})
+# 删除用户
+> db.system.users.remove({user:"user"})
+```
+
+## Mongoose
+
+- **Mongoose 是一个让我们可以通过Node来操作MongoDB数据库的一个模块**
+- Mongoose 是一个对象文档模型（ODM）库，它是对Node原生的MongoDB模块进行了进一步的优化封装
+- 大多数情况下，他被用来把结构化的模式应用到一个MongoDB集合，并提供了验证和类型装换等好处
+- 基于MongoDB驱动，通过关系型数据库的思想来实现非关系型数据库
+
+安装依赖
+
+```bash
+npm install mongoose
+```
+
+**简单无约束的使用**
+
+Schema（模式对象）
+
+- Schema 对象定义约束了数据库中的文档结构
+
+Model
+
+- Model 对象作为集合中的所有文档的表示，相当于MongoDB中的collection，它的每一个实例就是一个document文档
+
+Document
+
+- Document表示集合中的具体文档，相当于collection中的一个具体文档
+
+### 连接数据库
+
+```js
+const mongoose = require('mongoose');
+
+// 连接集数据库
+// connect()返回的是一个待定状态，
+mongoose.connect(‘mongodb://数据库ip地址 : 端口号( 默认端口27017可以省略 )/数据库名’)
+// 没有设置权限密码的情况
+mongoose.connect('mongodb://localhost/数据库名字')
+// 设置密码权限的情况
+mongoose.connect('mongodb://用户名:密码@数据库的ip地址:27017/数据库名')
+
+// 在mongoose中有一个属性叫 connection 用来表示数据库的连接, 通过监视该对象可以用来监听数据库的连接与断开
+// 数据库连接成功事件
+
+mongoose.connection.once(‘open’ , () => {})
+
+// 数据库断开事件
+
+mongoose.connection.once(‘close’ , () => {})
 ```
 
 ### 设计约束
@@ -207,9 +247,28 @@ cats
 ```js
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+
 // 连接数据库
-mongoose.connect('mongodb://localhost/test').then(r => console.log('connect success'))
+mongoose.connect('mongodb://localhost/test')
+
+mongoose.connection.once('open',()=>{
+    console.log('数据库连接成功……')
+})
+mongoose.connection.once('close',()=>{
+    console.log('数据库断开……')
+})
+
 // 设计约束
+var stuSchema = new Schema({
+    name: String,
+    age: Number,
+    gender:{
+        type: String,
+        default:'male'
+    },
+    addr: String
+})
+
 const userSchema = new Schema({
   username: {
     type: String,
@@ -223,44 +282,23 @@ const userSchema = new Schema({
     type: String
   }
 })
+
 // 将文档结构发布为模型
 // 第一个参数 最后会转化成 小写复数 的集合名称
-// 第二个参数 选择架构
-// 返回模型构造函数
-// 简单地说 , 用这个约束模型 创建一个 users 集合
+// 第二个参数 选择需要对应的 Schema
+
+//将stuSchema映射到一个MongoDB collection并定义这个文档的构成
+
 const User = mongoose.model('User',userSchema)
-// 操作数据
 
+const Student = mongoose.model('Student',stuSchema)
 
-
-
-// 设定集合规则
- const courseSchema = new mongoose.Schema({
-     name: String,
-     author: String,
-     isPublished: Boolean
- });
-
-  // 创建集合并应用规则 (创建时集合名称要大写)
- const Course = mongoose.model('Course', courseSchema); // courses
-```
-
-### 连接数据库
-
-```js
-// 默认没有密码
-// 连接数据库
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test')
-  .then(() => console.log("连接成功"))
-  .catch((err) => console.error(err, "连接失败"));
-
-// 设置了密码之后
-// 连接数据库
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://root:root@localhost:27017/test')
-  .then(() => console.log("连接成功"))
-  .catch((err) => console.error(err, "连接失败"));
+Student.create({
+    name: "ximingx",
+    age: 20,
+    gender: "male",
+    addr: "山西省"
+})
 ```
 
 ### 插入数据
@@ -531,6 +569,9 @@ module.exports = {
 
 
 # 	MySQL
+
+[MySQL这篇写的很烂,看他的,啊呜](https://blog.csdn.net/weixin_45851945/article/details/114287877)
+[要不看这篇也行,也很不错](https://ximingx.blog.csdn.net/article/details/122157925)
 
 ## 连接mysql
 
@@ -994,4 +1035,132 @@ pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
     console.log('The solution is: ', results[0].solution);
 });
 ```
+
+
+
+
+
+# 服务器数据库的配置
+
+在云服务器宝塔面板安装mongodb数据库后，连接有些问题，特此记录一下。
+
+## » 服务器设置 Mongodb
+
+### 1.宝塔安装mongodb
+
+软件商店搜索 mongodb 安装即可
+
+![image-20220422192725423](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204221927538.png)
+
+### 2.修改mongodb配置
+
+`bindIp` 由127.0.0.1改为0.0.0.0，放开ip限制
+
+![image-20220422193002943](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204221930055.png)
+
+### 3.宝塔放开 27017 端口
+
+![image-20220422192910259](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204221929362.png)
+
+### 4.服务器放开 27017 端口
+
+![image-20220422193104327](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204221931436.png)
+
+### 5.验证
+
+浏览器打开 http://公网ip:27017，出现下图表示安装成功了
+
+![image-20220422193227642](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204221932752.png)
+
+### 6.无密码连接
+
+新建远程连接，输入ip和端口即可
+
+![image-20220422193322592](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204221933647.png)
+
+### 7.配置用户名密码
+
+通过宝塔终端或shell执行如下步骤:
+
+1.连接mongo
+
+```bash
+> cd /www/server/mongodb/bin/
+
+> ./mongo
+
+# 这里会显示很多, 但是不需要管
+
+Implicit session: session { "id" : UUID("~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  ~") }
+MongoDB server version: 4.4.6
+Welcome to the MongoDB shell.
+    For interactive help, type "help".
+    For more comprehensive documentation, see
+https://docs.mongodb.com/
+    Questions? Try the MongoDB Developer Community Forums
+https://community.mongodb.com
+    ---
+        The server generated these startup warnings when booting:
+    2022-04-22T19:10:34.984+08:00: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine. See http://dochub.mongodb.org/core/prodnotes-filesystem
+    2022-04-22T19:10:35.494+08:00: /sys/kernel/mm/transparent_hugepage/enabled is 'always'. We suggest setting it to 'never'
+2022-04-22T19:10:35.494+08:00: /sys/kernel/mm/transparent_hugepage/defrag is 'always'. We suggest setting it to 'never'
+---
+    ---
+        Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+and anyone you share the URL with. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+    To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+
+# 然后输入
+# 切换数据库
+> use admin
+
+switched to db admin
+
+# <role> admin 库添加用户和读写权限 
+# 1.数据库用户角色：read、readWrite;
+# 2.数据库管理角色：dbAdmin、dbOwner、userAdmin；
+# 3.集群管理角色：clusterAdmin、clusterManager、clusterMonitor、hostManager；
+# 4.备份恢复角色：backup、restore
+# 5.所有数据库角色：readAnyDatabase、readWriteAnyDatabase、userAdminAnyDatabase、dbAdminAnyDatabase
+# 6.超级用户角色：root
+> db.createUser({user:"用户名",pwd:"密码",roles:["root"] })
+Successfully added user: {
+  "user" : "用户名",
+      "roles" : [
+    {
+      "role" : "",
+      "db" : ""
+    }
+  ]
+}
+
+# 验证
+> db.auth("用户名","密码")
+
+Error: Authentication failed.
+0
+
+> db.auth("用户名","密码")
+1
+
+> ^C
+bye
+```
+
+### 8. 修改mongodb配置
+
+修改mongodb配置文件中的`authorization` 为 enabled，并重启
+
+![image-20220422193831919](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204221938996.png)
+
+### 9. 重新连接
+
+怎么说, 如果可以麻烦好评 + 1
 
