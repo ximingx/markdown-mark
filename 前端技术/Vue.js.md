@@ -2408,6 +2408,8 @@ export const useTodoStore = defineStore({
 
 这个文件应该导出一个包含了选项的对象：
 
+### 常用配置
+
 ```js
 const { defineConfig } = require('@vue/cli-service')
 // alias 中使用
@@ -2463,6 +2465,119 @@ module.exports = defineConfig({
 })
 ```
 
+###  cdn加载资源
+
+Vue项目打包的时候，默认会把所有代码合并生产新文件,其中包括各种库导致打包出来很大。如果使用cdn的话,会更利于程序的加载速度。
+
+**在Vue项目中，引入到工程中的所有js、css文件，编译时都会被打包进vendor.js，浏览器在加载该文件之后才能开始显示首屏。**若是引入的库众多，那么vendor.js文件体积将会相当的大，影响首开的体验。
+
+将引用的外部js、css文件剥离开来，不编译到vendor.js中，而是用资源的形式引用，这样浏览器可以使用多个线程异步将vendor.js、外部的js等加载下来，达到加速首开的目的。
+
+外部的库文件，可以使用`CDN资源`，或者别的服务器资源等。
+
+#### 1. index.html
+
+在项目根目录index.html使用cdn节点导入
+
+```html
+<body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <!--开发环境-->
+    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.js"></script>
+    <!--生产环境-->
+    <!--<script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>-->
+    <!-- 引入组件库 -->
+    <script src="https://cdn.bootcss.com/vue-router/3.2.0/vue-router.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.23.0/axios.min.js"></script>
+    <script src="https://cdn.bootcss.com/element-ui/2.15.6/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</body>
+```
+
+使用 **vue-cli** 构建的项目，也可以在 **项目/public/index.html** 的 head 元素中 插入准备好的 cdn 模板。
+
+可以看到，我们插入了 `<%= htmlWebpackPlugin.options.cdns %>` 参数，这就是我们需要准备的 cdn 模板。
+
+```html
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+  <title>vue-app</title>
+
+  <!-- 这里是插入的 CDN 位置，编写下面这行代码即可。 -->
+  <%= htmlWebpackPlugin.options.cdns %>
+</head>
+```
+
+#### 2. vue.config.js
+
+```js
+configureWebpack: {
+    externals: {
+        "vue": "Vue",
+        "vue-router": "VueRouter",
+        "axios": "axios",
+        "moment": "moment",
+        "element-ui": "ELEMENT",
+    }
+},
+```
+
+这里解释一下externals 配置选项的作用：
+
+我们想引用一个库，但是又不想让webpack打包，并且又不影响我们在程序中以CMD、AMD或者window/global全局等方式进行使用，那就可以通过配置externals。
+
+**踩坑配置注意点：element-ui要大写为ELEMENT**
+
+<%= htmlWebpackPlugin.options.cdns %> 的方法可以通过
+
+```js
+/** @file vue.config.js */
+
+module.exports = {
+  chainWebpack: (config) => {
+    // 只在生产环境使用 cdn
+    if (process.env.NODE_ENV === "production") {
+      // 忽略 vue 和 moment 这两个模块
+      config.externals({
+        vue: "Vue",
+        moment: "moment",
+      });
+
+      // 修改 HtmlWebpackPlugin 插件参数，植入 cdns 这个模板参数，值为 Vue3 和 Moment.js 的 cdn 链接
+      config.plugin("html").tap((args) => {
+        args[0].cdns = `
+					<script src="https://cdn.bootcdn.net/ajax/libs/vue/3.1.2/vue.runtime.global.prod.min.js" crossorigin="anonymous"></script>
+					<script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js" crossorigin="anonymous"></script>
+				`;
+        return args;
+      });
+    }
+  },
+};
+
+```
+
+config.externals 用于配置 外部扩展，其作用是不打包使用外部引入的扩展，也就是 build 的时候不打包这些模块。它的键名和值是有意义的：
+
+键名：键名为使用外部扩展的模块。 比如 import VueLib123 from "vue" 这句话，模块 from "vue" 是不变的，**模块名就是这个就是键名。**
+
+值：值就是使用 cdn 后，这个模块在全局上的引用。 比如 Vue 使用 cdn 引入后，全局上使用 Vue 变量来访问，那么外部扩展的值就是 Vue。
+
+config.plugin("html").tap 用于修改 HtmlWebpackPlugin 这个插件的参数，这里插入一个 cdns 参数，所以在 public/index.html 中可以使用 <%= htmlWebpackPlugin.options.cdns %> 来访问这个参数。
+
+#### 3. main.js
+
+去掉原有的引用
+
+先的`import`，项目还是会从`node_modules`中引入资源。
+也就是说不删的话，`npm run build`时候仍会将引用的资源一起打包，生成文件会大不少。所以我认为还是删了好
+
+
+
 
 
 
@@ -2494,6 +2609,8 @@ import 'normalize.css/normalize.css'
 包裹动态组件时，会缓存不活动的组件实例，主要用于**保留组件状态**或**避免重新渲染**。
 
 # Element
+
+## 自动导入
 
 官网对vue3+vuecli4的「自动导入」说的不是很清楚，导致自己踩坑配置了很久，特此写下文章记录
 
@@ -2527,7 +2644,7 @@ module.exports = {
 3. main.js
 
 ```js
-import 'normalize.css/normalize.css'
+import 'element-plus/dist/index.css'
 ```
 
 **常用配置**
@@ -2579,4 +2696,91 @@ module.exports = defineConfig({
   },
 })
 ```
+
+## 修改默认样式
+
+> 在vue组件中，为了使样式私有化（模块化），不对全局造成污染，可以在style标签上添加scoped属性以表示它的只属于当下的模块。**但是同时，scoped也会阻碍我们修改第三方组件库（element plus）的样式。**
+>
+> vue-cli生成时，自动给样式加了[data-v-]，所以无法修改样式。如果去掉文件样式中的scoped，会造成全局样式污染。
+
+1. 在公共css中修改全局样式，main.js引入即可；
+2. 将 style 中的限定 `scoped` 删除即可,但是不建议  ( 相当于快捷的第一种方式, 但是可能会会造成全局样式污染, 造成最后其他页面莫名其妙的排版 )
+3. vue 的深度选择器
+
+```js
+>>>
+/deep/
+::v-deep
+```
+
+```css
+eg:
+<style lang="css" scoped>
+.el-table >>> .row-done {
+  text-decoration: line-through;
+}
+</style>
+
+eg:
+<style lang="scss" scoped>
+.el-table /deep/ .row-done {
+  text-decoration: line-through;
+}
+</style>
+
+eg:
+<style lang="scss" scoped>
+.a{
+   ::v-deep .b { 
+      /* ... */ 
+   }
+} 
+</style>
+```
+
+**利用深度::v-deep深度修改组建的样式，可以直接写在到scoped作用域的style里面。（推荐）**
+
+## El-Table
+
+### 表格中使用图像
+
+```html
+<el-table-column label="Thumbnail" width="180">
+    <template #default="scope">
+        <div style="display: flex; align-items: center">
+            <el-image :preview-src-list="srcList"/>
+        </div>
+    </template>
+</el-table-column>
+```
+
+注：由于固定列是通过 sticky 来实现的，如果表格中含有固定列，请在图像上添加 `preview-teleported` 属性。
+
+
+
+# Vue CLI
+
+Vue CLI 4.x 需要 [Node.js](https://nodejs.org/) v8.9 或更高版本 (推荐 v10 以上)。
+
+```bash
+> npm install -g @vue/cli
+# OR
+yarn global add @vue/cli
+```
+
+## 创建项目
+
+```bash
+> vue create hello-world
+```
+
+## 图形化界面
+
+```bash
+> vue ui
+```
+
+上述命令会打开一个浏览器窗口，并以图形化界面将你引导至项目创建的流程。
+
+## 插件
 

@@ -237,5 +237,3 @@ object.insertAdjacentHTML(where,html)
     }
 </script>
 ```
-
-##

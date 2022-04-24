@@ -86,3 +86,11 @@ and 今天的睡前小故事是盗版的她的哦， 哎， 泥， 鸭
 
 ![image-20220418140531955](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204181405083.png)
 
+### 2022.04.24
+
+糟糕, 被偷袭了
+
+不许 色色 , 不许 
+
+可是好开心哇
+
