@@ -852,7 +852,9 @@ Vue 为最常用的键提供别名：
 
 >  他绑定的是属性 要和 {{ }} 语法区分开
 
-**如果绑定值为null或undefined，则该属性将从呈现的元素中删除。**
+- **如果绑定值为null或undefined，则该属性将从呈现的元素中删除。**
+- **凡是有-的style属性名都要变成驼峰式，比如font-size要变成`fontSize`**
+- 值要用引号括起来
 
 比如说：
 
@@ -898,7 +900,13 @@ Vue中通过属性绑定为元素设置class 类样式
 **方式一： 数组**
 
 ```html
-    <h1 :class="['red', 'thin']"></h1>
+<!-- 直接传递类名 -->   
+<h1 :class="['red', 'thin']"></h1>
+
+<h1 :style="[
+    {display: (activeName=='first'?'flex':'none')},
+    {fontSize: '20px'}
+]"></h1>
 ```
 
 上方代码中，注意，数组里写的是字符串；如果不加单引号，就不是字符串了，而是变量，我们一般可以用这种方式来搞事情
@@ -1010,6 +1018,39 @@ data() {
 - 当数据发生变化的时候，视图也就发生变化
 - 当视图发生变化的时候，数据也会跟着同步变化
 
+获取单选框中的值
+
+```html
+ 	<!-- 
+		1、 两个单选框需要同时通过v-model 双向绑定 一个值 
+        2、 每一个单选框必须要有value属性  且value 值不能一样 
+		3、 当某一个单选框选中的时候 v-model  会将当前的 value值 改变 data 中的 数据
+
+		gender 的值就是选中的值，我们只需要实时监控他的值就可以了
+	-->
+   <input type="radio" id="male" value="1" v-model='gender'>
+   <label for="male">男</label>
+
+   <input type="radio" id="female" value="2" v-model='gender'>
+   <label for="female">女</label>
+
+<script>
+    new Vue({
+         data: {
+             // 默认会让当前的 value 值为 2 的单选框选中
+                gender: 2,  
+            },
+    })
+
+</script>
+```
+
+获取复选框中的值
+
+- 通过v-model
+- 和获取单选框中的值一样 
+- 复选框 `checkbox` 这种的组合时   data 中的 hobby 我们要定义成数组 否则无法实现多选
+
 ```html
 <script>
 export default {
@@ -1032,9 +1073,45 @@ export default {
 <label for="mike">Mike</label>
 ```
 
+获取下拉框和文本框中的值
+
+```html
+   <div>
+      <span>职业：</span>
+       <!--
+			1、 需要给select  通过v-model 双向绑定 一个值 
+             2、 每一个option  必须要有value属性  且value 值不能一样 
+		    3、 当某一个option选中的时候 v-model  会将当前的 value值 改变 data 中的 数据
+		     occupation 的值就是选中的值，我们只需要实时监控他的值就可以了
+		-->
+       <!-- multiple  多选 -->
+      <select v-model='occupation' multiple>
+          <option value="0">请选择职业...</option>
+          <option value="1">教师</option>
+          <option value="2">软件工程师</option>
+          <option value="3">律师</option>
+      </select>
+         <!-- textarea 是 一个双标签   不需要绑定value 属性的  -->
+        <textarea v-model='desc'></textarea>
+  </div>
+<script>
+    new Vue({
+         data: {
+                // 默认会让当前的 value 值为 2 和 3 的下拉框选中
+                 occupation: ['2', '3'],
+             	 desc: 'nihao'
+            },
+    })
+</script>
+```
+
+**表单修饰符**
+
 .lazy
 
 默认情况下，`v-model`在每个事件之后将输入与数据同步（[上述](https://vuejs.org/guide/essentials/forms.html#vmodel-ime-tip)`input`IME 组合除外）。您可以添加修饰符以改为在事件后同步：`lazy``change`
+
+**本质: 将 input 事件切换成 change 事件**
 
 ```html
 <!-- synced after "change" instead of "input" -->
@@ -1056,6 +1133,8 @@ export default {
 .trim
 
 如果您希望自动修剪用户输入中的空白，您可以将`trim`修饰符添加到您的`v-model`-managed 输入中：
+
+**只能去掉首尾的 不能去除中间的空格**
 
 ```html
 <input v-model.trim="msg" />
@@ -1198,6 +1277,171 @@ data() {
 
 ---
 
+###  自定义指令
+
+- 内置指令不能满足我们特殊的需求
+- Vue允许我们自定义指令
+
+```html
+<div id="app">
+    <p>页面载入时，input 元素自动获取焦点：</p>
+<!-- 
+使用自定义的指令，只需在对用的元素中，加上'v-'的前缀形成类似于内部指令'v-if'，'v-text'的形式。 
+-->
+    <input v-focus>
+</div>
+ 
+<script>
+const app = Vue.createApp({})
+// 注册一个全局自定义指令 `v-focus`
+app.directive('focus', {
+  // 当被绑定的元素挂载到 DOM 中时……
+  mounted(el) {
+    // 聚焦元素
+    el.focus()
+  }
+})
+app.mount('#app')
+</script>
+```
+
+```html
+<div id="app">
+    <p>页面载入时，input 元素自动获取焦点：</p>
+    <input v-focus>
+</div>
+ 
+<script>
+const app = {
+   data() {
+      return {
+          
+      }
+   },
+   directives: {
+      focus: {
+         // 指令的定义
+         mounted(el) {
+            el.focus()
+         }
+      }
+   }
+}
+</script>
+```
+
+```html
+<input type="text" v-color='msg'>
+ <input type="text" v-focus>
+ <script type="text/javascript">
+    /*
+      自定义指令-局部指令
+    */
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg: {
+          color: 'red'
+        }
+      },
+   	  // 局部指令，需要定义在  directives 的选项
+      directives: {
+        color: {
+          // binding 为自定义的函数形参   通过自定义属性传递过来的值 存在 binding.value 里面
+          bind: function(el, binding){
+            el.style.backgroundColor = binding.value.color;
+          }
+        },
+        focus: {
+          inserted: function(el) {
+            el.focus();
+          }
+        }
+      }
+    });
+  </script>
+```
+
+指令定义函数提供了几个钩子函数（可选）：
+
+- `created `: 在绑定元素的属性或事件监听器被应用之前调用。
+- `beforeMount `: 指令第一次绑定到元素并且在挂载父组件之前调用。。
+- `mounted `: 在绑定元素的父组件被挂载后调用。。
+- `beforeUpdate`: 在更新包含组件的 VNode 之前调用。。
+- `updated`: 在包含组件的 VNode 及其子组件的 VNode 更新后调用。
+- `beforeUnmount`: 当指令与在绑定元素父组件卸载之前时，只调用一次。
+- `unmounted`: 当指令与元素解除绑定且父组件已卸载时，只调用一次。
+
+**钩子函数的参数有：**
+
+**el**
+
+- **el** 指令绑定到的元素。这可用于直接操作 DOM。
+
+**binding**
+
+binding 是一个对象，包含以下属性：
+
+- `instance`：使用指令的组件实例。
+- `value`：**传递给指令的值。**例如，在 `v-my-directive="1 + 1"` 中，该值为 `2`。
+- `oldValue`：先前的值，仅在 `beforeUpdate` 和 `updated` 中可用。值是否已更改都可用。
+- `arg`：参数传递给指令 (如果有)。例如在 `v-my-directive:foo` 中，arg 为 `"foo"`。
+- `modifiers`：包含修饰符 (如果有) 的对象。例如在 `v-my-directive.foo.bar` 中，修饰符对象为 `{foo: true，bar: true}`。
+- `dir`：一个对象，在注册指令时作为参数传递。
+
+---
+
+### tabbar
+
+```html
+<body>
+  <div id="app">
+    <div class="tab">
+      <ul>
+        <li v-on:click='change(index)' :class='currentIndex==index?"active":""' :key='item.id' v-for='(item,index) in list'>{{item.title}}</li>
+      </ul>
+      <div :class='currentIndex==index?"current":""' :key='item.id' v-for='(item, index) in list'>
+        <img :src="item.path">
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="js/vue.js"></script>
+  <script type="text/javascript">
+    /*
+      
+    */
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        currentIndex: 0, // 选项卡当前的索引
+        list: [{
+          id: 1,
+          title: 'apple',
+          path: 'img/apple.png'
+        },{
+          id: 2,
+          title: 'orange',
+          path: 'img/orange.png'
+        },{
+          id: 3,
+          title: 'lemon',
+          path: 'img/lemon.png'
+        }]
+      },
+      methods: {
+        change: function(index){
+          // 在这里实现选项卡切换操作：本质就是操作类名
+          // 如何操作类名？就是通过currentIndex
+          this.currentIndex = index;
+        }
+      }
+    });
+  </script>
+</body>
+```
+
+---
+
 ## 4. vue Reactivity
 
 ### data
@@ -1238,6 +1482,8 @@ export default {
 
 **计算属性的主要特性就是为了将不经常变化的计算结果进行缓存，以节约我们的系统开销；**
 
+computed比较适合对多个变量或者对象进行处理后返回一个结果值，也就是数多个变量中的某一个值发生了变化则我们监控的这个值也就会发生变化
+
 ```js
  var app = new Vue({
      el:"#app",
@@ -1245,6 +1491,7 @@ export default {
      computed:{
          // 定义计算属性
          // 有方法的皮， 但是却是当作属性使用
+         // 这里一定要有return, 否则, 调用的时候无法拿到结果   
          属性名() {
              return "返回值";
          }
@@ -1259,11 +1506,52 @@ export default {
 
 计算属性允许我们以声明方式计算派生值。但是，在某些情况下，我们需要执行“副作用”以响应状态更改——例如，改变 DOM，或根据异步操作的结果更改另一部分状态。
 
-使用 Options API，我们可以使用`watch`选项在反应属性发生变化时触发函数：
+watch 中的属性 一定是data 中 已经存在的数据 
 
- watch可以监听简单属性值及其对象中属性值的变化.
+**watch类似于onchange事件,可以在属性值修改的时候,执行某些操作.**
 
- **watch类似于onchange事件,可以在属性值修改的时候,执行某些操作.**
+```html
+ <div id="app">
+        <div>
+            <span>名：</span>
+            <span>
+        <input type="text" v-model='firstName'>
+      </span>
+        </div>
+        <div>
+            <span>姓：</span>
+            <span>
+        <input type="text" v-model='lastName'>
+      </span>
+        </div>
+        <div>{{fullName}}</div>
+    </div>
+
+  <script type="text/javascript">
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                firstName: 'Jim',
+                lastName: 'Green',
+                fullName: 'Jim Green'
+            },
+             //watch  属性 定义 和 data 已经 methods 平级 
+            watch: {
+                //   注意：  这里firstName  对应着data 中的 firstName 
+                //   当 firstName 值 改变的时候  会自动触发 watch
+                firstName: function(val) {
+                    this.fullName = val + ' ' + this.lastName;
+                },
+                //   注意：  这里 lastName 对应着data 中的 lastName 
+                lastName: function(val) {
+                    this.fullName = this.firstName + ' ' + val;
+                }
+            }
+        });
+    </script>
+```
+
+**当需要监听一个对象的改变时，普通的watch方法无法监听到对象内部属性的改变，只有data中的数据才能够监听到变化，此时就需要deep属性对对象进行深度监听**
 
 ```js
 var app = new Vue({
@@ -1272,19 +1560,20 @@ var app = new Vue({
         message:"白大锅",
         person:{"name":"heima", "age":13}
     },
-    //watch监听
+    // watch监听
     watch:{
-        //监听message属性值,newValue代表新值,oldValue代表旧值
+        
+        // 监听message属性值,newValue代表新值,oldValue代表旧值
         message(newValue, oldValue){
         	console.log("新值：" + newValue + "；旧值：" + oldValue);
         },
-        //监控person对象的值,对象的监控只能获取新值
+        // 监控person对象的值,对象的监控只能获取新值
         person: {
-            //开启深度监控；监控对象中的属性值变化
+            // 开启深度监控；监控对象中的属性值变化
             deep: true,
-            //获取到对象的最新属性数据(obj代表新对象)
-            handler(obj){
-                console.log("name = " + obj.name + "; age=" + obj.age);
+            // 获取到对象的最新属性数据( newValue 代表新对象)
+            handler(newValue, oldValue){
+                console.log("name = " + newValue.name + "; age=" + newValue.age);
             }
         }
     }
@@ -1306,9 +1595,9 @@ Vue 实例从创建到销毁的过程，就是生命周期。也就是从开始�
 
 ### 创建期间的生命周期函数
 
-- beforeCreate：实例刚在内存中被创建出来，此时，还没有初始化好 data 和 methods 属性
+- beforeCreate：实例刚在内存中被创建出来，此时，还没有初始化好 data 和 methods 属性 ( **我感觉这个时候没什么可以去改变的了** )
 
-- created：实例已经在内存中创建OK，此时 data 和 methods 已经创建OK，此时还没有开始 编译模板。我们可以在这里进行Ajax请求。
+- **created：实例已经在内存中创建OK，此时 data 和 methods 已经创建，此时还没有开始 编译模板。我们可以在这里进行Ajax请求。**
 
 - beforeMount：此时已经完成了模板的编译，但是还没有挂载到页面中
 
@@ -1318,7 +1607,7 @@ Vue 实例从创建到销毁的过程，就是生命周期。也就是从开始�
 
 ### 运行期间的生命周期函数
 
-- beforeUpdate：状态更新之前执行此函数， 此时 data 中的状态值是最新的，但是界面上显示的 数据还是旧的，因为此时还没有开始重新渲染DOM节点
+- beforeUpdate：状态更新之前执行此函数， **此时 data 中的状态值是最新的，但是界面上显示的 数据还是旧的**，因为此时还没有开始重新渲染DOM节点
 
 - updated：实例更新完毕之后调用此函数，此时 data 中的状态值 和 界面上显示的数据，都已经完成了更新，界面已经被重新渲染好了。
 
@@ -1336,7 +1625,7 @@ PS：可以在beforeDestroy里**清除定时器、或清除事件绑定**。
 
 ---
 
-第一次页面加载时会触发 beforeCreate, created, beforeMount, mounted 这几个钩子
+**第一次页面加载时会触发 beforeCreate, created, beforeMount, mounted 这几个钩子**
 
 DOM 渲染在 mounted 中就已经完成了。
 
@@ -1374,9 +1663,9 @@ Vue 提供了两个内置组件，可以帮助处理过渡和动画以响应不�
 
 - 通过条件渲染v-if
 - 通过条件显示v-show
-- <component>通过特殊元素切换动态组件
+- `<component>` 通过特殊元素切换动态组件
 
-> <Transition>仅支持单个元素或组件作为其插槽内容。如果内容是一个组件，则该组件也必须只有一个根元素。
+> `<Transition>` 仅支持单个元素或组件作为其插槽内容。如果内容是一个组件，则该组件也必须只有一个根元素。
 
 ### 6.2 动画状态
 
@@ -1631,6 +1920,18 @@ export default {
 ```
 
 ### 7.6 slot 插槽
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2584,29 +2885,128 @@ config.plugin("html").tap 用于修改 HtmlWebpackPlugin 这个插件的参数�
 
 
 
-## @补充
+## @ 补充知识
 
-### 动态添加对象的属性
+### 1. 动态添加对象的属性
 
 Vue中，动态新增对象的属性时，不能直接添加。正确的做法是：Vue.set(obj,key,value)。
 
-### normalize.css
+### 2. normalize.css
+
+- 保护有用的浏览器默认样式而不是完全去掉它们
+- 一般化的样式, 为大部分HTML元素提供
+- 修复浏览器自身的bug并保证各浏览器的一致性
+- 优化CSS可用性, 用一些小技巧
 
 安装
 
 ```bash
 npm install --save normalize.css 
+npm install css-loader style-loader
 ```
 
 main.js 引入
 
 ```js
-import 'normalize.css/normalize.css'
+import 'normalize.css'
 ```
 
-### keep-alive 
+### 3. keep-alive
 
 包裹动态组件时，会缓存不活动的组件实例，主要用于**保留组件状态**或**避免重新渲染**。
+
+### 4. 过滤器
+
+**从 Vue 3.0 开始，过滤器已移除，且不再支持。**
+
+- 可被用于一些常见的文本格式化。
+- **过滤器可以用在两个地方：双花括号插值和v-bind表达式。**
+- 过滤器应该被添加在JavaScript表达式的尾部，由“管道”符号指示
+- 支持级联操作
+- **过滤器不改变真正的`data`，而只是改变渲染的结果，并返回过滤后的版本**
+- 全局注册时是filter，没有s的。而局部过滤器是filters，是有s的
+
+```html
+  <div id="app">
+    <input type="text" v-model='msg'>
+      <!-- upper 被定义为接收单个参数的过滤器函数，表达式  msg  的值将作为参数传入到函数中 -->
+    <div>{{msg | upper}}</div>
+    <div>{{msg | upper | lower}}</div>
+	<div>{{ message | filterA('arg1', 'arg2') }}</div>  
+  </div>
+
+<script type="text/javascript">
+   //  lower  为全局过滤器     
+   Vue.filter('lower', function(val) {
+      return val.charAt(0).toLowerCase() + val.slice(1);
+    });
+    
+    var vm = new Vue({
+      el: '#app',
+      data: {
+        msg: '',
+        message: 'ximingx'
+      },
+       //  定义filters 中的过滤器为局部过滤器 
+      filters: {
+        //    upper 自定义的过滤器名字 
+        //    upper 被定义为接收单个参数的过滤器函数，表达式  msg  的值将作为参数传入到函数中
+        upper: function(val) {
+         //  过滤器中一定要有返回值 这样外界使用过滤器的时候才能拿到结果
+          return val.charAt(0).toUpperCase() + val.slice(1);
+        }
+          
+        // 带有参数
+        // 在过滤器中 第一个参数 对应的是  管道符前面的数据  n  此时对应 message
+        // 第2个参数  a 对应 实参  arg1 字符串
+        // 第3个参数  b 对应 实参  arg2 字符串
+        filterAfunction(n,a,b){
+            if(n<10){
+                return n+a;
+            }else{
+                return n+b;
+            }
+        } 
+          
+      }
+    });
+  </script>
+```
+
+### 5. 数组变异方法
+
+- 在 Vue 中，直接修改对象属性的值无法触发响应式。当你直接修改了对象属性的值，你会发现，只有数据改了，但是页面内容并没有改变
+- 变异数组方法即保持数组方法原有功能不变的前提下对其进行功能拓展, 可以触发响应式
+
+| `push()`    | 往数组最后面添加一个元素，成功返回当前数组的长度             |
+| ----------- | ------------------------------------------------------------ |
+| `pop()`     | 删除数组的最后一个元素，成功返回删除元素的值                 |
+| `shift()`   | 删除数组的第一个元素，成功返回删除元素的值                   |
+| `unshift()` | 往数组最前面添加一个元素，成功返回当前数组的长度             |
+| `splice()`  | 有三个参数，第一个是想要删除的元素的下标（必选），第二个是想要删除的个数（必选），第三个是删除 后想要在原位置替换的值 |
+| `sort()`    | sort()  使数组按照字符编码默认从小到大排序,成功返回排序后的数组 |
+| `reverse()` | reverse()  将数组倒序，成功返回倒序后的数组                  |
+
+不会改变原始数组，但总是返回一个新数组
+
+| filter | filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。 |
+| ------ | ------------------------------------------------------------ |
+| concat | concat() 方法用于连接两个或多个数组。该方法不会改变现有的数组 |
+| slice  | slice() 方法可从已有的数组中返回选定的元素。该方法并不会修改数组，而是返回一个子数组 |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Element
 
@@ -2739,22 +3139,6 @@ eg:
 ```
 
 **利用深度::v-deep深度修改组建的样式，可以直接写在到scoped作用域的style里面。（推荐）**
-
-## El-Table
-
-### 表格中使用图像
-
-```html
-<el-table-column label="Thumbnail" width="180">
-    <template #default="scope">
-        <div style="display: flex; align-items: center">
-            <el-image :preview-src-list="srcList"/>
-        </div>
-    </template>
-</el-table-column>
-```
-
-注：由于固定列是通过 sticky 来实现的，如果表格中含有固定列，请在图像上添加 `preview-teleported` 属性。
 
 
 
