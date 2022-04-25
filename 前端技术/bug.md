@@ -91,6 +91,31 @@ unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_
 // 可恶, 一天就这么过去了, 啊啊啊啊啊啊啊啊啊
 ```
 
+## net::ERR_CONNECTION_REFUSED
+
+```bash
+# 在登陆验证的时候出现这么一个问题 
+# post http://localhost:3000/action net::ERR_CONNECTION_REFUSED
+# 在我仔细地检查了后端, 前端代码后, 以及经过一些列的排查
+# 我开始对 req.body 进行判断, 发现她是空的 {}
+# 于是我明白了问题的发生在于 前端的请求并没有被解析为 req.body
+# 再经过一些列的迷惑操作过后
+
+
+> 在PM2管理器里面安装express和express-generator模块
+
+
+
+# 这里的express-generator模块非常需要注意，我自己在本地运行express项目的时候没有安装这个模块，项目却可以运行。
+# 到了服务器上面项目就不可以运行了。如果你是新版本的express，一定要安装这个模块，不然会导致项目无法运行。
+
+# 啊, 无聊的版本知识又增加了
+```
+
+
+
+
+
 
 
 # Vue.js
@@ -113,6 +138,9 @@ npm ERR! 404 tarball, folder, http url, or git url.
 npm ERR! A complete log of this run can be found in:
 npm ERR!     F:\environment\node\node_cache\_logs\2022-04-08T12_51_37_004Z-debug.log
 
+> 删除 node_modules 文件夹
+> npm clear --force
+> npm i
 ```
 
 # Mongodb

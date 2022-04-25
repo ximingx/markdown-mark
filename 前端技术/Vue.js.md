@@ -53,7 +53,7 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 - mint-ui: 基于vue的组件库(移动端)
 - **element-plus: 基于vue的组件库(PC端)**
 
-两种实现方式
+### 1.1 两种实现方式
 
 sfc 
 
@@ -140,7 +140,7 @@ export default {
 
 ---
 
-### 提高效率的发展历程
+### 1.2 提高效率的发展历程
 
 原生JS -> Jquery之类的类库 -> 前端模板引擎 -> Angular.js / Vue.js（能够帮助我们减少不必要的DOM操作；提高渲染效率；双向数据绑定的概念）
 
@@ -148,7 +148,7 @@ Vue.js 中我们有自己操作 DOM 的方式， 可以不再使用原生方法
 
 ---
 
-### 虚拟 DOM
+### 1.3 虚拟 DOM
 
 传统的web开发，是利用 jQuery操作DOM，这是非常耗资源的。
 
@@ -158,7 +158,7 @@ Vue1.0没有虚拟DOM，直到Vue2.0改成了基于虚拟DOM， 现在常用的�
 
 ---
 
-### Vue框架的特点
+### 1.4 Vue框架的特点
 
 与 jquery 的区别：vue数据驱动，通过数据来显示视图层而不是节点操作。
 
@@ -177,7 +177,7 @@ vue 一般使用场景：数据操作比较多、频繁的场景，更加便捷�
 
 ---
 
-### MVVM 模式
+### 1.5 MVVM 模式
 
 ![](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16%20%E4%B8%8B%E5%8D%884.18.55.png)
 
@@ -203,7 +203,7 @@ mvc和mvvm其实区别并不大，都是一种设计思想。主要就是mvc中C
 
 ---
 
-### 单文件组件
+### 1.6 单文件组件
 
 在大多数支持构建工具的 Vue 项目中，我们使用类似于 HTML 的文件格式创建 Vue 组件，称为单文件组件（也称为*.vue文件，缩写为SFC）。
 
@@ -239,7 +239,7 @@ export default {
 
 ---
 
-### 引用 Vue.js 
+### 1. 引用 Vue.js
 
 **首先介绍的方式都是直接在 `html` 文件中使用**
 
@@ -302,7 +302,7 @@ $ npm install vue
 
 ---
 
-### 利用 vue-cli 
+### 2. 利用 vue-cli
 
 Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该工具为现代化的前端开发工作流提供了开箱即用的构建配置。只需几分钟即可创建并启动一个带热重载、保存时静态检查以及可用于生产环境的构建配置的项目。
 
@@ -348,7 +348,7 @@ Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该�
 
 ---
 
-### 使用 vite 
+### 3. 使用 vite
 
 官方的 Vue 构建设置基于[Vite](https://vitejs.dev/)，这是一个现代、轻量级且速度极快的前端构建工具。
 
@@ -386,7 +386,7 @@ Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该�
 
 ---
 
-### 实例的解释
+### 4. 实例的解释
 
 每个 Vue 应用程序首先使用以下函数创建一个新的**应用程序实例**[`createApp`](https://vuejs.org/api/application.html#createapp)：
 
@@ -401,7 +401,7 @@ const app = createApp({
 
 ---
 
-### 根组件
+### 5. 根组件
 
 我们传入的对象`createApp`实际上是一个组件。每个应用程序都需要一个“根组件”，它可以包含其他组件作为其子组件。
 
@@ -417,7 +417,7 @@ const app = createApp(App)
 
 ---
 
-### 挂载
+### 6. 挂载
 
 `.mount()`在调用其方法之前，应用程序实例不会呈现任何内容。它需要一个“容器”参数，它可以是实际的 DOM 元素或选择器字符串：
 
@@ -433,13 +433,13 @@ app.mount('#app')
 
 ---
 
-### 应用程序配置
+### 7. 应用程序配置
 
 应用程序实例公开了一个`.config`对象，允许我们配置一些应用程序级选项
 
 ---
 
-### 应用介绍
+### 8. 应用介绍
 
 - createApp() ：创建一个应用，每个 Vue 应用都是通过用 createApp 函数创建一个新的应用实例开始的：；
 - data(){} ： data方法，用于在vue中声明数据,对象或函数类型,页面中可以直接访问使用；
@@ -1444,7 +1444,7 @@ binding 是一个对象，包含以下属性：
 
 ## 4. vue Reactivity
 
-### data
+### 1. data
 
 我们使用`data`选项来声明组件的反应状态。选项值应该是一个返回对象的函数。Vue 会在创建新组件实例时调用该函数，并将返回的对象包装在其响应系统中。此对象的任何顶级属性都代理在组件实例上（`this`在方法和生命周期挂钩中）：
 
@@ -1458,7 +1458,7 @@ data() {
 
 这些实例属性仅在首次创建实例时添加，因此您需要确保它们都存在于函数返回的对象中`data`。如有必要，使用`null`或`undefined`其他一些占位符值来表示所需值尚不可用的属性。
 
-### methods
+### 2. methods
 
 Vue 自动绑定`this`值，`methods`以便它始终引用组件实例。这可确保方法在`this`用作事件侦听器或回调时保留正确的值。定义 时应避免使用箭头函数`methods`，因为这会阻止 Vue 绑定适当的`this`值：
 
@@ -1474,7 +1474,7 @@ export default {
 
 ---
 
-### computed
+### 3. computed
 
 能够将计算结果缓存起来的属性(将行为转化成了静态的属性)
 
@@ -1502,7 +1502,7 @@ computed比较适合对多个变量或者对象进行处理后返回一个结果
 
 ---
 
-### watch
+### 4. watch
 
 计算属性允许我们以声明方式计算派生值。但是，在某些情况下，我们需要执行“副作用”以响应状态更改——例如，改变 DOM，或根据异步操作的结果更改另一部分状态。
 
@@ -1707,6 +1707,9 @@ Vue 提供了两个内置组件，可以帮助处理过渡和动画以响应不�
 
 在 vue 项目中， 我们将 ui 作为单独的一部分，嵌套应用程序 ， 每一个组件负责自己的页面内容， 最重要的是， 减少了造轮子
 
+- **组件 (Component) 是 Vue.js 最强大的功能之一**
+- **组件可以扩展 HTML 元素，封装可重用的代码**
+
 ![image-20220325201424552](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/image-20220325201424552.png)
 
 ---
@@ -1745,6 +1748,25 @@ app.component('MyComponent', MyComponent)
 
 全局注册的组件可以在此应用程序中的任何组件的模板中使
 
+```html
+<div id="example">
+  <!-- 组件使用 组件名称 是以HTML标签的形式使用  -->  
+  <my-component></my-component>
+</div>
+<script>
+    //   注册组件 
+	Vue.component('my-component', {
+      template: '<div>A custom component!</div>'
+    })
+
+    // 创建根实例
+    new Vue({
+      el: '#example'
+    })
+
+</script>
+```
+
 局部注册的组件只能在当前组件使用
 
 ```html
@@ -1782,6 +1804,10 @@ export default {
   <ButtonCounter />
 </template>
 ```
+
+- **组件参数的data值必须是函数同时这个函数要求返回一个对象** 
+- **组件模板必须是单个根元素( vue2的情况下 ), vue3 可以随意, 多个根组件**
+- 组件模板的内容可以是模板字符串
 
 使用 切换多个组件一个组件在切换离开时将被卸载。我们可以通过内置组件`KeepAlive` 强制非活动组件保持
 
@@ -2944,8 +2970,10 @@ import 'normalize.css'
     var vm = new Vue({
       el: '#app',
       data: {
-        msg: '',
-        message: 'ximingx'
+        return {
+          	msg: '',
+        	message: 'ximingx'
+      	}
       },
        //  定义filters 中的过滤器为局部过滤器 
       filters: {
@@ -2993,6 +3021,82 @@ import 'normalize.css'
 | ------ | ------------------------------------------------------------ |
 | concat | concat() 方法用于连接两个或多个数组。该方法不会改变现有的数组 |
 | slice  | slice() 方法可从已有的数组中返回选定的元素。该方法并不会修改数组，而是返回一个子数组 |
+
+**通过索引修改数据是不会发生响应式的**
+
+一般可以通过 **Vue.set(arr,index,value)**   来修改, 让 触发视图重新更新一遍，数据动态起来
+
+```js
+var vm = new Vue({
+      el: '#app',
+      data: {
+        return {
+          	arr[1,2,3,4,5,6]
+      	}
+      },
+      mounted() {
+      	 Vue.set(this.arr, 2, "aw")          
+      }
+    });
+  </script>
+```
+
+### 6. 生成二维码
+
+```bash
+import QRCode from 'qrcodejs2'
+```
+
+```html
+<template>
+  <div ref="qrCodeUrl" className="cart"></div>
+</template>
+
+<script>
+import QRCode from 'qrcodejs2'
+
+export default {
+  name: "ShowCart",
+  methods: {
+    creatQrCode(text, color) {
+      new QRCode(this.$refs.qrCodeUrl, {
+        text: text, // 需要转换为二维码的内容
+        width: 400,
+        height: 400,
+        colorDark: color,
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      })
+    },
+  },
+  mounted() {
+    // 这里的信息是我自己发送的信息 (b)
+    let {name, phone, activity, heath, pass, desc, date} = this.$route.params
+    this.creatQrCode(`姓名: ${name}
+    电话: ${phone}
+    活动区域: ${activity}
+    健康码是否是绿色: ${heath}
+    行程码是否是绿色: ${pass}
+    补充信息: ${desc}
+    记录时间: ${date}
+    `, (heath && pass)?"#2aad2a":'#ff0000' )
+  },
+}
+</script>
+
+<style scoped>
+.cart {
+  display: block;
+  width: 400px;
+  height: 400px;
+  margin: 20vh auto;
+  position: relative;
+  color: cornsilk;
+}
+</style>
+```
+
+
 
 
 
