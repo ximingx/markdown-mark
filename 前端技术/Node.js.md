@@ -3223,6 +3223,10 @@ art-template同时支持两种模板语法：标准语法和原始语法。
 - 设置模板根目录 template.defaults.root = 模板目录
 - 设置模板默认后缀 template.defaults.extname = '.art'
 
+
+
+
+
 # 加密 身份验证
 
 ## bcrypt

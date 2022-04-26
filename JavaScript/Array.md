@@ -1336,6 +1336,30 @@ arr2:www,smyhvae,com,你懂得
 
 我们明白了这个例子，就可以避免开发中的很多业务逻辑上的 bug。
 
+### 解构赋值并重命名
+
+```js
+let obj = {
+    key1: 'value1',
+    key2: 'value2',
+    key3: 'value3',
+}
+
+// 常规写法：
+let key1 = obj.key1;
+let key2 = obj.key2;
+let key3 = obj.key3;
+
+
+// 简写：
+const { key1, key2, key3 } = obj;
+
+// 简写并重命名key
+const { key1: aliasKey, key2, key3 } = obj;
+console.log(key1); // key1 is not defined
+console.log(aliasKey);  // 'value1'
+```
+
 ### 合并数组
 
 代码举例：
