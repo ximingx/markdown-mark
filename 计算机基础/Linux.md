@@ -719,15 +719,15 @@ Vim是从 vi 发展出来的一个文本编辑器。代码补完、编译及错�
 :1,10 s/^/#/g 在1~10 行首添加 # 号注释  
 ```
 
-## Ubuntu 安装
+# Ubuntu 安装
 
 > win10下使用VirtualBox安装ubuntu20.04教程
 
-### 1. 准备安装材料
+## 1. 准备安装材料
 
 [VirtualBox 下载](https://www.virtualbox.org/wiki/Downloads)
 
 [ubuntu 下载](https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/)
 
-### 2. 新建虚拟机
+## 2. 新建虚拟机
 

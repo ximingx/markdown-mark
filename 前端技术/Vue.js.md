@@ -3155,7 +3155,6 @@ module.exports = {
             resolvers:[ElementPlusResolver()],
         })
     ],
-
     },
   }
 ```

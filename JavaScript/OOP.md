@@ -464,7 +464,8 @@ ldh.sing('冰雨'); // 刘德华唱冰雨
 
 ```js
 // 父类
-class Father{   
+class Father{  
+    
 } 
 
 // 子类继承父类
