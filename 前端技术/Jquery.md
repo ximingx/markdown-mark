@@ -2,7 +2,7 @@
 
 # Jquery
 
-​	JavaScript库：即 library，是一个封装好的特定的集合（方法和函数）。从封装一大堆函数的角度理解库，就是在这个库中，封装了很多预先定义好的函数在里面，比如动画animate、hide、show，比如获取元素等。
+​	**JavaScript库：即 library，是一个封装好的特定的集合（方法和函数）。**从封装一大堆函数的角度理解库，就是在这个库中，封装了很多预先定义好的函数在里面，比如动画animate、hide、show，比如获取元素等。
 
 > 简单理解： 就是一个JS 文件，里面对我们原生js代码进行了封装，存放到里面。这样我们可以快速高效的使用这些封装好的功能了。
 >
@@ -39,6 +39,8 @@
 
 版本介绍：
 
+> [https://jquery.com/](https://jquery.com/)
+>
 > 各个版本的下载：https://code.jquery.com/
 >
 > [https://jquery.com/download/](https://jquery.com/download/)
@@ -49,17 +51,14 @@
 >
 > 2x ：不兼容 IE 678 等低版本浏览器， 官网不再更新
 >
-> 3x ：不兼容 IE 678 等低版本浏览器， 是官方主要更新维护的版本
+> 3x ：不兼容 IE 678 等低版本浏览器， **是官方主要更新维护的版本**
 
 **在文档最末尾插入 script 标签**
 
-> cdn
+> cdn 引入方式
 
 ```js
-<script
-  src="https://code.jquery.com/jquery-3.6.0.js"
-  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-  crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 ```
 
 > 下载到本地
@@ -73,12 +72,13 @@
 ```js
 // 第一种: 简单易用。
 $(function () {   
-    ...  // 此处是页面 DOM 加载完成的入口
+    ...  
 }) ; 
 
+    
 // 第二种: 繁琐，但是也可以实现
 $(document).ready(function(){
-   ...  //  此处是页面DOM加载完成的入口
+   ...  
 });
 ```
 
@@ -91,14 +91,14 @@ $(document).ready(function(){
 
 ### 2.3  jQuery 对象
 
-1.  \$是 jQuery 的别称，在代码中可以使用 jQuery 代替，但一般为了方便，通常都直接使用 $ 。
-2.  \$是jQuery的顶级对象，相当于原生JavaScript中的 window。把元素利用$包装成jQuery对象，就可以调用jQuery 的方法。
+1.  **\$是 jQuery 的别称，在代码中可以使用 jQuery 代替，但一般为了方便，通常都直接使用 $ 。**
+2.  **\$是jQuery的顶级对象**，相当于原生JavaScript中的 window。把元素利用$包装成jQuery对象，就可以调用jQuery 的方法。
 
 ​	**使用 jQuery 方法和原生JS获取的元素是不一样的**，总结如下 : 
 
 1. 用原生 JS 获取来的对象就是 DOM 对象
 2. jQuery 方法获取的元素就是 jQuery 对象。
-3. jQuery 对象本质是： 利用$对DOM 对象包装后产生的对象**（伪数组形式存储）。**
+3. **jQuery 对象本质是： 利用$对DOM 对象包装后产生的对象（伪数组形式存储）。**
 
 > 注意：
 >
@@ -123,9 +123,9 @@ var domObject2 = $('div').get(0)
 
 ## 3. 选择器
 
-> $("选择器")   //  里面选择器直接写 CSS 选择器即可，但是要加引号 
+> $("选择器")   //  里面选择器直接写 CSS 选择器即可，**但是要加引号** 
 
-​	![基础选择器](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204261748153.png)
+![基础选择器](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204261748153.png)
 
 ![层级选择器](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204261749733.png)
 
@@ -178,17 +178,15 @@ $("div").toggleClass("current");
 注意：
 
 1. 设置类样式方法比较适合样式多时操作，可以弥补css()的不足。
-2. 原生 JS 中 className 会覆盖元素原先里面的类名，jQuery 里面类操作只是对指定类进行操作，不影响原先的类名。
+2. **原生 JS 中 className 会覆盖元素原先里面的类名，jQuery 里面类操作只是对指定类进行操作，不影响原先的类名。**
 
-
-
-- jQuery 设置样式
+### 4.3 补充
 
 ```javascript
 $('div').css('属性', '值')    
 ```
 
-- jQuery 里面的排他思想
+- **jQuery 里面的排他思想**
 
 ```javascript
 // 想要多选一的效果，排他思想：当前元素设置样式，其余的兄弟元素清除样式。
@@ -196,7 +194,7 @@ $(this).css(“color”,”red”);
 $(this).siblings(). css(“color”,””);
 ```
 
-- 隐式迭代
+- **隐式迭代**
 
 ```javascript
 // 遍历内部 DOM 元素（伪数组形式存储）的过程就叫做隐式迭代。
