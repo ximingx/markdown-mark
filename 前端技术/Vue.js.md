@@ -18,6 +18,10 @@
 菜鸟教程：https://www.runoob.com/vue3/vue3-tutorial.html
 W3CSchool: https://www.w3cschool.cn/vuejs3/
 
+> **麻烦记住这个男人 (*尤雨溪*) , 我觉得他很帅哎**
+>
+> ![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204271957654.png)
+
 ## 1. 初步了解 vue.js
 
 官方定义： **Vue（读作 /vjuː/，类似 ivew ）**是一个帮助用户制造界面的 JavaScript 框架。它在标准 HTML、CSS 和 JavaScript 中创建，并提供了一个声明性和基于组件的编程模型，可有效开发地简单或复杂的用户界面。
@@ -25,7 +29,7 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 传统的网站开发一般采用HTML+CSS+JS作为技术架构，而vue立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心，极大的简化了开发流程。
 使用vue技术栈，可以在几分钟内搭建出一个完整的前端项目。
 
-前端开发者最主要的工作，就是为网站的使用者（又称为：网站的用户）构建出美观、舒适、好用的网页。
+**前端开发者最主要的工作，就是为网站的使用者（又称为：网站的用户）构建出美观、舒适、好用的网页。**
 
 与其它框架的关联:
 
