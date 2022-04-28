@@ -24,7 +24,7 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 
 ## 1. 初步了解 vue.js
 
-官方定义： **Vue（读作 /vjuː/，类似 ivew ）**是一个帮助用户制造界面的 JavaScript 框架。它在标准 HTML、CSS 和 JavaScript 中创建，并提供了一个声明性和基于组件的编程模型，可有效开发地简单或复杂的用户界面。
+官方定义： **Vue（读作 /vjuː/，类似 ivew ）**是一个帮助用户制造界面的 JavaScript 框架。它在标准 HTML、CSS 和 JavaScript 中创建，并提供了一个**声明性和基于组件的编程模型**，可有效开发地简单或复杂的用户界面。
 
 传统的网站开发一般采用HTML+CSS+JS作为技术架构，而vue立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心，极大的简化了开发流程。
 使用vue技术栈，可以在几分钟内搭建出一个完整的前端项目。
@@ -38,7 +38,7 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 
 官方给 vue 的定位是前端框架，因为它提供了构建用户界面的一整套解决方案（俗称 vue 全家桶）：
 
-- **vue（核心库）**
+- vue（核心库）
 - vue-router（路由方案）
 - vuex（状态管理方案）
 - vue 组件库（快速搭建页面UI 效果的方案）
@@ -59,7 +59,7 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 
 ### 1.1 两种实现方式
 
-sfc 
+sfc 但页面文件
 
 ```html
 // .vue 文件
@@ -82,10 +82,9 @@ html 页面中实现
 2. 在页面中声明一个将要被 vue 所控制的 DOM 区域
 3. 创建 vm 实例对象（vue 实例对象）
 
-```js
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -94,7 +93,9 @@ html 页面中实现
 
 <body>
     <!-- 2. 声明要被 vue 所控制的 DOM 区域 -->
-    <div id="app">{{ username }}</div>
+    <div id="app">
+        {{ username }}
+    </div>
 
     <!-- 1. 导入 vue 的脚本文件 -->
     <script src="./lib/vue-3.0.12.js"></script>
@@ -1706,7 +1707,7 @@ Vue 提供了两个内置组件，可以帮助处理过渡和动画以响应不�
 
 ## 7. Components
 
-组件的出现，就是为了拆分Vue实例的代码量的，能够让我们以不同的组件，来划分不同的功能模块，将来我们需要什么样的功能，就可以去调用对应的组件即可。
+组件的出现，就是为了拆分 Vue 实例的代码量的，能够让我们以不同的组件，来划分不同的功能模块，将来我们需要什么样的功能，就可以去调用对应的组件即可。
 
 在 vue 项目中， 我们将 ui 作为单独的一部分，嵌套应用程序 ， 每一个组件负责自己的页面内容， 最重要的是， 减少了造轮子
 
@@ -1749,7 +1750,7 @@ import MyComponent from './App.vue'
 app.component('MyComponent', MyComponent)
 ```
 
-全局注册的组件可以在此应用程序中的任何组件的模板中使
+全局注册的组件可以在此应用程序中的任何组件的模板中使用
 
 ```vue
 <div id="example">
@@ -1962,9 +1963,25 @@ export default {
 
 ### 7.7 slot 插槽
 
+< slot>< /slot> 一般被写在子组件里,可以被父组件内写的东西"插"满
 
+Vue3（其实从2.6开始）中引入了一个新的指令`v-slot`，用来表示具名插槽和默认插槽
 
+我们可以在slot容器`<template>`上使用`v-slot`来表示一个传入组件的插槽，通过**指令参数**来表示插槽的名称。
 
+```html
+<foo>
+    <template v-slot:header>
+        <div class="header"></div>
+    </template>
+    <template v-slot:body>
+        <div class="body"></div>
+    </template>
+    <template v-slot:footer>
+        <div class="footer"></div>
+    </template>
+</foo>
+```
 
 
 
@@ -1978,7 +1995,7 @@ export default {
 
 ## 8. Vue-router
 
-### 后端路由
+### 8.1 后端路由
 
 对于普通的网站，所有的超链接都是URL地址，所有的URL地址都对应服务器上对应的资源。
 
@@ -1988,7 +2005,7 @@ export default {
 
 ---
 
-### 前端路由
+### 8.2 前端路由
 
 对于单页面应用程序来说，主要通过URL中的`hash`（url地址中的#号）来实现不同页面之间的切换。
 
@@ -1996,9 +2013,23 @@ export default {
 
 **总结**：在**单页应用**程序中，这种通过`hash`改变来**切换页面**的方式，称作前端路由（区别于后端路由）。
 
+核心实现依靠一个事件，即监听hash值变化的事件
+
+```js
+window.onhashchange = function(){
+    //location.hash可以获取到最新的hash值
+    location.hash
+}
+```
+
 ---
 
-### Vue页面跳转
+### 8.3 页面跳转
+
+vue-router 它是一个Vue.js官方提供的路由管理器。是一个功能更加强大的前端路由器，推荐使用。
+
+Vue Router和Vue.js非常契合，可以一起方便的实现SPA(single page web application,单页应用程序)应用程序的开发。
+Vue Router依赖于Vue，所以需要先引入Vue，再引入Vue Router
 
 方式一：
 
@@ -2038,30 +2069,27 @@ this.$router.replace({})
 // 设置 replace 属性的话，当点击时，会调用 router.replace() 而不是 router.push()，于是导航后不会留下 history 记录。点击返回按钮时，不会返回到这个页面。
 ```
 
-### 路由嵌套
+### 8.4 路由嵌套
 
 ```js
 export default new VueRouter({
-  routes: [
-    {
-      path: '/main',
-      component: Main,
-      //  写入子模块
-      children: [
-        {
-          path: '/user/profile',
-          component: UserProfile,
-        }, {
-          path: '/user/list',
-          component: UserList,
-        },
-      ]
-    }
-  ]
+ routes: [
+            { path:"/",redirect:"/user"},
+            { path: "/user", component: User },
+            { 
+                path: "/login", 
+                component: Login,
+                //通过children属性为/login添加子路由规则
+                children:[
+                    { path: "/login/account", component: account },
+                    { path: "/login/phone", component: phone },
+                ]
+            }
+        ]
 })
 ```
 
-### 传递参数
+### 8.5 传递参数
 
 方式一
 
@@ -2081,7 +2109,7 @@ export default new VueRouter({
 // router.push() query params
 ```
 
-### 路由模式与 404
+### 8.6 路由模式与 404
 
 路由模式有两种
 
@@ -2163,7 +2191,7 @@ axios.get('/user', {
 ```
 上面的配置中的 params 用于传递参数
 
-和 async await 的使用
+> async await 的使用
 
 ```js
 async function getUser() {
@@ -2536,11 +2564,11 @@ export function que(name) {
 }
 ```
 
-### 使用示例
+### 13. 使用示例
 
 [axios 网络请求获取音乐信息](https://ximingx.blog.csdn.net/article/details/121899533?spm=1001.2014.3001.5502)
 
-### 13. 补充
+### 14. 补充
 
 > 为什么不适用jQuery的Ajax？
 
@@ -2819,108 +2847,81 @@ Vue项目打包的时候，默认会把所有代码合并生产新文件,其中�
 
 外部的库文件，可以使用`CDN资源`，或者别的服务器资源等。
 
-#### 1. index.html
+> 1. index.html
 
 在项目根目录index.html使用cdn节点导入
 
 ```html
+<head>
+    <% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.css) { %>
+    <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="preload" as="style" />
+    <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet" />
+  	<% } %>
+</head>
 <body>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
-    <!--开发环境-->
-    <script src="https://cdn.bootcss.com/vue/2.6.11/vue.js"></script>
-    <!--生产环境-->
-    <!--<script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>-->
-    <!-- 引入组件库 -->
-    <script src="https://cdn.bootcss.com/vue-router/3.2.0/vue-router.min.js"></script>
-    <script src="https://cdn.bootcss.com/axios/0.23.0/axios.min.js"></script>
-    <script src="https://cdn.bootcss.com/element-ui/2.15.6/index.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <% for (let i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+    <script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+  <% } %>
 </body>
 ```
 
-使用 **vue-cli** 构建的项目，也可以在 **项目/public/index.html** 的 head 元素中 插入准备好的 cdn 模板。
-
-可以看到，我们插入了 `<%= htmlWebpackPlugin.options.cdns %>` 参数，这就是我们需要准备的 cdn 模板。
-
-```html
-<head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
-  <title>vue-app</title>
-
-  <!-- 这里是插入的 CDN 位置，编写下面这行代码即可。 -->
-  <%= htmlWebpackPlugin.options.cdns %>
-</head>
-```
-
-#### 2. vue.config.js
+> 2. vue.config.js
 
 ```js
-configureWebpack: {
-    externals: {
-        "vue": "Vue",
-        "vue-router": "VueRouter",
-        "axios": "axios",
-        "moment": "moment",
-        "element-ui": "ELEMENT",
-    }
-},
+const CDN = {
+  css: [
+    'https://cdn.bootcdn.net/ajax/libs/normalize/8.0.1/normalize.min.css',
+    'https://unpkg.com/browse/element-plus@1.2.0-beta.6/theme-chalk/index.css'
+  ],
+  js: [
+    'https://cdn.bootcdn.net/ajax/libs/vue/3.2.6/vue.global.js',
+    'https://cdn.bootcdn.net/ajax/libs/vue-router/4.0.11/vue-router.global.js',
+    'https://cdn.bootcdn.net/ajax/libs/vuex/4.0.2/vuex.global.js',
+    'https://cdn.bootcdn.net/ajax/libs/axios/0.21.4/axios.js',
+    'https://unpkg.com/element-plus@1.2.0-beta.6/dist/index.full.js',
+    'https://unpkg.com/browse/element-plus@1.2.0-beta.6/lib/locale/lang/zh-cn.js'
+  ]
+};
+
+let objExternals = {
+  vue: 'Vue',
+  axios: 'axios',
+  vuex: 'Vuex',
+  'vue-router': 'VueRouter',
+  'element-plus': 'ElementPlus'
+}
+
+module.exports = {
+  publicPath: '/',
+  assetsDir: './assets',
+  chainWebpack: config => {
+  	// 配置，将当前页定义的cdn值传到主页面（index.html）
+    config.plugin('html').tap(args => {
+    // 这里我是除本地环境，其余均使用CDN，可自己选择是否配置
+      args[0].cdn = process.env.VUE_APP_STAGE === 'LOCAL' ? {} : CDN
+      return args;
+    });
+  },
+  configureWebpack: {
+    devServer: {
+    	//...与本文无关
+    },
+    resolve: {
+    	//...与本文无关
+    },
+    plugins: [
+    	//...与本文无关
+    ],
+    // 定义webpack打包配置
+    externals: process.env.VUE_APP_STAGE === 'LOCAL' ? {} : objExternals 
+  }
+}
 ```
 
 这里解释一下externals 配置选项的作用：
 
 我们想引用一个库，但是又不想让webpack打包，并且又不影响我们在程序中以CMD、AMD或者window/global全局等方式进行使用，那就可以通过配置externals。
-
-**踩坑配置注意点：element-ui要大写为ELEMENT**
-
-<%= htmlWebpackPlugin.options.cdns %> 的方法可以通过
-
-```js
-/** @file vue.config.js */
-
-module.exports = {
-  chainWebpack: (config) => {
-    // 只在生产环境使用 cdn
-    if (process.env.NODE_ENV === "production") {
-      // 忽略 vue 和 moment 这两个模块
-      config.externals({
-        vue: "Vue",
-        moment: "moment",
-      });
-
-      // 修改 HtmlWebpackPlugin 插件参数，植入 cdns 这个模板参数，值为 Vue3 和 Moment.js 的 cdn 链接
-      config.plugin("html").tap((args) => {
-        args[0].cdns = `
-					<script src="https://cdn.bootcdn.net/ajax/libs/vue/3.1.2/vue.runtime.global.prod.min.js" crossorigin="anonymous"></script>
-					<script src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js" crossorigin="anonymous"></script>
-				`;
-        return args;
-      });
-    }
-  },
-};
-
-```
-
-config.externals 用于配置 外部扩展，其作用是不打包使用外部引入的扩展，也就是 build 的时候不打包这些模块。它的键名和值是有意义的：
-
-键名：键名为使用外部扩展的模块。 比如 import VueLib123 from "vue" 这句话，模块 from "vue" 是不变的，**模块名就是这个就是键名。**
-
-值：值就是使用 cdn 后，这个模块在全局上的引用。 比如 Vue 使用 cdn 引入后，全局上使用 Vue 变量来访问，那么外部扩展的值就是 Vue。
-
-config.plugin("html").tap 用于修改 HtmlWebpackPlugin 这个插件的参数，这里插入一个 cdns 参数，所以在 public/index.html 中可以使用 <%= htmlWebpackPlugin.options.cdns %> 来访问这个参数。
-
-#### 3. main.js
-
-去掉原有的引用
-
-先的`import`，项目还是会从`node_modules`中引入资源。
-也就是说不删的话，`npm run build`时候仍会将引用的资源一起打包，生成文件会大不少。所以我认为还是删了好
-
-
 
 
 
@@ -3115,15 +3116,139 @@ export default {
 
 ### 7. fetch
 
+- Fetch API是新的ajax解决方案 Fetch会返回Promise
+- **fetch不是ajax的进一步封装，而是原生js，没有使用XMLHttpRequest对象**。
+- fetch(url, options).then(）
 
+```js
+  <script type="text/javascript">
+    /*
+      Fetch API 基本用法
+      	fetch(url).then()
+     	第一个参数请求的路径   
+    */
+    fetch('http://localhost:3000/fdata').then(function(data){
+      // text()方法属于fetchAPI的一部分，它返回一个Promise实例对象，用于获取后台返回的数据
+      return data.text();
+    }).then(function(data){
+      //   在这个then里面我们能拿到最终的数据  
+      console.log(data);
+    })
+  </script>
+```
 
+> http 请求
 
+- fetch(url, options).then(）
+- HTTP协议，它给我们提供了很多的方法，如POST，GET，DELETE，UPDATE，PATCH和PUT
+  - 默认的是 GET 请求
+  - 需要在 options 对象中 指定对应的 method       method:请求使用的方法 
+  - post 和 普通 请求的时候 需要在options 中 设置  请求头 headers   和  body
 
+```html
+   <script type="text/javascript">
+       #1.1 GET参数传递 - 传统URL  通过url  ？ 的形式传参 
+        fetch('http://localhost:3000/books?id=123', {
+            	# get 请求可以省略不写 默认的是GET 
+                method: 'get'
+            })
+            .then(function(data) {
+            	# 它返回一个Promise实例对象，用于获取后台返回的数据
+                return data.text();
+            }).then(function(data) {
+            	# 在这个then里面我们能拿到最终的数据  
+                console.log(data)
+            });
 
+      #1.2  GET参数传递  restful形式的URL  通过/ 的形式传递参数  即  id = 456 和id后台的配置有关   
+        fetch('http://localhost:3000/books/456', {
+            	# get 请求可以省略不写 默认的是GET 
+                method: 'get'
+            })
+            .then(function(data) {
+                return data.text();
+            }).then(function(data) {
+                console.log(data)
+            });
 
+       #2.1  DELETE请求方式参数传递      删除id  是  id=789
+        fetch('http://localhost:3000/books/789', {
+                method: 'delete'
+            })
+            .then(function(data) {
+                return data.text();
+            }).then(function(data) {
+                console.log(data)
+            });
 
+       #3 POST请求传参
+        fetch('http://localhost:3000/books', {
+                method: 'post',
+            	# 3.1  传递数据 
+                body: 'uname=lisi&pwd=123',
+            	#  3.2  设置请求头 
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            })
+            .then(function(data) {
+                return data.text();
+            }).then(function(data) {
+                console.log(data)
+            });
 
+       # POST请求传参
+        fetch('http://localhost:3000/books', {
+                method: 'post',
+                body: JSON.stringify({
+                    uname: '张三',
+                    pwd: '456'
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(function(data) {
+                return data.text();
+            }).then(function(data) {
+                console.log(data)
+            });
 
+        # PUT请求传参     修改id 是 123 的 
+        fetch('http://localhost:3000/books/123', {
+                method: 'put',
+                body: JSON.stringify({
+                    uname: '张三',
+                    pwd: '789'
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(function(data) {
+                return data.text();
+            }).then(function(data) {
+                console.log(data)
+            });
+    </script>
+```
+
+> 响应格式
+
+用fetch来获取数据，如果响应正常返回，我们首先看到的是一个response对象，其中包括返回的一堆原始字节，这些字节需要在收到后，需要我们通过调用方法将其转换为相应格式的数据，比如`JSON`，`BLOB`或者`TEXT`等等
+
+```js
+    fetch('http://localhost:3000/json').then(function(data){
+      // return data.json();   //  将获取到的数据使用 json 转换对象
+      return data.text(); //  //  将获取到的数据 转换成字符串 
+    }).then(function(data){
+      // console.log(data.uname)
+      // console.log(typeof data)
+      var obj = JSON.parse(data);
+      console.log(obj.uname,obj.age,obj.gender)
+    })
+
+```
 
 
 
