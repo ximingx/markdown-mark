@@ -3229,6 +3229,106 @@ art-template同时支持两种模板语法：标准语法和原始语法。
 
 # 加密 身份验证
 
+## jwt
+
+```js
+/*
+ * Start at 2022.
+ * Author: ximingx.
+ * Github: https://github.com/ximingx
+ * Csdn: https://ximingx.blog.csdn.net/
+ */
+
+// 导入 express 模块
+// 创建 express 的服务器实例
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 2022;
+// 跨域设置
+const cors = require('cors')
+app.use(cors())
+// req.body 解析
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+// 1. 安装并导入 JWT 相关的两个包, express-jwt版本推荐6.1.1, 最近他更新了, 可能会出现一些意外的问题
+const jwt = require('jsonwebtoken')
+const expressJWT = require('express-jwt')
+// 2. 定义 secret 密钥，建议将密钥命名为 secretKey
+const secretKey = 'ximingx' + Math.floor(Math.random() * 10);
+// 5. JWT字符串解析
+// 注意：只要配置成功了 express-jwt 这个中间件，就可以把解析出来的用户信息，挂载到 `req.user` 属性上
+app.use(expressJWT({secret: secretKey, algorithms: ['HS256']}).unless({path: ['/login', '/register']}))
+// 登录的路由, 在这里登录成功后, 返回 token 字符串
+app.post('/login', (req, res) => {
+    if (!(req.body.username == 'admin' && req.body.password == "root")) {
+        return res.json({
+            code: 1,
+            msg: '用户名或密码错误'
+        })
+    }
+    // 3. 用户登陆成功后, 需要生成token
+    // 参数1：用户的信息对象
+    // 参数2：加密的秘钥
+    // 参数3：配置对象，可以配置当前 token 的有效期
+    const tokenStr = jwt.sign({
+        username: req.body.username
+    }, secretKey, {expiresIn: '1h'})
+    // 返回登陆成功后返回数据
+    res.json({
+        status: 200,
+        message: '登录成功！',
+        // 4. 并通过 token 属性发送给客户端
+        token: tokenStr,
+    })
+})
+
+// 这里需要这样请求, 否则 token 会无效报错
+// axios({
+//     method: 'post',
+//     url: 'http://localhost:2022/adimin',
+//     headers: {
+//         'Authorization': 'Bearer ' + token
+//     }
+// })
+// 这是一个有权限的 API 接口
+app.get('/admin', function (req, res) {
+    // 6. 使用 req.user 获取用户信息，并使用 data 属性将用户信息发送给客户端
+    console.log(req.user)
+    // {
+    //     "status": 200,
+    //     "message": "获取用户信息成功！",
+    //     "data": {
+    //         "username": "admin",
+    //         "iat": 1651242605, // 创建时间
+    //         "exp": 1651246205 // token 有效期
+    //     }
+    // }
+    res.send({
+        status: 200,
+        message: '获取用户信息成功！',
+        data: req.user, // 要发送给客户端的用户信息
+    })
+})
+// 7：使用全局错误处理中间件，捕获解析 JWT 失败后产生的错误
+app.use((err, req, res, next) => {
+    // 这次错误是由 token 解析失败导致的
+    if (err.name === 'UnauthorizedError') {
+        return res.send({
+            status: 401,
+            message: '无效的token',
+        })
+    }
+    res.send({
+        status: 500,
+        message: '未知的错误',
+    })
+})
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+});
+
+```
+
 ## bcrypt
 
 **使用 hash 算法实现, 只能加密, 不能解密**
