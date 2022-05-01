@@ -50,16 +50,6 @@ fatal: unable to access 'https://github.com/ximingx/markdown-mark.git/': LibreSS
 > git push               
 ```
 
-## fatal: unable to access '' Could not resolve host: github.com
-
-```js
-> 
-  
-fatal: unable to access 'https://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@github.com/ximingx/code.git/': Could not resolve host: github.com
-  
->
-```
-
 
 
 
@@ -89,7 +79,7 @@ unhandled-rejections=strict` (see https://nodejs.org/api/cli.html#cli_unhandled_
 > // 将 res.end() 修改为 res.send()
 ```
 
-## Error: Request aborted 
+## Error: Request aborted
 
 ```js
 // 今天在做网页的时候出现了一个问题，我在项目中添加了一个新的路由企图增加一些功能，在功能代码添加完成后，测试时发现，在提交post请求时，页面一直在加载，这时再去控制台一看报错了：BadRequestError: request aborted
