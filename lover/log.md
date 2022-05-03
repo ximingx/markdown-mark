@@ -108,9 +108,13 @@ and 今天的睡前小故事是盗版的她的哦， 哎， 泥， 鸭
 
 ![image-20220502071901763](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220502071901763.png)
 
+### 2022.05.03
 
+今天你很伤心哦, 狗子差点丢了, 好在最后是虚惊一场
 
+![image-20220503234325539](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220503234325539.png)
 
+![image-20220503234351304](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220503234351304.png)
 
 
 
