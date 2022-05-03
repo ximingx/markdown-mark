@@ -2,8 +2,6 @@
 >
 > 本文主要是学习 **vue3** 
 >
-> 选择 **Options API** 代码风格编写案例
->
 > **这是一篇平平无奇, 但是非常长的文章, 长到你可能看一眼就会跳出去的文章, 但是我能有什么坏心思呢, 我只是单纯的懒得拆分开**
 
 [TOC]
@@ -1502,6 +1500,32 @@ computed比较适合对多个变量或者对象进行处理后返回一个结果
          }
      }
 });
+```
+
+> setup
+
+```js
+import { computed } from 'vue'
+
+setup(){
+	// 简写语法
+    let fullName = computed(() => {
+        return person.firstName + '-' + person.lastName
+    })
+    
+    // 完整语法
+    let fullName = computed({
+        get(){
+            return person.firstName + '-' + person.lastName
+        },
+        set(value){
+            const nameArr = value.split('-')
+            person.firstName = nameArr[0]
+            person.lastName = nameArr[1]
+        }
+    })
+    return fullName
+}
 
 ```
 
@@ -1585,6 +1609,54 @@ var app = new Vue({
 });
 ```
 
+> setup
+
+```js
+// 情况一：监视 ref 定义的响应式数据
+watch(sum, (newValue, oldValue) => {
+	console.log('sum变化了', newValue, oldValue)
+}, {immediate:true})
+
+// 情况二：监视多个 ref 定义的响应式数据
+watch([sum, msg], (newValue,oldValue) => {
+	console.log('sum或msg变化了', newValue,oldValue)
+}) 
+
+// 情况三：监视 reactive 定义的响应式数据
+// 若 watch 监视的是 reactive 定义的响应式数据，则无法正确获得 oldValue , 而且强制开启了深度监视
+watch(person, (newValue, oldValue) => {
+	console.log('person变化了', newValue, oldValue)
+}, { immediate:true, deep:false }) // 此处的deep配置不再奏效
+
+// 情况四：监视 reactive 定义的响应式数据中的某个属性
+watch(() => person.job, (newValue, oldValue) => {
+	console.log('person的job变化了', newValue, oldValue)
+}, { immediate:true, deep:true }) 
+
+// 情况五：监视reactive定义的响应式数据中的某些属性
+watch([() => person.job, () => person.name], (newValue, oldValue) => {
+	console.log('person的job变化了', newValue, oldValue)
+}, { immediate:true, deep:true })
+
+// 特殊情况：此处由于监视的是reactive定义的对象中的某个属性，所以deep配置有效
+watch(() => person.job, (newValue, oldValue) => {
+    console.log('person的job变化了', newValue, oldValue)
+}, { deep:true })
+```
+
+### 4.5 watchEffect
+
+和`watch`的区别是，`watch`既要指明监视的属性，也要指明监视的回调。而`watchEffect`，不用指明监视哪个属性，监视的回调中用到哪个属性，那就监视哪个属性，不用写返回值。
+
+```js
+// 回调中用到的数据只要发生变化，则直接重新执行回调
+watchEffect(() => {
+    const x1 = sum.value
+    const x2 = person.age
+    console.log('watchEffect配置的回调执行了')
+})
+```
+
 ---
 
 ## 5. Vue.js 生命周期
@@ -1652,6 +1724,29 @@ DOM 渲染在 mounted 中就已经完成了。
 ---
 
 ![](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/480a7cdefd3a9a2a01a4289c8d3d038e%20%E4%B8%8B%E5%8D%884.18.55.png)
+
+> vue3 生命周期全都写在`setup`中
+>
+> 改变: 
+>
+> beforeDestroy 改名为 beforeUnmount
+> destroyed 改名为 unmounted
+> beforeCreate => setup
+> created => setup
+> beforeMount => onBeforeMount
+> mounted => onMounted
+> beforeUpdate => onBeforeUpdate
+> updated => onUpdated
+> beforeUnmount => onBeforeUnmount
+> unmounted => onUnmounted
+
+```js
+setup() {
+    onMounted(() => {
+      console.log('mounted')
+    })
+}
+```
 
 ## 6. Vue 动画
 
@@ -2922,6 +3017,76 @@ module.exports = {
 这里解释一下externals 配置选项的作用：
 
 我们想引用一个库，但是又不想让webpack打包，并且又不影响我们在程序中以CMD、AMD或者window/global全局等方式进行使用，那就可以通过配置externals。
+
+## 13. setup
+
+setup`是所有`Composition API的容器，为一个函数。组件中所用到的数据、方法等等，均要配置在`setup`中，**它会在`beforeCreate`之前执行一次**，注意：`Vue3`里`this`不再是指向`Vue`实例，访问`this`会是`undefined
+
+- 若返回一个对象，则对象中的属性、方法, 在模板中均可以直接使用。
+- 若返回一个渲染函数：则可以自定义渲染内容。
+- 因为返回值不再是`return`的对象, 而是`promise`, 模板看不到`return`对象中的属性。（后期也可以返回一个`Promise`实例，但需要`Suspense`和异步组件的配合）
+
+> `Vue2`配置（`data`、`methos`、`computed`…）中可以访问到`setup`中的属性、方法。
+> 但在`setup`中不能访问到`V2`配置（`data`、`methods`、`computed`…）。
+> 如果有重名, `setup`优先。
+
+```js
+<script>
+import { ref, reactive } from 'vue'
+
+export default {
+	name: 'Home',
+	setup(props, context) {
+		const title = ref('标题')
+		const data = reactive({
+			value: '哈哈哈'
+		})
+		return {
+		  title,
+		  data
+		}
+	}
+}
+</script>
+```
+
+### 13.1 setup 参数
+
+- props：值为对象，包含组件外部传递过来，且组件内部声明接收了的属性
+- context：上下文对象
+
++ + attrs: 值为对象，包含组件外部传递过来，但没有在`props`配置中声明的属性, 相当于`this.$attrs`
+  + slots: 收到的插槽内容, 相当于`this.$slots`
+  + emit: 分发自定义事件的函数, 相当于`this.$emit`
+
+### 13.2 ref
+
+使用`ref`可以创建一个包含响应式数据的引用对象（reference对象，简称ref对象），可以是基本类型、也可以是对象。
+
+```js
+// 创建
+const xxx = ref(value)
+
+// 使用
+xxx.value
+
+// 在模板中
+<div>{{xxx}}</div>
+```
+
+### 13.3 reactive
+
+定义一个对象类型的响应式数据，内部基于`ES6`的`Proxy`实现，通过代理对象操作源对象内部数据进行操作
+
+```js
+// 创建
+const xxx = reactive({
+    xxx: ''
+})
+
+// 使用
+xxx.xxx
+```
 
 
 

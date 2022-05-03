@@ -94,15 +94,19 @@ and 今天的睡前小故事是盗版的她的哦， 哎， 泥， 鸭
 
 可是好开心哇
 
+## 2022.05
+
 ### 2022.05.01
 
 好就没有跟新了, 因为最近很甜蜜, 此处省略一万字, 色色很好 , 我喜欢色色
 
 芜湖, 好想等你高考完出去玩
 
+![image-20220501220727445](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220501220727445.png)
 
+### 2022.05.02
 
-
+![image-20220502071901763](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220502071901763.png)
 
 
 
