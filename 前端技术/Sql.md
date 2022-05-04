@@ -8,10 +8,6 @@
 
 **在MongoDB中不需要显式创建数据库，如果正在使用的数据库不存在，MongoDB会自动创建。**
 
-### 1.1.1 结构
-
-**存储结构**
-
 可以拥有多个数据库 local , admin , config ,app
 
 每一个数据库可以有多个集合 user , products
@@ -76,6 +72,84 @@ mongo
 //连接后可以通过exit退出连接
 ```
 
+## 1.2 基本命令
+
+### 1.2.1 查看所有数据库
+
+**show dbs**
+
+```bash
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+```
+
+### 1.2.2 切换到指定的数据库
+
+如果没有,会先切换,在添加数据后新建 **use `数据库名称`**
+
+```bash
+> use itcast
+switched to db itcast
+```
+
+### 1.2.3 查看当前操作的数据库
+
+**db**
+
+```bash
+> db
+itcast
+```
+
+### 1.2.4 插入数据
+
+ db.`集合名`.insertOne()
+
+```bash
+> db.students.insertOne({"name":"ximingx查看当前操作的数据库 **db**"})
+{
+        "acknowledged" : true,
+        "insertedId" : ObjectId("618a5089fe5d81bd4404a9a1")
+}
+```
+
+### 1.2.5  查看数据
+
+db.`集合名`.find()
+
+```bash
+> show collections
+students
+> db.students.find()
+{ "_id" : ObjectId("618a5089fe5d81bd4404a9a1"), "name" : "ximingx查看当前操作的数据库 **db**" }
+```
+
+### 1.2.6 用户的增删
+
+```bash
+> use admin
+# 创建 root 用户
+> db.createUser({user:"root用户名",pwd:"root密码",roles:["root"] })
+# 验证
+> db.auth("root用户名","root密码")
+# 创建一般用户
+# 先到要创建用户使用的数据库
+> use test
+# <role> admin 库添加用户和读写权限 
+# 1.数据库用户角色：read、readWrite;
+# 2.数据库管理角色：dbAdmin、dbOwner、userAdmin；
+# 3.集群管理角色：clusterAdmin、clusterManager、clusterMonitor、hostManager；
+# 4.备份恢复角色：backup、restore
+# 5.所有数据库角色：readAnyDatabase、readWriteAnyDatabase、userAdminAnyDatabase、dbAdminAnyDatabase
+# 6.超级用户角色：root
+> db.createUser({user:"users",pwd:"users",roles[{role:"readWrite",db:"users"}]})
+db.createUser({user:'user',pwd:'user',roles:[{role:'readWrite',db:'u'}]})
+# 删除用户
+> db.system.users.remove({user:"user"})
+```
+
 ### 常用操作
 
 ```bash
@@ -114,84 +188,6 @@ MongoDB Server (MongoDB) 服务已成功停止。
 > mongod --logpath="F:\environment\mongodb\mongod.log" --dbpath="F:\environment\mongodb\data" --install –-auth
 # c
 > net start mongod
-```
-
-## 1.2 基本命令
-
-### 查看所有数据库
-
-**show dbs**
-
-```bash
-> show dbs
-admin   0.000GB
-config  0.000GB
-local   0.000GB
-```
-
-### 切换到指定的数据库
-
-如果没有,会先切换,在添加数据后新建 **use `数据库名称`**
-
-```bash
-> use itcast
-switched to db itcast
-```
-
-### 查看当前操作的数据库 
-
-**db**
-
-```bash
-> db
-itcast
-```
-
-### 插入数据
-
- db.`集合名`.insertOne()
-
-```bash
-> db.students.insertOne({"name":"ximingx查看当前操作的数据库 **db**"})
-{
-        "acknowledged" : true,
-        "insertedId" : ObjectId("618a5089fe5d81bd4404a9a1")
-}
-```
-
-### 查看数据
-
-db.`集合名`.find()
-
-```bash
-> show collections
-students
-> db.students.find()
-{ "_id" : ObjectId("618a5089fe5d81bd4404a9a1"), "name" : "ximingx查看当前操作的数据库 **db**" }
-```
-
-### 用户的增删
-
-```bash
-> use admin
-# 创建 root 用户
-> db.createUser({user:"root用户名",pwd:"root密码",roles:["root"] })
-# 验证
-> db.auth("root用户名","root密码")
-# 创建一般用户
-# 先到要创建用户使用的数据库
-> use test
-# <role> admin 库添加用户和读写权限 
-# 1.数据库用户角色：read、readWrite;
-# 2.数据库管理角色：dbAdmin、dbOwner、userAdmin；
-# 3.集群管理角色：clusterAdmin、clusterManager、clusterMonitor、hostManager；
-# 4.备份恢复角色：backup、restore
-# 5.所有数据库角色：readAnyDatabase、readWriteAnyDatabase、userAdminAnyDatabase、dbAdminAnyDatabase
-# 6.超级用户角色：root
-> db.createUser({user:"users",pwd:"users",roles[{role:"readWrite",db:"users"}]})
-db.createUser({user:'user',pwd:'user',roles:[{role:'readWrite',db:'u'}]})
-# 删除用户
-> db.system.users.remove({user:"user"})
 ```
 
 ## 1.3 Mongoose
@@ -300,6 +296,47 @@ const userSchema = new Schema({
 | ObjectId | 定义对象ID   |
 | Array    | 定义数组     |
 
+> 文档验证
+
+```js
+// 【required】：数据必填
+// 【default】：默认值
+// 【min】【max】：最小/大值 只适用于数字
+// 【match】：正则匹配 只适用于字符串
+// 【enum】：枚举匹配 只适用于字符串
+// 【unique】： 唯一不重复
+// 【maxlength】： 最大长度
+// 【minlength】： 最小长度
+// 【trim 】：是否有两边空格
+// 【type 】：类型
+// 【validate】：自定义匹配
+//  validate实际上是一个函数，函数的参数代表当前字段，返回true表示通过验证，返回false表示未通过验证
+var Schema =new mongoose.Schema({
+  name:{
+    type:String,
+    required:true
+  },
+  age:Number
+})
+// 自定义验证规则 !!!!!!!!!
+const courseSchema = new mongoose.Schema({
+  id: {
+    type: Number,
+    validate: {
+      validator: v => {
+        // 当返回结果为 true, 满足条件
+        return v > 0;
+      },
+      message() {
+        return 'Id必须大于0';
+      }
+    }
+  }
+})
+```
+
+
+
 >  **timestamps**
 
 当 schema 中设置timestamps为 true 时，schema映射的文档 document 会自动添加 createdAt 和 updatedA t这两个字段，代表创建时间和更新时间
@@ -407,6 +444,60 @@ Student.insertMany({name:"小明",grades:68},{name:"小芳",grades:94},(err,docs
 > 1. 条件查询
 >
 > + 当条件为 null 时, 查询所有的数据
+>
+> + $or　　　　 或关系
+>
+>   $nor　　　 或关系取反
+>
+>   **$gt　　　　 大于**
+>
+>   **$gte　　　 大于等于**
+>
+>   **$lt　　　　 小于**
+>
+>   **$lte　　　 小于等于**
+>
+>   **$ne　　　　 不等于**
+>
+>   **$in　　　　 在多个值范围内**
+>
+>   **$nin　　　 不在多个值范围内**
+>
+>   $all　　　 匹配数组中多个值
+>
+>   **$regex　　 正则，用于模糊查询**
+>
+>   $size　　　 匹配数组大小
+>
+>   $maxDistance　 范围查询，距离（基于LBS）
+>
+>   $mod　　　　 取模运算
+>
+>   $near　　　 邻域查询，查询附近的位置（基于LBS）
+>
+>   $exists　　 字段是否存在
+>
+>   $elemMatch　 匹配内数组内的元素
+>
+>   $within　　　 范围查询（基于LBS）
+>
+>   $box　　　　 范围查询，矩形范围（基于LBS）
+>
+>   $center　　　 范围醒询，圆形范围（基于LBS）
+>
+>   $centerSphere　范围查询，球形范围（基于LBS）
+>
+>   $slice　　　　 查询字段集合中的元素（比如从第几个之后，第N到第M个元素
+>
+> + | 方法     | 作用     |
+>   | -------- | -------- |
+>   | sort     | 排序     |
+>   | skip     | 跳过     |
+>   | limit    | 限制     |
+>   | select   | 显示字段 |
+>   | exect    | 执行     |
+>   | count    | 计数     |
+>   | distinct | 去重     |
 
 ```js
 // isPublished 为 true 的所有
@@ -415,6 +506,16 @@ Course.find({isPublished: true})
 Course.find({age: {$gt: 20, $lt: 28}})
 // hobbies 中匹配包含 敲代码 的文档
 Course.find({hobbies: {$in: ['敲代码']}})
+ //找出跳过前两条数据的其他数据
+Course.find(null,null,{skip:2})
+// 对查找的结果排序
+stuModel.find().sort('test')
+// 显示name、grades字段，不显示_id字段
+stuModel.find().select('name grades -_id')
+// 显示2个
+stuModel.find().limit(2)
+// 跳过1个，显示其他
+stuModel.find().skip(1)
 ```
 
 > 2. 返回文档中的第一条, 只有一条 ~ !
@@ -423,9 +524,11 @@ Course.find({hobbies: {$in: ['敲代码']}})
 Course.findOne({name: 'React Course'})
 ```
 
+> 3. **findById()**
 
-
-
+```js
+stuModel.findById(id)
+```
 
 > 查询文档总数
 
@@ -434,62 +537,21 @@ Course.findOne({name: 'React Course'})
 Course.countDocument({})
 ```
 
+#### 1.3.6.3 更新操作
 
-
-
-
-### 查询文档
-
-```js
-
-
-
-// 查询某几个字段 (_id是默认查找项)
-Course.find({hobbies: {$in: ['敲代码']}})
-  .select("name age history")
-  .then(doc => console.log(doc))
-  .catch(err => console.log(err))
-
-
-// 查询结果排序
-// 从小打大
-Course.find({hobbies: {$in: ['敲代码']}})
-  .sort('age')
-  .then(doc => console.log(doc))
-  .catch(err => console.log(err))
-// 从大到小
-Course.find({hobbies: {$in: ['敲代码']}})
-  .sort('-age')
-  .then(doc => console.log(doc))
-  .catch(err => console.log(err))
-
-
-// 跳过前两条, 限制查询两条
-Course.find({hobbies: {$in: ['敲代码']}})
-  .skip(2).limit(2)
-  .then(doc => console.log(doc))
-  .catch(err => console.log(err))
-
-// 查询文档的总数
-Course.countDocument({})
-```
-
-### 删除文档
+> - Model.update(conditions, doc, [options], [callback])
+> - **若设置了查询条件，当数据库不满足时默认什么也不发生**
+> - update() 方法中的回调函数不能省略，否则数据不会更新
 
 ```js
-// 删除一个满足条件的文档
-Course.findOneAndDelete({ _id: '5c9d8f9c9c9d8f9c9c9d8f9c' })
-  .then(result => console.log(result))
-  .catch(err => console.log(err));
-
-// 表演一个删库跑路
-Course.deleteMany({})
-  .then(result => console.log(result));
-// { acknowledged: true, deletedCount: 5 }
-// { 成功 删除 5 个文档 }
+stuModel.update({name:'小明'},{$set:{test:34}},(err,raw)=>{
+   // 查询name为小明的数据，并将其test更改为34
+   // 若有多个文档，默认只更新第一个
+   console.log(raw)
+})
 ```
 
-### 更新文档
+> **updateOne()**
 
 ```js
 // 方法
@@ -501,69 +563,50 @@ Course.updateOne({查询条件}, {要修改的值}).then(res => {
 Course.updateOne({name: 'lisi'}, {name: "aw"}).then(res => {
   console.log(res)
 })
+```
 
+> updateMany
+
+```js
 // 更新多条
 Course.updateMany({name: 'lisi'}, {name: "aw"}).then(res => {
   console.log(res)
 })
 ```
 
-### 验证
+#### 1.3.6.4 删除操作
+
+> remove()
+>
+> - 会删除符合条件的所有数据
 
 ```js
-// require 必传字段
-// unique 唯一不重复
-// type 类型
-// default 默认值
-// maxlength 最大长度
-// minlength 最小长度
-// trim 是否有两边空格
-// min 最小值
-// max 最大值
-// enum: ["html", "nodejs"] 只可以选择 html 或者 nodejs 这两个值
-// validate 自定义验证规则 !!!!!!!!!!!
-const courseSchema = new mongoose.Schema({
-  name: String,
-  author: String,
-  isPublished: Boolean,
-  history: {
-    createdAt: {type: Number, default: 12, require: true},
-    updatedAt: {type: Number, default: 14}
-  },
-  date: {
-      // 默认现在
-      type: Date,
-      default: Date.now    
-  }
-})
-
-// 补充写法
-const courseSchema = new mongoose.Schema({
-  aw: {
-    require: [true, '{PATH} is required'],
-  }
-})
-
-const Course = mongoose.model('Course', courseSchema);
-
-// 自定义验证规则 !!!!!!!!!
-const courseSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    validate: {
-      validator: v => {
-        // 当返回结果为 true, 满足条件
-        return v > 0;
-      },
-      message() {
-        return 'Id必须大于0';
-      }
-    }
-  }
+stuModel.remove({name:/差生/},function(err){})
+    // 回调函数不能省略，但可以使用exec() 简写
+    // stuModel.remove({name:/差生/}).exec()
 })
 ```
 
-### 关联集合
+> findOneAndDelete()
+
+```js
+// 删除一个满足条件的文档
+Course.findOneAndDelete({ _id: '5c9d8f9c9c9d8f9c9c9d8f9c' })
+  .then(result => console.log(result))
+  .catch(err => console.log(err));
+```
+
+> deleteMany()
+
+```js
+// 表演一个删库跑路
+Course.deleteMany({})
+  .then(result => console.log(result));
+// { acknowledged: true, deletedCount: 5 }
+// { 成功 删除 5 个文档 }
+```
+
+### 1.3.7 关联集合
 
 通常不同集合的数据之间是有关系的，例如文章信息和用户信息存储在不同集合中，但文章是某个用户发表的，要查询文章的所有信息包括发表用户，就需要用到集合关联
 
@@ -617,18 +660,7 @@ Post.findOne().populate('author').then(post => {
 })
 ```
 
-### 模块化
 
-```js
-const mongoose = require("mongoose");
-const userSchema = new mongoose.Schema({
-    // 拉吧拉吧
-});
-const User = mongoose.model('User','userSchema');
-module.exports = {
-    User
-}
-```
 
 
 
@@ -637,7 +669,9 @@ module.exports = {
 [MySQL这篇写的很烂,看他的,啊呜](https://blog.csdn.net/weixin_45851945/article/details/114287877)
 [要不看这篇也行,也很不错](https://ximingx.blog.csdn.net/article/details/122157925)
 
-## 连接mysql
+## 2.1 mysql 操作
+
+### 2.1.1 连接mysql
 
 ```sql
 //连接数据库
@@ -653,7 +687,7 @@ flush privileges
 exit;
 ```
 
-## 操作数据库
+### 2.1.2 操作数据库
 
 ```sql
 //创建数据库
@@ -669,7 +703,7 @@ use 数据库名
 show databases
 ```
 
-## 操作表
+### 2.1.3 操作表
 
 ```sql
 //创建表
@@ -689,7 +723,7 @@ create table if not exists 表名(
  DESC `表名`   
 ```
 
-## 修改表的结构
+### 2.1.4 修改表的结构
 
 ```sql
 //更改表名
@@ -707,7 +741,7 @@ ALTER TABLE `表名` DROP `字段名`;
 DROP TABLE IF EXISTS `表名`
 ```
 
-## 索引的分类
+### 2.1.5 索引的分类
 
 *   **主键索引(primary key)**
 
@@ -735,14 +769,13 @@ alter table `数据库名`.`表名` add 索引分类 index `列名`(`索引名�
 explain select * from `table` where match(studentName) against('aw');
 ```
 
-
-## 外键
+### 2.1.6 外键
 
 ```sql
 ALTER TABLE `表一` ADD CONSTRAINT `FK_引用列` FOREIGN KEY(`作为外键的 列`) REFERENCES `表二`(`那个字段`);
 ```
 
-## 增删改查
+### 2.1.7 增删改查
 
 ```sql
 INSERT INTO `表名`(`属性1`,`属性2`,`属性3`)VALUES(`值1`,`值2`,`值3`),(`值1`,`值2`,`值3`);
@@ -765,7 +798,7 @@ LIMIT <limit_number>
 select distinct `字段名` from `表名`
 ```
 
-## where 检索数据中符合条件的值,条件子句
+### 2.1.8 where 检索数据
 
 >    逻辑运算符
 >
@@ -822,7 +855,7 @@ select `字段名` from `表名` where `字段名` is null or `字段名` = '';
 查询该数据为null的或者空的
 ```
 
-## 常用函数
+### 2.1.8 常用函数
 
 >   abs    绝对值函数
 
@@ -929,15 +962,15 @@ select version()
 
 
 
-## Node.js 操作MySQL
+## 2.2 Node.js 操作
 
 首先需要安装 
 
 ```bash
-$ npm install mysql
+$ yarn add mysql
 ```
 
-### 基础的使用
+### 2.2.1 基础的使用
 
 ```js
 var mysql = require('mysql');
@@ -971,7 +1004,7 @@ connection.end(function(err) {
 connection.destroy();
 // 这将导致底层套接字立即终止。另外destroy()保证不会为连接触发更多事件或回调。
 ```
-### 直接连接数据库进行操作
+### 2.2.2 直接连接数据库进行操作
 
 ```js
 const express = require('express')
@@ -1078,7 +1111,7 @@ app.listen(3000,function () {
 });
 ```
 
-### 池化链接
+### 2.2.3 池化链接
 
 该模块不是一个接一个地创建和管理连接，而是使用`mysql.createPool(config)`
 

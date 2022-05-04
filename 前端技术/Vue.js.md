@@ -2564,73 +2564,24 @@ export function request(config) {
 }
 ```
 
-
-### 11. axios的封装
-
-```js
-import axios from 'axios'
-
-export default function axios(option){
-	return new Promise((resolve,reject) => {
-		//1.创建sxios实例
-		const instance = axios.create({
-			url: 'api',
-			timeout: 5000,
-			headers: ''
-		})
-
-		//2.传入对象进行网络请求
-		// option 处将参数传递过来进行请求
-		instance(option).then(res => {
-			resolve(res)
-		}).catch(err => {
-			reject(err)
-		})
-	})
-}
-```
-
-或者使用 Promise 的方式
-
-```js
-// 封装 request 方法 (request.js 文件)
-const axios = require('axios')
-
-module.exports = function request(config) {
-  return new Promise((resolve, reject) => {
-    // 1.创建axios的实例
-    const instance = axios.create({
-      baseURL: 'http://localhost:3000/',
-      timeout: 5000
-    })
-
-    // 发送真正的网络请求
-    return instance(config)
-  })
-}
-
-// 在当前目录另一个文件中调用
-const request = require("./request.js")
-
-request("/").then(res => {
-  console.log(res);
-}).catch(err => {
-  console.log(err);
-})
-```
-### 12 封装
+### 11 封装
 
 ```js
 import axios from 'axios'
+const TIMEOUT = 5000
+const BASEURL = 'http://localhost:3000/api/ximingx/v1'
 
 export function request(config) {
   const instance = axios.create({
-    baseURL: "http://localhost:3000",
-    timeout: 5000,
+    baseURL: BASEURL,
+    timeout: TIMEOUT,
+    headers: {
+        'Content-Type': 'application/json'
+    }
   })
 
   instance.interceptors.request.use(config => {
-    // k
+	config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     return config
   },err => {
     console.log(err)
@@ -2660,11 +2611,11 @@ export function que(name) {
 }
 ```
 
-### 13. 使用示例
+### 12. 使用示例
 
 [axios 网络请求获取音乐信息](https://ximingx.blog.csdn.net/article/details/121899533?spm=1001.2014.3001.5502)
 
-### 14. 补充
+### 13. 补充
 
 > 为什么不适用jQuery的Ajax？
 
@@ -3144,13 +3095,11 @@ import 'normalize.css'
     <div>{{msg | upper | lower}}</div>
 	<div>{{ message | filterA('arg1', 'arg2') }}</div>  
   </div>
-
 <script type="text/javascript">
    //  lower  为全局过滤器     
    Vue.filter('lower', function(val) {
       return val.charAt(0).toLowerCase() + val.slice(1);
     });
-    
     var vm = new Vue({
       el: '#app',
       data: {
@@ -3167,7 +3116,6 @@ import 'normalize.css'
          //  过滤器中一定要有返回值 这样外界使用过滤器的时候才能拿到结果
           return val.charAt(0).toUpperCase() + val.slice(1);
         }
-          
         // 带有参数
         // 在过滤器中 第一个参数 对应的是  管道符前面的数据  n  此时对应 message
         // 第2个参数  a 对应 实参  arg1 字符串
@@ -3178,8 +3126,7 @@ import 'normalize.css'
             }else{
                 return n+b;
             }
-        } 
-          
+        }   
       }
     });
   </script>
@@ -3416,6 +3363,64 @@ export default {
 
 ```
 
+### 8. Vue图片路径问题
+
+vue 中我们可以直接使用静态相对路径导入, 也可以直接使用静态绝对导入路径
+
+但是对于的动态相对路径, 可能会发生小问题, 例如
+
+```js
+<img :src="../../assets/' + imageUrl" />
+    
+data() {
+   return {
+       // 图片路径变量，真实路径为 assets/images/1.png
+       imageUrl: 'images/1.png'
+   }
+}
+```
+
+此时我们需要使用 require 的方式
+
+```js
+<img :src="require('../../assets/' + imageUrl)" />
+```
+
+或者是
+
+```js
+<img :src="imageUrl" />
+<script>
+export default {
+	data() {
+        return {
+            // 图片路径变量，真实路径为 assets/images/1.png
+            img: 'images/1.png',
+            imageUrl: require('../../assets/' + this.img)
+        }
+    }
+}
+</script>
+```
+
+>  原因
+
+当你在 JavaScript、CSS 或 `*.vue` 文件中使用相对路径 (必须以 `.` 开头) 引用一个静态资源时，该资源将会被包含进入 webpack 的依赖图中。在其编译过程中，所有诸如 `<img src="...">`、`background: url(...)` 和 CSS `@import` 的资源 URL **都会被解析为一个模块依赖**。
+
+例如，`url(./image.png)` 会被翻译为 `require('./image.png')`，而：
+
+```js
+<img src="./image.png">
+```
+
+将会被编译到：
+
+```js
+h('img', { attrs: { src: require('./image.png') }})
+```
+
+
+
 
 
 
@@ -3557,33 +3562,83 @@ eg:
 
 # Vue CLI
 
-Vue CLI 4.x 需要 [Node.js](https://nodejs.org/) v8.9 或更高版本 (推荐 v10 以上)。
+Vue CLI 是一个基于 Vue.js 进行快速开发的完整系统
+
+- 一个丰富的官方插件集合，集成了前端生态中最好的工具。
+- 通过 `@vue/cli` 实现的交互式的项目脚手架。
+- 通过 `@vue/cli` + `@vue/cli-service-global` 实现的零配置原型开发。
+
+## 1. 系统的组件
+
+> CLI
+
+CLI (`@vue/cli`) 是一个全局安装的 npm 包，提供了终端里的 `vue` 命令。
+
+它可以通过 `vue create` 快速搭建一个新项目
 
 ```bash
-> npm install -g @vue/cli
-# OR
-yarn global add @vue/cli
+$ vue create 项目名称
 ```
 
-## 1. 创建项目
+在创建项目中可以选“手动选择特性”来选取需要的特性。
 
 ```bash
-> vue create hello-world
+# ~/.vuerc
+
+# 被保存的 preset 将会存在用户的 home 目录下一个名为 .vuerc 的 JSON 文件里。如果你想要修改被保存的 preset / 选项，可以编辑这个文件。
+
+# 在项目创建的过程中，你也会被提示选择喜欢的包管理器或使用淘宝 npm 镜像源以更快地安装依赖。这些选择也将会存入 ~/.vuerc。
 ```
 
-## 2. 图形化界面
+你也可以通过 `vue ui` 通过一套图形化界面管理你的所有项目。
 
 ```bash
-> vue ui
+$ vue ui
 ```
 
 上述命令会打开一个浏览器窗口，并以图形化界面将你引导至项目创建的流程。
 
+嗷呜, 可是我老是用不习惯, 习惯手敲命令, 但是确实很好用, 打包后的依赖资源, 加载速度看的很方便
+
+> CLI 服务
+
+CLI 服务 (`@vue/cli-service`) 是一个开发环境依赖。它是一个 npm 包，局部安装在每个 `@vue/cli` 创建的项目中。
+
+CLI 服务是构建于 [webpack](http://webpack.js.org/) 和 [webpack-dev-server](https://github.com/webpack/webpack-dev-server) 之上的。它包含了：
+
+- 加载其它 CLI 插件的核心服务；
+- 一个针对绝大部分应用优化过的内部的 webpack 配置；
+- 项目内部的 `vue-cli-service` 命令，提供 `serve`、`build` 和 `inspect` 命令。
+
+> CLI 插件
+
+CLI 插件是向你的 Vue 项目提供可选功能的 npm 包，例如 Babel/TypeScript 转译、ESLint 集成、单元测试和 end-to-end 测试等。
+
+Vue CLI 插件的名字以 `@vue/cli-plugin-` (内建插件) 或 `vue-cli-plugin-` (社区插件) 开头
+
+## 2. 安装
+
+> Node 版本要求
+>
+> Vue CLI 4.x 需要 [Node.js](https://nodejs.org/) v8.9 或更高版本 (推荐 v10 以上)。你可以使用 [n](https://github.com/tj/n)，[nvm](https://github.com/creationix/nvm) 或 [nvm-windows](https://github.com/coreybutler/nvm-windows) 在同一台电脑中管理多个 Node 版本。
+
+```bash
+$ npm install -g @vue/cli
+
+$ yarn global add @vue/cli
+# 你还可以用这个命令来检查其版本是否正确
+$ vue --version
+
+# 升级 vue-cli
+$ npm update -g @vue/cli
+$ yarn global upgrade --latest @vue/cli
+```
+
 ## 3. 插件
 
+Vue CLI 使用了一套基于插件的架构。如果你查阅一个新创建项目的 `package.json`，就会发现依赖都是以 `@vue/cli-plugin-` 开头的。
 
-
-
+插件可以修改 webpack 的内部配置，也可以向 `vue-cli-service` 注入命令。
 
 
 
@@ -3593,17 +3648,17 @@ yarn global add @vue/cli
 
 # 项目优化
 
-## cdn 引入资源
+## 1. cdn 引入资源
 
 具体看上面 vue.config.js
 
-## 路由懒加载
+## 2. 路由懒加载
 
 ```js
 component: () => import('views/home/Home.vue'),
 ```
 
-## express gzip压缩
+## 3. express gzip压缩
 
 > 安装
 
@@ -3619,7 +3674,7 @@ var compression = require('compression')
 app.use(compression())
 ```
 
-## https
+## 4. https
 
 首先需要有证书
 
@@ -3635,7 +3690,7 @@ const option = {
 https.createServer(options, app)
 ```
 
-## pm2
+## 5. pm2
 
 ```bash
 $ yarn global add pm2
