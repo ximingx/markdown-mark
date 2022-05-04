@@ -1,6 +1,14 @@
 # MongoDB
 
-## 介绍
+## 1.1 基本介绍
+
+**MongoDB是一种非关系型数据库,MySQL是一种关系型数据库**
+
+**特点: 不需要设计表的结构,可以任意的存放数据,文档结构没有任何限制**
+
+**在MongoDB中不需要显式创建数据库，如果正在使用的数据库不存在，MongoDB会自动创建。**
+
+### 1.1.1 结构
 
 **存储结构**
 
@@ -16,8 +24,6 @@
 | collection | 集合，一组数据的集合，可以理解为JavaScript中的数组       |
 | document   | 文档，一条具体的数据，可以理解为JavaScript中的对象       |
 | field      | 字段，文档中的属性名称，可以理解为JavaScript中的对象属性 |
-
-### 结构
 
 ```json
 {
@@ -43,11 +49,7 @@
 }
 ```
 
-**MongoDB是一种非关系型数据库,MySQL是一种关系型数据库**
 
-特点: **不需要设计表的结构,可以任意的存放数据,文档结构没有任何限制**
-
-**在MongoDB中不需要显式创建数据库，如果正在使用的数据库不存在，MongoDB会自动创建。**
 
 配置环境变量: path 直接添加安装地址的bin目录
 
@@ -114,7 +116,7 @@ MongoDB Server (MongoDB) 服务已成功停止。
 > net start mongod
 ```
 
-## 基本命令
+## 1.2 基本命令
 
 ### 查看所有数据库
 
@@ -192,34 +194,47 @@ db.createUser({user:'user',pwd:'user',roles:[{role:'readWrite',db:'u'}]})
 > db.system.users.remove({user:"user"})
 ```
 
-## Mongoose
+## 1.3 Mongoose
 
 - **Mongoose 是一个让我们可以通过Node来操作MongoDB数据库的一个模块**
 - Mongoose 是一个对象文档模型（ODM）库，它是对Node原生的MongoDB模块进行了进一步的优化封装
 - 大多数情况下，他被用来把结构化的模式应用到一个MongoDB集合，并提供了验证和类型装换等好处
 - 基于MongoDB驱动，通过关系型数据库的思想来实现非关系型数据库
 
-安装依赖
+### 1.3.1 new Object
+
+1. [Schema](https://so.csdn.net/so/search?q=Schema&spm=1001.2101.3001.7020)（模式对象）
+2. **Model**
+3. Document
+
+Schema 对象定义[约束](https://so.csdn.net/so/search?q=约束&spm=1001.2101.3001.7020)了数据库中的文档结构
+
+Model 对象作为[集合](https://so.csdn.net/so/search?q=集合&spm=1001.2101.3001.7020)中的所有文档的表示，相当于MongoDB中的collection，它的每一个实例就是一个document文档
+
+Document表示集合中的具体文档，相当于collection中的一个具体文档
+
+### 1.3.2 安装使用
+
+1. 安装依赖
 
 ```bash
-npm install mongoose
+$ yarn add mongoose
 ```
 
-**简单无约束的使用**
+2. 项目中引入mongoose
 
-Schema（模式对象）
+```js
+const mongoose = require(‘mongoose’)
+```
 
-- Schema 对象定义约束了数据库中的文档结构
+3. 连接MongoDB数据库
 
-Model
+```js
+mongoose.connect(‘mongodb://数据库ip地址 : 端口号( 默认端口27017可以省略 )/数据库名’)
+```
 
-- Model 对象作为集合中的所有文档的表示，相当于MongoDB中的collection，它的每一个实例就是一个document文档
-
-Document
-
-- Document表示集合中的具体文档，相当于collection中的一个具体文档
-
-### 连接数据库
+- connect()返回的是一个待定状态，在mongoose中有一个属性叫 connection 用来表示数据库的连接
+- 通过监视该对象可以用来监听数据库的连接与断开
 
 ```js
 const mongoose = require('mongoose');
@@ -232,7 +247,6 @@ mongoose.connect('mongodb://localhost/数据库名字')
 // 设置密码权限的情况
 mongoose.connect('mongodb://用户名:密码@数据库的ip地址:27017/数据库名')
 
-// 在mongoose中有一个属性叫 connection 用来表示数据库的连接, 通过监视该对象可以用来监听数据库的连接与断开
 // 数据库连接成功事件
 
 mongoose.connection.once(‘open’ , () => {})
@@ -242,23 +256,12 @@ mongoose.connection.once(‘open’ , () => {})
 mongoose.connection.once(‘close’ , () => {})
 ```
 
-### 设计约束
+### 1.3.3 设计模式对象
+
+- 通过`Schema`创建`Model`
+- Model 代表的是数据库中的集合，通过Model才能对数据库进行操作, Schema 只是集合约束
 
 ```js
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
-
-// 连接数据库
-mongoose.connect('mongodb://localhost/test')
-
-mongoose.connection.once('open',()=>{
-    console.log('数据库连接成功……')
-})
-mongoose.connection.once('close',()=>{
-    console.log('数据库断开……')
-})
-
-// 设计约束
 var stuSchema = new Schema({
     name: String,
     age: Number,
@@ -282,17 +285,50 @@ const userSchema = new Schema({
     type: String
   }
 })
+```
 
+支持的字段类型
+
+| 类型     | 作用         |
+| -------- | ------------ |
+| String   | 定义字符串   |
+| Number   | 定义数字     |
+| Date     | 定义日期     |
+| Buffer   | 定义二进制   |
+| Boolean  | 定义布尔值   |
+| Mixed    | 定义混合类型 |
+| ObjectId | 定义对象ID   |
+| Array    | 定义数组     |
+
+>  **timestamps**
+
+当 schema 中设置timestamps为 true 时，schema映射的文档 document 会自动添加 createdAt 和 updatedA t这两个字段，代表创建时间和更新时间
+
+```js
+var stuSchema = new Schema({
+    name: String,
+    timestamps: true
+})
+```
+
+> **_id**
+
+当未定义`_id`字段时 mongoose 会为每一个文档自动添加一个不重复的`_id`，类型为ObiectId（在查询语句中需要通过 findById() 才能查询）
+
+### 1.3.4 转换为模型
+
+```js
 // 将文档结构发布为模型
 // 第一个参数 最后会转化成 小写复数 的集合名称
 // 第二个参数 选择需要对应的 Schema
-
 //将stuSchema映射到一个MongoDB collection并定义这个文档的构成
 
 const User = mongoose.model('User',userSchema)
 
 const Student = mongoose.model('Student',stuSchema)
 
+// 然后可以进行操作
+// 对数据库进行增、删、改、查
 Student.create({
     name: "ximingx",
     age: 20,
@@ -301,9 +337,18 @@ Student.create({
 })
 ```
 
-### 插入数据
+### 1.3.5 断开数据库连接
 
-两种方法
+```js
+// 一般不使用
+mongoose.disconnect()
+```
+
+### 1.3.6 模型的操作
+
+#### 1.3.6.1 插入操作
+
+> **save()**
 
 ```js
 // 现在仅仅是创建
@@ -317,7 +362,7 @@ const course = new Course({
 course.save()
 ```
 
-
+> **create()**
 
 ```js
 // 参数: {插入的集合}, 回调函数
@@ -329,55 +374,74 @@ Course.create({
     // 当前插入的文档
   console.log(doc);
 })
+```
 
+> **insertMany**
+>
+> - Model.insertMany(doc(s), [options], [callback])
 
-// 或者
-Course.create({
-  name: 'React Course',
-})
-.then(data => {
-    
-})
-.catch(err => {
-    
+```js
+Student.insertMany({name:"小明",grades:68},{name:"小芳",grades:94},(err,docs) => {
+    if(err) {
+        console.log(err)
+    }
+    // 返回值为一个数组
+    console.log(docs)
 })
 ```
 
-### 导入数据
+#### 1.3.6.2 查询操作
 
-**首先要将 mongodb 的 bin 目录添加到 系统环境的 path 下**
+> **find()**
+>
+> - Model.find(conditions, [projection], [options], [callback])
+>
+> - conditions：查询条件
+>
+>   [projection]：控制返回字段
+>
+>   [options]：配置查询参数
+>
+>   [callback]：回调函数–function(err,docs){}
 
-```bash
-#mongoimport -d 数据库名称 -c 集合名称 --file 数据文件目录
-> mongoimport -d test -c course --file ./user.json
+> 1. 条件查询
+>
+> + 当条件为 null 时, 查询所有的数据
+
+```js
+// isPublished 为 true 的所有
+Course.find({isPublished: true})
+// age 大于20 小于 28 的所有
+Course.find({age: {$gt: 20, $lt: 28}})
+// hobbies 中匹配包含 敲代码 的文档
+Course.find({hobbies: {$in: ['敲代码']}})
 ```
+
+> 2. 返回文档中的第一条, 只有一条 ~ !
+
+```js
+Course.findOne({name: 'React Course'})
+```
+
+
+
+
+
+> 查询文档总数
+
+```js
+// 查询文档的总数
+Course.countDocument({})
+```
+
+
+
+
 
 ### 查询文档
 
 ```js
-// 集合对象.find() 当为空的时候, 查询全部
-// 返回的结果必然是数组
-Course.find({isPublished: true})
-  .then(result => console.log(result))
-  .catch(err => console.log(err))
 
-
-// 返回文档中的第一条, 只有一条 ~ !
-Course.findOne({name: 'React Course'})
-  .then(course => console.log(course))
-  .catch(err => console.log(err))
-
-
-// age 大于20 小于 28 的
-Course.find({age: {$gt: 20, $lt: 28}})
-  .then(course => console.log(course))
-  .catch(err => console.log(err))
-
-
-// hobbies 中匹配包含 敲代码 的文档
-Course.find({hobbies: {$in: ['敲代码']}})
-  .then(doc => console.log(doc))
-  .catch(err => console.log(err))
 
 
 // 查询某几个字段 (_id是默认查找项)

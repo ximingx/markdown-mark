@@ -2630,6 +2630,7 @@ export function request(config) {
   })
 
   instance.interceptors.request.use(config => {
+    // k
     return config
   },err => {
     console.log(err)
@@ -2948,7 +2949,7 @@ Vue项目打包的时候，默认会把所有代码合并生产新文件,其中�
 
 ```html
 <head>
-    <% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.css) { %>
+    <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.css) { %>
     <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="preload" as="style" />
     <link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet" />
   	<% } %>
@@ -3583,4 +3584,70 @@ yarn global add @vue/cli
 
 
 
+
+
+
+
+
+
+
+# 项目优化
+
+## cdn 引入资源
+
+具体看上面 vue.config.js
+
+## 路由懒加载
+
+```js
+component: () => import('views/home/Home.vue'),
+```
+
+## express gzip压缩
+
+> 安装
+
+```bash
+$ npm install compression
+```
+
+> 使用
+
+```js
+var compression = require('compression')
+// 要在静态资源托管之前使用
+app.use(compression())
+```
+
+## https
+
+首先需要有证书
+
+```bash
+const express = require("express")
+const https = require("https");
+const fs = require("fs");
+const app = express();
+const option = {
+	cert: fs.readFileSync(''./full_chain.pem'),
+	key: fs.readFileSync(''./priveate.key')
+}
+https.createServer(options, app)
+```
+
+## pm2
+
+```bash
+$ yarn global add pm2
+# 启动项目
+$ pm2 start 脚本 --name 自定义名称
+# 查看运行任务
+$ pm2 ls
+# 停止服务
+$ pm2 stop 名称 
+# 重启服务
+$ pm2 restart 名称 
+# 删除服务
+$ pm2 delete 名称 
+```
 

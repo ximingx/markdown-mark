@@ -4023,3 +4023,26 @@ $ DEBUG=express:* node index.js
   }
   ```
 
+# 部署优化
+
+## gzip
+
+> Node+Express部署前端 gzip资源压缩
+
+```js
+const express = require('express');
+const proxy = require('http-proxy-middleware');
+// 服务端压缩gzip
+var compression = require('compression');
+const app = express();
+// 启用服务端压缩gzip
+app.use(compression());
+
+app.use(express.static('../deploy'));
+
+app.listen(3000, (req, res) => {
+  console.log(req, res);
+  console.log('启动成功，请通过localhost:9900访问');
+});
+```
+

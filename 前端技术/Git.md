@@ -136,7 +136,7 @@ git reset --hard 指定的id号
 - `git log` 查看提交记录
 - 将 git 仓库中指定的更新记录恢复出来，并且覆盖暂存区和工作目录：`git rest --hard commitID` 
 
-### 示例：参与现有存储库
+### 参与现有存储库
 
 ```bash
 # download a repository on GitHub to our machine
@@ -164,7 +164,7 @@ git commit -m "my snapshot"
 git push --set-upstream origin my-branch
 ```
 
-### 示例：启动新存储库并将其发布到 GitHub
+### 新存储库并将发布
 
 首先，您需要在 GitHub 上创建一个新存储库。 更多信息请参阅“[Hello World](https://docs.github.com/cn/get-started/quickstart/hello-world)”。 **不要**使用 README、.gitignore 或许可文件初始化存储库。 这个空存储库将等待您的代码。
 
@@ -231,6 +231,20 @@ $ git rm -r 我的文件夹/
 $ git commit -m"我的修改"
 # 推送到远程仓库（比如GitHub） 
 $ git push origin xxxxxx
+```
+
+### 新开一个分支
+
+```bash
+# 查看分支
+$ git branch
+# 新建一个分支
+$ git checkout -b login
+# 查看分支
+$ git branch
+# 如果远程没有这个分支, 则需要 -u进行
+git push -u origin login
+
 ```
 
 
