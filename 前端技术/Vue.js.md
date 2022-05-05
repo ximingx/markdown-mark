@@ -2631,8 +2631,8 @@ Vue-resource角jQuery轻便很多，但在vue2.x之后，尤雨溪对Vue-resourc
 
 vuex 是 `vue`框架中**状态管理**工具。
 
-```bahs
-npm install vuex
+```bash
+$ yarn add vuex
 ```
 
 需要在在`main.js`引入`store`
@@ -2658,6 +2658,8 @@ export default createStore({
     },
     mutations:{
         // 保存当前菜单栏的路径
+        // 第一个形参永远都是state也就是$state对象
+        // 第二个形参是调用add时传递的参数
         savePath(state,pathName){
             state.pathName = pathName;
         },
@@ -2677,7 +2679,9 @@ export default createStore({
 })
 ```
 
-state是自定义的一些变量，需要用来保存数据，mutations是用来触发事件，相当于方法，用户需要通过触发这个方法，借此来保存数据，参数的话，第二个参数就是用户传入的值，然后在方法中赋值给state中的变量
+state 提供唯一的公共数据源，所有共享的数据都要统一放到Store中的State中存储
+
+mutations是用来触发事件，相当于方法，用户需要通过触发这个方法，借此来保存数据，参数的话，第二个参数就是用户传入的值，然后在方法中赋值给state中的变量
 
 场景举例：当我点击按钮后，我需要把当前的数据保存到vuex中，然后跳转到别的路由，然后使用这些数据
 
@@ -2685,7 +2689,7 @@ state是自定义的一些变量，需要用来保存数据，mutations是用来
 methods:{
     click(){
         // 点击按钮进行一些操作，然后保存数据
-        this.$store.commit('saveCurrDbSource',this.db)
+        this.$store.commit('saveCurrDbSource',"db")
     }
 }
 ```
@@ -2722,10 +2726,19 @@ Vuex就是一个仓库，仓库里面放了很多对象。
 - `getters` 可以对`State`进行计算操作，它就是`Store`的计算属性。
 - 虽然在组件内也可以做计算属性，但是`getters` 可以在多组件之间复用。
 - 如果一个状态只在一个组件内使用，可以不用`getters`。
+- 它只会包装Store中保存的数据，并不会修改Store中保存的数据，当Store中的数据发生变化时，Getter生成的内容也会随之变化
+
+````html
+// this.$store.getters.方法名h
+<h1>{{$store.getters.showNum}}</h1>
+````
 
 **Mutation Action**
 
+- Mutation用于修改变更$store中的数据
+
 - `Action` 类似于 `mutation`，不同在于：`Action` 提交的是 `mutation`，而不是直接变更状态；`Action` 可以包含任意异步操作。
+- 可以使用Action来执行异步操作。
 
 ### 辅助函数
 
@@ -2735,6 +2748,8 @@ state辅助函数为mapState，actions辅助函数为mapActions，mutations辅�
 
 1. 需要在当前组件中引入`Vuex`。
 2. 通过`Vuex`来调用辅助函数。
+
+
 
 ## 11. Pinia
 
@@ -2798,28 +2813,6 @@ createApp(App).use(pinia()).mount('#app');
 ```
 
 在上面的片段中，你将Pinia添加到Vue.js项目中，这样你就可以在你的代码中使用Pinia的全局对象。
-
-### defineStore（）
-
-创建 store / index.js
-
-为了创建一个store，你用一个包含创建一个基本store所需的states、actions和getters的对象来调用 `defineStore` 方法。
-
-存储是使用定义的`defineStore()`，并且它需要一个**唯一的**名称，作为第一个参数传递：
-
-```js
-// stores/todo.js
-import { defineStore } from 'pinia'
-
-export const useTodoStore = defineStore({
-  id: 'todo',
-  state: () => ({ count: 0, title: "Cook noodles", done:false })
-})
-```
-
-
-
-
 
 ## 12. vue.config.js
 
@@ -3567,12 +3560,14 @@ Vue CLI 是一个基于 Vue.js 进行快速开发的完整系统
 - 一个丰富的官方插件集合，集成了前端生态中最好的工具。
 - 通过 `@vue/cli` 实现的交互式的项目脚手架。
 - 通过 `@vue/cli` + `@vue/cli-service-global` 实现的零配置原型开发。
+- Vue CLI 致力于将 Vue 生态中的工具基础标准化。它确保了各种构建工具能够基于智能的默认配置即可平稳衔接，这样你可以专注在撰写应用上，而不必花好几天去纠结配置的问题。
+- 与此同时，它也为每个工具提供了调整配置的灵活性，无需 eject。
 
-## 1. 系统的组件
+## 1. Vue CLI 系统的组件
 
 > CLI
 
-CLI (`@vue/cli`) 是一个全局安装的 npm 包，提供了终端里的 `vue` 命令。
+**CLI (`@vue/cli`) 是一个全局安装的 npm 包，提供了终端里的 `vue` 命令。**
 
 它可以通过 `vue create` 快速搭建一个新项目
 
@@ -3602,7 +3597,7 @@ $ vue ui
 
 > CLI 服务
 
-CLI 服务 (`@vue/cli-service`) 是一个开发环境依赖。它是一个 npm 包，局部安装在每个 `@vue/cli` 创建的项目中。
+CLI 服务 (`@vue/cli-service`) 是一个开发环境依赖。**它是一个 npm 包，局部安装在每个 `@vue/cli` 创建的项目中。**
 
 CLI 服务是构建于 [webpack](http://webpack.js.org/) 和 [webpack-dev-server](https://github.com/webpack/webpack-dev-server) 之上的。它包含了：
 
@@ -3615,6 +3610,8 @@ CLI 服务是构建于 [webpack](http://webpack.js.org/) 和 [webpack-dev-server
 CLI 插件是向你的 Vue 项目提供可选功能的 npm 包，例如 Babel/TypeScript 转译、ESLint 集成、单元测试和 end-to-end 测试等。
 
 Vue CLI 插件的名字以 `@vue/cli-plugin-` (内建插件) 或 `vue-cli-plugin-` (社区插件) 开头
+
+当你在项目内部运行 `vue-cli-service` 命令时，它会自动解析并加载 `package.json` 中列出的所有 CLI 插件。
 
 ## 2. 安装
 
@@ -3636,9 +3633,347 @@ $ yarn global upgrade --latest @vue/cli
 
 ## 3. 插件
 
-Vue CLI 使用了一套基于插件的架构。如果你查阅一个新创建项目的 `package.json`，就会发现依赖都是以 `@vue/cli-plugin-` 开头的。
+**Vue CLI 使用了一套基于插件的架构。**如果你查阅一个新创建项目的 `package.json`，就会发现依赖都是以 `@vue/cli-plugin-` 开头的。
 
-插件可以修改 webpack 的内部配置，也可以向 `vue-cli-service` 注入命令。
+**插件可以修改 webpack 的内部配置，也可以向 `vue-cli-service` 注入命令。**
+
+在项目创建的过程中，绝大部分列出的特性都是通过插件来实现的。
+
+> 在现有的项目中安装插件
+>
+> `vue add` 的设计意图是为了安装和调用 Vue CLI 插件。这不意味着替换掉普通的 npm 包。对于这些普通的 npm 包，你仍然需要选用包管理器。
+
+```bash
+$ vue add eslint
+# 这个和之前的用法等价
+$ vue add cli-plugin-eslint
+```
+
+这个命令将 `@vue/eslint` 解析为完整的包名 `@vue/cli-plugin-eslint`，然后从 npm 安装它，调用它的生成器。
+
+## 4. Present
+
+一个 Vue CLI preset 是一个包含创建新项目所需预定义选项和插件的 JSON 对象，让用户无需在命令提示中选择它们。
+
+在 `vue create` 过程中保存的 preset 会被放在你的 home 目录下的一个配置文件中 (`~/.vuerc`)。你可以通过直接编辑这个文件来调整、添加、删除保存好的 preset。
+
+这里有一个 preset 的示例：
+
+```js
+{
+  "useTaobaoRegistry": false,
+  // presets
+  "presets": {
+     // 这里是你的多个配置中的第一个 vue3_bable_router_scs 是名称
+    "vue3_bable_router_scss": {
+      "useConfigFiles": true,
+      "plugins": {
+        "@vue/cli-plugin-babel": {},
+        "@vue/cli-plugin-router": {
+          "historyMode": true
+        }
+      },
+      "vueVersion": "3",
+      "cssPreprocessor": "dart-sass"
+    }
+    // 
+  },
+   // 看上面的就可
+  "latestVersion": "5.0.4",
+  "lastChecked": 1648106165203,
+  "packageManager": "yarn"
+}
+```
+
+Preset 的数据会被插件生成器用来生成相应的项目文件。除了上述这些字段，你也可以为集成工具添加配置：
+
+```js
+{
+  "useConfigFiles": true,
+  "plugins": {...},
+  "configs": {
+    "vue": {...},
+    "postcss": {...},
+    "eslintConfig": {...},
+    "jest": {...}
+    // 你可以显式地指定用到的插件的版本, 当被忽略时，CLI 会自动使用 registry 中最新的版本
+    "@vue/cli-plugin-eslint": {
+      "version": "^3.0.0",
+      // ... 该插件的其它选项
+    }
+  }
+}
+```
+
+这些额外的配置将会根据 `useConfigFiles` 的值被合并到 `package.json` 或相应的配置文件中。其中当 `"useConfigFiles": true` 时， `configs` 内的配置信息会直接覆盖初始化后项目中的 `vue.config.js`。
+
+所以当你需要给组里定制一份基于 vue-cli 的前端项目初始化模板时, 我们要做的事情很简单，就是当别人使用 `vue create xxx` 命令初始化一个前端项目时，可以从 git repo 去拉取项目初始化信息
+
+> **你可以通过发布 git repo 将一个 preset 分享给其他开发者。这个 repo 应该包含以下文件：**
+>
+> - **preset.json**: 包含 preset 数据的主要文件（必需）。
+> - **generator.js**: 一个可以注入或是修改项目中文件的 Generator。
+> - **prompts.js**: 一个可以通过命令行对话为 generator 收集选项的 prompts 文件。
+
+使用`vue create` 创建过项目的小伙伴应该都记得，在创建完成后 CLI 会提示是否保存为一个 preset，这里第一条指的就是要保存的那个对象。如果你保存过，下面的命令就能看到之前保存的 preset。
+
+> **preset.json 文件**
+
+先说一点：当你直接用 `vue create xxx` 初始化项目时，如果你将初始化信息保存成一个本地模板后，会写入到你系统的 `~/.vuerc` 文件中。该文件中的内容其实就是我们接下来需要配置的 `present.json`。
+
+```json
+{
+  "useConfigFiles": true,
+  "plugins": {...},
+  "configs": {
+    "vue": {...},
+    "postcss": {...},
+    "eslintConfig": {...},
+    "jest": {...}
+  }
+}
+```
+
+> **prompts.js** 
+
+prompts.js 其实就是你在初始化项目时，系统会询问你的配置选项问题，比如你的项目需不需要安装 `vuex`? 需不需要安装 `vue-router`?
+
+你的回答会直接影响后面初始化生成的项目文件。
+
+```js
+module.exports = [
+{
+    type: 'list', // 即类型为 选择项
+    name: 'module', // 名称，作为下面 generator 函数 options 的键
+    message: '请选择你要生成的模块', // 提示语
+    choices: [
+      { name: 'Module1', value: 'module1' },
+      { name: 'Module2', value: 'module2' },
+      { name: 'Module3', value: 'module3' }
+    ],
+    default: 'module0',
+  },
+  {
+    type: 'input', // 类型为 输入项
+    name: 'moduleName',
+    message: '请输入模块名称',
+    default: 'myModule'
+  }
+];
+```
+
+> **generator.js**
+
+接下来就是 `generator.js`，这个文件负责的就是 **注入或是修改项目中文件**。
+
+```js
+module.exports = (api, options, rootOptions) => {
+  // 安装一些基础公共库
+  api.extendPackage({
+    dependencies: {
+      "axios"
+    }
+  });
+
+  // 安装 vuex
+  if (options.vuex) {
+    api.extendPackage({
+      dependencies: {
+        vuex
+      }
+    });
+
+    api.render('./template/vuex');
+  }
+
+  // 安装 element-ui 库
+  if (options.elementUI) {
+    api.extendPackage({
+      devDependencies: {
+        "element-ui": "^2.4.6"
+      }
+    });
+  }
+
+  // 公共基础目录和文件
+  api.render('./template/default');
+
+  // 配置文件
+  api.render({
+    './.eslintrc.js'     : './template/_eslintrc.js',
+    './.gitignore'       : './template/_gitignore',
+    './.postcssrc.js'    : './template/_postcssrc.js'
+  });
+}
+
+```
+
+> 最后的使用
+>
+> vue create --preset ximingx/vue-preset my-project
+
+## 5.CLI 服务
+
+在一个 Vue CLI 项目中，`@vue/cli-service` 安装了一个名为 `vue-cli-service` 的命令。你可以在 npm scripts 中以 `vue-cli-service`、或者从终端中以 `./node_modules/.bin/vue-cli-service` 访问这个命令。
+
+你可以通过 npm 或 Yarn 调用这些 script：
+
+```bash
+$ npm run serve
+# OR
+$ yarn serve
+```
+
+## 6. 资源处理
+
+> 插值
+
+`public/index.html` 文件是一个会被 [html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) 处理的模板。在构建过程中，资源链接会被自动注入。
+
+因为 index 文件被用作模板，所以你可以使用 [lodash template](https://lodash.com/docs/4.17.10#template) 语法插入内容：
+
+- `<%= VALUE %>` 用来做不转义插值；
+- `<%- VALUE %>` 用来做 HTML 转义插值；
+- `<% expression %>` 用来描述 JavaScript 流程控制。
+
+> preload
+
+`<link rel="preload">`是一种 resource hint，用来指定页面加载后很快会被用到的资源，所以在页面加载的过程中，我们希望在浏览器开始主体渲染之前尽早 preload。
+
+默认情况下，一个 Vue CLI 应用会为所有初始化渲染需要的文件自动生成 preload 提示。
+
+这些提示会被 [@vue/preload-webpack-plugin](https://github.com/vuejs/preload-webpack-plugin) 注入，并且可以通过 `chainWebpack` 的 `config.plugin('preload')` 进行修改和删除。
+
+> 静态资源
+
+静态资源可以通过两种方式进行处理：
+
+- 在 JavaScript 被导入或在 template/CSS 中通过相对路径被引用。这类引用会被 webpack 处理。
+- **放置在 `public` 目录下或通过绝对路径被引用。这类资源将会直接被拷贝，而不会经过 webpack 的处理。**
+
+当你在 JavaScript、CSS 或 `*.vue` 文件中使用相对路径 (必须以 `.` 开头) 引用一个静态资源时，该资源将会被包含进入 webpack 的依赖图中。在其编译过程中，所有诸如 `<img src="...">`、`background: url(...)` 和 CSS `@import` 的资源 URL **都会被解析为一个模块依赖**。
+
+所有编译后的 CSS 都会通过 [css-loader](https://github.com/webpack-contrib/css-loader) 来解析其中的 `url()` 引用，并将这些引用作为模块请求来处理。
+
+## 7.vue.config.js
+
+`vue.config.js` 是一个可选的配置文件，如果项目的 (和 `package.json` 同级的) 根目录中存在这个文件，那么它会被 `@vue/cli-service` 自动加载。
+
+调整 webpack 配置最简单的方式就是在 `vue.config.js` 中的 `configureWebpack` 选项提供一个对象：
+
+```js
+// vue.config.js
+module.exports = {
+  configureWebpack: {
+    plugins: [
+      new MyAwesomeWebpackPlugin()
+    ]
+  }
+}
+```
+
+> publicPath
+
+- Type: `string`
+- Default: `'/'`
+
+部署应用包时的基本 URL。
+
+> outputDir
+
+- Type: `string`
+- Default: `'dist'`
+
+当运行 `vue-cli-service build` 时生成的生产环境构建文件的目录。
+
+> assetsDir
+
+- Type: `string`
+
+- Default: `''`
+
+  放置生成的静态资源 (js、css、img、fonts) 的 (相对于 `outputDir` 的) 目录。
+
+> filenameHashing
+
+- Type: `boolean`
+
+- Default: `true`
+
+  默认情况下，生成的静态资源在它们的文件名中包含了 hash 以便更好的控制缓存。然而，这也要求 index 的 HTML 是被 Vue CLI 自动生成的。如果你无法使用 Vue CLI 生成的 index HTML，你可以通过将这个选项设为 `false` 来关闭文件名哈希。
+
+>  productionSourceMap
+
+- Type: `boolean`
+
+- Default: `true`
+
+  如果你不需要生产环境的 source map，可以将其设置为 `false` 以加速生产环境构建。
+
+> **configureWebpack**
+
+Type: `Object | Function`
+
+如果这个值是一个对象，则会通过 [webpack-merge](https://github.com/survivejs/webpack-merge) 合并到最终的配置中。
+
+```js
+configureWebpack:{
+  resolve: {
+    // 别名配置
+    alias: {
+      'assets': '@/assets',
+      'common': '@/common',
+      'components': '@/components',
+      'network': '@/network',
+      'configs': '@/configs',
+      'views': '@/views',
+      'plugins': '@/plugins',
+    }
+  }
+},
+```
+
+如果这个值是一个函数，则会接收被解析的配置作为参数。该函数既可以修改配置并不返回任何东西，也可以返回一个被克隆或合并过的配置版本。
+
+```js
+module.exports = {
+  configureWebpack: config => {
+    if (isProduction) {
+      ...
+    } else {
+      ...
+    }
+    // 可以选择返回一个将要合并的对象
+    return {
+      resolve: {
+        alias: {
+          '@asset':resolve('src/assets')
+        }
+      }
+    } 
+  }
+}
+```
+
+这个属性特别之处就是，他有两种类型形态，但是又不能重复使用
+
+> **chainWebpack**
+
+Type: `Function`
+
+是一个函数，会接收一个基于 [webpack-chain](https://github.com/mozilla-neutrino/webpack-chain) 的 `ChainableConfig` 实例。允许对内部的 webpack 配置进行更细粒度的修改。
+
+> **devServer**
+
+Type: `Object`
+
+- 有些值像 `host`、`port` 和 `https` 可能会被命令行参数覆写。
+
+
+
+
+
+
 
 
 
