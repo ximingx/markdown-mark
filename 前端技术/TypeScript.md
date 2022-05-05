@@ -2,11 +2,11 @@
 
 在平常我们使用 ES6/7/8/9 语法用于开发中, 要想让具有新特性的代码顺利运行在非现代浏览器，需要借助Babel这种编译工具，将代码转为ES5版本。
 
-而 TypeScript，可以完全不用 Babel，就能将你的代码编译为指定版本标准的代码。
+**而 TypeScript，可以完全不用 Babel，就能将你的代码编译为指定版本标准的代码**。
 
-TypeScript 作为 JavaScript 的超集，但是始终紧跟 ECMAScript 标准，所以 ES6/7/8/9 等新语法标准都是支持的，而且我还在语言层面上，对一些语法进行拓展。
+**TypeScript 作为 JavaScript 的超集**，但是始终紧跟 ECMAScript 标准，所以 ES6/7/8/9 等新语法标准都是支持的，而且我还在语言层面上，对一些语法进行拓展。
 
-- typescript 会在编译时对代码进行严格的静态类型检查，可以在编码阶段就发现问题，而不是在上线运行时才发现
+- **typescript 会在编译时对代码进行严格的静态类型检查，可以在编码阶段就发现问题**，而不是在上线运行时才发现
 - typeScript语法遵循ES规范，更细速度快，不断支持最新的ECMAScript新特性，如装饰器、public/private修饰符
 - typescript 支持 OOP（面向对象）的接口，抽象类，多态特性
 - typescript可以为 IDE 提供更好的代码补全、接口提示、跳转到定义
@@ -19,10 +19,12 @@ TypeScript 作为 JavaScript 的超集，但是始终紧跟 ECMAScript 标准，
 
 ```bash
 # 全局安装
+## win 系统
 $ npm install typescript -g
 $ yarn add typescript -g
 #  mac 系统
 $ brew install typescript	
+
 # 项目中独立安装
 $ yarn init -y
 $ yarn add typescript -D
@@ -37,15 +39,16 @@ $ tsc -v
 # tsc 就是 TypeScript Compile
 # 编译 tsc 文件名
 $ tsc 1.ts
+
 # 修改 ts 文件后再执行命令编译会过于繁琐，可以执行以下命令自动监听ts 文件内容并自动生成 js 文件
 $ tsc 1.ts -w
 ```
 
 ## 2. 类型注解
 
-TypeScript 里的类型注解是一种轻量级的为函数或变量添加约束的方式。 
+**TypeScript 里的类型注解是一种轻量级的为函数或变量添加约束的方式。** 
 
-TypeScript 提供了静态的代码分析，它可以分析代码结构和提供的类型注解。
+**TypeScript 提供了静态的代码分析，它可以分析代码结构和提供的类型注解。**
 
 但要注意的是, 就算你的代码里有错误，你仍然可以使用TypeScript。但在这种情况下，TypeScript会警告你代码可能不会按预期执行。
 
@@ -157,7 +160,7 @@ tuple[0] = 123;
 
 `enum`类型是对JavaScript标准数据类型的一个补充。 
 
-像C#等其它语言一样，使用枚举类型可以为一组数值赋予友好的名字。
+像`C#`等其它语言一样，使用枚举类型可以为一组数值赋予友好的名字。
 
 ```js
 enum Color {Red, Green, Blue}
@@ -277,7 +280,7 @@ obj = {
 
 `unknown` 不知道什么类型, 但是有一个类型, 不可以随意的赋值
 
-- 与 any 的区别是 any 不进行 TS 校验，unknown 类型要安全得多，会进行 TS 的类型检查
+- 与 any 的区别是 any 不进行 TS 校验，**unknown 类型要安全得多，会进行 TS 的类型检查**
 - 使用 unknown 类型时一般需要 as **类型断言**来转换类型
 
 ```js
@@ -301,11 +304,11 @@ ximingx = 2010
 
 有时候你会遇到这样的情况，你会比TypeScript更了解某个值的详细信息。 通常这会发生在你清楚地知道一个实体具有比它现有类型更确切的类型。
 
-类型断言好比其它语言里的类型转换，但是不进行特殊的数据检查和解构。 它没有运行时的影响，只是在编译阶段起作用。 TypeScript会假设你，程序员，已经进行了必须的检查。
+**类型断言好比其它语言里的类型转换，但是不进行特殊的数据检查和解构。 它没有运行时的影响，只是在编译阶段起作用。 TypeScript会假设你，程序员，已经进行了必须的检查。**
 
 ```js
 let someValue: any = "this is a string";
-
+// 使用 as j
 let strLength: number = (someValue as string).length;
 ```
 
