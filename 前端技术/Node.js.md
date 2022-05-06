@@ -6,17 +6,26 @@ Node.js 的 中文官网地址：**https://nodejs.org/zh-cn/**
 
 ## 1. 什么是 Node.js
 
-Node.js 是一个基于 **Chrome V8 引擎的 JavaScript 运行环境** 。Node.js 使用了一个**事件驱动**、**非阻塞式 I/O**的模型，使其轻量又高效。Node.js 的**包管理工具 npm 是全球最大的开源库生态系统。**
+> ​		我们熟知在一个完整的项目中我们是需要前端、后端双技术的配合，**传统的Web应用开发主要还是以PHP+MySQL或者是Tomcat+Java**，两个系列各有优势，前者开发方式便捷、简单，但是总体性能并不高，对于大量请求或者即时应用来说并不合适，而后者虽然继承了Java的高性能优势，但对于开发者来说过于繁琐，从而给开发者造成了一定的困难，Node.js则结合了上面两种开主流开发方式的特点，他是一个开源和跨平台的 JavaScript 运行时环境。
+>
+> ​		作为当下的前端开发工程师，大家对Node.js已经是熟悉到极致了，毕竟我们只要使用前端框架进行开发，必不可少的就是在我们电脑上配置Node环境, 所以, 在了解一些关于前端的框架之后, 了解 Node.js 将会非常轻松
 
-V8引擎执行`Javascript`的速度非常快，性能非常好。`Node.js`对一些特殊用例进行了优化，提供了替代的API，使得V8在非浏览器环境下运行得更好；
+​		Node.js发布于2009年5月, 是一个基于 **Chrome V8 引擎的 JavaScript 运行环境, 能够在服务器端运行 Javasoript 语言** 。Node.js 使用了一个**事件驱动**、**非阻塞式 I/O**的模型, 当 Node.js 执行 I/O 操作时（比如从网络读取、访问数据库或文件系统），Node.js 将在响应返回时恢复操作（而不是阻塞线程和浪费 CPU 周期等待），使其轻量又高效。
 
-Node.js 不是一门语言，也不是 JavaScript 的框架，也不是像Nginx一样的Web服务器 ，**Node.js 是 JavaScript 在服务器端的运行环境（平台）**。
+​		Node.js 的**包管理工具 npm 是全球最大的开源库生态系统。**包含各大领域层次的 NPM 包，如MongoDB、MySQL 的连接器，以及 CSS的样式表、模板引擎、数宇格式化等。使用这些 NPM 包可以相当快捷地完成基本应用的开发
+
+​		V8引擎执行`Javascript`的速度非常快，性能非常好。`Node.js`对一些特殊用例进行了优化，提供了替代的API，使得V8在非浏览器环境下运行得更好；
+
+​		Node.js 不是一门语言，也不是 JavaScript 的框架，也不是像Nginx一样的Web服务器 ，**Node.js 是 JavaScript 在服务器端的运行环境（平台）**。
 
 使用 node.js 我们可以做什么: 
 
 - 基于 Express 框架（http://www.expressjs.com.cn/），可以快速构建 Web 应用；
 - 基于 Electron 框架（https://electronjs.org/），可以构建跨平台的桌面应用；
 - 基于 restify 框架（http://restify.com/），可以快速构建 API 接口项目；
+- **AdonisJS：**基于 TypeScript 的全功能框架，高度关注开发者的效率、稳定和信任。Adonis 是最快的 Node.js Web 框架之一。
+- **Egg.js：**使用 Node.js 和 Koa 构建更好的企业级框架和应用程序的框架。
+- **Socket.io:**构建网络应用的实时通信引擎。
 - 读写和操作数据库、创建实用的命令行工具辅助前端开发、etc；
 
 

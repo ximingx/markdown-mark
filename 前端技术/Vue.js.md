@@ -25,6 +25,7 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 官方定义： **Vue（读作 /vjuː/，类似 ivew ）**是一个帮助用户制造界面的 JavaScript 框架。它在标准 HTML、CSS 和 JavaScript 中创建，并提供了一个**声明性和基于组件的编程模型**，可有效开发地简单或复杂的用户界面。
 
 传统的网站开发一般采用HTML+CSS+JS作为技术架构，而vue立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心，极大的简化了开发流程。
+
 使用vue技术栈，可以在几分钟内搭建出一个完整的前端项目。
 
 **前端开发者最主要的工作，就是为网站的使用者（又称为：网站的用户）构建出美观、舒适、好用的网页。**
@@ -115,11 +116,11 @@ html 页面中实现
 </html>
 ```
 
-<img  src="https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204221508594.png"  >
-
  在Vue中，一个核心的概念就是：**数据驱动，避免手动操作DOM元素**。这样的话，可以更多的时间去关注数据的业务逻辑，而不是关心 DOM 是如何渲染的了。
 
 **数据驱动视图是单向的数据绑定。**
+
+![image-20220506231233422](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220506231233422.png)
 
 ```html
 <script>
@@ -192,15 +193,23 @@ Vue实例是作用于某一个HTML元素上的，这个元素可以是HTML的 bo
 
 首先，我们将上图中的**DOM Listeners和Data Bindings**看作两个工具，它们是实现双向绑定的关键。 
 
+> View
+
 从View侧看，ViewModel中的**DOM Listeners工具会帮我们监测页面上DOM元素的变化**，如果有变化，则更改Model中的数据； 
 
+> Model
+
 从Model侧看，当我们更新Model中的数据时，**Data Bindings工具会帮我们更新页面中的DOM元素。**
+
+> MVVM
 
 MVVM是Model-View-ViewModel的缩写。MVVM是一种设计思想。Model 层代表数据模型，也可以在Model中定义数据修改和操作的业务逻辑；View 代表UI 组件，它负责将数据模型转化成UI 展现出来，ViewModel 是一个同步View 和 Model的对象。
 
 在MVVM架构下，View 和 Model 之间并没有直接的联系，而是通过ViewModel进行交互，Model 和 ViewModel 之间的交互是双向的， 因此View 数据的变化会同步到Model中，而Model 数据的变化也会立即反应到View 上。
 
 ViewModel 通过双向数据绑定把 View 层和 Model 层连接起来，而View 和 Model 之间的同步工作完全是自动的，无需人为干涉，因此开发者只需关注业务逻辑，不需要手动操作DOM, 不需要关注数据状态的同步问题，复杂的数据状态维护完全由 MVVM 来统一管理。
+
+> mvc 和 mvvm
 
 mvc和mvvm其实区别并不大，都是一种设计思想。主要就是mvc中Controller演变成mvvm中的viewModel。mvvm主要解决了mvc中大量的DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验。
 
@@ -2090,7 +2099,21 @@ Vue3（其实从2.6开始）中引入了一个新的指令`v-slot`，用来表�
 
 ## 8. Vue-router
 
-### 8.1 后端路由
+vue-router 它是一个Vue.js官方提供的路由管理器。
+
+Vue Router和Vue.js非常契合，可以一起方便的实现SPA(single page web application,单页应用程序)应用程序的开发。
+Vue Router依赖于Vue，所以需要先引入Vue，再引入Vue Router
+
+在了解 vue-router 之前先引入一个前端路由与后端路由的知识, 至少在之后的 Node.js 的学习中是有帮助的
+
+简单地说
+
+- 将路径和组件映射。
+- 在vue-router的单页面应用中，页面的路径的改变就是组件的切换
+
+### 8.1 后端, 前端路由
+
+> 前端路由
 
 对于普通的网站，所有的超链接都是URL地址，所有的URL地址都对应服务器上对应的资源。
 
@@ -2098,9 +2121,7 @@ Vue3（其实从2.6开始）中引入了一个新的指令`v-slot`，用来表�
 
 **总结**：后端路由，就是把所有url地址都对应到服务器的资源，这个**对应关系**就是路由。
 
----
-
-### 8.2 前端路由
+> 后端路由
 
 对于单页面应用程序来说，主要通过URL中的`hash`（url地址中的#号）来实现不同页面之间的切换。
 
@@ -2119,21 +2140,73 @@ window.onhashchange = function(){
 
 ---
 
+### 8.2 使用
+
+> 安装引入
+
+```bash
+# 安装
+$ npm i vue-router -S
+```
+
+在 src 目录下新建文件, router, 来吗新建文件 index.js
+
+```js
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+
+const routes: Array<RouteRecordRaw> = [
+  {
+    path: '/about',
+    name: 'about',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  }
+]
+
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+})
+
+export default router
+```
+
+然后在 `main.js` 中引入 `import router;` 并使用插件  `Vue.use(router);`
+
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+
+createApp(App).use(router).mount('#app')
+```
+
+需要注意的是, 默认情况下，进入网站的首页，我们希望渲染首页的内容。我们需要多配置一个映射就可以了
+
+```js
+{
+  path: '/',
+  redirect: '/home'
+}
+```
+
+- 我们在routes中又配置一个映射
+- path配置的是根路径：/
+- redirect是重定向，也就是我们将根路径重定向到/home的路径下，这样就可以得到我们想要的结果了。
+
 ### 8.3 页面跳转
 
-vue-router 它是一个Vue.js官方提供的路由管理器。是一个功能更加强大的前端路由器，推荐使用。
-
-Vue Router和Vue.js非常契合，可以一起方便的实现SPA(single page web application,单页应用程序)应用程序的开发。
-Vue Router依赖于Vue，所以需要先引入Vue，再引入Vue Router
-
-方式一：
+> 方式一：
 
 ```html
 <router-link :to="{name: 'bookshelf', params: { entityId: this.entityId } }"></router-link>
 <router-view></router-view>
 ```
 
-方式二：
+> 方式二：
 
 ```js
 // 基础
@@ -2164,6 +2237,8 @@ this.$router.replace({})
 // 设置 replace 属性的话，当点击时，会调用 router.replace() 而不是 router.push()，于是导航后不会留下 history 记录。点击返回按钮时，不会返回到这个页面。
 ```
 
+> and 直接修改地址栏, 但愿你不需要以后这样做
+
 ### 8.4 路由嵌套
 
 ```js
@@ -2186,8 +2261,6 @@ export default new VueRouter({
 
 ### 8.5 传递参数
 
-方式一
-
 ```js
 {
     // path 属性中增加了 :id 这样的占位符
@@ -2196,20 +2269,115 @@ export default new VueRouter({
 	component: UserProfile
 }
 
+
 // 注意 router-link 中的 name 属性名称 一定要和 路由中的 name 属性名称 匹配
 <router-link :to="{name:'UserProfile',params:{id:1}}">个人信息</router-link>
 
+
 // 使用 {{$route.params.id}} 
+
 
 // router.push() query params
 ```
 
 ### 8.6 路由模式与 404
 
+SPA(single page application):单一页面应用程序，只有一个完整的页面；它在加载页面时，不会加载整个页面，而是只更新某个指定的容器中内容。**单页面应用(SPA)的核心之一是: 更新视图而不重新请求页面**;
+
+vue-router在实现单页面前端路由时，提供了两种方式：Hash模式和History模式；根据mode参数来决定采用哪一种方式。
+
 路由模式有两种
 
-- hash：路径带 # 符号，如 http://localhost/#/login
-- history：路径不带 # 符号，如 http://localhost/login
+>  hash：路径带 # 符号，如 http://localhost/#/login
+
+**vue-router 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，于是当 URL 改变时，页面不会重新加载。**
+
+ hash（#）是URL 的锚点，代表的是网页中的一个位置，单单改变#后的部分，浏览器只会滚动到相应位置，不会重新加载网页，也就是说 #是用来指导浏览器动作的，对服务器端完全无用，HTTP请求中也不会不包括#；
+
+同时每一次改变#后的部分，都会在浏览器的访问历史中增加一个记录，使用”后退”按钮，就可以回到上一个位置；所以说**Hash模式通过锚点值的改变，根据不同的值，渲染指定DOM位置的不同数据**
+
+> history：路径不带 # 符号，如 http://localhost/login
+
+由于hash模式会在url中自带#，如果不想要很丑的 hash，我们可以用路由的 history 模式，只需要在配置路由规则时，加入"mode: 'history'"
+
+这种模式充分利用 history.pushState API 来完成 URL 跳转而无须重新加载页面。
+
+```js
+//main.js文件中
+const router = new VueRouter({
+  mode: 'history',
+  routes: [...]
+})
+```
+
+但是这种情况也有弊端, 会访问到未知路径, 因为我们的应用是个单页客户端应用，如果后台没有正确的配置，会返回 404 
+
+用户会经常输错页面，当用户输错页面时，我们希望给他一个友好的提示页面，这个页面就是我们常说的404页面。vue-router也为我们提供了这样的机制。
+
+```js
+{
+   path:'*',
+   component:Error
+}
+```
+
+这里的path:'*'就是输入地址不匹配时，自动显示出Error.vue的文件内容
+
+### 8.7 导航守卫
+
+> 全局首守卫
+
+当从一个路由跳转到另一个路由的时候触发此守卫，这个守卫也叫全局**前置**守卫，所以它是跳转前触发的。任何路由跳转都会触发。
+
+三个参数
+
+- to：这是你要跳去的路由对象。
+- from：这是你要离开的路由对象。
+- next：是一个方法，它接受参数。如过没有调用 next 方法, 路由不会向下传递
+
+```js
+const router = new VueRouter({ ... })
+ 
+router.beforeEach((to, from, next) => {
+  // ...
+})
+```
+
+> 全局后置钩子, 钩子不会接受 next 函数也不会改变导航本身, 只有 to, from 两个参数
+
+> 路由独享守卫
+
+这个守卫是写在路由里面的，只有当进入这个路由时才会调用的，这些守卫与全局前置守卫的方法参数是一样的。
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/foo',
+      component: Foo,
+      beforeEnter: (to, from, next) => {
+        // ...
+      }
+    }
+  ]
+})
+```
+
+### 8.8 补充
+
+> router-link 的 tag 属性
+
+router-link 的 tag 属性可以指定`<router-link>`之后渲染成什么组件，比如我们下面的代码会被渲染成一个`<li>`元素，而不是`<a>` 。 如：`<router-link to='/home' tag='li'>`
+
+> 路由懒加载的方式
+
+```js
+ {
+    path: '/about',
+    name: 'about',
+    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  }
+```
 
 
 
@@ -2231,9 +2399,11 @@ export default new VueRouter({
 首先得需要 node 环境
 使用 npm：
 ```bash
-npm install axios
+$ npm install axios
+$ bower install axios
 ```
-### 3. 应用场景
+### 3. 简单的引入
+
 CommonJS 用法
 ```js
 const axios = require('axios');
@@ -2248,6 +2418,14 @@ const axios = require('axios');
 - axios.post(url,[,data[, config]])
 - axios.put(url,[,data[, config]])
 - axios.patch(url,[,data[, config]])
+
+**其中即使请求地址相同, 方式的不同也会导致结果的不同** 
+
+- get：获取数据，请求指定的信息，返回实体对象
+- post：向指定资源提交数据（例如表单提交或文件上传）
+- put：更新数据，从客户端向服务器传送的数据取代指定的文档的内容
+- patch：更新数据，是对put方法的补充，用来对已知资源进行局部更新
+- delete：请求服务器删除指定的数据
 
  > 可以任意选择需要的方式， 灵活的使用
 
@@ -2298,7 +2476,7 @@ async function getUser() {
   }
 }
 ```
-async/await是 ECMAScript 2017 的一部分，在 Internet Explorer 和旧版浏览器中不受支持，因此请谨慎使用。
+async/await是 ECMAScript 2017 的一部分，在 Internet Explorer 和旧版浏览器中不受支持，因此请谨慎使用。嗷呜。
 > 请求默认配置
 
 ```js
@@ -2311,6 +2489,8 @@ axios.defaults.baseURL = 'https://api.example.com';
 使用axios.all，可以放入多个请求的数组。
 
 axios.all([])返回的是一个数组，使用axios.spread可以将数组[res1,res2]展开为res1和res2。
+
+等到最后都返回结果的时候才会调用 then 方法
 
 ```js
 import axios from 'axios'
@@ -2485,6 +2665,9 @@ instance({
 })
 ```
 ### 9. 请求的响应
+
+通过 axios 发送请求返回的数据都会被处理, 最后返回的数据在data 中
+
 ```js
 {
   // `data` 由服务器提供的响应
@@ -2580,14 +2763,18 @@ export function request(config) {
     }
   })
 
+  // 请求拦截器
   instance.interceptors.request.use(config => {
+    // 设置 token 
 	config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     return config
   },err => {
     console.log(err)
   })
 
+    // 响应拦截器
   instance.interceptors.response.use(res => {
+    // 直接返回数据
     return res.data
   },err => {
     console.log(err)
@@ -2601,21 +2788,16 @@ export function request(config) {
 
 ```js
 import {request} from "network/request";
-export function que(name) {
+
   return request({
-    url: '/que',
+    url: '/api/user',
     params: {
-      name: name
+      name: "ximingx"
     }
   })
-}
 ```
 
-### 12. 使用示例
-
-[axios 网络请求获取音乐信息](https://ximingx.blog.csdn.net/article/details/121899533?spm=1001.2014.3001.5502)
-
-### 13. 补充
+### 12. 补充
 
 > 为什么不适用jQuery的Ajax？
 
@@ -2625,15 +2807,57 @@ export function que(name) {
 
 Vue-resource角jQuery轻便很多，但在vue2.x之后，尤雨溪对Vue-resource不维护了，简言之，就是弃用了。
 
-> 尤雨溪推荐使用axios。
+> 尤雨溪推荐使用axios。 嗷呜, 听男神的话
 
 ## 10. Vuex
 
-vuex 是 `vue`框架中**状态管理**工具。
+`vuex `是 `vue`框架中**状态管理**工具。
+
+`vue `脚手架创建项目时勾选 `vuex`，会自动生成一个`store`文件夹自带一个 `index.js`
 
 ```bash
 $ yarn add vuex
+
+$ yarn add vuex@next --save
 ```
+
+### 10.1 vuex 属性
+
+有五种，分别是 `State`、 `Getter`、`Mutation` 、`Action`、 `Module`。
+
+Vuex就是一个仓库，仓库里面放了很多对象。
+
+- $store.state 或 context.state，访问state。
+- $store.getters 或者 context.state，访问getters。
+- $store.dispatch() 或 context.dispatch()，将触发 action函数。
+- $store.commit() 或 context.commit()，将触发mutation函数。
+
+**State**
+
+- 其中state就是数据源存放地，对应于一般Vue对象里面的data。
+
+- **state里面存放的数据是响应式的，Vue组件从store中读取数据，若是store中的数据发生改变，依赖这个数据的组件也会发生更新。**
+
+**Getter**
+
+- **`getters` 可以对`State`进行计算操作，它就是`Store`的计算属性。**
+- 虽然在组件内也可以做计算属性，但是`getters` 可以在多组件之间复用。
+- 如果一个状态只在一个组件内使用，可以不用`getters`。
+- 它只会包装Store中保存的数据，并不会修改Store中保存的数据，当Store中的数据发生变化时，Getter生成的内容也会随之变化
+
+````html
+// this.$store.getters.方法名h
+<h1>{{$store.getters.showNum}}</h1>
+````
+
+**Mutation Action**
+
+- Mutation用于修改变更$store中的数据
+
+- `Action` 类似于 `mutation`，不同在于：`Action` 提交的是 `mutation`，而不是直接变更状态；`Action` 可以包含任意异步操作。`actions `通过`dispach `-> `mutations`中的方法来实现的
+- 可以使用Action来执行异步操作。
+
+### 10.2 案例引入
 
 需要在在`main.js`引入`store`
 
@@ -2650,15 +2874,17 @@ createApp(App).use(store)
 import { createStore } from 'vuex'
  
 export default createStore({
+    // 声明变量
+    // 在全局通过 this.$store.state.变量名 使用
     state:{
         pathName: "",
         currDbSource: {},
         currJobData: {},
         DbSource: []
     },
+    // 修改变量（state不能直接赋值修改，只能通过mutations）
     mutations:{
-        // 保存当前菜单栏的路径
-        // 第一个形参永远都是state也就是$state对象
+        // 第一个形参永远都是 state 也就是 $state 对象
         // 第二个形参是调用add时传递的参数
         savePath(state,pathName){
             state.pathName = pathName;
@@ -2675,11 +2901,20 @@ export default createStore({
         saveDbSource(state,DbSource){
             state.DbSource = DbSource;
         }
+    },
+    action: {
+        // 通过dispach -> mutations中的方法来实现
+        // actions的第一个参数是固定的，是 context，是不需要你进行传递的，第二个参数是将要进行操作的数据
+        asyncSave(context, payload) {
+            setTimeout(() => {
+        		context.commit('saveDbSource', payload)
+     		 }, 2000)
+        }
     }
 })
 ```
 
-state 提供唯一的公共数据源，所有共享的数据都要统一放到Store中的State中存储
+**state 提供唯一的公共数据源，所有共享的数据都要统一放到Store中的State中存储**
 
 mutations是用来触发事件，相当于方法，用户需要通过触发这个方法，借此来保存数据，参数的话，第二个参数就是用户传入的值，然后在方法中赋值给state中的变量
 
@@ -2687,6 +2922,7 @@ mutations是用来触发事件，相当于方法，用户需要通过触发这�
 
 ```js
 methods:{
+    // 在一个组件中
     click(){
         // 点击按钮进行一些操作，然后保存数据
         this.$store.commit('saveCurrDbSource',"db")
@@ -2694,7 +2930,7 @@ methods:{
 }
 ```
 
-这里的第一个参数是要触发的方法，也就是上面mutations中的方法，第二个参数是你要传递的数据
+这里的第一个参数是要触发的方法，也就是上面`mutations`中的方法，第二个参数是你要传递的数据
 
 **获取数据**
 
@@ -2707,47 +2943,43 @@ this.$store.state.currDbSource
 
 场景有：单页应用中，组件之间的状态，音乐播放、登录状态、加入购物车等。
 
-### vuex 属性
-
-有五种，分别是 `State`、 `Getter`、`Mutation` 、`Action`、 `Module`。
-
-Vuex就是一个仓库，仓库里面放了很多对象。
+### 10. 3辅助函数
 
 一般情况下，如果需要访问`vuex.store`中`state`存放的数据，需要使用`this.$store.state.属性名`方式。显然，采取这样的数据访问方式，代码略显繁杂，**辅助函数**为了解决繁杂行问题应运而生。
 
-**State**
+通过辅助函数 mapGetters、mapState、mapActions、mapMutations，把vuex.store中的属性映射到 vue 实例身上，这样在vue实例中就能访问vuex.store中的属性了，对于操作vuex.store就变得非常方便。
 
-- 其中state就是数据源存放地，对应于一般Vue对象里面的data。
-
-- state里面存放的数据是响应式的，Vue组件从store中读取数据，若是store中的数据发生改变，依赖这个数据的组件也会发生更新。
-
-**Getter**
-
-- `getters` 可以对`State`进行计算操作，它就是`Store`的计算属性。
-- 虽然在组件内也可以做计算属性，但是`getters` 可以在多组件之间复用。
-- 如果一个状态只在一个组件内使用，可以不用`getters`。
-- 它只会包装Store中保存的数据，并不会修改Store中保存的数据，当Store中的数据发生变化时，Getter生成的内容也会随之变化
-
-````html
-// this.$store.getters.方法名h
-<h1>{{$store.getters.showNum}}</h1>
-````
-
-**Mutation Action**
-
-- Mutation用于修改变更$store中的数据
-
-- `Action` 类似于 `mutation`，不同在于：`Action` 提交的是 `mutation`，而不是直接变更状态；`Action` 可以包含任意异步操作。
-- 可以使用Action来执行异步操作。
-
-### 辅助函数
-
-**通过辅助函数mapGetters、mapState、mapActions、mapMutations，把vuex.store中的属性映射到vue实例身上，这样在vue实例中就能访问vuex.store中的属性了，对于操作vuex.store就变得非常方便。**
+**实际就是把state、getters、mutations、actions整合成一个数组，一次性返回,**
 
 state辅助函数为mapState，actions辅助函数为mapActions，mutations辅助函数为mapMutations。（Vuex实例身上有mapState、mapActions、mapMutations属性，属性值都是函数）
 
+使用辅助函数是把vuex中的getters等函数映射到vue中，调用时使用 this.user 即可调用 this.$store.getters.user 函数
+
 1. 需要在当前组件中引入`Vuex`。
 2. 通过`Vuex`来调用辅助函数。
+
+```js
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+export default {
+  computed: {
+    ...mapGetters({
+      "": "vuex仓库定义的方法",
+    }),
+    ...mapState({}),
+  },
+  methods: {
+    ...mapMutations({}),
+    ...mapActions({}),
+      ...mapActions([
+      'increment' // 映射 this.increment() 为 this.$store.dispatch('increment')
+    ]),
+    ...mapActions({
+      add: 'increment' // 映射 this.add() 为 this.$store.dispatch('increment')
+    })
+  },
+};
+</script>
+```
 
 
 

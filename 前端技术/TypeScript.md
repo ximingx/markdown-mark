@@ -52,6 +52,11 @@ $ tsc 1.ts -w
 
 但要注意的是, 就算你的代码里有错误，你仍然可以使用TypeScript。但在这种情况下，TypeScript会警告你代码可能不会按预期执行。
 
+两种形式:
+
+- 值类型 :限制固定的几个值
+- 宽泛类型 :string
+
 举例: 
 
 下面没有使用类型限制时，函数参数传入字符串也是可以执行的，显示这个结果是不对的
@@ -180,7 +185,7 @@ let c: Color = Color.Green;
 enum Color {Red = 1, Green, Blue}
 let colorName: string = Color[2];
 
-console.log(colorName);  // 显示'Green'因为上面代码里它的值是2
+console.log(colorName);  // 显示'Green'因为上面代码里它的值是2, 顺序递增
 ```
 
 > any
@@ -310,6 +315,13 @@ ximingx = 2010
 let someValue: any = "this is a string";
 // 使用 as j
 let strLength: number = (someValue as string).length;
+
+//
+function one(x: boolean): number | string {
+    return x ? 12 : "字符串";
+}
+let res = one(true) as number;
+console.log(res); //12
 ```
 
 ## 3. 配置文件
