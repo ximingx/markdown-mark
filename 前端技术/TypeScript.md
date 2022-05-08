@@ -1,33 +1,33 @@
 # TypeScript
 
-在平常我们使用 ES6/7/8/9 语法用于开发中, 要想让具有新特性的代码顺利运行在非现代浏览器，需要借助Babel这种编译工具，将代码转为ES5版本。
+在平常我们使用 `ES6/7/8/9` 语法用于开发中, 要想让具有新特性的代码顺利运行在非现代浏览器，需要借助`Babel`这种编译工具，将代码转为`ES5`版本。
 
-**而 TypeScript，可以完全不用 Babel，就能将你的代码编译为指定版本标准的代码**。
+**而 TypeScript，可以完全不用 `Babel`，就能将你的代码编译为指定版本标准的代码**。
 
-**TypeScript 作为 JavaScript 的超集**，但是始终紧跟 ECMAScript 标准，所以 ES6/7/8/9 等新语法标准都是支持的，而且我还在语言层面上，对一些语法进行拓展。
+**TypeScript 作为 JavaScript 的超集**，但是始终紧跟 `ECMAScript `标准，所以` ES6/7/8/9` 等新语法标准都是支持的，而且我还在语言层面上，对一些语法进行拓展。
 
-- **typescript 会在编译时对代码进行严格的静态类型检查，可以在编码阶段就发现问题**，而不是在上线运行时才发现
-- typeScript语法遵循ES规范，更细速度快，不断支持最新的ECMAScript新特性，如装饰器、public/private修饰符
-- typescript 支持 OOP（面向对象）的接口，抽象类，多态特性
-- typescript可以为 IDE 提供更好的代码补全、接口提示、跳转到定义
-- 还有重要一点是众多科技公司已经采用 typeScript 进行开发，也是前端工程师需要掌握的就业技能
-- typescript 是 javascript 的一个超集，typescript 可以运行于任何系统，并且是开源免费的。
+- **``TypeScript`` 会在编译时对代码进行严格的静态类型检查，可以在编码阶段就发现问题**，而不是在上线运行时才发现
+- ``TypeScript``语法遵循`ES`规范，更细速度快，不断支持最新的`ECMAScript`新特性，如装饰器、public/private修饰符
+- ``TypeScript`` 支持 OOP（面向对象）的接口，抽象类，多态特性
+- ``TypeScript``可以为 IDE 提供更好的代码补全、接口提示、跳转到定义
+- 还有重要一点是众多科技公司已经采用 ``TypeScript`` 进行开发，也是前端工程师需要掌握的就业技能
+- ``TypeScript`` 是 javascript 的一个超集，``TypeScript`` 可以运行于任何系统，并且是开源免费的。
 
 ## 1. 编译环境
 
-> 安装 typescript
+> 安装 ``TypeScript``
 
 ```bash
 # 全局安装
 ## win 系统
-$ npm install typescript -g
-$ yarn add typescript -g
-#  mac 系统
-$ brew install typescript	
+$ npm install ``TypeScript`` -g
+$ yarn add ``TypeScript`` -g
+## mac 系统
+$ brew install ``TypeScript``	
 
 # 项目中独立安装
 $ yarn init -y
-$ yarn add typescript -D
+$ yarn add ``TypeScript`` -D
 
 # 版本验证
 $ tsc -v
@@ -46,20 +46,21 @@ $ tsc 1.ts -w
 
 ## 2. 类型注解
 
-**TypeScript 里的类型注解是一种轻量级的为函数或变量添加约束的方式。** 
+**`TypeScript `里的类型注解是一种轻量级的为函数或变量添加约束的方式。** 
 
-**TypeScript 提供了静态的代码分析，它可以分析代码结构和提供的类型注解。**
+**`TypeScript `提供了静态的代码分析，它可以分析代码结构和提供的类型注解。**
 
-但要注意的是, 就算你的代码里有错误，你仍然可以使用TypeScript。但在这种情况下，TypeScript会警告你代码可能不会按预期执行。
+但要注意的是, 就算你的代码里有错误，你仍然可以使用`TypeScript`。但在这种情况下，`TypeScript`会警告你代码可能不会按预期执行。
 
 两种形式:
 
 - 值类型 :限制固定的几个值
-- 宽泛类型 :string
+  - 宽泛类型 :`string` 这样的固定类型
+
 
 举例: 
 
-下面没有使用类型限制时，函数参数传入字符串也是可以执行的，显示这个结果是不对的
+下面没有使用类型限制时，我们想要做一个求和函数, 函数参数传入字符串也是可以执行的，显示这个结果是不符合我们想法的
 
 ```js
 function sum(a,b){
@@ -69,7 +70,7 @@ function sum(a,b){
 console.log(sum('a',3)); //结果为 a3
 ```
 
-加上严格类型后，在编译环节就会提示错误
+但是在我们加上严格类型后，在编译环节就会提示错误
 
 ```js
 function sum(a:number,b:number){
@@ -82,9 +83,13 @@ console.log(sum('a',3))
 
 **值得注意的是, 当没有明确设置类型时，系统会根据值推断变量的类型**
 
+而这就体现了 `TypeScript `的严谨
+
 > 布尔值
 
-最基本的数据类型就是简单的true/false值
+最基本的数据类型就是简单的 `true/false` 值
+
+值为 `true `或 `false `会被推断为 `boolean`类型
 
 ```js
 let isDone: boolean = false;
@@ -92,27 +97,28 @@ let isDone: boolean = false;
 
 > 数值
 
-和JavaScript一样，TypeScript 里的所有数字都是浮点数, 这些浮点数的类型是 number。 
+和JavaScript一样，TypeScript 里的所有数字都是浮点数, 这些浮点数的类型是 `number`。 
 
-除了支持十进制和十六进制字面量，TypeScript 还支持 ECMAScript 2015中引入的二进制和八进制字面量。
+除了支持十进制和十六进制字面量，`TypeScript `还支持 `ECMAScript 2015 `中引入的二进制和八进制字面量。
 
 ```js
-let decLiteral: number = 6;
-let hexLiteral: number = 0xf00d;
-let binaryLiteral: number = 0b1010;
-let octalLiteral: number = 0o744;
+let decLiteral: number1 = 6;
+let hexLiteral: number2 = 0xf00d;
+let binaryLiteral: number3 = 0b1010;
+let octalLiteral: number4 = 0o744;
+number1 = 123
 ```
 
 > 字符串
 
-JavaScript程序的另一项基本操作是处理网页或服务器端的文本数据。 像其它语言里一样，我们使用 `string`表示文本数据类型。 和JavaScript一样，可以使用双引号（ `"`）或单引号（`'`）表示字符串。
+`JavaScript `程序的另一项基本操作是处理网页或服务器端的文本数据。 像其它语言里一样，我们使用 `string`表示文本数据类型。 和JavaScript一样，可以使用双引号（ `"`）或单引号（`'`）表示字符串。
 
 ```js
 let name: string = "bob";
 name = "smith";
 ```
 
-你还可以使用*模版字符串*，它可以定义多行文本和内嵌表达式。 这种字符串是被反引号包围（ ```），并且以`${ expr }`这种形式嵌入表达式
+你还可以使用*模版字符串*，它可以定义多行文本和内嵌表达式。 这种字符串是被反引号包围，并且以`${ expr }`这种形式嵌入表达式
 
 ```js
 let name: string = `Gene`;
@@ -125,7 +131,14 @@ let sentence: string = `Hello, my name is ${ name }. I'll be ${ age + 1 } years 
 TypeScript像JavaScript一样可以操作数组元素。 有两种方式可以定义数组。 第一种，可以在元素类型后面接上 `[]`，表示由此类型元素组成的一个数组：
 
 ```js
+// 这时候会推断数组的内容值的类型是 number
+let list = [1, 2, 3];
+// 等同于
 let list: number[] = [1, 2, 3];
+
+let list1 = [1, "aw"]
+// 等同于
+let list1: (number | string)[] = [1, "aw"]
 ```
 
 第二种方式是使用数组泛型，`Array<元素类型>`：
@@ -136,7 +149,9 @@ let list: Array<number> = [1, 2, 3];
 
 > 元组 Tuple
 
-**元组类型允许表示一个已知元素数量和类型的数组，各元素的类型不必相同。** 比如，你可以定义一对值分别为 `string`和`number`类型的元组。
+明确数组每个成员值类型的数组为元组
+
+比如，你可以定义一对值分别为 `string`和`number`类型的元组。
 
 ```js
 // Declare a tuple type
@@ -163,7 +178,9 @@ tuple[0] = 123;
 
 > 枚举
 
-`enum`类型是对JavaScript标准数据类型的一个补充。 
+`enum`类型是对`JavaScript`标准数据类型的一个补充。 
+
+枚举在程序语言及`mysql `等数据库中广泛使用
 
 像`C#`等其它语言一样，使用枚举类型可以为一组数值赋予友好的名字。
 
@@ -173,6 +190,8 @@ let c: Color = Color.Green;
 ```
 
 默认情况下，从`0`开始为元素编号。 你也可以手动的指定成员的数值。 例如，我们将上面的例子改成从 `1`开始编号：
+
+当某个字段设置数值类型的值后，后面的在它基础上递增
 
 ```js
 enum Color {Red = 1, Green = 2, Blue = 4}
@@ -194,19 +213,32 @@ console.log(colorName);  // 显示'Green'因为上面代码里它的值是2, 顺
 
 **这种情况下，我们不希望类型检查器对这些值进行检查而是直接让它们通过编译阶段的检查。** 那么我们可以使用 `any`类型来标记这些变量：
 
+- 使用`any `类型等同于使用纯 `JavaScript `的开发方式
+- `any `类型是顶部类型，所有其他类型是他的子类型
+- 使用`any`类型将失去 `typescript `静态类型的强制检测
+- 只有在描述一个根本不知道的类型时使用 any
+
 ```js
 let notSure: any = 4;
 notSure = "maybe a string instead";
 notSure = false; 
 
 let list: any[] = [1, true, "free"];
-
 list[1] = 100;
+
+let ximingx:any
+//以下赋值不会报错
+hd='ximingx'
+hd=2002
+hd=true
+hd=[]
+hd ={}
+hd= class{}
 ```
 
 **一个类型如果为 any, 和直接写 js 没有区别, 麻烦少用, 好去装B**
 
-**any 为顶级类型, 失去了 ts 的严格类型保护**
+**any 为顶级类型, 失去了 ts 的严格类型保护, 所以any不进行类型检查，等于关闭了 TS 对该变量的严格类型校验**
 
 ```json
 // 可以在 tsconfig.json 配置, 关闭 any 类型的使用
@@ -225,6 +257,8 @@ function warnUser(): void {
 
 声明一个`void`类型的变量没有什么大用，因为你只能为它赋予`undefined`和`null`：
 
+但是在严格模式下只能是 `undefined`
+
 ````js
 let unusable: void = undefined;
 ````
@@ -240,6 +274,12 @@ let n: null = null;
 ```
 
 **默认情况下`null`和`undefined`是所有类型的子类型。** 就是说你可以把 `null`和`undefined`赋值给`number`类型的变量。
+
+开启对 null 与 undefined 的严格校验
+
+```js
+"strictNullChecks": true,
+```
 
 > never
 
@@ -269,24 +309,54 @@ function infiniteLoop(): never {
 
 `object`表示非原始类型，也就是除`number`，`string`，`boolean`，`symbol`，`null`或`undefined`之外的类型。
 
+`TypeScript` 也可以推断字面量类型
+
 ```js
-// 对象的操作
-let obj: object = [1, 2, 3];
-obj = {};
-// 限制 ? 表示可选择
-let obj: {name: string; age: number; url?: string};
-obj = {
-  name: 'John',
-  age: 30
-}
+const user = {name:'ximingx',age:18,open:true} 
+// 推断结果
+const user: {
+  name: string;
+  age: number;
+  open: boolean;
+} 
+
 ```
+
+![image-20220507084444827](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220507084444827.png)
+
+如果向对象中添加类型中不存在的属性将报错
+
+```js
+const user = {name:'ximingx',age:18,open:true}
+// 将报错
+user.aw = "aw"
+```
+
+![image-20220507084707856](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220507084707856.png)
+
+```js
+// 即使是深层次的属性也可以判断类型
+const user = {
+    name: 'ximingx',
+    age: 18,
+    open: true,
+    lessons: [
+        {title: 'vue', score: 100},
+        {title: 'TS', score: 90},
+    ]
+}
+console.log(user)
+```
+
+![image-20220507084838964](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220507084838964.png)
 
 > unknown
 
 `unknown` 不知道什么类型, 但是有一个类型, 不可以随意的赋值
 
-- 与 any 的区别是 any 不进行 TS 校验，**unknown 类型要安全得多，会进行 TS 的类型检查**
-- 使用 unknown 类型时一般需要 as **类型断言**来转换类型
+- 与 `any `的区别是 any `不`进行 `TS `校验，**`unknown `类型要安全得多，会进行 TS 的类型检查**
+- 使用 `unknown `类型时一般需要 as **类型断言**来转换类型
+- `unknown `类型也是顶部类型这与 `any `一样
 
 ```js
 let a:unknown = "1";
@@ -303,37 +373,122 @@ let b:number =  a as unknown as number;
 ```js
 let ximingx:string | number = 'ximingx.com'
 ximingx = 2010
+ximingx = 'ximingx.com'
+// 将会报错
+ximingx = false
+
+let aw:(string | number | boolean)[]  = []
+hd.push('aw',2002,true)
 ```
 
-> 类型断言
+> function
+
+下面是 TS 自动推断的函数类型
+
+```js
+let ximingx = ()=> 'ximingx'
+
+hd = false //更改类型为 false 后将报错
+```
+
+下面是使用显示类型定义函数 ，注意类型要使用大写的`Function` 这与 `string/number/boolean` 是有区别
+
+```js
+let ximingx:Function = ()=> 'ximingx'
+```
+
+如果函数的参数是可选的，使用 `?` 修饰
+
+- 下面的*cc* 参数可以不传
+- 不传时*cc* 值为`undefined`
+
+```js
+function sum(a: number, b: number, c?: number) {
+    return a + b;
+}
+
+console.log(sum(3, 3));
+```
+
+如果参数设置默认值了就不需要可选参数符号`?`了
+
+```js
+function sum(a: number, b: number, c: number = 10) {
+    return a + b;
+}
+
+console.log(sum(3, 3));
+```
+
+返回值类型也会自动推断
+
+```js
+function sum(a: number, b: number) {
+    return a + b;
+}
+// 函数结构为 function sum(a: number, b: number): number
+```
+
+当函数没有明确返回值时，使用 `void `类型。`TS `会自动推断，建议明确声明 `void `类型
+
+相同类型的参数我们可以使用 `type`
+
+```js
+type userType = { name: string; age: number }
+
+let addUser = (user: userType): void => {
+  console.log('添加用户')
+}
+
+let updateUser = (user: userType): void => {
+  console.log('更新用户')
+}
+```
+
+
+
+## 3. 类型断言
 
 有时候你会遇到这样的情况，你会比TypeScript更了解某个值的详细信息。 通常这会发生在你清楚地知道一个实体具有比它现有类型更确切的类型。
 
-**类型断言好比其它语言里的类型转换，但是不进行特殊的数据检查和解构。 它没有运行时的影响，只是在编译阶段起作用。 TypeScript会假设你，程序员，已经进行了必须的检查。**
+> as 断言
+
+下例中TS 会根据函数推断变量 a 的类型是 number | string
 
 ```js
-let someValue: any = "this is a string";
-// 使用 as j
-let strLength: number = (someValue as string).length;
-
-//
 function one(x: boolean): number | string {
     return x ? 12 : "字符串";
 }
-let res = one(true) as number;
-console.log(res); //12
+let a = one(true)
 ```
 
-## 3. 配置文件
+![image-20220507103720863](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220507103720863.png)
 
-在 TypeScript 开发中，``tsconfig.json` 是个不可或缺的配置文件，它是我们在 TS 项目中最常见的配置文件
+我们可以由开发者来断定（断言）这就是字符串，这就是断言
 
-TypeScript 使用 ``tsconfig.json` 文件作为其配置文件，当一个目录中存在  `tsconfig.json` 文件，则认为该目录为 TypeScript 项目的根目录。
+```js
+function one(x: boolean): number | string {
+    return x ? 12 : "字符串";
+}
+let a = one(true) as number
+```
+
+
+
+
+
+## 4. 配置文件
+
+在 `TypeScript `开发中，``tsconfig.json` 是个不可或缺的配置文件，它是我们在 `TypeScript`项目中最常见的配置文件, `TypeScript `支持对编译过程使用配置项自定义
+
+当一个目录中存在  `tsconfig.json` 文件，则认为该目录为 `TypeScript `项目的根目录。
+
 通常  `tsconfig.json` 文件主要包含两部分内容：**指定待编译文件**和**定义编译选项**。
 
 ```bash
 # ts 初始化 tsconfig.json 文件。
 $ tsc --init
+
 # 在不指定输入文件的情况下执行 tsc 命令，默认从当前目录开始编译，编译所有 .ts 文件，并且从当前目录开始查找 tsconfig.json 文件，并逐级向上级目录搜索。
 $ tsc
 ```
@@ -540,7 +695,7 @@ $ tsc
 }
 ```
 
-## 4. 声明变量
+## 5. 声明变量
 
 > let const
 
@@ -619,6 +774,8 @@ let first = [1, 2];
 let second = [3, 4];
 let bothPlus = [0, ...first, ...second, 5];
 ```
+
+## 6. 类与接口
 
 
 
