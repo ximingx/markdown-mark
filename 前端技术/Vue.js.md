@@ -3124,6 +3124,45 @@ module.exports = defineConfig({
 })
 ```
 
+> vue 中的代理 proxy
+
+由于大多情况下由前端像后端服务器发起的请求都会存在跨域，由于跨域，会导致请求不通，因此需要进行代理
+
+跨域：协议、域名、端口只要有一个不同，就会存在跨域
+
+如前端网站为：http://101.42.249.175:80
+
+后端服务器接口地址为：http://101.42.249.175:3000
+
+这样前端要请求接口时就会存在跨域问题，这个时候就需要使用代码来进行请求
+
+配置`vue.config.js`：这里的配置只对本地有效，测试环境或正式环境的需要通过`nginx`进行代理配置
+
+```js
+module.exports = {
+    devServer: {
+        port: 8080,
+        // vue.config.js 中配置的代理，打包到服务器之后这里的配置是无效的，实际代理到 nginx 去了，因此这里的代理只对本地运行有效
+        proxy: {
+            '/api': { 
+                // 将请求中路径x http://192.168.1.xxx:8001/api
+                target: 'http://192.168.1.xxx:8001', // 测试服务器
+                ws: false,
+                changeOrigin: true,
+            },
+            '/orderApi': {
+                target: 'http://192.168.1.xxx:8889/', // 测试服务器
+                ws: false,
+                changeOrigin: true,
+                pathRewrite:{  // 路径重写，
+                    '^/orderApi': '/order' // 这里相对上面的不同就是在将 /orderApi 替换为 target+/order，也就是：http://192.168.1.xxx:8889/order
+                }
+            },
+        }
+    },
+}
+```
+
 ###  cdn加载资源
 
 Vue项目打包的时候，默认会把所有代码合并生产新文件,其中包括各种库导致打包出来很大。如果使用cdn的话,会更利于程序的加载速度。
