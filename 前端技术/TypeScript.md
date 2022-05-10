@@ -1,5 +1,7 @@
 # TypeScript
 
+> 在学习的时候, 我一度想起了大一时学的 `java`, 后悔当时没好好听 ~ ~ ~
+
 在平常我们使用 `ES6/7/8/9` 语法用于开发中, 要想让具有新特性的代码顺利运行在非现代浏览器，需要借助`Babel`这种编译工具，将代码转为`ES5`版本。
 
 **而 TypeScript，可以完全不用 `Babel`，就能将你的代码编译为指定版本标准的代码**。
@@ -775,9 +777,320 @@ let second = [3, 4];
 let bothPlus = [0, ...first, ...second, 5];
 ```
 
-## 6. 类与接口
+## 6. 类 (class)
 
+> 下面是使用 `TS `约束属性并实例化对象
 
+```js
+class User {
+    name: string
+    age: number
+    constructor(n: string, a: number) {
+        this.name = n
+        this.age = a;
+    }
+
+    info(): string {
+        return `${this.name}的年龄是 ${this.age}`
+    }
+}
+```
+
+通过约束数组的类型为`User`，使其成员只能是 `User `类型对象
+
+```js
+new ximingx = new User("ximingx",20)  
+new haosilu = new User("haosilu",19)
+const users: User[] = [ximingx, haosilu];
+console.log(users);
+```
+
+### 6.1 修饰符
+
+> public
+
+访问修饰符 `public`，指**公开**的属性或方法
+
+- 默认情况下的属性是 `public `（公开的），即可以在类的内部与外部进行修改和访问
+- 不明确设置修饰符即为 `public`
+
+上面的代码等同于
+
+```js
+class User {
+    name: string
+    age: number
+    constructor(n: string, a: number) {
+        this.name = n
+        this.age = a;
+    }
+
+    info(): string {
+        return `${this.name}的年龄是 ${this.age}`
+    }
+}
+
+=>
+
+class User {
+    public name: string
+    public age: number
+    constructor(n: string, a: number) {
+        this.name = n
+        this.age = a;
+    }
+
+    public info(): string {
+        return `${this.name}的年龄是 ${this.age}`
+    }
+}
+```
+
+> protected
+
+- protected 修饰符指**受保护**的，只允许在父类与子类中使用，不允许在类的外部使用
+
+```js
+class Person {
+    protected name: string
+    constructor(name: string) {
+        this.name = name
+    }
+}
+class Man extends Person {
+    constructor(name: string) {
+        super(name)
+    }
+
+    public info(): string {
+        return `你好 ${this.name}`
+    }
+}
+
+const ximingx = new Man('ximingx')
+console.log(ximingx.name); //属性被 protected 修饰, 在类的外面不允许访问
+```
+
+> private
+
+- `protected` 修饰符指**私有**的，不允许在子类与类的外部使用
+- 父类声明 `private `属性或方法子类不允许覆盖
+
+```js
+class Person {
+    private name: string
+    constructor(name: string) {
+        this.name = name
+    }
+}
+class Man extends Person {
+    constructor(name: string) {
+        super(name)
+    }
+
+    public info(): string {
+        return `你好 ${this.name}` ///属性被 private 修饰,不允许子类访问
+    }
+}
+```
+
+子类更改父类方法或属性的访问修饰符有些限制的
+
+- 父类的 `private` 不允许子类修改
+- 父类的 `protected` 子类可以修改为 `protected `或 `public`
+- 父类的 `public `子类只能设置为 `public`
+
+> readonly
+
+`readonly `将属性定义为只读，不允许在类的内部与外部进行修改, 类似于其他语言的 const 关键字
+
+但是可以在构造函数的时候设置初始值
+
+```js
+class Axios {
+    readonly site: string = 'https://ximingx.com/api'
+    constructor(site?: string) {
+        this.site = site || this.site
+    }
+    public get(url: string): any[] {
+        console.log(`你正在请求 ${this.site + '/' + url}`)
+        return []
+    }
+}
+
+const instance = new Axios('https://www.123.com')
+```
+
+### 6.2 constructor
+
+构造函数是初始化实例参数使用的，在 `TS `中有些细节与其他程序不同
+
+我们可以在构造函数 `constructor` 中定义属性，这样就不用在类中声明属性了，可以简化代码量, 但是必须要在属性前加上` public、private、readonly` 等修饰符才有效
+
+```js
+class User {
+    constructor(
+        public name: string,
+        public age: number
+    ) {}
+
+    public info(): string {
+        return `${this.name}的年龄是 ${this.age}`
+    }
+}
+```
+
+### 6.3 static
+
+`static `用于定义静态属性或方法，属性或方法是属于构造函数的
+
+静态属性是属于构造函数的，不是对象独有的，所以是所有对象都可以共享的
+
+```js
+class Site {
+    static url: string = 'https://ximingx.com/api'
+
+    static getSiteInfo() {
+        return Site.url
+    }
+}
+
+// 通过 类名.方法 使用
+console.log(Site.getSiteInfo());
+```
+
+> 单例模式
+>
+> - 最后只会实例化一个对象
+
+```js
+class User {
+    static instance: User | null = null;
+    protected constructor() { }
+
+    public static make(): User {
+        if (User.instance == null) User.instance = new User;
+        return User.instance;
+    }
+}
+
+const x = User.make();
+console.log(x);
+```
+
+### 6.4 get set
+
+使用 `get `与 `set `访问器可以动态设置和获取属性，类似于 `vue `中的计算属性
+
+```js
+class User {
+    private _name
+    constructor(_name: string) {
+        this._name = _name
+    }
+    public get name() {
+        return this._name;
+    }
+    public set name(value) {
+        this._name = value
+    }
+}
+```
+
+### 6.5 abstract
+
+抽象类定义使用`abstract `关键字，抽象类除了具有普通类的功能外，还可以定义抽象方法
+
+- 抽象类可以不包含抽象方法，但抽象方法必须存在于抽象类中
+- **抽象方法是对方法的定义，子类必须实现这个方法**
+- 抽象类不可以直接使用，只能被继承
+- 抽象类类似于类的模板，**实现规范的代码定义**
+- 抽象方法只能定义，不能实现，即没有函数体
+- 必须由子类实现抽象方法
+
+```js
+abstract class Animation {
+    abstract move(): void
+}
+
+class Anim1 extends Animation {
+    public move(): void {
+
+    }
+}
+
+class Anim2 extends Animation {
+    public move(): void {
+
+    }
+}
+```
+
+## 7. 接口
+
+接口用于描述类和对象的结构
+
+- 使项目中不同文件使用的对象保持统一的规范
+- 使用接口也会支有规范更好的代码提示
+
+> 如果有额外的属性，使用以下方式声明，这样就可以添加任意属性了
+
+```js
+interface UserInterface {
+    name: string;
+    age: number;
+    isLock: boolean;
+    // 可以添加任意属性, 如果不加, 必须一一对应
+    [key:string]:any
+}
+```
+
+> 接口继承
+
+对象也可以使用实现多个接口，多个接口用逗号连接
+
+```js
+interface PlayEndInterface {
+    end(): void
+}
+interface AnimationInterface extends PlayEndInterface {
+    name: string
+    move(): void
+}
+    
+// 
+    
+interface UserInterface {
+    name: string;
+    age: number;
+    isLock: boolean;
+}
+
+function lockUser(user: UserInterface, state: boolean): UserInterface {
+    user.isLock = state;
+    return user;
+}
+```
+
+## 8. type
+
+`type `与 `interface `非常相似都可以描述一个对象或者函数，使用 `type `用于定义类型的别名，是非常灵活的类型定义方式。
+
+- `type `与 `interface `都是可以进行扩展
+- 使用 `type `相比 `interface `更灵活
+- 使用类(`class`) 时建议使用接口，这可以与其他编程语言保持统一
+- 决定使用哪个方式声明类型，最终还是看公司团队的规范
+- `class `可以使用 `implements `来实现 `type` 或 `interface`
+
+```tsx
+type Member = {
+    name: string
+}
+
+class User implements Member {
+    name: string = 'x'
+}
+```
 
 
 
