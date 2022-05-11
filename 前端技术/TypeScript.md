@@ -44,6 +44,8 @@ $ tsc 1.ts
 
 # 修改 ts 文件后再执行命令编译会过于繁琐，可以执行以下命令自动监听ts 文件内容并自动生成 js 文件
 $ tsc 1.ts -w
+
+# tsc -w 会使用配置文件, 单独指定不会使用配置文件
 ```
 
 ## 2. 类型注解
@@ -1050,25 +1052,8 @@ interface UserInterface {
 对象也可以使用实现多个接口，多个接口用逗号连接
 
 ```js
-interface PlayEndInterface {
-    end(): void
-}
-interface AnimationInterface extends PlayEndInterface {
-    name: string
-    move(): void
-}
+class Tank implements Interface1, Interface2{
     
-// 
-    
-interface UserInterface {
-    name: string;
-    age: number;
-    isLock: boolean;
-}
-
-function lockUser(user: UserInterface, state: boolean): UserInterface {
-    user.isLock = state;
-    return user;
 }
 ```
 
@@ -1079,18 +1064,363 @@ function lockUser(user: UserInterface, state: boolean): UserInterface {
 - `type `与 `interface `都是可以进行扩展
 - 使用 `type `相比 `interface `更灵活
 - 使用类(`class`) 时建议使用接口，这可以与其他编程语言保持统一
-- 决定使用哪个方式声明类型，最终还是看公司团队的规范
 - `class `可以使用 `implements `来实现 `type` 或 `interface`
 
-```tsx
+> `class `可以使用 `implements `来实现 `type `或 `interface`
+
+```js
 type Member = {
     name: string
 }
 
 class User implements Member {
-    name: string = 'x'
+    name: string = 'ximingx'
 }
 ```
+
+### 8.1 基本使用
+
+```js
+// 1. 基本类型别名
+type IsAdmin = boolean
+
+// 2. 定义联合类型
+type Sex = 'boy' | 'girl'
+
+// 3. 组合
+type User = {
+    isAdmin: IsAdmin,
+    sex: Sex
+}
+
+// 4. 使用 type 声明对象类型
+type User = {
+    name: string,
+    age: number
+}
+const hd: User = { name: 'ximingx', age: 20 }
+
+//  5. type 声明函数的方式
+type Pay = (price: number) => boolean
+const pay: Pay = (price: number) => {
+    console.log(`支付${price}`);
+    return true;
+}
+
+// 6. 索引
+interface User {
+    [key: string]: any
+}
+
+type UserTYpe = {
+    [key: string]: any
+}
+```
+
+### 8.2 声明继承
+
+`typescript `会将同名接口声明进行合并
+
+```js
+interface User {
+    name: string
+}
+interface User {
+    age: number
+}
+const hd: User = {
+    name: 'ximingx',
+    age: 20
+}
+```
+
+`interface`也可以使用 `extends `继承
+
+```js
+interface Admin {
+    role: string
+}
+interface User extends Admin {
+    name: string
+}
+```
+
+`interface `也可以 `extends `继承 `type`
+
+```js
+type Admin = {
+    role: string
+}
+interface User extends Admin {
+    name: string
+}
+```
+
+`type `与 `interface `不同，存在同名的 `type `时将是不允许的
+
+```js
+// 错误
+type User {
+    name: string
+}
+type User {
+    age: number
+}
+```
+
+使用 `&` 来进行合并
+
+```tsx
+interface Name {
+    name: string
+}
+interface Age {
+    age: number
+}
+type User = Name & Age
+
+
+type Admin = {
+    role: string,
+    isSuperAdmin: boolean
+}
+type Member = {
+    name: string
+}
+// 声明合并
+type User = Admin & Member;
+//满足任何一个 type 声明即可
+type User = Admin | Member;
+```
+
+## 9. 泛型 Generics
+
+泛型指使用时才定义类型，即类型可以像参数一样定义，主要解决类、接口、函数的复用性，让它们可以处理多种类型。
+
+### 9.1 基本使用
+
+下面示例返回值类型是 `any`，这不是我们想要的，因为我们想要具体返回类型
+
+```js
+function dump(arg: any) {
+    return arg;
+}
+
+let hd = dump('123') //类型为 any
+let xj = dump(123) //类型为 any
+```
+
+使用了泛型定义后，返回值即为明确的类型
+
+```js
+function dump<T>(arg: T): T {
+    return arg;
+}
+let hd = dump<string>('123')
+```
+
+### 9.2 类型继承
+
+下面的代码是不严谨的，我们不需要处理数字，因为数字没有 `length `属性，同时我们希望返回类型不是 `any`
+
+```js
+function getLength(arg: any) {
+    return arg.length;
+}
+console.log(getLength('123')); //3
+console.log(getLength(['123'])); //1
+console.log(getLength(123)); //undefined
+```
+
+泛型是不确定的类型，所以下面读取 `length `属性将报错
+
+```js
+function getLength<T>(arg: T): number {
+    return arg.length; // 类型“T”上不存在属性“length”
+}
+```
+
+我们可以通过继承来解决这个问题
+
+```js
+function getLength<T extends string>(arg: T): number {
+    return arg.length; 
+}
+
+// 或使用
+
+function getLength<T extends { length: number }>(arg: T): number {
+    return arg.length;
+}
+
+// 或使用 interface 或 type
+
+type LengthType = { length: number }
+function getLengthAttribute<T extends LengthType }>(arg: T): number {
+    return arg.length;
+}
+
+// 如果你的类型只是字符串或数组，也可以使用联合类型
+
+
+function getLength<T extends string | any[]>(arg: T): number {
+    return arg.length
+}
+```
+
+## 10. 装饰器
+
+装饰器（`Decorators`）为我们在类的声明及成员上通过编程语法扩展其功能，装饰器以函数的形式声明。
+
+对功能进行扩展, 可以很方便的添加或者取消这个装饰的功能
+
+> `Decorators `是实验性的功能，所以开发时会提示错误，我们需要启动 `Decorator `这个实验性的功能。 
+>
+> 这里需要我们在 `tsconfig.js `中进行修改后才可以使用
+
+```bash
+# 首先创建配置文件 tsconfig.js
+$ tsc --init
+
+# tsconfig.js 中将下面两行解除注释
+"experimentalDecorators": true,
+"emitDecoratorMetadata": true
+
+# 执行命令
+$ tsc -w
+```
+
+> 可用装饰器包括以下几种
+
+| 装饰器             | 说明       |
+| ------------------ | ---------- |
+| ClassDecorator     | 类装饰器   |
+| MethodDecorator    | 方法装饰器 |
+| PropertyDecorator  | 属性装饰器 |
+| ParameterDecorator | 参数装饰器 |
+
+### 10.1 类装饰器
+
+类装饰器是对类的功能进行扩展
+
+- 首先执行 装饰器，然后执行类的构造函数
+- **装饰器会优先执行，这与装饰器与类的顺序无关**
+
+> **装饰器参数**
+
+| 参数   | 说明     |
+| ------ | -------- |
+| 参数一 | 构造函数 |
+
+```js
+/**
+ * author: ximingx
+ * Github:https://github.com/ximingx
+ * csdn: https://ximingx.blog.csdn.net/
+ */
+
+// 2. 在类的前面添加 @装饰器名字, 这是语法糖
+// 用 Decorator 装饰 Person 类
+@Decorator
+class Person {
+    constructor() {
+        console.log('构造函数');
+    }
+}
+
+// 1. 定义
+// 它的定义可以在任意的位置, 即使把装饰器定义放在类的后面也是先执行装饰器
+const Decorator: ClassDecorator = (constructor: Function): void => {
+    console.log(constructor);
+}
+
+// 3. 使用
+const p1 = new Person;
+```
+
+> 原型对象
+
+**因为可以装饰器上得到构造函数**，所以可以通过原型对象来添加方法或属性，供实例对象使用
+
+```js
+/**
+ * author: ximingx
+ * Github:https://github.com/ximingx
+ * csdn: https://ximingx.blog.csdn.net/
+ */
+
+const MoveDecorator: ClassDecorator = (constructor: Function): void => {
+    constructor.prototype.author = '机器人';
+    console.log(constructor.toString())
+}
+
+// 装饰器的语法糖, 等同于
+// MoveDecorator(Tank);
+@MoveDecorator
+class Person {
+    constructor() {
+        console.log('构造函数');
+    }
+}
+
+const p1 = new Person;
+// 直接使用 p1.author 会报错, 解决方法
+// 1. 可以通过为类添加默认属性来解决这个错误
+// 2. 在调用时使用断言处理
+
+console.log((<any>p1).author);
+// class Person {
+//     constructor() {
+//         console.log('构造函数');
+//     }
+// }
+// 构造函数
+// 机器人
+```
+
+> 装饰器叠加
+
+```js
+@MoveDecorator
+@EatDecorator
+@SleepDecorator
+class Person {
+    constructor() {
+    }
+}
+```
+
+### 10.2 方法装饰器
+
+
+
+
+
+### 10.3 属性装饰器
+
+
+
+
+
+### 10.4 参数装饰器
+
+
+
+
+
+### 10.5 装饰器工厂
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
