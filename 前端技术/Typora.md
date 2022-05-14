@@ -124,6 +124,10 @@ usr/local/bin/node usr/local/bin/picgo upload
 
 > git clone https://github.com/ximingx/typora-vue-theme
 
+```bash
+$ git clone https://github.com/ximingx/typora-vue-theme
+```
+
 然后你可以得到`vue.css`,`vue-dark.css`文件和`vue`文件夹。
 
 打开打字机。单击→部分中的“**打开主题文件夹**”按钮。`Preference Panel``Apperance`
@@ -131,5 +135,4 @@ usr/local/bin/node usr/local/bin/picgo upload
 将`vue.css`,`vue-dark.css`和`vue`文件夹放入打开的文件夹中，确保您的 css 文件直接位于该目录下。
 
 关闭并重新打开 Typora，然后从菜单栏中选择`Theme`→`Vue`或。`Vue Dark`
-
 
