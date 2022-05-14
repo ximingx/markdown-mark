@@ -1308,9 +1308,9 @@ $ tsc -w
 
 > **装饰器参数**
 
-| 参数   | 说明     |
-| ------ | -------- |
-| 参数一 | 构造函数 |
+| 参数   | 说明                                                       |
+| ------ | ---------------------------------------------------------- |
+| 参数一 | 普通方法是构造函数的原型对象 Prototype，静态方法是构造函数 |
 
 ```js
 /**
@@ -1392,31 +1392,205 @@ class Person {
 
 ### 10.2 方法装饰器
 
+装饰器也可以修改方法
 
-
-
+| 参数   | 说明                                                       |
+| ------ | ---------------------------------------------------------- |
+| 参数一 | 普通方法是构造函数的原型对象 Prototype，静态方法是构造函数 |
+| 参数二 | 方法名称                                                   |
+| 参数三 | 属性描述                                                   |
 
 ### 10.3 属性装饰器
 
-
-
-
+| 参数   | 说明                                                       |
+| ------ | ---------------------------------------------------------- |
+| 参数一 | 普通方法是构造函数的原型对象 Prototype，静态方法是构造函数 |
+| 参数二 | 属性名称                                                   |
 
 ### 10.4 参数装饰器
 
-
-
-
+| 参数   | 说明                                                       |
+| ------ | ---------------------------------------------------------- |
+| 参数一 | 普通方法是构造函数的原型对象 Prototype，静态方法是构造函数 |
+| 参数二 | 方法名称                                                   |
+| 参数三 | 参数所在索引位置                                           |
 
 ### 10.5 装饰器工厂
 
+有时有需要根据条件返回不同的装饰器，这时可以使用装饰器工厂来解决。可以在类、属性、参数等装饰器中使用装饰器工厂。
 
+下例根据工厂函数传递的不同参数，返回不同装饰器函数。
 
+```js
+const MusicDecorator = (type: string): ClassDecorator => {
+    switch (type) {
+        case 'player':
+            return (constructor: Function) => {
+                constructor.prototype.playMusic = (): void => {
+                    console.log(`播放【海阔天空】音乐`);
+                }
+            }
+            break;
+        default:
+            return (constructor: Function) => {
+                constructor.prototype.playMusic = (): void => {
+                    console.log(`播放【喜洋洋】音乐`);
+                }
+            }
 
+    }
+}
 
+@MusicDecorator('tank')
+class Tank {
+    constructor() {
+    }
+}
+const tank = new Tank();
+(<any>tank).playMusic();
 
+@MusicDecorator('player')
+class Player {
+}
 
+const player: Player = new Player();
+(player as any).playMusic()
+```
 
+## 11. 命名空间
+
+我们可以使用 `TypeScript `可以进行多文件的合并，不过这不推荐。
+
+命名空间
+
+- 数据需要使用 export 导出才可以使用
+- 子命名空间也需要 export 后才可以使用
+
+```js
+namespace User {
+    export let name: string = '123'
+}
+namespace Member {
+    let name: string = '123'
+}
+
+console.log(User.name); // 123
+
+console.log(Member.name); // 报错，因为没有使用 export 将变量导出
+```
+
+## 12. webpack
+
+使用 `webpack `打包 TS 项目是推荐做法，`webpack `可以将多个模块文件打包到一个文件中。当然不只处理 `TS`、也可以处理` sass、less、vue、react` 等文件。
+
+相比较于命名空间, 更推荐使用 `webpack`
+
+### 12.1 初始化
+
+```bash
+# 创建 package.json用于管理项目及扩展包
+$ yarn init -y
+# 下面安装安装打包需要的软件
+$ yarn add -D typescript webpack webpack-cli ts-loader webpack-dev-server
+# 创建 typescript 的配置文件 tsconfig.js
+$ tsc --init
+```
+
+- `webpack`核心文件、`webpack-cl`i 命令行工具，用于实现`webpack`核心功能
+- `ts-loader` 用于处理 `typescript `的`ts-loader` 软件
+- `webpack-dev-server` 在开发阶段启动访问地址为`localhost:3000`服务，修改时网页自动刷新的热更新效果
+
+> 最后的目录结构
+
+```js
+├── public
+│   ├── dist
+│   │   └── index.js   
+│   └── index.html		
+├── package.json			
+├── src							
+│   └── index.ts		
+├── tsconfig.json		
+├── webpack.config.js	
+└── yarn.lock		
+```
+
+### 12.2 配置
+
+> webpack.config.js
+
+```js
+const path = require('path')
+
+module.exports = {
+    //程序打包的起点即入口文件
+    entry: './src/index.ts',
+
+    //配置 webpack 如何去输出,webpack 会将打包到一个文件中，从而减少网络请求
+    output: {
+        //最终编译文件与目录
+        filename: 'app.js',
+        path: path.resolve(__dirname, 'public/dist'),
+        // 使用webpack-dev-server运行编译时，即热更新时的静态文件前缀
+        // 因为编译内容是存在内存中的，不会真正创建文件，设置publicPath值决定以什么路径引用文件
+        // 值是相对于 public/index.html 的路径，需要以 / 结尾
+        // 需要安装 webpack-dev-server
+        publicPath: '/dist/',
+    },
+
+    //项目中的不同类型模块的处理规则
+    module: {
+        rules: [
+            {
+                //test定义文件检测，满足后才处理，下面定义文件是否为 ts 或tsx
+                test: /\.tsx?$/,
+                //use定义处理器，下面是使用 ts-loader 将 ts或 tsx 文件编译成 javascript
+                use: 'ts-loader',
+                //exclude排除node_modules 目录中的文件处理
+                exclude: /node_modules/,
+            },
+        ],
+    },
+
+    //配置模块如何解析
+    resolve: {
+        //在使用 import 等代码时，如果不添加扩展名，webpack 按以下扩展名顺序匹配文件
+        extensions: ['.tsx', '.ts', '.js'],
+    },
+}
+```
+
+> package.json
+
+```json
+{
+    "name": "houdunren.com",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "dev": "webpack-dev-server --mode=development",
+        "build": "webpack --mode=production"
+    },
+    "devDependencies": {
+        "ts-loader": "^9.2.6",
+        "typescript": "^4.4.3",
+        "webpack": "^5.56.0",
+        "webpack-cli": "^4.8.0",
+        "webpack-dev-server": "^4.3.0"
+    }
+}
+```
+
+- development是开发阶段
+- production是生产环境使用，会对代码进行更好的压缩与优化
+
+> tsconfig.js
+
+```js
+"target": "ES6",
+"module": "ES6"
+```
 
 
 

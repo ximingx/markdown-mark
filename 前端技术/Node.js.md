@@ -2947,31 +2947,6 @@ npm install nodemon -g
 nodemon app.js
 ```
 
-## nrm
-
-```bash
-> npm install nrm -g
-```
-
-```bash
-// 查看下载地址列表
-nrm ls
-
-  npm ---------- https://registry.npmjs.org/
-  yarn --------- https://registry.yarnpkg.com/
-  tencent ------ https://mirrors.cloud.tencent.com/npm/
-  cnpm --------- https://r.cnpmjs.org/
-  taobao ------- https://registry.npmmirror.com/
-  npmMirror ---- https://skimdb.npmjs.com/registry/
-```
-
-```bash
-// 切换默认下载地址
-> nrm use taobao
-
-   Registry has been set to: https://registry.npmmirror.com/
-```
-
 ## Gulp
 
 基于node平台开发的前端构建工具
@@ -3027,7 +3002,7 @@ gulp.task('first', () => {
 > gulp first
 ```
 
-### gulp 插件
+> gulp 插件
 
 - gulp-htmlmin ：html文件压缩
 - gulp-csso ：压缩css
@@ -3987,10 +3962,6 @@ config.has()测试是否定义了配置值。
 }
 ```
 
-#### 
-
-敏感信息
-
 
 
 # 测试
@@ -4054,4 +4025,18 @@ app.listen(3000, (req, res) => {
   console.log('启动成功，请通过localhost:9900访问');
 });
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

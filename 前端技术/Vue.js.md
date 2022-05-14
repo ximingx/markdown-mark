@@ -22,43 +22,45 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 
 ## 1. 初步了解 vue.js
 
-官方定义： **Vue（读作 /vjuː/，类似 ivew ）**是一个帮助用户制造界面的 JavaScript 框架。它在标准 HTML、CSS 和 JavaScript 中创建，并提供了一个**声明性和基于组件的编程模型**，可有效开发地简单或复杂的用户界面。
+官方定义： **`Vue`（读作 /vjuː/，类似 ivew ）**是一个帮助用户制造界面的 `JavaScript `框架。
 
-传统的网站开发一般采用HTML+CSS+JS作为技术架构，而vue立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心，极大的简化了开发流程。
+传统的网站开发一般采用`HTML+CSS+JS`作为技术架构，而`vue`立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心，极大的简化了开发流程。
 
-使用vue技术栈，可以在几分钟内搭建出一个完整的前端项目。
+这时的我们使用`vue`技术栈，可以在几分钟内搭建出一个完整的前端项目。
 
-**前端开发者最主要的工作，就是为网站的使用者（又称为：网站的用户）构建出美观、舒适、好用的网页。**
+**前端开发者最主要的工作，就是为网站的使用者构建出美观、舒适、好用的网页。**
 
-与其它框架的关联:
+> 与其它框架的关联
 
-- 借鉴angular的模板和数据绑定技术
-- 借鉴react的组件化和虚拟DOM技术
+- 借鉴`angular`的模板和`数据绑定技术`
+- 借鉴`react`的组件化和`虚拟DOM技术`, 学习完 `react` 后 可以快速上手 `vue`
 
-官方给 vue 的定位是前端框架，因为它提供了构建用户界面的一整套解决方案（俗称 vue 全家桶）：
+> 官方给 `vue `的定位是前端框架
+>
+> 因为它提供了构建用户界面的一整套解决方案（俗称 **`vue 全家桶`**）：
 
-- vue（核心库）
-- vue-router（路由方案）
-- vuex（状态管理方案）
-- vue 组件库（快速搭建页面UI 效果的方案）
+- `vue`（核心库）
+- `vue-router`（路由方案）
+- `vuex`（状态管理方案）
+- `vue 组件库`（快速搭建页面`UI `效果的方案）
 
-以及辅助 vue 项目开发的一系列工具：
+> 以及辅助 `vue `项目开发的一系列工具：
 
-- **vue-cli（npm 全局包：一键生成工程化的 vue 项目 - 基于 webpack、大而全）**
-- **vite（npm 全局包：一键生成工程化的 vue 项目 - 小而巧）**
-- vue-devtools（浏览器插件：辅助调试的工具）
-- vetur（vscode 插件：提供语法高亮和智能提示）
-- **axios: ajax请求**
-- **vue-router: 路由**
-- **vuex: 状态管理**
-- vue-lazyload: 图片懒加载
-- vue-scroller: 页面滑动相关
-- mint-ui: 基于vue的组件库(移动端)
-- **element-plus: 基于vue的组件库(PC端)**
+- **`vue-cli`（`npm `全局包：一键生成工程化的 `vue `项目 -` `基于 webpack、大而全）**
+- **`vite```（npm 全局包：一键生成工程化的 `vue `项目 - 小而巧）**
+- `vue-devtools`（浏览器插件：辅助调试的工具）
+- `vetur`（`vscode `插件：提供语法高亮和智能提示）
+- **`axios`: ajax请求**
+- **`vue-router`: 路由**
+- **`vuex`: 状态管理**
+- `vue-lazyload`: 图片懒加载
+- `vue-scroller`: 页面滑动相关
+- `mint-ui`: 基于`vue`的组件库(移动端)
+- **`element-plus`: 基于`vue`的组件库(PC端)**
 
 ### 1.1 两种实现方式
 
-sfc 但页面文件
+> `SFC  `单页面文件
 
 ```html
 // .vue 文件
@@ -75,21 +77,18 @@ sfc 但页面文件
 </style>
 ```
 
-html 页面中实现
+> `cdn` 使用
 
-1. 导入 vue.js 的 script 脚本文件
-2. 在页面中声明一个将要被 vue 所控制的 DOM 区域
-3. 创建 vm 实例对象（vue 实例对象）
+1. 导入 `vue.js` 的 `script `脚本文件
+2. 在页面中声明一个将要被 `vue `所控制的 `DOM `区域
+3. 创建 `vm `实例对象（`vue 实例对象`）
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
 </head>
-
 <body>
     <!-- 2. 声明要被 vue 所控制的 DOM 区域 -->
     <div id="app">
@@ -98,7 +97,6 @@ html 页面中实现
 
     <!-- 1. 导入 vue 的脚本文件 -->
     <script src="./lib/vue-3.0.12.js"></script>
-
     <!-- 3. 创建 vue 的实例对象 -->
     <script>
         const vm = new Vue({
@@ -112,72 +110,47 @@ html 页面中实现
         })
     </script>
 </body>
-
 </html>
 ```
-
- 在Vue中，一个核心的概念就是：**数据驱动，避免手动操作DOM元素**。这样的话，可以更多的时间去关注数据的业务逻辑，而不是关心 DOM 是如何渲染的了。
-
-**数据驱动视图是单向的数据绑定。**
-
-![image-20220506231233422](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220506231233422.png)
-
-```html
-<script>
-export default {
-  name: 'HelloWorld',
-  data() {
-    return {
-      // 我们可以通过 data 中的数据来动态修改页面的数据显示
-      show: false
-    }
-  },
-}
-</script>
-```
-
-**解释一下， 就是修改在 vue 实例对象里的 data 数据时，页面会自动更新显示的数据**
-
-**Vue通过MVVM模式,能够实现视图与模型的双向绑定。**
-
-**简单来说，就是数据变化的时候, 页面会自动刷新, 页面变化的时候，数据也会自动变化.**
 
 ---
 
 ### 1.2 提高效率的发展历程
 
-原生JS -> Jquery之类的类库 -> 前端模板引擎 -> Angular.js / Vue.js（能够帮助我们减少不必要的DOM操作；提高渲染效率；双向数据绑定的概念）
+大概了解一下前端的库和框架的发展
 
-Vue.js 中我们有自己操作 DOM 的方式， 可以不再使用原生方法
+`原生JS` -> `Jquery之类的类库` -> `前端模板引擎` -> `Angular.js / Vue.js`（能够帮助我们减少不必要的DOM操作；提高渲染效率；双向数据绑定的概念）
+
+在 `Vue.js` 中我们有自己操作 `DOM `的方式， 可以不再使用原生方法
 
 ---
 
 ### 1.3 虚拟 DOM
 
-传统的web开发，是利用 jQuery操作DOM，这是非常耗资源的。
+传统的`web`开发，是利用 `jQuery`操作`DOM`，这是非常耗资源的。
 
-**我们可以在 JS 的内存里构建类似于DOM的对象，去拼装数据，拼装完整后，把数据整体解析，一次性插入到html里去。这就形成了虚拟 DOM。**
+**我们可以在 `JS `的内存里构建类似于`DOM`的对象，去拼装数据，拼装完整后，把数据整体解析，一次性插入到`html`里去。这就形成了虚拟 `DOM`。**
 
-Vue1.0没有虚拟DOM，直到Vue2.0改成了基于虚拟DOM， 现在常用的版本是 vue3， 本文重点讲解 vue3
+`Vue1.0`没有`虚拟DOM`，直到`Vue2.0`改成了基于`虚拟DOM`， 现在常用的版本是 `vue3`
 
 ---
 
 ### 1.4 Vue框架的特点
 
-与 jquery 的区别：vue数据驱动，通过数据来显示视图层而不是节点操作。
+与 `jquery `的区别：`vue`数据驱动，通过数据来显示视图层而不是节点操作。
 
-vue 一般使用场景：数据操作比较多、频繁的场景，更加便捷。
+`vue `一般使用场景：数据操作比较多、频繁的场景，更加便捷。
 
 
-- 模板渲染：基于 html 的模板语法，学习成本低。
+- 模板渲染：基于 `html `的模板语法，学习成本低。
 
 - **响应式的更新机制：数据改变之后，视图会自动刷新。**
 
-- 渐进式框架 （在任何页面上嵌入为 Web 组件） , vue 的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合
+- 渐进式框架 （在任何页面上嵌入为 `Web `组件） , `vue `的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合
 
 - 组件化/模块化 （确实使代码结构页面看起来清楚）
 
-- 轻量：开启 gzip压缩后，可以达到 20kb 大小。（React 达到 35kb，AngularJS 达到60kb）。
+- 轻量：开启 `gzip`压缩后，可以达到 `20kb` 大小。**（`React `达到 35kb，`AngularJS `达到60kb）。**
 
 ---
 
@@ -185,41 +158,41 @@ vue 一般使用场景：数据操作比较多、频繁的场景，更加便捷�
 
 ![](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16%20%E4%B8%8B%E5%8D%884.18.55.png)
 
-**ViewModel是 Vue.js 的核心，它是一个Vue实例。**
+**`ViewModel`是` Vue.js` 的核心，它是一个`Vue实例`。**
 
-Vue实例是作用于某一个HTML元素上的，这个元素可以是HTML的 body 元素，也可以是指定了id的某个元素。（一般以 #app 指定，当然也可以自己指定，我们会把 vue 实例挂载到该 DOM 元素）
+`Vue`实例是作用于某一个`HTML`元素上的，这个元素可以是`HTML`的 `body `元素，也可以是指定了`id`的某个元素。（一般以 `#app `指定，当然也可以自己指定，我们会把 `vue `实例挂载到该 `DOM `元素）
 
-**当创建了ViewModel后，双向绑定是如何达成的呢？**
+**当创建了`ViewModel`后，双向绑定是如何达成的呢？**
 
-首先，我们将上图中的**DOM Listeners和Data Bindings**看作两个工具，它们是实现双向绑定的关键。 
+首先，我们将上图中的**`DOM Listeners`和`Data Bindings`**看作两个工具，它们是实现双向绑定的关键。 
 
-> View
+> `View`
 
-从View侧看，ViewModel中的**DOM Listeners工具会帮我们监测页面上DOM元素的变化**，如果有变化，则更改Model中的数据； 
+从`View`侧看，`ViewModel`中的**`DOM Listeners`工具会帮我们监测页面上`DOM`元素的变化**，如果有变化，则更改`Model`中的数据； 
 
-> Model
+> `Model`
 
-从Model侧看，当我们更新Model中的数据时，**Data Bindings工具会帮我们更新页面中的DOM元素。**
+从`Model`侧看，当我们更新`Model`中的数据时，**`Data Bindings`工具会帮我们更新页面中的`DOM`元素。**
 
-> MVVM
+> `MVVM`
 
-MVVM是Model-View-ViewModel的缩写。MVVM是一种设计思想。Model 层代表数据模型，也可以在Model中定义数据修改和操作的业务逻辑；View 代表UI 组件，它负责将数据模型转化成UI 展现出来，ViewModel 是一个同步View 和 Model的对象。
+`MVVM`是`Model-View-ViewModel`的缩写。`MVVM`是一种设计思想。`Model `层代表数据模型，也可以在`Model`中定义数据修改和操作的业务逻辑；`View `代表`UI 组件`，它负责将数据模型转化成`UI `展现出来，`ViewModel `是一个同步`View `和 `Model`的对象。
 
-在MVVM架构下，View 和 Model 之间并没有直接的联系，而是通过ViewModel进行交互，Model 和 ViewModel 之间的交互是双向的， 因此View 数据的变化会同步到Model中，而Model 数据的变化也会立即反应到View 上。
+在`MVVM`架构下，`View `和 `Model `之间并没有直接的联系，而是通过`ViewModel`进行交互，`Model `和 `ViewModel `之间的交互是双向的， 因此`View `数据的变化会同步到`Model`中，而`Model `数据的变化也会立即反应到`View `上。
 
-ViewModel 通过双向数据绑定把 View 层和 Model 层连接起来，而View 和 Model 之间的同步工作完全是自动的，无需人为干涉，因此开发者只需关注业务逻辑，不需要手动操作DOM, 不需要关注数据状态的同步问题，复杂的数据状态维护完全由 MVVM 来统一管理。
+`ViewModel `通过双向数据绑定把 `View `层和 `Model `层连接起来，而`View `和 `Model `之间的同步工作完全是自动的，无需人为干涉，因此开发者只需关注业务逻辑，不需要手动操作`DOM`, 不需要关注数据状态的同步问题，复杂的数据状态维护完全由 `MVVM `来统一管理。
 
-> mvc 和 mvvm
+> `mvc `和 `mvvm`
 
-mvc和mvvm其实区别并不大，都是一种设计思想。主要就是mvc中Controller演变成mvvm中的viewModel。mvvm主要解决了mvc中大量的DOM 操作使页面渲染性能降低，加载速度变慢，影响用户体验。
+`mvc`和`mvvm`其实区别并不大，都是一种设计思想。主要就是`mvc`中`Controller`演变成`mvvm`中的`viewModel`。`mvvm`主要解决了`mvc`中大量的`DOM `操作使页面渲染性能降低，加载速度变慢，影响用户体验。
 
 ---
 
 ### 1.6 单文件组件
 
-在大多数支持构建工具的 Vue 项目中，我们使用类似于 HTML 的文件格式创建 Vue 组件，称为单文件组件（也称为*.vue文件，缩写为SFC）。
+在大多数支持构建工具的 `Vue `项目中，我们使用类似于 `HTML `的文件格式创建 `Vue `组件，称为单文件组件（也称为`*.vue`文件，缩写为`SFC`）。
 
-顾名思义，Vue SFC 将组件的逻辑 (JavaScript)、模板 (HTML) 和样式 (CSS) 封装在一个文件中。这是前面的示例，以 SFC 格式编写：
+顾名思义，`Vue SFC` 将组件的逻辑 (`JavaScript`)、模板 (`HTML`) 和样式 (`CSS`) 封装在一个文件中。这是前面的示例，以 `SFC `格式编写：
 
 ```html
 <script>
@@ -245,9 +218,25 @@ export default {
 
 ---
 
+### 1.7 单页面
+
+> 多页面
+
+多页面跳转刷新所有资源，每个公共资源`(js、css等)`需选择性重新加载
+
+页面跳转是所有的资源都要重新加载，页面之间的切换会出现卡顿空白的问题，不容易实现切换动画等。这种类型的网站也就是多页网站，也叫做多页应用
+
+> 单页面
+
+一个项目中只有一个完整的`html`主页面，其他都是`html`片段组成的分页面，浏览器一开始会在主页面加载所有必须的 `html, js, css`。当用户向服务器发送请求的时候, 只需要访问一次就可以, 服务器返回一个`web`页面, 当页面跳转的时候只需要做到局部刷新, 由路由程序将分页面动态载入主页面，跳转只是局部刷新，不会重新加载全部资源。
+
+原理：在`js`会感知到`url`的变化后动态地将当前页面的内容清除，然后将下一个页面的内容挂载到当前页面上。这个时候的路由不再是后端来做了，而是前端来做，判断页面显示相应的组件，清除不需要的。
+
+优点: 可以做到前后端分离
+
 ## 2. Vue 的应用方式
 
-> 推荐： 我们首先要安装好 Node.js环境，然后再来做下面的操作。
+> 推荐： 我们首先要安装好` Node.js`环境，然后再来做下面的操作。
 
 ---
 
@@ -413,7 +402,7 @@ const app = createApp({
 
 ---
 
-### **5** 根组件
+###  2.5 根组件
 
 我们传入的对象`createApp`实际上是一个组件。每个应用程序都需要一个“根组件”，它可以包含其他组件作为其子组件。
 
