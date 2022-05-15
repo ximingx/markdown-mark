@@ -69,15 +69,19 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 </template>
 
 <script>
- // 进行 js 操作
+// 进行 js 操作
 </script>
 
 <style>
-// css 样式
+<!-- css 样式 -->
 </style>
 ```
 
-> `cdn` 使用
+> `cdn` 使用 
+>
+> (当然也可以安装到本地然后引用, 但是不推荐)
+
+[BootCDN: https://www.bootcdn.cn/](https://www.bootcdn.cn/)
 
 1. 导入 `vue.js` 的 `script `脚本文件
 2. 在页面中声明一个将要被 `vue `所控制的 `DOM `区域
@@ -90,25 +94,29 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
     <meta charset="UTF-8" />
 </head>
 <body>
-    <!-- 2. 声明要被 vue 所控制的 DOM 区域 -->
-    <div id="app">
-        {{ username }}
-    </div>
+<!-- 2. 声明要被 vue 所控制的 DOM 区域, 可以视为一个容器 -->
+<div id="app">
+    {{ username }}
+</div>
 
-    <!-- 1. 导入 vue 的脚本文件 -->
-    <script src="./lib/vue-3.0.12.js"></script>
-    <!-- 3. 创建 vue 的实例对象 -->
-    <script>
-        const vm = new Vue({
-            // 3.1 使用 el 属性，指定 vue 要控制的区域
-            el: '#app',
-            // 3.2 数据源
-            // data 对象就是要渲染到页面上的数据
-            data: {
-                username: 'zs'
+<!-- 1. 导入 vue 的脚本文件 -->
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.33/vue.global.js"></script>
+<!-- 3. 创建 vue 的实例对象 -->
+<script>
+    Vue.createApp({
+        // 数据
+        data() {
+            return {
+                username: `/**
+                  * author: ximingx
+                  * Github:https://github.com/ximingx
+                  * csdn: https://ximingx.blog.csdn.net/
+                  */`
             }
-        })
-    </script>
+        }
+        // 绑定元素
+    }).mount('#app');
+</script>
 </body>
 </html>
 ```
@@ -226,13 +234,15 @@ export default {
 
 页面跳转是所有的资源都要重新加载，页面之间的切换会出现卡顿空白的问题，不容易实现切换动画等。这种类型的网站也就是多页网站，也叫做多页应用
 
+即服务端渲染
+
 > 单页面
 
 一个项目中只有一个完整的`html`主页面，其他都是`html`片段组成的分页面，浏览器一开始会在主页面加载所有必须的 `html, js, css`。当用户向服务器发送请求的时候, 只需要访问一次就可以, 服务器返回一个`web`页面, 当页面跳转的时候只需要做到局部刷新, 由路由程序将分页面动态载入主页面，跳转只是局部刷新，不会重新加载全部资源。
 
 原理：在`js`会感知到`url`的变化后动态地将当前页面的内容清除，然后将下一个页面的内容挂载到当前页面上。这个时候的路由不再是后端来做了，而是前端来做，判断页面显示相应的组件，清除不需要的。
 
-优点: 可以做到前后端分离
+可以做到前后端分离
 
 ## 2. Vue 的应用方式
 
@@ -244,19 +254,19 @@ export default {
 
 **首先介绍的方式都是直接在 `html` 文件中使用**
 
-1、**方式一**：（CDN的方式进行引用）
+1、**方式一**：（`CDN`的方式进行引用）
 
 ```html
 <head>
-    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.33/vue.global.js"></script>
 </head>
 ```
 
-2、方式二：（下载 vue.js 文件）
+2、方式二：（下载 `vue.js` 文件）
 
-去网站下载 vue.js 文件，直接放到工程文件里，然后引用。
+去网站下载 `vue.js` 文件，直接放到工程文件里，然后引用。
 
-3、方式三：（NPM的方式安装vue）
+3、方式三：（`NPM`的方式安装`vue`）
 
 ```bash
 # 最新稳定版
@@ -269,7 +279,7 @@ $ npm install vue
   import Vue from 'vue'
 ```
 
-首先我们需要通过 createApp 创建一个应用程序实例
+首先我们需要通过 `createApp `创建一个应用程序实例
 
 ```html
 <script src="https://unpkg.com/vue@3"></script>
@@ -289,7 +299,7 @@ $ npm install vue
 </script>
 ```
 
-.mount()在调用方法中，应用程序实例不会出现其之前的任何内容。它需要一个“容器”，它可以是实际的 DOM 元素或选择参数字符串：
+`.mount()`在调用方法中，应用程序实例不会出现其之前的任何内容。它需要一个“容器”，它可以是实际的 `DOM `元素或选择参数字符串：
 
 ```html
 <div id="app"></div>
@@ -305,18 +315,20 @@ $ npm install vue
 
 ### 2.2 利用 vue-cli
 
-Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该工具为现代化的前端开发工作流提供了开箱即用的构建配置。只需几分钟即可创建并启动一个带热重载、保存时静态检查以及可用于生产环境的构建配置的项目。
+`Vue `提供一个命令行工具，可用于快速搭建大型单页应用。该工具为现代化的前端开发工作流提供了开箱即用的构建配置。只需几分钟即可创建并启动一个带热重载、保存时静态检查以及可用于生产环境的构建配置的项目。
 
-> 推荐使用 vue3, vue3 已经成为了 vue 的默认版本
+> 推荐使用 `vue3`, `vue3` 已经成为了 `vue `的默认版本
 
 ```bash
-// 全局安装, 可以在任何位置安装脚手架
-  npm install -g @vue/cli
+# 全局安装, 可以在任何位置安装脚手架
+$ npm install -g @vue/cli
+# h或者
+$ yarn add global @vue/cli
 ```
 
 ```bash
-// vue3 创建项目的写法 
-  vue create project
+# vue3 创建项目的写法 
+$ vue create project
 ```
 
 ![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/fa43f9cbf6ed4b09887936606b1e8e88.png)
@@ -326,8 +338,8 @@ Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该�
 
 这里有三个选项 （空格是选中， 回车是确定)
 
-1. 使用 vue3 （默认版本） ， babel（为了打包后使es6语法降级兼容低版本浏览器），eslint（语法规范）
-2. 同上， 只有 vue 版本不一样
+1. 使用 `vue3 `（默认版本） ， `babel`（为了打包后使`es6`语法降级兼容低版本浏览器），`eslint`（语法规范）
+2. 同上， 只有 `vue `版本不一样
 3. 自定义
 
 
@@ -336,10 +348,10 @@ Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该�
 ![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16-20220325094418524%20%E4%B8%8B%E5%8D%884.18.55.png)
 
 ```bash
-// 进入项目目录
-  cd project
-// 运行项目
-  npm run serve
+# 进入项目目录
+$ cd project
+# 运行项目
+$ npm run serve
 ```
 
 ![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16-20220325094417522%20%E4%B8%8B%E5%8D%884.18.55.png)
@@ -351,12 +363,16 @@ Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该�
 
 ### 2.3 使用 vite
 
-官方的 Vue 构建设置基于[Vite](https://vitejs.dev/)，这是一个现代、轻量级且速度极快的前端构建工具。
+官方的 `Vue `构建设置基于[Vite](https://vitejs.dev/)，这是一个现代、轻量级且速度极快的前端构建工具。
 
-创建启用构建工具的 Vue 项目，请在命令行中运行以下命令（不带`>`符号）：
+创建启用构建工具的 `Vue `项目，请在命令行中运行以下命令（不带`>`符号）：
 
-```
-> npm init vue@latest
+```bash
+$ npm install -g @vue/cli
+$ npm init vue@latest <your-project-name> --template vue
+# 或者使用 yarn
+$ yarn global add @vue/cli
+$ yarn create vite <your-project-name> --template vue
 ```
 
 选择配置
@@ -377,10 +393,14 @@ Vue 提供一个命令行工具，可用于快速搭建大型单页应用。该�
 
 然后进入项目， 运行项目
 
-```
-> cd <your-project-name>
-> npm install
-> npm run dev
+```bash
+$ cd <your-project-name>
+$ npm install
+$ npm run dev
+# 或者 yarn
+$ cd <your-project-name>
+$ yarn
+$ yarn dev
 ```
 
 ![image-20220325103159428](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/image-20220325103159428%20%E4%B8%8B%E5%8D%884.18.55.png)
@@ -410,7 +430,6 @@ const app = createApp({
 
 ```js
 import { createApp } from 'vue'
-// import the root component App from a single-file component.
 import App from './App.vue'
 
 const app = createApp(App)
@@ -420,15 +439,16 @@ const app = createApp(App)
 
 ### 2.6 挂载
 
-`.mount()`在调用其方法之前，应用程序实例不会呈现任何内容。它需要一个“容器”参数，它可以是实际的 DOM 元素或选择器字符串：
+`.mount()`在调用其方法之前，应用程序实例不会呈现任何内容。它需要一个“容器”参数，它可以是实际的 `DOM `元素或选择器字符串：
 
 ```html
 <div id="app"></div>
 
+const app = createApp(App)
 app.mount('#app')
 ```
 
-应用程序根组件的内容将在容器元素内呈现。容器元素本身不被视为应用程序的一部分。
+**应用程序根组件的内容将在容器元素内呈现。容器元素本身不被视为应用程序的一部分。**
 
 在完成应用程序注册后，应调用该`.mount()`方法。另请注意，与注册方法不同，它的返回值是根组件实例而不是应用程序实例。
 
@@ -442,16 +462,16 @@ app.mount('#app')
 
 ### 2.8 应用介绍
 
-- createApp() ：创建一个应用，每个 Vue 应用都是通过用 createApp 函数创建一个新的应用实例开始的：；
-- data(){} ： data方法，用于在vue中声明数据,对象或函数类型,页面中可以直接访问使用；
-- methods:{} ： methods属性，用于编写vue中的方法,所有的方法由vue对象来调用, 访问data中的属性直接使用this.xxx；
-- computed:{} 计算属性：根据数据，自动进行计算，经常用于数值计算；
-- watch:{}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ：属性说明：监听属性，属性变化时，制动执行里面的函数，可以根据变量的改变，作异步操作和页面样的改变；
+- `createApp`() ：创建一个应用，每个 `Vue` 应用都是通过用 `createApp `函数创建一个新的应用实例开始的：；
+- `data`(){} ： `data`方法，用于在`vue`中声明数据,对象或函数类型,页面中可以直接访问使用；
+- `methods`:{} ： `methods`属性，用于编写vue中的方法,所有的方法由`vue`对象来调用, 访问`data`中的属性直接使用`this.xxx`；
+- `computed`:{} 计算属性：根据数据，自动进行计算，经常用于数值计算；
+- `watch`:{}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ：属性说明：监听属性，属性变化时，制动执行里面的函数，可以根据变量的改变，作异步操作和页面样的改变；
 
 注意：
 
-- computed和method都能实现的功能，建议使用computed, 因为有缓存；
-- computed和watcher都能实现的工呢，建议使用computed, 因为更加简洁；
+- `computed`和`method`都能实现的功能，建议使用`computed`, 因为有缓存；
+- `computed`和`watcher`都能实现的工呢，建议使用`computed`, 因为更加简洁；
 
 ---
 
@@ -867,6 +887,19 @@ Mustache 标签将会被替代为对应数据对象上 `msg `属性（msg`定义
 上方代码中，给属性加了 `v-bind` 之后，属性值里的整体内容是**表达式**，属性值里的`imageSrc`和`size`是`Vue`实例里面的**变量**。
 
 也就是说， `v-bind`的属性值里，可以写合法的 `js `表达式。
+
+**除了动态的设置属性值, 也可以动态的设置属性**
+
+```js
+<h1 :[arg]="value">arg</h1>
+
+data() {
+    return {
+        arg: 'id',
+        value: 1
+    }
+}
+```
 
 上面两行代码也可以简写成：
 
