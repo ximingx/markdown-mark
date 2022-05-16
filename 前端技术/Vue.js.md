@@ -477,7 +477,7 @@ app.mount('#app')
 
 ## 3. vue 系统指令
 
-指令（Directives）是 `vue `为开发者提供的模板语法，用于辅助开发者渲染页面的基本结构。
+指令（`Directives`）是 `vue `为开发者提供的模板语法，用于辅助开发者渲染页面的基本结构。
 
 `vue `中的指令按照不同的用途可以分为如下 6 大类：
 
@@ -496,13 +496,13 @@ app.mount('#app')
 
 ###  3.1 {{ }}
 
-数据绑定最常见的形式就是使用 “**Mustache**” 语法（双大括号）的文本插值，在标签中使用。例如：
+数据绑定最常见的形式就是使用 “**`Mustache`**” 语法（双大括号）的文本插值，在标签中使用。例如：
 
 ```html
 <span>Message: {{ msg }}</span>
 ```
 
-Mustache 标签将会被替代为对应数据对象上 `msg `属性（msg`定义`在`data`对象中）的值。
+`Mustache `标签将会被替代为对应数据对象上 `msg `属性（`msg`定义在`data`对象中）的值。
 
 无论何时，绑定的数据对象上 `msg `属性发生了改变，插值处的内容都会**自动更新**。
 
@@ -617,8 +617,7 @@ Mustache 标签将会被替代为对应数据对象上 `msg `属性（msg`定义
 
 ### 3.4 v-html
 
-
-`v-text`是纯文本，而`v-html`会被解析成html元素。
+`v-text`是纯文本，而`v-html`会被解析成`html`元素。
 
 **注意：使用`v-html`渲染数据可能会非常危险，因为它很容易导致 `XSS`（跨站脚本） 攻击，使用的时候请谨慎，能够使用`{{}}`或者v-text实现的不要使用`v-html`。**
 
@@ -747,22 +746,22 @@ Mustache 标签将会被替代为对应数据对象上 `msg `属性（msg`定义
 
 `$event` 是 `vue `提供的特殊变量，用来表示原生的事件参数对象`event`。``$event` 可以解决事件参数对象`event`被覆盖的问题。
 
-**v-on 提供了click 事件，也提供了一些其他的事件。**
+> **v-on 提供了click 事件，也提供了一些其他的事件。**
 
 
-- v-on:click
+- `v-on:click`
 
-- v-on:keydown
+- `v-on:keydown`
 
-- v-on:keyup
+- `v-on:keyup`
 
-- v-on:mousedown
+- `v-on:mousedown`
 
-- v-on:mouseover
+- `v-on:mouseover`
 
-- v-on:submit
+- `v-on:submit`
 
-**v-on的常见事件修饰符**
+> **v-on的常见事件修饰符**
 
 `Vue `不推荐我们操作`DOM    `为了解决这个问题，`Vue.js` 为 `v-on` 提供了**事件修饰符**
 
@@ -1183,7 +1182,7 @@ export default {
 ### 3.8 v-for
 
 - **不推荐**同时使用 `v-if` 和 `v-for`
-- 当 `v-if` 与 `v-for` 一起使用时，`v-for` 具有比 `v-if` 更高的优先级。
+- 当 `v-if` 与 `v-for` 一起使用时，`v-if` 具有比` v-for `更高的优先级。
 
 我们可以使用该v-for指令基于数组呈现项目列表。该v-for指令需要格式为 的特殊语法`item in items`，其中`items`是源数据数组，`item`是被迭代的数组元素的别名：
 
