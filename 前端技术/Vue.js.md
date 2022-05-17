@@ -1830,12 +1830,12 @@ Vue 提供了两个内置组件，可以帮助处理过渡和动画以响应不�
 
 ## 7. Components
 
-组件的出现，就是为了拆分 Vue 实例的代码量的，能够让我们以不同的组件，来划分不同的功能模块，将来我们需要什么样的功能，就可以去调用对应的组件即可。
+组件的出现，就是为了拆分 `Vue `实例的代码量的，**能够让我们以不同的组件，来划分不同的功能模块，将来我们需要什么样的功能，就可以去调用对应的组件即可。**
 
-在 vue 项目中， 我们将 ui 作为单独的一部分，嵌套应用程序 ， 每一个组件负责自己的页面内容， 最重要的是， 减少了造轮子
+在 `vue `项目中， 我们将 `ui `作为单独的一部分，嵌套应用程序 ， 每一个组件负责自己的页面内容， 最重要的是， 减少了造轮子
 
-- **组件 (Component) 是 Vue.js 最强大的功能之一**
-- **组件可以扩展 HTML 元素，封装可重用的代码**
+- 组件 (`Component`) 是 `Vue.js` 最强大的功能之一
+- 组件可以扩展 `HTML `元素，封装可重用的代码
 
 ![image-20220325201424552](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/image-20220325201424552.png)
 
@@ -1843,61 +1843,26 @@ Vue 提供了两个内置组件，可以帮助处理过渡和动画以响应不�
 
 ### 7.1 模块化和组件化的区别
 
-- 模块化：是从代码逻辑的角度进行划分的；方便代码分层开发，保证每个功能模块的职能单一
-- 组件化：是从UI界面的角度进行划分的；前端的组件化，方便UI组件的重用
+- 模块化：是从`代码逻辑`的角度进行划分的；方便代码分层开发，保证每个功能模块的职能单一
+- 组件化：是从`UI界面`的角度进行划分的；前端的组件化，方便`UI组件`的重用
 
 ### 7.2 组件的注册
 
-我们可以使用以下方法使组件在当前[Vue 应用程序](https://vuejs.org/guide/essentials/application.html)`app.component()`中全局可用：
+`vue3` 全局组件需在 `main.js` 中定义
+
+我们可以使用以下方法使组件在当前[`Vue `应用程序](https://vuejs.org/guide/essentials/application.html)`app.component()`中全局可用：
 
 ```js
 import { createApp } from 'vue'
+import MyComponent from './MyComponent.vue'
+const app = createApp(App)
 
-const app = createApp({})
-
-app.component(
-  // the registered name
-  'MyComponent',
-  // the implementation
-  {
-    /* ... */
-  }
-)
+app.component('MyComponent')
 ```
 
-如果使用 SFC，您将注册导入的`.vue`文件：
+`局部注册的组件`只能在当前组件使用
 
-```js
-import MyComponent from './App.vue'
-
-app.component('MyComponent', MyComponent)
-```
-
-全局注册的组件可以在此应用程序中的任何组件的模板中使用
-
-```vue
-<div id="example">
-  <!-- 组件使用 组件名称 是以HTML标签的形式使用  -->  
-  <my-component></my-component>
-</div>
-<script>
-    //   注册组件 
-	Vue.component('my-component', {
-      template: '<div>A custom component!</div>'
-    })
-
-    // 创建根实例
-    new Vue({
-      el: '#example'
-    })
-
-</script>
-```
-
-局部注册的组件只能在当前组件使用
-
-```vue
-<script>
+```html
 import ComponentA from './ComponentA.vue'
 
 export default {
@@ -1906,12 +1871,15 @@ export default {
     ComponentA
   }
 }
-</script>
-
-<template>
-  <ComponentA />
-</template>
 ```
+
+但全局组件，只要声明，即使不使用也会被初始化，影响性能。
+
+**局部组件声明的对象建议首字母大写，单词间使用驼峰命名。**
+
+**映射时，组件的名称还保持全小写字母，单词之间使用 `“-”` 连接, 在使用打包工具时, 可以直接使用原来的名字**
+
+局部组件，如果不使用，就不会初始化，因此对性能有好处。
 
 ### 7.3 组件的使用
 
@@ -1920,6 +1888,11 @@ export default {
 import ButtonCounter from './ButtonCounter.vue'
 
 export default {
+  data() {
+      retuen {
+          msg: "ximingx"
+      }
+  },
   components: {
     ButtonCounter
   }
@@ -1928,12 +1901,13 @@ export default {
 
 <template>
   <h1>Here is a child component!</h1>
+  <p>{{ msg }}</p>
   <ButtonCounter />
 </template>
 ```
 
-- **组件参数的data值必须是函数同时这个函数要求返回一个对象** 
-- **组件模板必须是单个根元素( vue2的情况下 ), vue3 可以随意, 多个根组件**
+- **组件参数的`data`值必须是函数同时这个函数要求返回一个对象** 
+- **组件模板必须是单个根元素( `vue2`的情况下 ), `vue3 `可以随意, 多个根组件**
 - 组件模板的内容可以是模板字符串
 
 使用 切换多个组件一个组件在切换离开时将被卸载。我们可以通过内置组件`KeepAlive` 强制非活动组件保持
@@ -1945,50 +1919,21 @@ export default {
 - 父组件通过标签上`:data=data`方式定义传值， 子组件通过`props`方法接受数据
 - 子组件通过`$emit`方法传递参数， 父组件通过定义的函数接收数据
 
-```html
-<!-- BlogPost.vue -->
-<script>
-export default {
-  props: ['title']
-}
-</script>
-
-<template>
-  <h4>{{ title }}</h4>
-</template>
-```
-
-当一个值被传递给一个 prop 属性时，它就成为该组件实例上的一个属性。该属性的值可以在模板中和组件的`this`上下文中访问，就像任何其他组件属性一样。
-
-一个组件可以拥有任意数量的 props，默认情况下，任何值都可以传递给任何 props。
-
-注册后，您可以将数据作为自定义属性传递给它，如下所示：
-
-```html
-<!-- App.vue -->
-import BlogPost.vue from " ~ ~ ~ 路径"
-
-<!-- 组件的调用， 在父组件之中给子组件传递值 -->
-<!-- 在这个案例中App.vue是父组件，BlogPost.vue是子组件 -->
-<BlogPost title="My journey with Vue" />
-<BlogPost title="Blogging with Vue" />
-<BlogPost title="Why Vue is so fun" />
-```
+当一个值被传递给一个 `prop `属性时，它就成为该组件实例上的一个属性。该属性的值可以在模板中和组件的`this`上下文中访问，就像任何其他组件属性一样。
 
 ### 7.5 props
 
-**1.数组形式**
+> 1.数组形式
 
-```c
+```js
 props: [data1, data2]
-1
 ```
 
 数组形式相当于直接接收消息，不做任何校验，一般来说，不建议使用数组形式。
 
-**2.简单对象形式**
+> 2.简单对象形式
 
-除了使用字符串数组声明 props 之外，我们还可以使用对象语法：
+除了使用字符串数组声明 `props `之外，我们还可以使用对象语法：
 
 ```js
 export default {
@@ -1999,13 +1944,15 @@ export default {
 }
 ```
 
-组件可以为其 props 指定要求，例如您已经看到的类型。如果不满足要求，Vue 将在浏览器的 JavaScript 控制台中警告
+组件可以为其 `props `指定要求，例如您已经看到的类型。如果不满足要求，`Vue `将在浏览器的 `JavaScript `控制台中警告
 
-**3.复杂对象形式**
+**但是也只是警告**
 
-要指定 prop 验证，您可以向option提供具有验证要求的对象，而不是字符串数组。例如：`props`
+> **3.复杂对象形式**
 
-- type: 设定参数类型，当传入参数类型与type不相符时，控制台会报错；
+要指定 `prop `验证，您可以向`option`提供具有验证要求的对象，而不是字符串数组。例如：`props`
+
+- `type`: 设定参数类型，当传入参数类型与type不相符时，控制台会报错；
 
 - > - `String`
   > - `Number`
@@ -2016,54 +1963,48 @@ export default {
   > - `Function`
   > - `Symbol`
 
-- required：设定参数是否是必传，当设为true时，不传该参数会报错；
+- `required`：设定参数是否是必传，当设为`true`时，不传该参数会报错；
 
-- default：设定默认值，当参数类型为复杂类型时，需使用工厂模式生成默认值，否则Vue会在控制台抛出警告。
+- `default`：设定默认值，当参数类型为复杂类型时，需使用工厂模式生成默认值，否则`Vue`会在控制台抛出警告。
 
-- validator：校验器，是一个函数，拥有一个代表传入值的形参，可以自定义各种校验，当返回false时，会报错，表示没通过校验。
+- `validator`：校验器，是一个函数，拥有一个代表传入值的形参，可以自定义各种校验，当返回`false`时，会报错，表示没通过校验。
 
 **`props` 会在一个组件实例创建之前进行验证，所以实例的属性 (如 `data`、`computed` 等) 在 `default` 或 `validator` 函数中是不可用的。**
 
 ```js
 export default {
   props: {
-    // Basic type check
-    //  (`null` and `undefined` values will allow any type)
     propA: Number,
-    // Multiple possible types
+
     propB: [String, Number],
-    // Required string
+
     propC: {
       type: String,
       required: true
     },
-    // Number with a default value
+
     propD: {
       type: Number,
       default: 100
     },
-    // Object with a default value
+
+    // 对象和数组需要使用函数返回, 否则所有组件将共用一个对象, 会发生一些问题
     propE: {
       type: Object,
-      // Object or array defaults must be returned from
-      // a factory function. The function receives the raw
-      // props received by the component as the argument.
       default(rawProps) {
-        // default function receives the raw props object as argument
         return { message: 'hello' }
       }
     },
-    // Custom validator function
+
     propF: {
       validator(value) {
-        // The value must match one of these strings
         return ['success', 'warning', 'danger'].includes(value)
       }
     },
-    // Function with a default value
+
+    // 方法也是可以进行传递的 
     propG: {
       type: Function,
-      // Unlike object or array default, this is not a factory function - this is a function to serve as a default value
       default() {
         return 'Default function'
       }
@@ -2076,32 +2017,540 @@ export default {
 
 除了上面的父组件传值给子组件, 子组件也可以传值给子组件, 这就需要用到 `$emit`
 
+```js
+vm.$emit( eventName, […args] )
+```
+
+- 参数
+  - `{string} eventName 触发的事件名`
+  - `[...args] 传递给事件的参数`
+- **作用**： 触发当前实例上的事件。附加参数都会传给监听器回调。
+
 > 子组件
 
 ```js
+<template>
+  <div>
+    <h1>{{ message }}</h1>
+	// 1. 我们需要在子组件中触发事件去给父组件传递值
+    <button @click="changeFatherData">son button</button>
+  </div>
+</template>
+
+<script>
 export default {
+  name: "SonComponents",
+  data() {
+    return {
+      message: "I am son"
+    }
+  },
   methods: {
-      // 在子组件中, 可以调用 setInfo 方法, 使用 $emit
-      setInfo() {
-          this.$emit('changeInfo', "这是要传递的消息")
-          // changeInfo 是一个自定义的事件，功能类似于一个中转
-      }
+    changeFatherData() {
+      // 2. 通过 $emit 给组件绑定一个 changeData 的点击方法, 第二个参数是传递的数据
+      this.$emit('changeData', "my father data changed")
+    }
   }
 }
+</script>
+
+<style scoped>
+
+</style>
 ```
 
 > 父组件
 
 ```js
+<template>
+  <div id="app">
+    <h1>{{ message }}</h1>
+	// 使用$emit触发父组件中写好的方法。
+	// 第一个 changeData 是子组件中的的定义的方法名字
+	// 第二个 changeData 是当前组件定义的 changeData 方法
+    <SonComponents @changeData="changeData"></SonComponents>
+  </div>
+</template>
+
+<script>
+import SonComponents from './components/SonComponents.vue'
+export default {
+  name: 'App',
+  data() {
+    return {
+      message: 'I am father'
+    }
+  },
+  components: {
+    SonComponents
+  },
+  methods: {
+    // 参数为子组件传递的值
+    changeData(message) {
+      this.message = message
+    }
+  }
+}
+</script>
 ```
 
+### 7.7 $parent
 
+`$parent` 指向调用该组件的直接组件（父组件）实例
 
+可以通过` $parent  `直接获取到父组件 中的 `props 、 data或者方法`, 并且可以进行修改
 
+然后通过 `$parent` 层叠可以一层一层地往上追溯各级父组件，比如 `this.$parent.$patent.message`
 
+> 子组件
 
+```js
+<template>
+  <div>
+    <h1>{{ message }}</h1>
+  </div>
+</template>
 
-### 7.7 slot 插槽
+<script>
+export default {
+  name: "SonComponents",
+  data() {
+    return {
+      message: "I am son"
+    }
+  },
+  mounted() {
+    console.log(`这是子组件中使用$parents获得父组件中的data中的message: ${this.$parent.$data.message}`)
+  }
+}
+</script>
+```
+
+> 父组件
+
+```js
+<template>
+  <div id="app">
+    <h1>{{ message }}</h1>
+    <SonComponents></SonComponents>
+  </div>
+</template>
+
+<script>
+import SonComponents from './components/SonComponents.vue'
+export default {
+  name: 'App',
+  data() {
+    return {
+      message: 'I am father'
+    }
+  },
+  components: {
+    SonComponents
+  }
+}
+</script>
+```
+
+![image-20220517204206464](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205172042539.png)
+
+### 7.8 $children
+
+> <font color="red" weidth="bolder">在 `Vue 3.x` 中，将移除且不再支持 `$children` 。不推荐使用</font>
+
+需要注意 `$children` 并不保证顺序，也不是响应式的。
+
+借助`$children`，可以获取到当前组件的所有子组件的全部实例。所以，借助`$children`可以访问子组件的data、方法等。一种常用的用法就是用于父子组件间的通讯途径。
+
+### 7.9 ref
+
+因为` Vue 3.x` 中，`$children`被移除了。如果我们要想访问子组件实例，可以通过`$refs`来实现。
+
+```js
+<template>
+  <div id="app">
+    <h1>{{ message }}</h1>
+    <button @click="btnClick">father</button>
+    <SonComponents ref="son"></SonComponents>
+  </div>
+</template>
+
+<script>
+import SonComponents from './components/SonComponents.vue'
+export default {
+  name: 'App',
+  data() {
+    return {
+      message: 'I am father'
+    }
+  },
+  components: {
+    SonComponents
+  },
+  methods: {
+    btnClick() {
+      console.log(this.$refs.son.message)
+    }
+  }
+}
+</script>
+```
+
+![image-20220517214648991](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205172146060.png)
+
+两者获取到的数据基本没有什么差别。所以，`$refs`替代`$children`完成没问题。
+
+### 7.10 provide / inject
+
+`provide`和`inject`可以实现嵌套组件之间进行传递数据。这两个函数都是在`setup`函数中使用的。
+
+在使用`provide`和`inject`的时候需从`vue`中引入
+
+> provide
+
+父组件/祖先组件向子组件/子孙组件传递数据时，写在父级组件里，接收两个参数  
+
+第一个参数是 `key`，即数据的名称；第二个参数为 `value`，即数据的值
+
+> inject
+
+子组件/子孙组件接收从父级/祖先组件传递过来的数据，写在子组件里，接收一个参数 `key`，即父组件或祖先组件传递的数据名称
+
+> 父组件
+
+```js
+<template>
+  <div id="app">
+    <SonComponents></SonComponents>
+  </div>
+</template>
+
+<script>
+import SonComponents from './components/SonComponents.vue'
+import {provide} from "vue";
+export default {
+  name: 'App',
+  components: {
+    SonComponents
+  },
+  setup() {
+    provide('test', 'test data')
+  }
+}
+</script>
+```
+
+> 子组件
+
+```js
+<template>
+  <div>
+  </div>
+</template>
+
+<script>
+import { inject } from 'vue';
+export default {
+  name: "SonComponents",
+  setup(){
+    console.log(inject('test'))
+  }
+}
+</script>
+```
+
+### 7.11 $listeners
+
+<font color="red" weidth="bolder">Vue 3.x 已经弃用`$listeners` 对象。`vue3`把把`$attrs`和`$listeners`统一合并到`$attrs`中</font>
+
+`vue2`中使用`$attrs`从父组件传递数据给子组件嵌套组件，父组件通过通过`$listeners`监听子组件的事件
+
+`$listeners`属性，它是一个对象，里面包含了作用在这个组件上的所有监听器，你就可以配合 v-on="$listeners" 将所有的事件监听器指向这个组件的某个特定的子元素。
+
+```html
+<label>
+    <input type="text" v-bind="$attrs" v-on="$listeners" />
+</label>
+```
+
+上面代码为 `input` 元素绑定父组件传递过来的属性和监听器。
+
+### 7.12 $attrs
+
+- `$attrs`是在`vue的2.40版本以上`添加的。
+- 项目中**有多层组件传参**可以使用`$attrs`，可以使代码更加美观，更加简洁，维护代码的时候更方便。
+- 如果使用普通的父子组件传参`prop和$emit，$on`会很繁琐；如果使用`vuex`会大材小用，只是在这几个组件中使用，没必要使用`vuex`；使用事件总线`eventBus`，使用不恰当的话，有可能会出现事件多次执行。
+
+```js
+<template>
+    <input type="text" v-bind="$attrs" />
+</template>
+<script>
+export default {
+  inheritAttrs: false,
+  props:{
+    attrA: String
+  }
+}
+</script>
+
+```
+
+> 可能会看不懂上面的解释
+>
+> **举一个例子来说明: **
+>
+> ​		当我们的一个子组件想要使用他父级的父级的数据, 在简单无脑的使用中我们需要一次次在组件中使用 `props` 进行数据的传递, 但是这样子是很麻烦的, 下面演示一下
+
+```js
+// 目录结构
+- App.vue
++ components
+--  Index0Components.vue
+++  Index1Componenes
+---   Index1Componenes.vue
++++   Index2Componenes
+----    Index2Componenes.vue
+```
+
+> `App.vue`
+
+```js
+<template>
+  <h1> 1:{{ message }}</h1>
+  <Index0Components :message="message"></Index0Components>
+</template>
+
+<script>
+import Index0Components from "@/components/Index0Components";
+export default {
+  name: 'App',
+  data() {
+    return {
+      message: 'Hello ximingx!'
+    }
+  },
+  components: {
+    Index0Components
+  }
+}
+</script>
+```
+
+> `Index0Components.vue`
+
+```js
+<template>
+  <h2> 2:{{ message }}</h2>
+  <Index1Components :message="message"></Index1Components>
+</template>
+
+<script>
+import Index1Components from "@/components/Index1Components/Index1Components";
+export default {
+  name: "Index0Components",
+  props: ["message"],
+  components: {
+    Index1Components
+  }
+}
+</script>
+```
+
+> `Index1Components.vue`
+
+```js
+<template>
+  <h3> 3:{{ message }}</h3>
+  <Index2Components :message="message"></Index2Components>
+</template>
+
+<script>
+import Index2Components from "@/components/Index1Components/Index2Components/Index2Components";
+export default {
+  name: "Index1Components",
+  props: ["message"],
+  components: {
+    Index2Components
+  }
+}
+</script>
+```
+
+> `Index2Components.vue`
+
+```js
+<template>
+  <h4> 4:{{ message }}</h4>
+</template>
+
+<script>
+export default {
+  name: "Index2Components",
+  props: ["message"],
+}
+</script>
+```
+
+![image-20220517103612768](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205171036834.png)
+
+确实, 最后的数据是传递过来了, 但是不得不承认他的写法很麻烦, 所以我们放弃了通过 `props `传值, 而是选择使用 `$attrs`
+
+**上面的代码可以写为**
+
+> `App.vue` 不需要改变
+
+```html
+<template>
+  <h1> 1:{{ message }}</h1>
+  <Index0Components :message="message" data="123" style="color: red"></Index0Components>
+</template>
+```
+
+> `Index0Components.vue`
+>
+> ​		我们可以看到, 这里减少了 `props `属性的传值, 使用 `v-bind="$attrs"`
+
+```js
+<template>
+  <Index1Components v-bind="$attrs"></Index1Components>
+</template>
+
+<script>
+import Index1Components from "@/components/Index1Components/Index1Components";
+export default {
+  name: "Index0Components",
+  components: {
+    Index1Components
+  }
+}
+</script>
+```
+
+> `Index1Components.vue`
+>
+> ​		我们可以看到, 这里减少了 `props `属性的传值, 使用 `v-bind="$attrs"`
+
+```js
+<template>
+  <Index2Components v-bind="$attrs"></Index2Components>
+</template>
+
+<script>
+import Index2Components from "@/components/Index1Components/Index2Components/Index2Components";
+export default {
+  name: "Index1Components",
+  components: {
+    Index2Components
+  }
+}
+</script>
+```
+
+> `Index2Components.vue`
+
+```js
+<template>
+  <h4> message:{{ message }}</h4>
+  <h4> data:{{data}}</h4>
+  <h4> style:{{style}}</h4>
+</template>
+
+<script>
+export default {
+  name: "Index2Components",
+  props: ["message","data","style"],
+}
+</script>
+```
+
+![image-20220517105803049](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205171058112.png)
+
+多级组件传值时，调用目标组件绑定`$attrs`，**可直接获取根组件所传递参数，而不用每一级组件逐层传递。** 中间的组间不再需要获取多余的数据
+
+当然如果传递过程中也需要使用的话, 也可以在标签上添加 `v-bind="$attrs"`
+
+```js
+<template>
+  <Index2Components v-bind="$attrs"></Index2Components>
+  <p v-bind="$attrs">123456</p>
+</template>
+
+<script>
+import Index2Components from "@/components/Index1Components/Index2Components/Index2Components";
+export default {
+  name: "Index1Components",
+  components: {
+    Index2Components
+  }
+}
+</script>
+```
+
+![image-20220517114620301](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205171146369.png)
+
+也可以只获取一个数据
+
+```js
+<template>
+  <h2 v-bind:style="$attrs.style">123</h2>
+</template>
+
+<script>
+export default {
+  name: "Index0Components",
+  inheritAttrs: false,
+}
+</script>
+```
+
+- 父组件调用子组件时，给子组件标签添加的属性中，除了在子组件的`props`中声明的属性，其他属性会自动添加到子组件根元素上。
+- `Vue 3.x` 中， `$attrs`将包含传递给组件的所有属性，包括`class`和`style`
+
+> 需要注意的是
+>
+> ​		`inheritAttrs: false`的含义是不希望本组件的根元素继承父组件的`attribute`，同时父组件传过来的属性（没有被子组件的`props`接收的属性），也不会显示在子组件的`dom`元素上，但是在组件里可以通过其`$attrs`可以获取到没有使用的注册属性, ``inheritAttrs: false`是不会影响 `style `和 `class `的绑定
+
+> 在上面例子的基础上修改一下
+
+```js
+<template>
+  <div>
+    <h4> message:{{ message }}</h4>
+    <h4> data:{{data}}</h4>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Index2Components",
+  inheritAttrs: true,
+  props: ["message","data"],
+}
+</script>
+```
+
+我们没有使用 `props `接收 `style`, 他将添加到我们组建的根元素上 
+
+![image-20220517110406453](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205171104521.png)
+
+但是在我们修改为 `inheritAttrs: false` 之后
+
+![image-20220517110602746](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205171106811.png)
+
+即使 `props` 没有接收 `style` , 也不会添加到根组件上
+
+**如果你不希望组件的根元素继承特性，你可以在组件的选项中设置` inheritAttrs: false`**
+
+### 7.13 Bus
+
+在使用`vue3.0`做后台管理系统的过程中，需要实现兄弟组件间的通信，一个组件触发事件，另一个组件接收到事件后执行某操作
+
+### 7.14 vuex
+
+`vuex `在下面会单独介绍, 作为 `vue` 全家桶的一部分还是很重要的
+
+### 7.15 slot 插槽
 
 < slot>< /slot> 一般被写在子组件里,可以被父组件内写的东西"插"满
 
@@ -2123,11 +2572,15 @@ Vue3（其实从2.6开始）中引入了一个新的指令`v-slot`，用来表�
 </foo>
 ```
 
+### @ 补充
 
+> 组件传值是单向数据流
 
+一般情况下, 父组件的值发生改变会影响子组件中的数据, 而子组件中的值发生改变不会影响父组件, 是单向数据流的
 
+**但是特殊情况除外, 如果数据是`引用类型`, 例如对象或者数组, 在子组件中修改值, 可能会影响父组件中的数据**
 
-
+ 
 
 
 
