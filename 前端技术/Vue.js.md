@@ -22,6 +22,8 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 
 ## 1. 初步了解 vue.js
 
+首先普及一个知识, 近年来比较受欢迎的前端框架有 `Google `的` AngularJS` , `Facebook` 的 `ReactJs`, 以及`Vue.js`
+
 官方定义： **`Vue`（读作 /vjuː/，类似 ivew ）**是一个帮助用户制造界面的 `JavaScript `框架。
 
 传统的网站开发一般采用`HTML+CSS+JS`作为技术架构，而`vue`立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心，极大的简化了开发流程。
@@ -1036,9 +1038,9 @@ data() {
 
 **区别**：
 
-- v-bind：只能实现数据的**单向**绑定，从 M 自动绑定到 V。
+- `v-bind`：只能实现数据的**单向**绑定，从 M 自动绑定到 V。
 
-- v-model：只有`v-model`才能实现**双向**数据绑定。注意，v-model 后面不需要跟冒号，
+- `v-model`：只有`v-model`才能实现**双向**数据绑定。注意，v-model 后面不需要跟冒号，
 
 **注意**：`v-model` 只能运用在**表单元素中，或者用于自定义组件**。常见的表单元素包括：`input(radio, text, address, email....) 、select、checkbox 、textarea。`
 
@@ -1080,7 +1082,7 @@ data() {
 
 - 通过`v-model`
 - 和获取单选框中的值一样 
-- 复选框 `checkbox` 这种的组合时   data 中的 hobby 我们要定义成数组 否则无法实现多选
+- 复选框 `checkbox` 这种的组合时   `data `中的 `hobby` 我们要定义成数组 否则无法实现多选
 
 ```html
 <script>
@@ -1138,7 +1140,7 @@ export default {
 
 **表单修饰符**
 
-.lazy
+`.lazy`
 
 默认情况下，`v-model`在每个事件之后将输入与数据同步（[上述](https://vuejs.org/guide/essentials/forms.html#vmodel-ime-tip)`input`IME 组合除外）。您可以添加修饰符以改为在事件后同步：`lazy``change`
 
@@ -1149,7 +1151,7 @@ export default {
 <input v-model.lazy="msg" />
 ```
 
-.number
+`.number`
 
 如果您希望用户输入自动转换为数字，您可以将`number`修饰符添加到`v-model`托管输入：
 
@@ -1161,7 +1163,7 @@ export default {
 
 如果输入有，`number`则自动应用修饰符`type="number"`。
 
-.trim
+`.trim`
 
 如果您希望自动修剪用户输入中的空白，您可以将`trim`修饰符添加到您的`v-model`-managed 输入中：
 
@@ -1171,10 +1173,10 @@ export default {
 <input v-model.trim="msg" />
 ```
 
-**拓展: v-model 的实现原理**
+**拓展:`v-model` 的实现原理**
 
 ```html
-<input :value="msg" @imput="msg = @event.target.value">{{ msg }}</input>
+<input :value="msg" @input="msg = @event.target.value">{{ msg }}</input>
 ```
 
 ---
@@ -1530,6 +1532,8 @@ export default {
 });
 ```
 
+每个计算属性都包含有一个 getter 和 setter, 当没有明确指明使用方法时, 默认采取的是 getter 方法
+
 > setup
 
 ```js
@@ -1786,13 +1790,13 @@ Vue 提供了两个内置组件，可以帮助处理过渡和动画以响应不�
 
 ### 6.1 Transition
 
-`<Transition>`是一个内置组件：这意味着它可以在任何组件的模板中使用，而无需注册它。它可用于在通过其默认插槽传递给它的元素或组件上应用进入和离开动画。进入或离开可以由以下之一触发：
+`<transition>`是一个内置组件：这意味着它可以在任何组件的模板中使用，而无需注册它。它可用于在通过其默认插槽传递给它的元素或组件上应用进入和离开动画。进入或离开可以由以下之一触发：
 
 - 通过条件渲染`v-if`
 - 通过条件显示`v-show`
 - `<component>` 通过特殊元素切换动态组件
 
-> `<Transition>` 仅支持单个元素或组件作为其插槽内容。如果内容是一个组件，则该组件也必须只有一个根元素。
+> `<transition>` 仅支持单个元素或组件作为其插槽内容。如果内容是一个组件，则该组件也必须只有一个根元素。
 
 ### 6.2 动画状态
 
@@ -2094,6 +2098,65 @@ export default {
 </script>
 ```
 
+> 我们也可以对 $emit 的传递的参数进行验证
+
+```js
+<template>
+  <button @click="sonClick">son button</button>
+</template>
+
+<script>
+export default {
+  name: "SonComponents",
+  emits: {
+    commit(v) {
+      return /^\d$/.test(v);
+    }
+  },
+  methods: {
+    sonClick() {
+      this.$emit("commit", 1);
+    }
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
+```
+
+我们通过 `emits` 来对自定义事件传递的参数进行验证
+
+```js
+<template>
+  <div id="app">
+    <h1>{{ number }}</h1>
+    <SonComponents @commit="change"></SonComponents>
+  </div>
+</template>
+
+<script>
+import SonComponents from './components/SonComponents.vue'
+export default {
+  name: 'App',
+  components: {
+    SonComponents
+  },
+  data() {
+    return {
+      number: 0
+    }
+  },
+  methods: {
+    change(data) {
+      this.number = data
+    }
+  }
+}
+</script>
+```
+
 ### 7.7 $parent
 
 `$parent` 指向调用该组件的直接组件（父组件）实例
@@ -2206,13 +2269,13 @@ export default {
 
 在使用`provide`和`inject`的时候需从`vue`中引入
 
-> provide
+> `provide`
 
 父组件/祖先组件向子组件/子孙组件传递数据时，写在父级组件里，接收两个参数  
 
 第一个参数是 `key`，即数据的名称；第二个参数为 `value`，即数据的值
 
-> inject
+> `inject`
 
 子组件/子孙组件接收从父级/祖先组件传递过来的数据，写在子组件里，接收一个参数 `key`，即父组件或祖先组件传递的数据名称
 
@@ -2227,14 +2290,13 @@ export default {
 
 <script>
 import SonComponents from './components/SonComponents.vue'
-import {provide} from "vue";
 export default {
   name: 'App',
   components: {
     SonComponents
   },
-  setup() {
-    provide('test', 'test data')
+  provide: {
+    test: 'test'
   }
 }
 </script>
@@ -2244,17 +2306,13 @@ export default {
 
 ```js
 <template>
-  <div>
-  </div>
+    <p>{{test}}</p>
 </template>
 
 <script>
-import { inject } from 'vue';
 export default {
   name: "SonComponents",
-  setup(){
-    console.log(inject('test'))
-  }
+  inject: ['test']
 }
 </script>
 ```
@@ -2550,15 +2608,95 @@ export default {
 
 `vuex `在下面会单独介绍, 作为 `vue` 全家桶的一部分还是很重要的
 
-### 7.15 slot 插槽
+### 7.15 slot 
 
-< slot>< /slot> 一般被写在子组件里,可以被父组件内写的东西"插"满
+> `<slot>< /slot> `一般被写在子组件里,可以被父组件内写的东西"插"满
 
-Vue3（其实从2.6开始）中引入了一个新的指令`v-slot`，用来表示具名插槽和默认插槽
+```js
+<template>
+  <SonComponents>
+    <h1>ximingx</h1>
+  </SonComponents>
+</template>
+```
 
-我们可以在slot容器`<template>`上使用`v-slot`来表示一个传入组件的插槽，通过**指令参数**来表示插槽的名称。
+```js
+<template>
+  <button>son button</button>
+  <slot></slot>
+  <slot></slot>
+  <slot></slot>
+</template>
+
+<script>
+export default {
+  name: "SonComponents",
+}
+</script>
+```
+
+![image-20220519092618947](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205190926021.png)
+
+> 插槽在哪一个组件中使用, 使用的就是哪一个组件的数据
 
 ```html
+<template>
+    <h1>{{ number }}</h1>
+    <SonComponents @commit="change">
+      template: <span>{{ number }}</span>
+    </SonComponents>
+</template>
+
+<script>
+import SonComponents from './components/SonComponents.vue'
+export default {
+  name: 'App',
+  components: {
+    SonComponents
+  },
+  data() {
+    return {
+      number: 0
+    }
+  },
+  methods: {
+    change(data) {
+      this.number = data
+    }
+  }
+}
+</script>
+```
+
+这里的 `template: <span>{{ number }}</span>` number 的值是当前组件中的值
+
+> `Vue3`（其实从`2.6`开始）中引入了一个新的指令`v-slot`，用来表示具名插槽和默认插槽
+
+大多数使用默认插槽
+
+```js
+<template>
+  <slot>
+    <button>ximingx</button>
+  </slot>
+</template>
+```
+
+默认显示 `<button>ximingx</button>`
+
+除此之外, 我们可以在`slot`容器`<template>`上使用`v-slot`来表示一个传入组件的插槽，通过**指令参数**来表示插槽的名称。
+
+```html
+<template>
+  <header>
+    <slot name="header"></slot>
+    <slot name="main"></slot>
+    <slot name="footer"></slot>
+  </header>
+</template>
+
+
+
 <foo>
     <template v-slot:header>
         <div class="header"></div>
@@ -2572,6 +2710,34 @@ Vue3（其实从2.6开始）中引入了一个新的指令`v-slot`，用来表�
 </foo>
 ```
 
+### 7.16 is
+
+> `<component :is="current"></component>` 的使用可以动态的渲染组件
+
+```js
+<template>
+  <component :is="current"></component>
+  <button @click="current = 'XimingTest'"></button>
+</template>
+
+<script>
+import SonComponents from './components/SonComponents.vue'
+import XimingTest from "@/components/XimingTest";
+export default {
+  name: 'App',
+  components: {
+    SonComponents,
+    XimingTest
+  },
+  data() {
+    return {
+      current: 'SonComponents'
+    }
+  }
+}
+</script>
+```
+
 ### @ 补充
 
 > 组件传值是单向数据流
@@ -2580,11 +2746,27 @@ Vue3（其实从2.6开始）中引入了一个新的指令`v-slot`，用来表�
 
 **但是特殊情况除外, 如果数据是`引用类型`, 例如对象或者数组, 在子组件中修改值, 可能会影响父组件中的数据**
 
- 
+> 默认插槽的名字是 `default`
 
+```html
+<slot>
+    <button>ximingx</button>
+</slot>
+<!-- 等价于 -->
+<slot  name="default">
+    <button>ximingx</button>
+</slot>
+```
 
+> 插槽的简写是 `#`
 
-
+```html
+<template>
+  <SonComponents>
+    <template #main></template>
+  </SonComponents>
+</template>
+```
 
 ## 8. Vue-router
 
@@ -4172,7 +4354,9 @@ export default {
 h('img', { attrs: { src: require('./image.png') }})
 ```
 
+### 9. 自定义指令
 
+稍后补充
 
 
 
