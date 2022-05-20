@@ -1,7 +1,5 @@
 > 我记得 B站 是有尤雨溪关于 vue.js 的纪录片的, 感兴趣的可以去看看
 >
-> 本文主要是学习 **vue3** 
->
 > **这是一篇平平无奇, 但是非常长的文章, 长到你可能看一眼就会跳出去的文章, 但是我能有什么坏心思呢, 我只是单纯的懒得拆分开**
 
 [TOC]
@@ -10,13 +8,13 @@
 
 # Vue.js
 
-官网：https://vuejs.org/
-中文官网：https://cn.vuejs.org/
-中文官网vue3：https://v3.cn.vuejs.org/
-菜鸟教程：https://www.runoob.com/vue3/vue3-tutorial.html
-W3CSchool: https://www.w3cschool.cn/vuejs3/
+`官网`：https://vuejs.org/
+`中文官网`：https://cn.vuejs.org/
+`中文官网vue3`：https://v3.cn.vuejs.org/
+`菜鸟教程`：https://www.runoob.com/vue3/vue3-tutorial.html
+`W3CSchool`: https://www.w3cschool.cn/vuejs3/
 
-> **麻烦记住这个男人 (*尤雨溪*) , 我觉得他很帅哎**
+> **麻烦记住这个男人 (*`尤雨溪`*) , 我觉得他很帅哎**
 >
 > ![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204271957654.png)
 
@@ -24,7 +22,9 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 
 首先普及一个知识, 近年来比较受欢迎的前端框架有 `Google `的` AngularJS` , `Facebook` 的 `ReactJs`, 以及`Vue.js`
 
-官方定义： **`Vue`（读作 /vjuː/，类似 ivew ）**是一个帮助用户制造界面的 `JavaScript `框架。
+> `vue` 的定义
+
+官方定义： **`Vue`（读作` /vjuː/`，类似 `ivew` ）**是一个帮助用户制造界面的 `JavaScript `框架。
 
 传统的网站开发一般采用`HTML+CSS+JS`作为技术架构，而`vue`立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心，极大的简化了开发流程。
 
@@ -79,7 +79,7 @@ W3CSchool: https://www.w3cschool.cn/vuejs3/
 </style>
 ```
 
-> `cdn` 使用 
+> `cdn` 引用
 >
 > (当然也可以安装到本地然后引用, 但是不推荐)
 
@@ -1491,6 +1491,26 @@ data() {
 
 这些实例属性仅在首次创建实例时添加，因此您需要确保它们都存在于函数返回的对象中`data`。如有必要，使用`null`或`undefined`其他一些占位符值来表示所需值尚不可用的属性。
 
+在 `vue3` 中, 我们使用 `ref` 来替换掉 `data `的使用
+
+```js
+export default {
+  setup() {
+    let num = ref(2)
+    let add = () => {
+      // 使用时需要用 .value 的形式
+      num.value ++
+    }
+    // 如果不返回的话, 在模板中是无法使用的
+    return {
+      num,
+      add
+    }
+  }
+}
+</script>
+```
+
 ### 4.2 methods
 
 Vue 自动绑定`this`值，`methods`以便它始终引用组件实例。这可确保方法在`this`用作事件侦听器或回调时保留正确的值。定义 时应避免使用箭头函数`methods`，因为这会阻止 Vue 绑定适当的`this`值：
@@ -1503,6 +1523,26 @@ export default {
     }
   }
 }
+```
+
+在 `vue3` 中, 我们在 `setup` 中写
+
+```js
+export default {
+  setup() {
+    let num = ref(2)
+    let add = () => {
+      // 使用时需要用 .value 的形式
+      num.value ++
+    }
+    // 如果不返回的话, 在模板中是无法使用的
+    return {
+      num,
+      add
+    }
+  }
+}
+</script>
 ```
 
 ---
@@ -1678,7 +1718,11 @@ watch(() => person.job, (newValue, oldValue) => {
 
 ### 4.5 watchEffect
 
-和`watch`的区别是，`watch`既要指明监视的属性，也要指明监视的回调。而`watchEffect`，不用指明监视哪个属性，监视的回调中用到哪个属性，那就监视哪个属性，不用写返回值。
+和`watch`的区别是，`watch`既要指明监视的属性，也要指明监视的回调。
+
+而`watchEffect`，**不用指明监视哪个属性，监视的回调中用到哪个属性，那就监视哪个属性，不用写返回值。**
+
+在启动的时候也会被执行
 
 ```js
 // 回调中用到的数据只要发生变化，则直接重新执行回调
@@ -1700,6 +1744,8 @@ watchEffect(() => {
 生命周期钩子 = 生命周期函数 = 生命周期事件。
 
 生命周期中里有一个很重要的概念： **钩子函数**, 其实就是`Vue`提前定义好的事件, 其作用类似于`Servlet`的`init`方法和`distory`方法
+
+> 首先了解 `vue2 `的生命周期
 
 ### 5.1 创建期间生命周期函数
 
@@ -1757,28 +1803,55 @@ DOM 渲染在 `mounted `中就已经完成了。
 
 ![](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/480a7cdefd3a9a2a01a4289c8d3d038e%20%E4%B8%8B%E5%8D%884.18.55.png)
 
-> vue3 生命周期全都写在`setup`中
+> 如果项目使用 **`选项 API`**，就不必更改任何代码了，因为 `Vue3 `兼容以前的版本。
 >
-> 改变: 
->
-> beforeDestroy 改名为 beforeUnmount
-> destroyed 改名为 unmounted
-> beforeCreate => setup
-> created => setup
-> beforeMount => onBeforeMount
-> mounted => onMounted
-> beforeUpdate => onBeforeUpdate
-> updated => onUpdated
-> beforeUnmount => onBeforeUnmount
-> unmounted => onUnmounted
+> 当然，我们用 `Vue3 `就是要用它的 **`组合 API`**，**`组合 API`**中访问这些钩子的方式略有不同，**`组合API`**在较大的`Vue`项目中特别有用。
+
+在`组合API`中，我们需要将生命周期钩子导入到项目中，才能使用，这有助于保持项目的轻量性。
 
 ```js
-setup() {
-    onMounted(() => {
-      console.log('mounted')
-    })
-}
+// 组合 API
+import { onMounted } from 'vue'
 ```
+
+除了`beforecate`和`created`(它们被`setup`方法本身所取代)，我们可以在`setup`方法中访问的`API生命周期钩子`有9个选项:
+
+- `onBeforeMount` – 在挂载开始之前被调用：相关的 `render` 函数首次被调用。
+- `onMounted` – 组件挂载时调用
+- `onBeforeUpdate` – 数据更新时调用，发生在虚拟 DOM 打补丁之前。这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器。
+- `onUpdated` – 由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。
+- onBeforeUnmount – 在卸载组件实例之前调用。在这个阶段，实例仍然是完全正常的。
+- `onUnmounted` – 卸载组件实例后调用。调用此钩子时，组件实例的所有指令都被解除绑定，所有事件侦听器都被移除，所有子组件实例被卸载。
+- `onActivated` – 被 `keep-alive` 缓存的组件激活时调用。
+- `onDeactivated` – 被 `keep-alive` 缓存的组件停用时调用。
+- `onErrorCaptured` – 当捕获一个来自子孙组件的错误时被调用。此钩子会收到三个参数：错误对象、发生错误的组件实例以及一个包含错误来源信息的字符串。此钩子可以返回 `false` 以阻止该错误继续向上传播。
+
+```js
+// 组合 API
+<script>
+import { onMounted } from 'vue'
+
+export default {
+   setup () {
+     onMounted(() => {
+       console.log('mounted in the composition api!')
+     })
+   }
+}
+</script>
+```
+
+最后总结一下 `vue2 ` `=>`  `vue3 `的变化
+
+- `beforeCreate` -> 使用 `setup()`
+- `created` -> 使用 `setup()`
+- `beforeMount` -> `onBeforeMount`
+- `mounted` -> `onMounted`
+- `beforeUpdate` -> `onBeforeUpdate`
+- `updated` -> `onUpdated`
+- `beforeDestroy` -> `onBeforeUnmount`
+- `destroyed` -> `onUnmounted`
+- `errorCaptured` -> `onErrorCaptured`
 
 ## 6. Vue 动画
 
@@ -2226,6 +2299,8 @@ export default {
 借助`$children`，可以获取到当前组件的所有子组件的全部实例。所以，借助`$children`可以访问子组件的data、方法等。一种常用的用法就是用于父子组件间的通讯途径。
 
 ### 7.9 ref
+
+使用原生的 `js `操作 `ref` 绑定的元素
 
 因为` Vue 3.x` 中，`$children`被移除了。如果我们要想访问子组件实例，可以通过`$refs`来实现。
 
