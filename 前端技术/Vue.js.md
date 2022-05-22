@@ -1857,9 +1857,9 @@ export default {
 
 Vue 提供了两个内置组件，可以帮助处理过渡和动画以响应不断变化的状态：
 
-- `<Transition>`用于在元素或组件进入和离开 `DOM `时应用动画。本页对此进行了介绍。
+- `<transition>`用于在元素或组件进入和离开 `DOM `时应用动画。
 
-- `<TransitionGroup>`用于在将元素或组件插入列表、从中删除或在v-for列表中移动时应用动画。
+- `<transitionGroup>`用于在将元素或组件插入列表、从中删除或在`v-for`列表中移动时应用动画。
 
 ### 6.1 Transition
 
@@ -1869,31 +1869,70 @@ Vue 提供了两个内置组件，可以帮助处理过渡和动画以响应不�
 - 通过条件显示`v-show`
 - `<component>` 通过特殊元素切换动态组件
 
-> `<transition>` 仅支持单个元素或组件作为其插槽内容。如果内容是一个组件，则该组件也必须只有一个根元素。
+> `<transition>` 仅支持单个元素或组件作为其插槽内容。**如果内容是一个组件，则该组件也必须只有一个根元素。**
 
 ### 6.2 动画状态
 
 
-| .              | 状态                                                         |
-| -------------- | ------------------------------------------------------------ |
-| v-enter-from   | 进入的起始状态。在元素插入之前添加，在元素插入后立马（一帧）移除。 |
-| v-enter-active | 进入的活动状态。在整个进入阶段应用。在插入元素之前添加，在过渡/动画完成时移除。此类可用于定义进入过渡的持续时间、延迟和缓动曲线。 |
-| v-enter-to     | 进入的结束状态。在元素插入后添加一帧（同时v-enter-from被移除），在过渡/动画完成时移除。 |
-| v-leave-from   | 离开的开始状态。触发离开过渡时立即添加，一帧后删除。         |
-| v-leave-active | 离开的活动状态。在整个离开阶段应用。在触发离开过渡时立即添加，在过渡/动画完成时删除。此类可用于定义离开过渡的持续时间、延迟和缓动曲线。 |
-| v-leave-to     | 休假的结束状态。在触发离开过渡后添加一帧（同时v-leave-from删除），在过渡/动画完成时删除。 |
+| .                | 状态                                                         |
+| ---------------- | ------------------------------------------------------------ |
+| `v-enter-from`   | 进入的起始状态。在元素插入之前添加，在元素插入后立马（一帧）移除。 |
+| `v-enter-active` | 进入的活动状态。在整个进入阶段应用。在插入元素之前添加，在过渡/动画完成时移除。此类可用于定义进入过渡的持续时间、延迟和缓动曲线。 |
+| `v-enter-to`     | 进入的结束状态。在元素插入后添加一帧（同时`v-enter-from`被移除），在过渡/动画完成时移除。 |
+| `v-leave-from`   | 离开的开始状态。触发离开过渡时立即添加，一帧后删除。         |
+| `v-leave-active` | 离开的活动状态。在整个离开阶段应用。在触发离开过渡时立即添加，在过渡/动画完成时删除。此类可用于定义离开过渡的持续时间、延迟和缓动曲线。 |
+| `v-leave-to`     | 休假的结束状态。在触发离开过渡后添加一帧（同时`v-leave-from`删除），在过渡/动画完成时删除。 |
+
+```html
+<template>
+  <transition>
+    <template v-if="show">
+      <div class="btn">123</div>
+    </template>
+  </transition>
+  <button @click="show = !show">button</button>
+</template>
+
+<script setup>
+import {ref} from 'vue'
+let show = ref(false)
+</script>
+
+<style lang="scss">
+.btn {
+  padding: 5px 10px;
+  background-color: turquoise;
+}
+
+.v-enter-from, .v-leave-to {
+  opacity: 0;
+}
+
+.v-enter-active, .v-leave-active {
+  transition: 2s linear;
+}
+
+.v-enter-to, .v-leave-from {
+  opacity: 1;
+}
+</style>
+```
+
+> v-move 
+
+
 
 ### 6.3 transition 命名
 
 ```html
-<Transition name="fade">
+<transition name="fade">
 
-</Transition>
+</transition>
 ```
 
-对于命名转换，其转换类将以其名称而不是 `v` . 例如，上述转换的应用类将fade-enter-active代替v-enter-active. 淡入淡出过渡的 CSS 应如下所示：
+对于命名转换，其转换类将以其名称而不是 `v` . 例如，上述转换的应用类将`fade-enter-active`代替`v-enter-active` 淡入淡出过渡的 `CSS `应如下所示：
 
-```css
+```scss
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;
@@ -1904,6 +1943,182 @@ Vue 提供了两个内置组件，可以帮助处理过渡和动画以响应不�
   opacity: 0;
 }
 ```
+
+### 6.4 keyframes
+
+```js
+<template>
+  <transition name="show">
+    <template v-if="show">
+      <div class="btn">123</div>
+    </template>
+  </transition>
+  <button @click="show = !show">button</button>
+</template>
+
+<script setup>
+import {ref} from 'vue'
+
+let show = ref(false)
+</script>
+
+<style lang="scss">
+.btn {
+  padding: 5px 10px;
+  background-color: turquoise;
+}
+.show-enter-active  {
+  animation: fade 2s ease;
+}
+.show-leave-active {
+  animation: fade 2s ease reverse;
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+</style>
+
+```
+
+### 6.5 appear
+
+> 使得页面一开始就加载动画, 很有用
+
+```js
+<template>
+  <transition
+      appear
+      enter-active-class="animate__animated animate__bounce"
+  >
+    <div class="btn">123</div>
+  </transition>
+</template>
+
+<script setup>
+import 'animate.css';
+</script>
+
+<style lang="scss">
+.btn {
+  padding: 5px 10px;
+  background-color: turquoise;
+}
+</style>
+```
+
+### 6.6 动画钩子函数
+
+> `beforeEnter ` `enter ` `afterEnter`  `beforeLeave  ` `leave` `fterLeave`
+
+```html
+<template>
+  <transition appear @before-enter="beforeEnter" @enter="enter" @leave="leave"
+  >
+    <template v-if="show">
+      <div class="btn">123</div>
+    </template>
+  </transition>
+  <button @click="show = !show">btn</button>
+</template>
+
+<script setup>
+import {ref} from 'vue'
+import gsap from 'gsap'
+let show = ref(false);
+const beforeEnter = (el) => {
+  console.log('beforeEnter')
+  gsap.set(el, {
+    opacity: 0,
+    y: 100
+  })
+};
+const enter = (el, done) => {
+  console.log('enter')
+  gsap.to(el, {
+    opacity: 1,
+    y: 0,
+    duration: 0.5,
+    onComplete: done
+  })
+};
+const leave = (el, done) => {
+  console.log('leave')
+  gsap.to(el, {
+    opacity: 0,
+    y: 100,
+    duration: 0.5,
+    onComplete: done
+  })
+}
+</script>
+
+<style lang="scss">
+.btn {
+  padding: 5px 10px;
+  background-color: turquoise;
+}
+</style>
+
+```
+
+### 6.7 transitionGroup
+
+ 
+
+
+
+### @补充
+
+> 一个很无聊的补充, 可以自定义类名, 貌似对我好像没什么用
+
+```js
+<template>
+  <transition leave-active-class="ximingx-leave" enter-active-class="ximingx-enter">
+    <template v-if="show">
+      <div class="btn">123</div>
+    </template>
+  </transition>
+  <button @click="show = !show">button</button>
+</template>
+
+<script setup>
+import {ref} from 'vue'
+
+let show = ref(false)
+</script>
+
+<style lang="scss">
+.btn {
+  padding: 5px 10px;
+  background-color: turquoise;
+}
+.ximingx-enter  {
+  animation: fade 2s ease;
+}
+.ximingx-leave {
+  animation: fade 2s ease reverse;
+}
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+</style>
+```
+
+
+
+
+
+
 
 ## 7. Components
 
@@ -5060,3 +5275,8 @@ $ pm2 restart 名称
 $ pm2 delete 名称 
 ```
 
+
+
+
+
+# vue 使用 ts

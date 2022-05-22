@@ -594,3 +594,42 @@ let  data  =  Mock.mock({
 
 
 ![image-20220508095841509](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/image-20220508095841509.png)
+
+> 在 `vue` 中使用
+
+创建 `db` 文件
+
+```js
+const Mock = require('mockjs');
+const Random = Mock.Random;
+let data = {
+    news: [],
+}
+for (let i = 0; i < 5; i++) {
+    data.news.push({
+        id: i,
+        title: Random.cword(5, 10),
+        content: Random.cword(20, 50),
+        time: Random.date('yyyy-MM-dd'),
+    })
+}
+console.log(data)
+Mock.mock('/api/data/index', 'get', data);
+```
+
+在 `mian.js` 引用
+
+```js
+require('@/db/db')
+```
+
+页面中的使用
+
+```js
+axios({
+   url: '/api/data/index'
+}).then(res => {
+     console.log(res)
+})
+```
+
