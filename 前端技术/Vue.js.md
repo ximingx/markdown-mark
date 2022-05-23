@@ -3060,37 +3060,37 @@ export default {
 
 ## 8. Vue-router
 
-vue-router 它是一个Vue.js官方提供的路由管理器。
+`vue-router` 它是一个`Vue.js`官方提供的路由管理器。
 
-Vue Router和Vue.js非常契合，可以一起方便的实现SPA(single page web application,单页应用程序)应用程序的开发。
-Vue Router依赖于Vue，所以需要先引入Vue，再引入Vue Router
+`Vue Router`和`Vue.js`非常契合，可以一起方便的实现`SPA(single page web application`,单页应用程序)应用程序的开发。
+`Vue Router`依赖于`Vue`，所以需要先引入`Vue`，再引入`Vue Router`
 
-在了解 vue-router 之前先引入一个前端路由与后端路由的知识, 至少在之后的 Node.js 的学习中是有帮助的
+在了解 `vue-router` 之前先引入一个前端路由与后端路由的知识, 至少在之后的 `Node.js` 的学习中是有帮助的
 
 简单地说
 
 - 将路径和组件映射。
-- 在vue-router的单页面应用中，页面的路径的改变就是组件的切换
+- 在`vue-router`的单页面应用中，页面的路径的改变就是组件的切换
 
-### 8.1 后端, 前端路由
+### 8.1 前后端路由
 
 > 前端路由
 
-对于普通的网站，所有的超链接都是URL地址，所有的URL地址都对应服务器上对应的资源。
+对于普通的网站，所有的超链接都是`URL`地址，所有的`URL`地址都对应服务器上对应的资源。
 
-当前端输入url请求资源时，服务器会监听到是什么url地址，那后端会返回什么样的资源呢？后端这个处理的过程就是通过**路由**来**分发**的。
+当前端输入`url`请求资源时，服务器会监听到是什么`url`地址，那后端会返回什么样的资源呢？后端这个处理的过程就是通过**路由**来**分发**的。
 
-**总结**：后端路由，就是把所有url地址都对应到服务器的资源，这个**对应关系**就是路由。
+**总结**：后端路由，就是把所有`url`地址都对应到服务器的资源，这个**对应关系**就是路由。
 
 > 后端路由
 
-对于单页面应用程序来说，主要通过URL中的`hash`（url地址中的#号）来实现不同页面之间的切换。
+对于单页面应用程序来说，主要通过`URL`中的`hash`（`url`地址中的`#`号）来实现不同页面之间的切换。
 
-同时，hash有一个特点：HTTP请求中不会包含hash相关的内容。所以，单页面程序中的页面跳转主要用hash实现。
+同时，`hash`有一个特点：`HTTP`请求中不会包含`hash`相关的内容。所以，单页面程序中的页面跳转主要用`hash`实现。
 
 **总结**：在**单页应用**程序中，这种通过`hash`改变来**切换页面**的方式，称作前端路由（区别于后端路由）。
 
-核心实现依靠一个事件，即监听hash值变化的事件
+核心实现依靠一个事件，即监听`hash`值变化的事件
 
 ```js
 window.onhashchange = function(){
@@ -3101,7 +3101,7 @@ window.onhashchange = function(){
 
 ---
 
-### 8.2 使用
+### 8.2 使用路由
 
 > 安装引入
 
@@ -3110,7 +3110,7 @@ window.onhashchange = function(){
 $ npm i vue-router -S
 ```
 
-在 src 目录下新建文件, router, 来吗新建文件 index.js
+在 `src `目录下新建文件夹 `router`, 然后再在里面新建文件 `index.js`
 
 ```js
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
@@ -3120,10 +3120,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/about',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    component: () => import('../views/AboutView.vue')
   }
 ]
 
@@ -3145,7 +3142,9 @@ import router from './router'
 createApp(App).use(router).mount('#app')
 ```
 
-需要注意的是, 默认情况下，进入网站的首页，我们希望渲染首页的内容。我们需要多配置一个映射就可以了
+需要注意的是, 默认情况下，进入网站的首页，我们希望渲染首页的内容。
+
+我们需要多配置一个映射就可以了
 
 ```js
 {
@@ -3154,9 +3153,31 @@ createApp(App).use(router).mount('#app')
 }
 ```
 
-- 我们在routes中又配置一个映射
-- path配置的是根路径：/
-- redirect是重定向，也就是我们将根路径重定向到/home的路径下，这样就可以得到我们想要的结果了。
+解释上面的代码
+
+- 我们在`routes`中又配置一个映射
+- `path`配置的是根路径：`/`
+- `redirect`是重定向，也就是我们将根路径重定向到`/home`的路径下，这样就可以得到我们想要的结果了。
+
+### 路由名称
+
+网页具体路径显示是由`vue-router`配置中 `path`决定的，`path`设置的是什么就显示什么，和`name`无关。
+
+```js
+export default new VueRouter({
+ routes: [
+     { path:"/",redirect:"/user"},
+     { path: "/user", component: User , name: "users"}
+]
+
+<router-link to={name: 'users'}></router-link>
+```
+
+其实`name`就相当于给你的`path`取个别名，方便使用，路由并不是一定要设置`name`值。（如果不设置`name`，`vue-router`默认`name`值为 `default`）
+
+
+
+
 
 ### 8.3 页面跳转
 
@@ -3206,7 +3227,7 @@ this.$router.replace({})
 export default new VueRouter({
  routes: [
             { path:"/",redirect:"/user"},
-            { path: "/user", component: User },
+            { path: "/user", component: User , name: "users"},
             { 
                 path: "/login", 
                 component: Login,
@@ -3243,37 +3264,48 @@ export default new VueRouter({
 
 ### 8.6 路由模式与 404
 
-SPA(single page application):单一页面应用程序，只有一个完整的页面；它在加载页面时，不会加载整个页面，而是只更新某个指定的容器中内容。**单页面应用(SPA)的核心之一是: 更新视图而不重新请求页面**;
+`SPA(single page application)`: 单一页面应用程序，只有一个完整的页面；它在加载页面时，不会加载整个页面，而是只更新某个指定的容器中内容。**单页面应用(`SPA`)的核心之一是: 更新视图而不重新请求页面**;
 
-vue-router在实现单页面前端路由时，提供了两种方式：Hash模式和History模式；根据mode参数来决定采用哪一种方式。
-
-路由模式有两种
-
->  hash：路径带 # 符号，如 http://localhost/#/login
-
-**vue-router 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，于是当 URL 改变时，页面不会重新加载。**
-
- hash（#）是URL 的锚点，代表的是网页中的一个位置，单单改变#后的部分，浏览器只会滚动到相应位置，不会重新加载网页，也就是说 #是用来指导浏览器动作的，对服务器端完全无用，HTTP请求中也不会不包括#；
-
-同时每一次改变#后的部分，都会在浏览器的访问历史中增加一个记录，使用”后退”按钮，就可以回到上一个位置；所以说**Hash模式通过锚点值的改变，根据不同的值，渲染指定DOM位置的不同数据**
-
-> history：路径不带 # 符号，如 http://localhost/login
-
-由于hash模式会在url中自带#，如果不想要很丑的 hash，我们可以用路由的 history 模式，只需要在配置路由规则时，加入"mode: 'history'"
-
-这种模式充分利用 history.pushState API 来完成 URL 跳转而无须重新加载页面。
+`vue-router`在实现单页面前端路由时，提供了两种方式：`Hash`模式和`History`模式；
 
 ```js
-//main.js文件中
-const router = new VueRouter({
-  mode: 'history',
-  routes: [...]
+// createWebHistory history模式
+// createWebHashHistory hash模式
+const router = createRouter({
+  // process.env.BASE_URL 这里是路由前缀
+  history: createWebHistory(process.env.BASE_URL),
+  routes
 })
 ```
 
-但是这种情况也有弊端, 会访问到未知路径, 因为我们的应用是个单页客户端应用，如果后台没有正确的配置，会返回 404 
+路由模式有两种
 
-用户会经常输错页面，当用户输错页面时，我们希望给他一个友好的提示页面，这个页面就是我们常说的404页面。vue-router也为我们提供了这样的机制。
+>  `hash`：路径带 `#` 符号，如 `http://localhost/#/login`
+
+**`vue-router` 默认 `hash `模式 —— 使用 `URL `的 `hash `来模拟一个完整的 `URL`，于是当 `URL `改变时，页面不会重新加载。**
+
+` hash（#）`是`URL `的锚点，代表的是网页中的一个位置，单单改变`#`后的部分，浏览器只会滚动到相应位置，不会重新加载网页，也就是说 `#`是用来指导浏览器动作的，对服务器端完全无用，`HTTP`请求中也不会不包括`#`；
+
+同时每一次改变`#`后的部分，都会在浏览器的访问历史中增加一个记录，使用”后退”按钮，就可以回到上一个位置；所以说**`Hash`模式通过锚点值的改变，根据不同的值，渲染指定`DOM`位置的不同数据**
+
+> `history`：路径不带 `#` 符号，如 `http://localhost/login`
+
+由于`hash`模式会在`url`中自带`#`，如果不想要很丑的 `hash`，我们可以用路由的 `history` 模式，只需要在配置路由规则时修改
+
+这种模式充分利用 `history.pushState API` 来完成 `URL `跳转而无须重新加载页面。
+
+```js
+// createWebHistory history模式
+// createWebHashHistory hash模式
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+})
+```
+
+但是这种情况也有弊端, 会访问到未知路径, 因为我们的应用是个单页客户端应用，如果后台没有正确的配置，会返回 `404 `
+
+用户会经常输错页面，当用户输错页面时，我们希望给他一个友好的提示页面，这个页面就是我们常说的`404`页面。`vue-router`也为我们提供了这样的机制。
 
 ```js
 {
@@ -3282,7 +3314,7 @@ const router = new VueRouter({
 }
 ```
 
-这里的path:'*'就是输入地址不匹配时，自动显示出Error.vue的文件内容
+这里的`path:'*'`就是输入地址不匹配时，自动显示出`Error.vue`的文件内容
 
 ### 8.7 导航守卫
 
@@ -4197,7 +4229,7 @@ module.exports = {
 
 ## 13. setup
 
-setup`是所有`Composition API的容器，为一个函数。组件中所用到的数据、方法等等，均要配置在`setup`中，**它会在`beforeCreate`之前执行一次**，注意：`Vue3`里`this`不再是指向`Vue`实例，访问`this`会是`undefined
+`setup` `是所有` `Composition API`的容器，为一个函数。组件中所用到的数据、方法等等，均要配置在`setup`中，**它会在`beforeCreate`之前执行一次**，注意：`Vue3`里`this`不再是指向`Vue`实例，访问`this`会是`undefined
 
 - 若返回一个对象，则对象中的属性、方法, 在模板中均可以直接使用。
 - 若返回一个渲染函数：则可以自定义渲染内容。
@@ -5280,3 +5312,26 @@ $ pm2 delete 名称
 
 
 # vue 使用 ts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
