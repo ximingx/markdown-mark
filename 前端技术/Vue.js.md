@@ -3065,12 +3065,163 @@ export default {
 `Vue Router`和`Vue.js`非常契合，可以一起方便的实现`SPA(single page web application`,单页应用程序)应用程序的开发。
 `Vue Router`依赖于`Vue`，所以需要先引入`Vue`，再引入`Vue Router`
 
-在了解 `vue-router` 之前先引入一个前端路由与后端路由的知识, 至少在之后的 `Node.js` 的学习中是有帮助的
+### 2. 路由案例
 
-简单地说
+看完这个`vue-router` 的简单实现, 就可以对  `vue-router` 有大概的了解
 
-- 将路径和组件映射。
-- 在`vue-router`的单页面应用中，页面的路径的改变就是组件的切换
+> 实现效果
+>
+>     		1. 页面没有刷新
+>     		2. 完成路由的切换
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240800649.gif)
+
+> 目录结构
+
+![image-20220524074840383](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240748443.png)
+
+> 首先我们进入到 `router` 中的 `inde.js`
+
+```js
+import {ref} from 'vue'
+import Home from '../views/Home.vue'
+import About from '../views/About.vue'
+// 动态获取当前的 url 地址
+const path = ref(window.location.pathname)
+const router = [
+    {
+    path: '/',
+    name: 'home',
+    component: Home
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: About
+  }
+];
+
+export {
+  path,
+  router
+}
+```
+
+> `RouterLink.vue`
+
+```html
+<template>
+  <!--阻止点击事件的默认跳转行为, 防止每一次的页面刷新都会向服务器请求-->
+  <a href="#" @click.prevent="push">
+    <slot></slot>
+  </a>
+</template>
+
+<script setup>
+import {path} from '../router/index'
+
+const prop = defineProps({
+  to: {
+    type: String,
+    required: true
+  },
+})
+const push = (e) => {
+  path.value = prop.to
+}
+</script>
+
+<style>
+a {
+  text-decoration: none;
+  padding: 5px 10px;
+  color: black;
+  font-weight: bold;
+}
+a:hover {
+  background-color: #eee;
+}
+</style>
+```
+
+> `RouterView.vue`
+
+```html
+<template>
+    // 动态渲染组件
+	<component :is="view"></component>
+</template>
+
+<script setup>
+import {computed} from 'vue';
+import {router, path} from '../router';
+const view = computed(() => {
+  const route = router.find(r => r.path === path.value);
+  return route.component ;
+});
+</script>
+```
+
+> `App.vue`
+
+```html
+<template>
+  <router-link to="/">home</router-link>
+  <router-link to="/about">about</router-link>
+  <hr>
+  <router-view></router-view>
+</template>
+
+<script>
+import RouterView from './components/RouterView.vue'
+import RouterLink from './components/RouterLink.vue'
+export default {
+  name: 'App',
+  components: {
+    RouterView,
+    RouterLink
+  }
+}
+</script>
+```
+
+> `Home.vue` `About.vue`
+
+```html
+<template>
+  <div>
+    <h1>Home</h1>
+    <p>This is the home page</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Home"
+}
+</script>
+```
+
+ ```html
+ <template>
+   <div>
+     <h1>About</h1>
+     <p>This is the about page</p>
+   </div>
+ </template>
+ 
+ <script>
+ export default {
+   name: "About"
+ }
+ </script>
+ ```
+
+
+
+
+
+
 
 ### 8.1 前后端路由
 

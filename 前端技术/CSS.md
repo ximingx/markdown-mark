@@ -1,40 +1,190 @@
 # CSS
 
-## 选择器
+## 一: 初识
 
-### 属性选择器
+### 1. css 介绍
 
-属性选择器的标志性符号是 `[]`。
+`CSS：Cascading Style Sheet` 层叠样式表
 
-匹配含义：
+是一组样式设置的规则，用于控制页面的外观样式
 
-```bash
-^：开头  $：结尾  *：包含
+> 作用
+
+- 实现内容与样式的分离，便于团队开发
+- 样式复用，便于网站的后期维护
+- 页面的精确控制，让页面更精美
+
+### 2. 使用方式
+
+> `外链式CSS`
+
+```html
+<link href="css文件地址" type="text/css" rel="stylesheet" />
 ```
 
-格式：
+> `导入式CSS`
 
-- `E[title]` 选中页面的E元素，并且E存在 title 属性即可。
+```html
+<style>
+	@import url('CSS文件地址');
+</style>
+```
 
-- `E[title="abc"]`选中页面的E元素，并且E需要带有title属性，且属性值**完全等于**abc。
+> `嵌入式CSS`
 
-- `E[attr~=val]`  选择具有 att 属性且属性值为：用空格分隔的字词列表，其中一个等于 val 的E元素。
+```html
+<style>
+	书写CSS代码
+</style>
+```
 
-- `E[attr|=val]` 表示要么是一个单独的属性值，要么这个属性值是以“-”分隔的。
+> `内联式css`
 
-- `E[title^="abc"]` 选中页面的E元素，并且E需要带有 title 属性,属性值以 abc 开头。
+```html
+<div style="color:red"></div>
+```
 
-- `E[title$="abc"]` 选中页面的E元素，并且E需要带有 title 属性,属性值以 abc 结尾。
+如果`style`标签中及存在`导入式CSS`, 又存在`嵌入式CSS`, 那么导入时`CSS`的`@import`语法必须在第一行出现, 而且后面需要添加分号`;`.
 
-- `E[title*="abc"]` 选中页面的E元素，并且E需要带有 title 属性,属性值任意位置包含abc。
+### 3. 书写规范
 
-### 结构伪类选择器
+```css
+选择器 {
+	css属性名: css属性值;
+	css属性名: css属性值;
+	css属性名: css属性值;
+	....
+}
+```
+
+## 二: 选择器
+
+### 1. 标签选择器
+
+直接使用`HTML标签`的名称作为选择器,就可以直接选中页面中同名的`HTML标签`, 统一添加样式.
+
+```html
+	<div>选中</div>	
+	<p>不选中</p>	
+	<div>选中</div>	
+	<style>
+		/* 选中页面中所有的div元素 */
+		div{
+			color:red;
+		}
+
+	</style>
+```
+
+### 2. 类选择器 
+
+通过为制定的标签添加`class`属性,并且定义一个属性值,在选取时使用`.自定义class值`就可以选中所有具有当前`class值`的标签.
+
+```html
+	<div class="red">选中</div>	
+	<div class="green">不选中</div>	
+	<span class="red">选中</span>	
+	<style>
+		/*选中页面中所有的具有class值为red的元素*/
+		.red{
+			color:red;
+		}
+
+	</style>
+```
+
+### 3. id选择器
+
+通过为指定 的标签添加`id属性`并且定义一个`id值`.
+
+```html
+	<div class="red">不选中</div>	
+	<div id="select">选中</div>	
+	<span class="red">不选中</span>	
+	<style>
+		/*选中页面中所有的具有id值为select的元素*/
+		#select{
+			color:red;
+		}
+
+	</style>
+```
+
+### 4. 组合选择器
+
+如果多个选择器使用相同的`CSS`样式,那么我们可以进行`CSS`精简操作,使得`CSS属性`只书写一遍即可.将多个`css`使用逗号分隔即可
+
+```html
+	<div class="red">选中</div>	
+	<div class="green">选中</div>	
+	<span class="red">选中</span>	
+	<span id="select">选中</span>	
+	<style>
+		/*选中页面中所有的.red、.green、#select元素*/
+		.red,.green,#select{
+			color:red;
+		}
+
+	</style>
+```
+
+### 5. 后代选择器
+
+后代选择器是利用标签之间的嵌套关系进行元素的选取,可以很好的限制选取元素的范围.
+
+```html
+	<div class="red">
+		<span class="red">选中</span>	
+		<span id="select">选中</span>
+    </div>	
+	<div class="green">选中</div>	
+	<style>
+		/*选中页面中所有的具有class值为red的元素*/
+		div.red #select{
+			color:red;
+		}
+
+	</style>
+```
+
+### 6. 通用选择器
+
+选中所有元素,使用时一般用于浏览器之间的样式重置操作或者配合关系选择器进行限定选取
+
+```html
+*{ margin:0; padding:0; list-style:none; }
+```
+
+常用于 `css reaset`
+
+### 7. 伪类选择器
+
+根据不同的状态显示不同的样式，一般多用于`<a></a>`标签
+
+一般有四种状态：
+
+`a:link ` 设置正常连接的颜色
+
+`a:hover` 设置鼠标经过时的样式
+
+`a:active` 设置鼠标点击时的样式
+
+`a:visited `设置连接访问过后的状态.
+
+### 8. 伪元素选择器
+
+- `:first-letter` 为第一个字符的样式
+- `:first-line` 为第一行添加样式
+- `:before` 在元素内容的最前面添加的内容，需要配合`content`属性使用
+- `:after` 在元素内容的最后面添加的内容，需要配合`content`属性使用
+
+### 9. 结构伪类选择器
 
 伪类选择器的标志性符号是 `:`。
 
-CSS中有一些伪类选择器，比如`:link`、`:active`、`:visited`、`:hover`，这些是动态伪类选择器。
+`CSS`中有一些伪类选择器，比如`:link`、`:active`、`:visited`、`:hover`，这些是动态伪类选择器。
 
-CSS3又新增了其它的伪类选择器。这一小段，我们来学习CSS3中的**结构伪类选择器**：即通过**结构**来进行筛选。
+`CSS3`又新增了其它的伪类选择器。即 `CSS3`中的**`结构伪类选择器`**：即通过**结构**来进行筛选。
 
 
 - `E:first-child` 匹配父元素的第一个子元素E。
@@ -79,16 +229,699 @@ CSS3又新增了其它的伪类选择器。这一小段，我们来学习CSS3中
 
 上面列举的选择器中，我们只要记住： `n` 表示 0,1,2,3,4,5,6,7,8.....就很容易明白了。
 
+### 10. 属性选择器
 
-如果想把上图中，第一行的前三个 span 标红，我们可以这样使用结构伪类选择器：
+属性选择器的标志性符号是 `[]`。
+
+这里涉及到一点正则表达式的内容, 不会的可以简易的先来了解
+
+格式：
+
+- `E[title]` 选中页面的`E元素`，并且E存在 `title `属性即可。
+
+- `E[title="abc"]`选中页面的`E元素`，并且`E`需要带有`title`属性，且属性值**完全等于**`abc`。
+
+- `E[attr~=val]`  选择具有 `att `属性且属性值为：用空格分隔的字词列表，其中一个等于 `val `的`E元素`。
+
+- `E[attr|=val]` 表示要么是一个单独的属性值，要么这个属性值是以“`-`”分隔的。
+
+- `E[title^="abc"]` 选中页面的`E`元素，并且`E`需要带有 `title 属性`,属性值以 `abc `开头。
+
+- `E[title$="abc"]` 选中页面的`E`元素，并且`E`需要带有` title 属性`,属性值以 `abc `结尾。
+
+- `E[title*="abc"]` 选中页面的`E`元素，并且`E`需要带有` title 属性`,属性值任意位置包含`abc`。
+
+## 三: 属性
+
+### 1. 背景属性
+
+#### 1. 属性介绍
+
+> `background-image`
+
+**`background-image`** 属性用于为一个元素设置一个或者多个背景图像。
+
+**默认情况下，背景图像放置在元素的左上角，并在垂直和水平方向重复。**
+
+在绘制时，图像**以 `z 方向`堆叠**的方式进行。
+
+先指定的图像会在之后指定的图像上面绘制。因此**指定的第一个图像“最接近用户”。( `三维 z轴`观测 )**
 
 ```css
-	dt:first-child span:nth-of-type(-n+3) {
-		color: red;
-	}
+background-image: url("../../media/examples/star.png"),
+                  url("../../media/examples/lizard.png");
 ```
 
+然后元素的边框**`border` 会在它们之上被绘制**，而 `background-color`会在它们之下绘制,官方网站推荐设置  `background-image` 的时候加上对 `background-color` 的设置
+
+**当然,最有意思的一个地方在于,可以同时设置多张背景图片,并且同时为他们分别设置他们的样式**
+
+```css
+body {
+  background-image: url(https://image.flaticon.com/icons/svg/748/748122.svg), 
+      			   url(https://images.unsplash.com/photo-1478719059408-592965723cbc?ixlib=rb-1.2.1&auto=format&fit=crop&w=2212&q=80);
+  background-position: center, top;
+  background-repeat: repeat, no-repeat;
+  background-size: contain, cover;
+
+```
+
+**`background-image`的属性值模式就是用来给它加 “特技” 的。它的值模式有**
+
+1.   `url()模式`
+
+2.   `linear-gradient()模式   `
+
+大多数人最基本的只知道给他传入几个颜色值，他就会依次渲染出这几个颜色渐变,但是在 `<css揭秘> `这本书中可以发现 这个属性`linear-gradient() `其实是有很多细节的
+
+**第一个参数**: 代表的是是方向
+
+**第二个参数:** 代表的是颜色 以及 长度 和 终点
+
+```css
+linear-gradient:(渐变轴的位置（可设置成角度(顺时针)如45deg，或to + [left \ right \ top \bottom] ）， 颜色列表，每个颜色后边可加一个终点位置（可以是百分比或者是沿着渐变轴的长度值）)
+```
+
+
+这里介绍一个实用的 `css `颜色渐变网站 `http://color.oulu.me/`
+
+![](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240920679.png)
+
+
+**唔,还是专心看下面的代码吧**
+
+```css
+background: linear-gradient( red, blue);
+```
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240922971.png)
+
+
+在这里从红色向蓝色渐变的时候，两个颜色转变的重点默认是两个颜色的中点，也就是50%处，但是我们也可以手动设置，比如80%
+
+```css
+background: linear-gradient( red, 80%, blue);
+```
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240924386.png)
+
+
+```css
+background: linear-gradient( red 50%, blue 50%);
+```
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240923528.png)
+
+
+可以发现这里很明显的从中间分割开了,利用百分比可以轻松做出彩色条纹，只要让两个不同颜色的基线之间没有缝隙就不会出现渐变色。
+
+一个小实例
+
+```css
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(45deg, #cbcbcb 25%, transparent 25%, transparent 75%, #cbcbcb 75%, #cbcbcb),
+  linear-gradient(135deg, #cbcbcb 25%, transparent 25%, transparent 75%, #cbcbcb 75%, #cbcbcb) 50px 0,
+  linear-gradient(45deg, #cbcbcb 25%, transparent 25%, transparent 75%, #cbcbcb 75%, #cbcbcb) 50px 50px,
+  linear-gradient(135deg, #cbcbcb 25%, transparent 25%, transparent 75%, #cbcbcb 75%, #cbcbcb) 100px 50px;
+  background-size: 100px 100px;
+}
+```
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240923072.png)
+
+
+3.   `repeating-linear-gradient()`模式   
+4.   `radial-gradient()`模式
+5.   `repeating-radial-gradient()`模式
+6.   `none特殊值`
+
+-   多值模式多余部分的`background-image`并不会启用。
+-   值个数少的多值模式会按照原来的值顺序来循环这个多值以达到需要的多值个数为止。
+
+> `background-repeat`
+
+使背景图像在水平和度垂直方向上重复。
+
+1.   `repeat`：默认值代表水平和垂直都平铺                            
+
+2.   `no-repeat` 代表不平铺                           
+
+3.   `repeat-x` 水平平铺                            
+
+4.   `repeat-y `垂直平铺
+
+> `background-position`
+
+**默认在0 0 或者说是在 left top,此时背景图片将被定位于对象不包括补丁( padding )的内容区域的左上角。**
+
+第一个值：水平位置 给具体的px值代表距离左边多少                            
+
+第二个值：垂直位置 给具体的px值代表距离上边多少                            
+
+还可以给百分比,代表图片的百分比要重叠在盒子的百分比那个位置上                                                            
+
+水平方向：`left center right  `                              
+
+垂直方向：`top center bottom`
+
+**该属性定位不受对象的补丁属性( `padding `)设置影响。**
+
+> `background-attachment`
+
+在我看来，背景图片的附着点有三类，分别是浏览器的可视区域、背景容器本身区域和背景容器的内容区域。具体来说，`background-attachment`的值也就有三种，即：
+
+`scroll`：背景图片附着在背景容器上，它是相对于背景容器（元素）固定，**它会随着背景容器的滚动**，而不是随着它的内容滚动（也可以看成是对元素边框固定）。
+
+`fixed`： 背景图片附着在浏览器的可视区域。**因为浏览器的可视区域不具备滚动的性格，所以它是不滚动的。**
+
+`local`：这是`CSS3`新增的属性值。背景图片附着在背景容器的内容区域。**它会随着内容的滚动而滚动**。
+
+**有时我们想在背景上添加一些文字，但有的图片太亮，导致字看不清楚，所以这里我们就需要让背景图叠加一些暗色来突出文字效果。**
+
+```css
+body {
+  background-image: 
+    linear-gradient(4deg, rgba(38,8,31,0.75) 30%, rgba(213,49,127,0.3) 45%, rgba(232,120,12,0.3) 100%),
+    url("https://images.unsplash.com/photo-1503803548695-c2a7b4a5b875?ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center
+}
+```
+
+使用`background-image`与 `background-clip` `color` ，可以实现背景图像对文字的优美效果。
+
+```css
+h1 {
+  background-image: url("");
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+```
+
+> `background-size`
+
+**`length`**，该属性值是设置背景图像的宽度和高度的，第一个值是宽度，第二个值是设置高度的。如果只设置第一个值，那么第二个值会自动转换为 “`auto`”;
+
+**`percentage `**该属性是以父元素的百分比来设置图片的宽度和高度的，第一个值是宽度，第二个值是高度。如果只设置一个值，那么第二个值会被设置为 “`auto`”;
+
+**`cover`：** 有一部分没显示，覆盖的意思，代表图片一定要覆盖盒子,缩放后图片一定会大于等于盒子                                                
+
+**只要有一边缩放到了盒子内就停止缩放**                                       
+
+**`contain`：**没变形，完全显示了，包含的意思，代表图片一定要被盒子包含，缩放后图片一定小于等于盒子                                                
+
+**要两边都缩放到盒子内才停止缩放**
+
+> 补充
+
+`img`属于`html`的标签，而`background-image`属于`css样式`，所以浏览器在解析时，**会优先加载`img`标签**，之后才会加载`background-image`，对于比较重要的图像，如`logo`，可使用`img`标签进行导入，这样会优先显示出来。
+
+如果一个指定的图像无法被绘制 (比如，被指定的 `URI `所表示的文件无法被加载)，浏览器会将此情况等同于其值被设为 `none`。
+
+#### 2. 使用场景
+
+##### 1. 背景适配
+
+```css
+body {
+  background-image: url('');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+```
+
+案例演示
+
+```css
+body {
+  margin: 0;
+  padding: 0;
+  background-image: url('./assets/img/1.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+```
+
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240914963.png)
+
+##### 2. 背景叠加
+
+```css
+body {
+  background-image: url('./assets/img/7.png'),
+      url('./assets/img/2.jpg');
+}
+```
+
+案例演示
+
+```css
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-image: url('./assets/img/7.png'),url('./assets/img/2.jpg');
+  background-repeat: repeat,no-repeat;
+  background-position: 0 0,center center;
+  background-size: 4px 4px,cover;
+}
+```
+
+![[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-DvrOcHPU-1636795283603)(D:/start/image-20211113151011712.png)]](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240914474.png)
+
+##### 3. 背景分割
+
+```css
+clip-path: polygon(0 30vh,100vw 30vh,100vw 70vh,0 70vh);
+```
+
+案例演示: 
+
+```vue
+<template>
+  <div id="app">
+    <div id="left">
+
+    </div>
+    <div id="center">
+
+    </div>
+    <div id="right">
+
+    </div>
+  </div>
+</template>
+```
+
+```css
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position:relative;
+}
+#left {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  background-image: url('./assets/img/5.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  clip-path: polygon(0 0,100vw 0,100vw 30vh,0 30vh);
+}
+#center {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  background-image: url('./assets/img/3.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  clip-path: polygon(0 30vh,100vw 30vh,100vw 70vh,0 70vh);
+}
+#right {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  background-image: url('./assets/img/1.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  clip-path: polygon(0 70vh,100vw 70vh,100vw 100vh,0 100vh);
+}
+```
+
+![[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-mnnGPLTy-1636795283604)(D:/start/image-20211113152312104.png)]](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240915668.png)
+
+##### 4.渐变色
+
+```css
+background-image: linear-gradient(45deg, rgba(251, 194, 235, 0.64) 0%, rgba(49, 106, 199, 0.12) 100%),
+url('./assets/img/1.jpg');
+```
+
+案例演示
+
+```css
+body {
+  background-image: linear-gradient(45deg, rgba(251, 194, 235, 0.64) 0%, rgba(49, 106, 199, 0.12) 100%),
+  url('./assets/img/1.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+}
+```
+
+![[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-8w95miyC-1636795283606)(D:/start/image-20211113153138009.png)]](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240915784.png)
+
+##### 5. 文字添加背景
+
+```css
+background-image: url("./assets/img/4.jpg");
+color: transparent;
+-webkit-background-clip: text;
+```
+
+案例演示
+
+```css
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+h1 {
+  font-size: 100px;
+  background-image: url("./assets/img/4.jpg");
+  color: transparent;
+  /* background-clip: text; */
+  -webkit-background-clip: text;
+}
+```
+
+![[图片)]](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205240915893.png)
+
+### 2. 字体属性
+
+| 属性           | 作用                         |
+| -------------- | ---------------------------- |
+| `font-size`    | 设置字体的大小               |
+| `font-family`  | 设置字体的类型               |
+| `font-weight`  | 设置字体是否是粗体           |
+| `font-style`   | 设置字体是否是斜体           |
+| `font-variant` | 设置字体是否变为小型大写字母 |
+| `font`         | 设置字体                     |
+
+### 3. 颜色属性
+
+`color`属性 设置字体的颜色
+
+### 4. 文本属性
+
+| 属性              | 作用                               | 属性                                                         | 补充                                                         |
+| ----------------- | ---------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `text-align`      | 设置内容的水平对其方式             | `left  `靠左对齐(默认)	<br>`center `水平居中	<br/>`right  `靠右 | 对块状元素有效                                               |
+| `vertical-align`  | 置内容的垂直对其方式               | `top  `顶部对其	<br/>`middle `垂直居中<br/>`bottom `底部  | 对内联元素和表格的单元格元素有效.                            |
+| `line-height`     | 设置行高(一行的高度)               |                                                              | 经常讲行高设置为和元素等高,实现单行文本的垂直居中效果.       |
+| `text-transform`  | 设置英文的大小写转换方式           | `none  `不做修改(默认值)<br/>	`capitalize  `首字母大写<br/>	`uppercase `全部变为大写字母<br/>	`lowercase `全部变为小写字母 |                                                              |
+| `letter-spacing`  | 设置字母之间的距离                 |                                                              | 汉字作为字符处理,该属性对其生效.                             |
+| `text-indent`     | 设置元素内部第一行和左侧的缩进距离 |                                                              | 在进行汉语相关的内容布局时,通常使用em作为单位,在p标签中比较常见 |
+| `white-space`     | 设置元素对于空白的处理方式         | `normal `正常处理方式(默认值)<br/>	`pre `显示源代码中的格式,遇到边界不换行<br/>	`nowrap `强制内容不换行(软回车),除非遇到br标签<br/>	`pre-wrap` 显示源代码中的格式,遇到边界换行<br/>	`pre-line`  保持换行字符显示,但是空白字符不显示 |                                                              |
+| `text-decoration` | 设置文本修饰属性                   | `none  `没有修饰线<br/>	 `underline  `下划线<br/>	 `overline   `上划线<br/>	 `line-through `贯穿线/删除线 |                                                              |
+
+### 5. 书写模式
+
+| 属性           | 值                                                           |
+| -------------- | ------------------------------------------------------------ |
+| `direction`    | `ltr  `文本流从左到右(默认值)<br/>`rtl  `文本流从右到左      |
+| `unicode-bidi` | `normal `正常值(默认值)<br/>`bidi-override` 设置文本读进方向和`direction`的方向一致 |
+
+### 6. 列表样式
+
+| 属性                  | 值:                                                          |
+| --------------------- | ------------------------------------------------------------ |
+| `list-style-type`     | `none  `取消列表标识<br/>`decimal  `使用阿拉伯数字标识<br/>`disc  `使用实心圆标识 |
+| `list-style-image`    | `list-style-image: url(图片地址)`;                           |
+| `list-style-position` | `outside  `标识在内容外侧(默认值)<br/> `inside   `标识在内容里面 |
+| `list-style`          | 所有列表样式值都可以使用,而且没有顺序限制.                   |
+
+### 7. 表格属性
+
+| 属性              | 值                                                           |
+| ----------------- | ------------------------------------------------------------ |
+| `table-layout`    | `auto  `根据内容多少来分配表格的宽度<br/>`fixed `根据实际情况来分配宽度(不根据内容,而是根据设定) |
+| `border-collapse` | `separate   `单元格独立 ->每个单元格有自己独立的边框<br/>`collapse  `单元格合并->所有边框单元格共享. |
+| `border-spacing`  | 格式1:  `border-spacing`: 值<br/>		单元格之间横向和纵向的间距都是制定的值<br/>格式2:  ` border-spacing`: 值1 值2;<br/>		单元格之间的横向间距是值1,纵向间距是指2 |
+| `caption-side`    | `top   `描述在表格的顶部<br/>`bottom `描述在表格的底部       |
+| `empty-cells`     | `hide `隐藏空单元格  <br/>`show `显示空单元格                |
+
+### 8. 定位属性
+
+| 属性       | 值                                                           |
+| ---------- | ------------------------------------------------------------ |
+| `static`   | 元素默认的定位方式就是静态定位                               |
+| `absolute` | 绝对定位元素会使得当前元素脱离文档流,可以在任何范围内移动, 距离当前绝度定位元素外层最近的一个非静态定位元素作为参考点. |
+| `relative` | 相对应为元素, 没有脱离文档流, 还在页面当中,可以移动, 相对定位的参考点是当前元素原来的位置(`static`时的位置) |
+| `fixed`    | 固定位置                                                     |
+
+| 属性      | 值                                                           |
+| --------- | ------------------------------------------------------------ |
+| `left`    | 设置定位元素距离定位参考点左侧的距离.                        |
+| `top`     |                                                              |
+| `right`   |                                                              |
+| `bottom`  |                                                              |
+| `z-index` | 设置定位元素的层级关系,所有元素的默认`z-index的值时0`; 在相同定位的情况下,谁的`z-index`值越大,显示越考上! |
+
+### 9. 布局属性
+
+`display `属性  设置元素的显示方式
+
+	值: none 不显示元素也不占用物理空间
+		inline 显示为行内元素
+		block  显示为块状元素
+		
+		inline-block  显示为行内块状元素
+			行内块状元素特征:既可以设置宽高,也可以在一行共存.
+	
+		list-item  显示为li列表标签的样式
+		table  显示为table标签的样式,作为块元素显示
+		inline-table 显示table标签的样式,但是作为内联元素显示
+		table-row 显示为tr标签的样式
+		table-cell 显示为td标签的样式
+	
+	注意:display仅改变元素的显示效果,对用于的视觉改变,不会改变标签的意义,也不可以使用显示效果对应标签都而元素.
+
+`visibility `属性  设置元素显示与否
+
+	值:
+		inherit  继承(默认值)  显示与否由父元素的显示决定
+		visible  显示
+		hidden  隐藏元素  占用物理空间,需要注意和display:none的区别
+		collapse  专门用于表格行和单元格的隐藏设置属性.  IE6以下不支持
+
+`overflow-y`属性 设置元素垂直方向溢出的处理方式
+
+	值:auto 如果内容超过元素,则出现滚动条,不超出则不出现滚动条
+	
+	   scroll  一直存在滚动条,但是有没有滑块取决于内容的高度
+	
+	   hidden  对于超出高度的内容进行隐藏处理
+	
+		visible  对于超出的内容做显示处理(默认值)
+
+`overflow-x`属性  设置元素水平方向溢出的处理方式
+
+	值:auto 如果内容超过元素,则出现滚动条,不超出则不出现滚动条
+	
+	   scroll  一直存在滚动条,但是有没有滑块取决于内容的宽度
+	
+	   hidden  对于超出宽度的内容进行隐藏处理
+	
+		visible  对于超出的内容做显示处理(默认值)
+	
+	注意:正常情况下内容超过元素水平宽度会自动换行到下一行.
+	
+		不会换行的情况:
+	
+		1.如果内层包含的不是文字,而是其他图片,元素等内容,而且这些内容宽度超过外层元素
+		2.连续的英文字符,没有空格和标点符号,会被浏览器当做一个完整的单词显示,不会强制换行
+		3.设置内容显示效果为white-space:nowrap,强制不换行属性
+
+`overflow`属性  设置元素内容溢出(同时设置水平和垂直方向)的处理方式
+	
+
+	值:auto 如果内容超过元素,则出现滚动条,不超出则不出现滚动条
+	
+	   scroll  一直存在滚动条,但是有没有滑块取决于内容的宽度/高度
+	
+	   hidden  对于超出宽度/高度的内容进行隐藏处理
+	
+		visible  对于超出的内容做显示处理(默认值)
+
+`float`属性 设置元素的浮动方式
+
+	值:  none  元素不浮动(默认值)
+		left  左浮动
+		right 右浮动
+	
+	注意:浮动属性和定位属性是不同的属性.
+	
+	浮动元素的特征是从元素原有的位置漂浮起来,可以进行左右漂浮,但是不能设置移动位置
+	浮动元素不会脱离文档流,位置处于静态定位元素和决定定位之间.
+
+`clear`属性  清除浮动属性
+
+	值: none 不清除浮动(默认值)
+		left 清除左浮动
+		right 清除右浮动
+		both 清除左右浮动(常用)
+
+
+注意:浮动和清除浮动属性是在页面布局中最常用的属性.
+
+	常用的浮动位置:水平导航,页面布局,文字环绕.
+
+## 四: 盒子模型
+
+页面中的任何一个元素在显示和处理时都是以一个盒子的方式进行处理的.
+
+### 1. border
+
+| 属性           | 作用                      | 值                                                           |
+| -------------- | ------------------------- | ------------------------------------------------------------ |
+| `border`       | 用于设置元素的边框        | 设置元素四个边的边框颜色,宽度和风格属性.                     |
+| `border-width` | 同时设置4个边的边框的宽度 |                                                              |
+| `border-style` | 同时设置4个边的边框风格   | none 无边框<br/> solid 实线边框<br/> dashed 虚线边框<br/> double 双线边框<br/>dotted 点状变量 |
+| `border-color` | 同时设置4个边的边框颜色   |                                                              |
+
+### 2. padding
+
+`padding`属性 同时设置四个方向的内补白距离
+
+格式1: `padding`:值   同时设置四个方向的内补白为相同的值.
+
+格式2: `padding`:值1 值2  设置上下方向内补白为值1 ,左右方向内补白为值2.
+
+格式3: `padding`:值1 值2 值3 设置上方向内补白为值1,左右内补白为值2,下方向内补白为值3
+
+格式4: `padding`:值1 值2 值3 值4  上方向内补白值1,右方向内补白值2,下方向内补白值3,左方向内补白值4(顺时针设置)
+
+注意: `padding`属性的增加会导致元素整体宽高的增加.如果希望宽度高度不变,将`padding`属性的值从元素的宽度和高度的设置中减掉.
+
+### 3. margin
+
+`margin`属性   同时设置四个方向的外间距
+
+格式1:`margin`:值   同时设置四个方向的外间距为相同的值.
+
+格式2:`margin`:值1 值2  设置上下方向外间距为值1 ,左右方向外间距为值2.
+
+格式3:`margin`:值1 值2 值3 设置上方向外间距为值1,左右外间距为值2,下方向外间距为值3
+
+格式4:`margin`:值1 值2 值3 值4  上方向外间距值1,右方向外间距值2,下方向外间距值3,左方向外间距值4(顺时针设置)
+
+## 五:  度量单位
+
+`px` 像素单位
+
+	相对单位
+		像素的大小由系统的分辨率决定.
+		像素的大小 = 物理屏幕的距离/分辨率
+
+`em `相对长度单位
+
+	所有未经调整的浏览器都符合: 1em=16px。
+	
+	大小和一个汉字的大小相同
+	相对于浏览器的默认字体尺寸
+
+`ex `相对长度单位
+
+	一个英文字母x的大小
+
+`cm `厘米
+
+	绝对单位
+		就是现实中1厘米的大小
+		页面布局禁止使用
+		设计用于打印的页面可以使用.
+
+`mm `毫米
+
+	绝对单位
+		就是显示中1毫米的大小
+		页面布局禁止使用
+		设计用于打印的页面可以使用.
+
+`in `英寸
+
+	绝对单位.
+	1in = 2.54cm
+
+`point `点
+
+	绝对单位.
+	
+	1in = 72pt
+
+`pc `派卡
+
+	绝对单位
+	
+	1in = 6pc
+
+**`rem`** 是CSS3新增的一个（root em）
+
+```css
+相对单位
+
+通过它既可以做到只修改根元素就成比例地调整所有字体大小，又可以避免字体大小逐层复合的连锁反应。
+与 em 的区别在于使用 rem 为元素设定字体大小时，仍然是相对大小，但相对的只是HTML根元素。
+```
+
+**`vm`** 视窗宽度
+
+```css
+比如
+	1vm 宽度为相对于视窗的宽度的百分之一
+```
+
+**`vh`** 视窗高度
+
+```css
+比如
+	1vh 高度为相对于视窗的高度的百分之一
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# `乱`
+
+
+
+
 ##   CSS 布局
+
 css 提供了 3 种机制 来设置盒子的摆放位置，分别是普通流,浮动和定位
 
 1. **普通流**（标准流）
@@ -323,7 +1156,7 @@ overflow为 hidden| auto| scroll
 
 > 行内元素的居中问题比较简单, 会的可以略过。
 
-##### 1.1 行内元素水平居中
+#### 1.1 行内元素水平居中
 
 给父容器设置：
 
@@ -331,7 +1164,7 @@ overflow为 hidden| auto| scroll
     text-align: center;
 ```
 
-##### 1.2 行内元素垂直居中
+#### 1.2 行内元素垂直居中
 
 让**文字的行高** 等于 **盒子的高度**，可以让单行文本垂直居中。
 
@@ -348,7 +1181,7 @@ overflow为 hidden| auto| scroll
 
 ### 2. 如何让一个块级元素水平垂直居中
 
-##### 2.1  方式一：绝对定位 + margin（需要指定子元素的宽高，不推荐）
+#### 2.1  方式一：绝对定位 + margin（需要指定子元素的宽高，不推荐）
 
 设置网页的结构
 
@@ -382,7 +1215,7 @@ overflow为 hidden| auto| scroll
 
 但是，在通常情况下，对那些需要居中的元素来说，其宽高往往是由其内容来决定的，不建议固定宽高。
 
-##### 2.2 方式二：绝对定位 + translate（无需指定子元素的宽高，推荐）
+#### 2.2 方式二：绝对定位 + translate（无需指定子元素的宽高，推荐）
 
 ```css
         .father{
@@ -400,7 +1233,7 @@ overflow为 hidden| auto| scroll
 因为 translate() 函数中使用百分比值时，是以这个元素自身的宽度和高度为基准进行换算和移动的（**动态计算宽高**）。
 
 
-##### 2.3 flex 布局
+#### 2.3 flex 布局
 
 将父容器设置为 Flex 布局，再给父容器加个属性`justify-content: center`，这样的话，子元素就能水平居中了；再给父容器加个属性 `align-items: center`，这样的话，子元素就能垂直居中了。
 
@@ -416,7 +1249,7 @@ overflow为 hidden| auto| scroll
 **不足之处**在于：给父容器设置属性`justify-content: center`和`align-items: center`之后，**导致父容器里的所有子元素们都垂直居中**了（如果父容器里有多个子元素的话）。
 
 
-##### 2.4  方式4： flex 布局 + margin: auto（推荐）
+#### 2.4  方式4： flex 布局 + margin: auto（推荐）
 
 我们只需写两行声明即可：先给父容器设置 `display: flex`，再给指定的子元素设置我们再熟悉不过的 `margin: auto`，即可让这个指定的子元素在**剩余空间**里，水平垂直居中。
 
@@ -468,7 +1301,7 @@ overflow为 hidden| auto| scroll
 
 ### 3. flex 布局里的 margin
 
-##### 3.1 最快水平垂直居中一个元素的方法是什么？
+#### 3.1 最快水平垂直居中一个元素的方法是什么？
 
 > 水平垂直居中也算是 CSS 领域最为常见的一个问题了，不同场景下的方法也各不相同，各有优劣。嗯，下面这种应该算是最便捷的了：
 
@@ -489,7 +1322,7 @@ overflow为 hidden| auto| scroll
 
 上面的 `display: flex` 替换成 `display: inline-flex | grid | inline-grid` 也是可以的。
 
-##### 3.2 如何让 `margin: auto` 在垂直方向上居中元素
+#### 3.2 如何让 `margin: auto` 在垂直方向上居中元素
 
 通常我们会使用这段代码：
 
@@ -505,13 +1338,13 @@ div {
 
 <hr/>
 
-############# 3.2.1 BFC（块格式化上下文) 下 margin: auto 垂直方向无法居中元素的原因:(重要)
+############ 3.2.1 BFC（块格式化上下文) 下 margin: auto 垂直方向无法居中元素的原因:(重要)
 **在块格式化上下文中**, 如果 margin-left 和 margin-right 都是 auto，则它们的表达值相等，从而导致元素的水平居中。**( 这里的计算值为元素剩余可用剩余空间的一半)**
 而如果 margin-top 和 margin-bottom 都是 auto，则他们的值都为 0，当然也就无法造成垂直方向上的居中。
 
 <hr/>
 
-############# 3.2.2 使用 FFC/GFC 使 margin: auto 在垂直方向上居中元素
+############ 3.2.2 使用 FFC/GFC 使 margin: auto 在垂直方向上居中元素
 
 要使**单个元素使用 margin: auto 在垂直方向上能够居中元素**，需要让该元素处于 FFC(flex formatting context)，或者 GFC(grid formatting context) 上下文中，也就是这些取值中：
 
@@ -526,7 +1359,7 @@ div {
 
 <hr/>
 
-############# 3.2.3 FFC 下 margin: auto 垂直方向可以居中元素的原因
+############ 3.2.3 FFC 下 margin: auto 垂直方向可以居中元素的原因
 
 在 flex 格式化上下文中，设置了 margin: auto 的元素，**在通过 justify-content和 align-self 进行对齐之前，任何正处于空闲的空间都会分配到该方向的自动 margin 中去**
 
@@ -535,7 +1368,7 @@ div {
 <hr/>
 
 
-##### 3.3  使用自动 margin 实现 flex 布局下的 space-around
+#### 3.3  使用自动 margin 实现 flex 布局下的 space-around
 
 > 在通过 justify-content 和 align-self 进行对齐之前，任何正处于空闲的空间都会分配到该维度中的自动 margin 中去
 
@@ -572,7 +1405,7 @@ div {
 > 如果任意方向上的可用空间分配给了该方向的自动 margin ，则对齐属性（justify-content/align-self）在该维度中不起作用，因为 margin 将在排布后窃取该纬度方向剩余的所有可用空间。
 > **也就是使用了自动 margin 的 flex 子项目，它们父元素设置的 justify-content 已经它们本身的 align-self 将不再生效，也就是这里存在一个优先级的关系**。
 
-##### 3.4 使用 margin-left: auto 实现不规则两端对齐布局
+#### 3.4 使用 margin-left: auto 实现不规则两端对齐布局
 
 ```html
 <ul class="g-nav">
@@ -682,7 +1515,7 @@ div {
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/5327798e264f48c8ac1c319852b85aa7.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
 明白了原理, 一切好说
 
-##### 3.5 垂直多行居中
+#### 3.5 垂直多行居中
 
 这里如果使用 flex 布局，简单的 align-self 或者 align-items 好像都没法快速解决问题。
 
@@ -1024,424 +1857,11 @@ Position/top/left/...-999px
 margin-left: 1000px;
 ```
 
-## background
 
-首先演示几个关于 background 的用法案例
 
-### 1. 背景图片适配容器居中
 
-```css
-body {
-  background-image: url('');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-}
-```
 
-案例演示
 
-```css
-body {
-  margin: 0;
-  padding: 0;
-  background-image: url('./assets/img/1.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-}
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-XMcUt5PY-1636795330637)(D:/start/image-20211113142659489.png)\]](https://img-blog.csdnimg.cn/98f32d6be58548e488d95406655d69cd.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-
-
-### 2. 背景叠加
-
-```css
-body {
-  background-image: url('./assets/img/7.png'),
-      url('./assets/img/2.jpg');
-}
-```
-
-案例演示
-
-```css
-body {
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  background-image: url('./assets/img/7.png'),url('./assets/img/2.jpg');
-  background-repeat: repeat,no-repeat;
-  background-position: 0 0,center center;
-  background-size: 4px 4px,cover;
-}
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-DvrOcHPU-1636795283603)(D:/start/image-20211113151011712.png)\]](https://img-blog.csdnimg.cn/31d5dfcb9bfc44a0b734bd4a9a811bf3.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-
-
-
-
-### 3. 背景分割
-
-```css
-clip-path: polygon(0 30vh,100vw 30vh,100vw 70vh,0 70vh);
-```
-
-案例演示: 
-
-```vue
-<template>
-  <div id="app">
-    <div id="left">
-
-    </div>
-    <div id="center">
-
-    </div>
-    <div id="right">
-
-    </div>
-  </div>
-</template>
-```
-
-```css
-body {
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  position:relative;
-}
-#left {
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  background-image: url('./assets/img/5.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  clip-path: polygon(0 0,100vw 0,100vw 30vh,0 30vh);
-}
-#center {
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  background-image: url('./assets/img/3.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  clip-path: polygon(0 30vh,100vw 30vh,100vw 70vh,0 70vh);
-}
-#right {
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  position: absolute;
-  background-image: url('./assets/img/1.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  clip-path: polygon(0 70vh,100vw 70vh,100vw 100vh,0 100vh);
-}
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-mnnGPLTy-1636795283604)(D:/start/image-20211113152312104.png)\]](https://img-blog.csdnimg.cn/aa0c9c7b206340058b65e80b71651b04.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-
-
-
-
-### 4.为背景添加一层渐变色
-
-```css
-background-image: linear-gradient(45deg, rgba(251, 194, 235, 0.64) 0%, rgba(49, 106, 199, 0.12) 100%),
-url('./assets/img/1.jpg');
-```
-
-案例演示
-
-```css
-body {
-  background-image: linear-gradient(45deg, rgba(251, 194, 235, 0.64) 0%, rgba(49, 106, 199, 0.12) 100%),
-  url('./assets/img/1.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-size: cover;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-}
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-8w95miyC-1636795283606)(D:/start/image-20211113153138009.png)\]](https://img-blog.csdnimg.cn/b49d144a6f594d4b87248708f16218e5.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-
-
-### 5.此外还可以给文字添加背景
-
-```css
-background-image: url("./assets/img/4.jpg");
-color: transparent;
--webkit-background-clip: text;
-```
-
-案例演示
-
-```css
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-h1 {
-  font-size: 100px;
-  background-image: url("./assets/img/4.jpg");
-  color: transparent;
-  /* background-clip: text; */
-  -webkit-background-clip: text;
-}
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-co4Si0MG-1636795283607)(D:/start/image-20211113153942158.png)\]](https://img-blog.csdnimg.cn/22c5af521df34cd5b3374ee3485caf80.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-
-
-
-
-## 具体属性设置
-
-### **`background-image`**
-
-**`background-image`** 属性用于为一个元素设置一个或者多个背景图像。
-
-**默认情况下，背景图像放置在元素的左上角，并在垂直和水平方向重复。**
-
-在绘制时，图像**以 z 方向堆叠**的方式进行。
-
-先指定的图像会在之后指定的图像上面绘制。因此**指定的第一个图像“最接近用户”。( 三维 z轴观测 )**
-
-```css
-background-image: url("../../media/examples/star.png"),
-                  url("../../media/examples/lizard.png");
-```
-
-然后元素的边框**`border` 会在它们之上被绘制**，而 `background-color`会在它们之下绘制,官方网站推荐设置  background-image 的时候加上对 background-color 的设置
-
-**当然,最有意思的一个地方在于,可以同时设置多张背景图片,并且同时为他们分别设置他们的样式**
-
-```css
-body {
-  background-image: url(https://image.flaticon.com/icons/svg/748/748122.svg), 
-      			   url(https://images.unsplash.com/photo-1478719059408-592965723cbc?ixlib=rb-1.2.1&auto=format&fit=crop&w=2212&q=80);
-  background-position: center, top;
-  background-repeat: repeat, no-repeat;
-  background-size: contain, cover;
-
-```
-
-**background-image的属性值模式就是用来给它加“特技”的。它的值模式有**
-
-1.   url()模式
-
-2.   linear-gradient()模式   
-
-大多数人最基本的只知道给他传入几个颜色值，他就会依次渲染出这几个颜色渐变,但是在 <css揭秘> 这本书中可以发现 这个属性linear-gradient() 其实是有很多细节的
-
-**第一个参数**: 代表的是是方向
-
-**第二个参数:** 代表的是颜色 以及 长度 和 终点
-
-```css
-linear-gradient:(渐变轴的位置（可设置成角度(顺时针)如45deg，或to + [left \ right \ top \bottom] ）， 颜色列表，每个颜色后边可加一个终点位置（可以是百分比或者是沿着渐变轴的长度值）)
-```
-
-这里首先要说一句话: 
-
-**<font color="#00ff00">没有最丑的颜色,只有最丑的配色    单充的了解知识点并不会让你的颜色搭配有多好看</font>**
-
-比如: 
-
-```css
-body {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: linear-gradient(red,blue,green);
-}
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-61U1rvlM-1636795283608)(D:/start/image-20211113165220589.png)\]](https://img-blog.csdnimg.cn/8040117e1cc248bb83d102b08b7e5bc6.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-
-
-```css
-body {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
-}
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-9HPtvJvP-1636795283608)(D:/start/image-20211113165352894.png)\]](https://img-blog.csdnimg.cn/4254201d456149a5a62d69642a8641fc.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-
-
-这里介绍一个实用的 css 颜色渐变网站 http://color.oulu.me/
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-3GPyT9Lv-1636795283609)(D:/start/image-20211113165517151.png)\]](https://img-blog.csdnimg.cn/81fd037b2d64408184eab620b978a7fc.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-
-
-**唔,还是专心看下面的代码吧**
-
-```css
-background: linear-gradient( red, blue);
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-m9uClMpp-1636795283610)(D:/start/image-20211113165910282.png)\]](https://img-blog.csdnimg.cn/4a4fa0629bfc444087a38da4ea94e7ee.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_10,color_FFFFFF,t_70,g_se,x_16)
-
-
-在这里从红色向蓝色渐变的时候，两个颜色转变的重点默认是两个颜色的中点，也就是50%处，但是我们也可以手动设置，比如80%
-
-```css
-background: linear-gradient( red, 80%, blue);
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-TAWFPBKU-1636795283610)(D:/start/image-20211113165929924.png)\]](https://img-blog.csdnimg.cn/2bb312c68bb04e19a04dbde9e6f44531.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_14,color_FFFFFF,t_70,g_se,x_16)
-
-
-```css
-background: linear-gradient( red 50%, blue 50%);
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-WkMdUNh5-1636795283611)(D:/start/image-20211113170120350.png)\]](https://img-blog.csdnimg.cn/b63f22c2abd949a8a856c8c96ba8dd92.png)
-
-
-可以发现这里很明显的从中间分割开了,利用百分比可以轻松做出彩色条纹，只要让两个不同颜色的基线之间没有缝隙就不会出现渐变色。
-
-一个小实例
-
-```css
-body {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: linear-gradient(45deg, #cbcbcb 25%, transparent 25%, transparent 75%, #cbcbcb 75%, #cbcbcb),
-  linear-gradient(135deg, #cbcbcb 25%, transparent 25%, transparent 75%, #cbcbcb 75%, #cbcbcb) 50px 0,
-  linear-gradient(45deg, #cbcbcb 25%, transparent 25%, transparent 75%, #cbcbcb 75%, #cbcbcb) 50px 50px,
-  linear-gradient(135deg, #cbcbcb 25%, transparent 25%, transparent 75%, #cbcbcb 75%, #cbcbcb) 100px 50px;
-  background-size: 100px 100px;
-}
-```
-
-![\[外链图片转存失败,源站可能有防盗链机制,建议将图片保存下来直接上传(img-A85f9WP4-1636795283611)(D:/start/image-20211113172020016.png)\]](https://img-blog.csdnimg.cn/1921d163199d41288e1baa988ac045ce.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
-
-
-3.   repeating-linear-gradient()模式   
-4.   radial-gradient()模式
-5.   repeating-radial-gradient()模式
-6.   none特殊值
-
--   多值模式多余部分的background-image并不会启用。
--   值个数少的多值模式会按照原来的值顺序来循环这个多值以达到需要的多值个数为止。
-
-**接下来说一下具体的属性**
-
-### `background-repeat`
-
-使背景图像在水平和度垂直方向上重复。
-
-1.   repeat：默认值代表水平和垂直都平铺                            
-
-2.   no-repeat 代表不平铺                           
-
-3.   repeat-x 水平平铺                            
-
-4.   repeat-y 垂直平铺
-
-### **`background-position`**
-
-**默认在0 0 或者说是在 left top,此时背景图片将被定位于对象不包括补丁( padding )的内容区域的左上角。**
-
-第一个值：水平位置 给具体的px值代表距离左边多少                            
-
-第二个值：垂直位置 给具体的px值代表距离上边多少                            
-
-还可以给百分比,代表图片的百分比要重叠在盒子的百分比那个位置上                                                            
-
-水平方向：left center right                                
-
-垂直方向：top center bottom
-
-**该属性定位不受对象的补丁属性( padding )设置影响。**
-
-### **`background-attachment`**
-
-在我看来，背景图片的附着点有三类，分别是浏览器的可视区域、背景容器本身区域和背景容器的内容区域。具体来说，background-attachment的值也就有三种，即：
-
-scroll：背景图片附着在背景容器上，它是相对于背景容器（元素）固定，**它会随着背景容器的滚动**，而不是随着它的内容滚动（也可以看成是对元素边框固定）。
-
-fixed： 背景图片附着在浏览器的可视区域。**因为浏览器的可视区域不具备滚动的性格，所以它是不滚动的。**
-
-local：这是CSS3新增的属性值。背景图片附着在背景容器的内容区域。**它会随着内容的滚动而滚动**。
-
-**有时我们想在背景上添加一些文字，但有的图片太亮，导致字看不清楚，所以这里我们就需要让背景图叠加一些暗色来突出文字效果。**
-
-```css
-body {
-  background-image: 
-    linear-gradient(4deg, rgba(38,8,31,0.75) 30%, rgba(213,49,127,0.3) 45%, rgba(232,120,12,0.3) 100%),
-    url("https://images.unsplash.com/photo-1503803548695-c2a7b4a5b875?ixlib=rb-1.2.1&auto=format&fit=crop&w=2250&q=80");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center
-}
-```
-
-使用`background-image`与 `background-clip` `color` ，可以实现背景图像对文字的优美效果。
-
-```css
-h1 {
-  background-image: url("");
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-```
-
-### `background-size`
-
-**length**，该属性值是设置背景图像的宽度和高度的，第一个值是宽度，第二个值是设置高度的。如果只设置第一个值，那么第二个值会自动转换为 “auto”;
-
-**percentage **该属性是以父元素的百分比来设置图片的宽度和高度的，第一个值是宽度，第二个值是高度。如果只设置一个值，那么第二个值会被设置为 “auto”;
-
-**cover：** 有一部分没显示，覆盖的意思，代表图片一定要覆盖盒子,缩放后图片一定会大于等于盒子                                                
-
-**只要有一边缩放到了盒子内就停止缩放**                                       
-
-**contain：**没变形，完全显示了，包含的意思，代表图片一定要被盒子包含，缩放后图片一定小于等于盒子                                                
-
-**要两边都缩放到盒子内才停止缩放**
-
-
-
-
-### 很多人忽略的,补充
-
-img属于html的标签，而background-image属于css样式，所以浏览器在解析时，会优先加载img标签，之后才会加载background-image，对于比较重要的图像，如logo，可使用img标签进行导入，这样会优先显示出来。
-
-如果一个指定的图像无法被绘制 (比如，被指定的 URI 所表示的文件无法被加载)，浏览器会将此情况等同于其值被设为 `none`。
 
 ## 文字移除显示省略号
 
@@ -1464,26 +1884,6 @@ display: -webkit-box;
 overflow:hidden;
 /* autoprefixer: ignore next */
 -webkit-box-orient: vertical;
-```
-
-## ＜a＞ 的href跳转
-
-一个空白的超链接如下：
-
-```html
-<a href=""></a>
-```
-
-当点击超链接时，由于 href 的属性值的不同，可以产生很多种情况：
-
-```js
-	href=""                    //刷新页面
-
-	href="#"                   //跳转到当前页面的顶部（不会刷新）
-
-	href="javascript:void(0)"  // 什么都不做
-
-	href="javascript:;"        // 什么都不做
 ```
 
 ## ::-webkit-scrollbar
@@ -1919,7 +2319,7 @@ rotate 旋转时，默认是以盒子的正中心为坐标原点的。如果想*
 
 ```
 
-###### 3.3 透视：perspective
+##### 3.3 透视：perspective
 
 电脑显示屏是一个 2D 平面，图像之所以具有立体感（3D效果），其实只是一种视觉呈现，通过透视可以实现此目的。
 
@@ -1950,7 +2350,7 @@ perspective: 500px;
 
 ### 4.1 定义动画
 
-###### @keyframes(关键帧) 用于 定义动画
+##### @keyframes(关键帧) 用于 定义动画
 
 ```css
 @keyframes animation01 {
@@ -1987,7 +2387,7 @@ perspective: 500px;
 
 要调用动画,必须要得给他添加一些必要的属性: 
 
-###### 时间函数（animation-timing-function）
+##### 时间函数（animation-timing-function）
 
 animation-timing-function 属性定义了动画的播放速度曲线。
 
@@ -2041,7 +2441,7 @@ https://cubic-bezier.com/##.17,.67,.83,.67
 
 ---
 
-###### 动画方向（animation-direction）
+##### 动画方向（animation-direction）
 
 animation-direction: normal 正序播放  终点=>起点
 animation-direction: reverse 倒序播放  终点=>起点
@@ -2050,14 +2450,14 @@ animation-direction: alternate-reverse 反向交替播放
 
 ---
 
-###### 动画延迟（animation-delay）
+##### 动画延迟（animation-delay）
 
 animation-delay属性定义动画是从何时开始播放，即动画应用在元素上的到动画开始的这段时间的长度。默认值0s，表示动画在该元素上后立即开始执行。该值以秒(s)或者毫秒(ms)为单位。
 
 ---
 
 
-###### 动画迭代次数（animation-iteration-count）
+##### 动画迭代次数（animation-iteration-count）
 
 animation-iteration-count该属性就是定义我们的动画播放的次数。次数可以是1次或者无限循环。默认值只播放一次。
 
@@ -2067,7 +2467,7 @@ single-animation-iteration-count = infinite | number
 ---
 
 
-###### 动画填充模式（animation-fill-mode）
+##### 动画填充模式（animation-fill-mode）
 
 animation-fill-mode是指给定动画播放前后应用元素的样式。
 
@@ -2082,7 +2482,7 @@ animation-fill-mode: both 动画将会执行 forwards 和 backwards 执行的动
 ---
 
 
-###### 动画播放状态（animation-timing-function）
+##### 动画播放状态（animation-timing-function）
 
 animation-play-state: 定义动画是否运行或者暂停。可以确定查询它来确定动画是否运行。默认值为running
 
@@ -2095,7 +2495,7 @@ paused 动画暂停播放
 ---
 
 
-###### 简写
+##### 简写
 
 ```css
 animation:动画名称 持续时间 运动曲线 何时开始 播放次数 是否反方向 动画起始或者结束的状态;
@@ -2165,7 +2565,7 @@ export default {
 </style>
 ```
 
-###### 5.2 背景颜色随鼠标渐变
+##### 5.2 背景颜色随鼠标渐变
 
 [演示地址](http://ximingx.com/TransitionColor22_3_24/index.html)
 

@@ -942,18 +942,15 @@ function fn1() {
     console.log(this);
     console.log(this.nickName);
 }
-fn1.call(this); // this的指向并没有被改变，此时相当于 fn1();
 
+fn1.call(this);
+// window
+// undefined
+
+fn1.call(obj1);
+// { nickName: 'ximingx', age: 28 }
+// ximingx
 ```
-
-上方代码的打印结果：
-
-```js
-window
-undefined
-```
-
-上面的代码，跟普通的函数调用 `fn1()` 没有区别。
 
 **举例 2**、通过 call() 改变 this 指向：
 
@@ -975,9 +972,9 @@ fn1.call(obj1, 2, 4); // 先将 this 指向 obj1，然后执行 fn1() 函数
 上方代码的打印结果：
 
 ```js
-obj1
-ximingx
-6
+// { nickName: 'ximingx', age: 28 }
+// ximingx
+// 6
 ```
 
 **举例 3**、通过 call() 实现继承：
@@ -1142,7 +1139,7 @@ f(); //调用新函数  this指向的是对象o 参数使用逗号隔开
 
 - 应用场景
   1. call 经常做继承. 
-  2. apply经常跟数组有关系.  比如借助于数学对象实现数组最大值最小值
+  2. apply 经常跟数组有关系.  比如借助于数学对象实现数组最大值最小值
   3. bind  不调用函数,但是还想改变this指向. 比如改变定时器内部的this指向. 
 
 ## 递归
