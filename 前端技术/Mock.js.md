@@ -531,6 +531,12 @@ let  data  =  Mock.mock({
 生成省份：@province(true)
 生成城市：@city(true)
 
+```js
+Random.region() + Random.province() + Random.city() + Random.county()
+```
+
+
+
 ## 3. Mock
 
 > **Mock.mock( rurl?, rtype?, template|function(options) )**

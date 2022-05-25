@@ -899,15 +899,89 @@ h1 {
 	1vh 高度为相对于视窗的高度的百分之一
 ```
 
+## 六: 补充知识
+
+### 1. BFC
+
+> **块格式化上下文（Block Formatting Context，`BFC`）** 是 `Web `页面的`可视 CSS 渲染`的一部分
+>
+> 是块级盒子的布局过程发生的区域
+>
+> 也是浮动元素与其他元素交互的区域
+>
+> 简单地说, **BFC就是css布局的一个概念, 是页面中的一块渲染区域，有一套渲染规则，决定了其子元素如何布局，以及和其他元素之间的关系和作用。**
+
+#### 1.1 BFC 的创建条件
+
+- 根元素（`<html>`）
+- 浮动元素(`float` 值不为 `none`）
+- 绝对定位元素（`position`) 值为 `absolute` 或 `fixed`）
+- 行内块元素（`display`) 值为 `inline-block`）
+- 表格单元格（`display`) 值为 `table-cell`，HTML表格单元格默认值）
+- 表格标题（``display`) 值为 `table-caption`，HTML表格标题默认值）
+- 匿名表格单元格元素（`display`) 值为 `table`、`table-row`、 `table-row-group`、`table-header-group`、`table-footer-group`（分别是 HTML table、tr、tbody、thead、tfoot 的默认值）或 `inline-table`）
+- `overflow` 值不为 `visible`、`clip` 的块元素
+- `display`) 值为 `flow-root` 的元素
+- `contain`) 值为 `layout`、`content` 或 `paint` 的元素
+- 弹性元素（`display`) 值为 `flex` 或 `inline-flex` 元素的直接子元素），如果它们本身既不是[`flex`](https://developer.mozilla.org/zh-CN/docs/Glossary/Flex_Container)、[`grid`](https://developer.mozilla.org/zh-CN/docs/Glossary/Grid_Container)也不是[`table`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Table)容器
+- 网格元素（`display`) 值为 `grid` 或 `inline-grid` 元素的直接子元素），如果它们本身既不是[`flex`](https://developer.mozilla.org/zh-CN/docs/Glossary/Flex_Container)、[`grid`](https://developer.mozilla.org/zh-CN/docs/Glossary/Grid_Container)也不是[`table`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Table)容器
+- 多列容器（`column-count`) 或 `column-width`) 值不为 `auto`，包括`column-count` 为 `1`）
+- `column-span` 值为 `all` 的元素始终会创建一个新的 BFC，即使该元素没有包裹在一个多列容器中([规范变更](https://github.com/w3c/csswg-drafts/commit/a8634b96900279916bd6c505fda88dda71d8ec51), [Chrome bug](https://bugs.chromium.org/p/chromium/issues/detail?id=709362))
+
+> 上面的只是为了让你看一眼, 但是没有用
+>
+> 一般常见的有
+
+|                                          |            |      |
+| ---------------------------------------- | ---------- | ---- |
+| 根元素                                   | 即HTML元素 |      |
+| `float`的值不为`none`                    |            |      |
+| `overflow`的值不为`visible`              |            |      |
+| `display`的值为`inline-block`            |            |      |
+| `position`的值为`absolute`或`fixed 　　` |            |      |
+
+#### 1.2 BFC  的作用
+
+> **格式化上下文影响布局**，通常，我们会为定位和清除浮动创建新的 `BFC`，而不是更改布局，因为它将：
+
+- 包含内部浮动, 清除内部浮动
+- 排除外部浮动
+- 阻止[外边距重叠](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
+- 可以阻止元素被浮动元素覆盖
+- 自适应两栏布局
+
+
+
+#### 1.3 BFC 的布局规则
+
+> 1. 内部的`Box`会在垂直方向，一个接一个地放置。
+
+我们平常说的盒子是由`margin`、`border`、`padding`、`content`组成的，实际上每种类型的四条边定义了一个盒子，分别是分别是**`content box`、`padding box`、`border box`、`margin box`**
+
+这四种类型的盒子一直存在，即使他们的值为`0`. 
+
+决定块盒在包含块中与相邻块盒的垂直间距的便是`margin-box`。
 
 
 
 
+> 2. Box垂直方向的距离由margin决定。属于同一个BFC的两个相邻Box的margin会发生重叠
 
 
 
+> 3. 每个元素的margin box的左边， 与包含块border box的左边相接触(对于从左往右的格式化，否则相反)。即使存在浮动也是如此。
 
 
+
+> 4. BFC的区域不会与float box重叠。
+
+
+
+> 5. BFC就是页面上的一个隔离的独立容器，容器里面的子元素不会影响到外面的元素。反之也如此。
+
+
+
+> 6. 计算BFC的高度时，浮动元素也参与计算
 
 
 
