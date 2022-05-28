@@ -19,11 +19,12 @@
 
 > `JavaScript` 和 `ECMAScript` 的区别，以及和 `DOM` 、`BOM` 的关系, 
 
-`ECMAScript `是由网景的`布兰登·艾奇`开发的一种脚本语言的`标准化规范`；最初命名为`Mocha`，后来改名为`LiveScript`，最后重命名为`JavaScript`。
+`ECMAScript `是由网景的`布兰登·艾奇`开发的一种脚本语言`JavaScript`的`标准化规范`；
 
 - 1995年12月，升阳与网景联合发表了`JavaScript`。
 - 1996年11月，网景公司将`JavaScript`提交给[欧洲计算机制造商协会](https://baike.baidu.com/item/欧洲计算机制造商协会/2052072)进行标准化。
 - 1997年6月, `ECMA-262`的第一个版本被`Ecma`组织采纳。`ECMAScript`是`ECMA-262`标准化的脚本语言的名称。
+- 最初命名为`Mocha`，后来改名为`LiveScript`，最后重命名为`JavaScript`。
 
 `ECMAscript`由于**只是语法的标准**, 所以在很多地方也都有了实现甚至超越了浏览器本身的存在.
 
@@ -53,7 +54,7 @@
 
 `JavaScript`语言最初出现在`Netscape Navigator 2浏览器`中。当时它叫**`LiveScript`**。
 
-然而，由于当时`Java`技术如日中天，`Netscape`公司觉得改为`JavaScript`这个名字会更吸引人注目, 所以就是这么草率
+然而，由于当时`Java`技术如日中天，`Netscape`公司觉得改为`JavaScript`这个名字会更吸引人注目, 所以就是这么草率, 没有什么特殊的关系
 
 ### 2. 基础使用
 
@@ -90,8 +91,8 @@
 
 |            |                                                              |
 | ---------- | ------------------------------------------------------------ |
-| `src`      | 用于引入JS文件的地址                                         |
-| `language` | 用于设置脚本的类型(废弃)                                     |
+| `src`      | 用于引入`JS文件的地址`                                       |
+| `language` | 用于设置脚本的类型 (废弃)                                    |
 | `type`     | 用于设置引入文件的`MIME类型`                                 |
 | `charset`  | 用于设置引入文件的字符集类型                                 |
 | `defer`    | **延时执行属性**, 可以是`JS`加载完毕后执行, 只对外部文件有效 |
@@ -147,8 +148,6 @@ document.write('hello ximingx');
 
 ## 二: 基础语法
 
-
-
 ### 1. 变量常量
 
 > 变量就是可以变化的量, 是内存中可以存储数据内容的代号, 一个变量名, 对应一个变量的值
@@ -171,7 +170,7 @@ var a = "a";
 var a;
 ```
 
-3. 没有声明, 直接使用
+3. 没有声明, 直接使用 (唔, 有弊端)
 
 ```js
 a = "a"
@@ -200,14 +199,14 @@ abstract、double、goto、native、static、boolean、enum、implements、packa
 
 > 驼峰命名法
 
-`骆驼式命名法（Camel-Case）`又称`驼峰式命名法`，是电脑程式编写时的一套命名规则（惯例）。
+`骆驼式命名法（Camel-Case）`又称`驼峰式命名法`，是电脑程式编写时的一套命名规则。
 
 是指混合使用大小写字母来构成变量和函数的名字, 第一个单词以小写字母开始, 第二个单词的首字母大写, 以此类推
 
 也是一般情况下 `JS` 的命名规范
 
 ```js
-var oldPeople = '嗷呜'
+var oldPeople = '阿翔'
 ```
 
 #### 1.2 let
@@ -262,18 +261,18 @@ var oldPeople = '嗷呜'
 
 ## 三. 数据类型
 
-根据语言特征: `JS` 是基于对象的语言, 所有的数据都是对象!
+根据语言特征: `JS` 是基于对象的语言, 所有的数据都是对象
 
 根据内存特征, `JS `分为
 
-    1. 基本数据类型
-    2. 引用数据类型
+1. 基本数据类型
+2. 引用数据类型
 
 ### 1. 类型检测
 
-> instanceof
+> `instanceof`
 
-用于检测构造函数的 `prototype` 属性是否出现在某个实例对象的原型链上。
+用于检测构造函数的 `prototype` 属性是否出现在某个实例对象的原型链上。具体看`Object`中的原型
 
 ```
 object instanceof constructor
@@ -293,11 +292,11 @@ function fn(a, b, c) {
 fn(1, 2, 3);
 ```
 
-> typeof
+> `typeof`
 
 `typeof`运算符用于判断对象的类型，但是对于一些创建的对象，它们都会返回`object`'
 
-typeof还可以判断是否为`function`
+`typeof`还可以判断是否为`function`
 
 ### 2. Null
 
@@ -321,7 +320,7 @@ cosole.log(typeof myObj); // 打印结果：object
 
 表示未定义类型
 
-> case1：变量已声明，未赋值时
+> 变量已声明，未赋值时
 
 声明了一个变量，但没有赋值，此时它的值就是 `undefined`。举例：
 
@@ -337,7 +336,7 @@ console.log(typeof name); // 打印结果：undefined
 
 -   使用 `typeof `检查一个 `undefined `值时，会返回 `undefined`。
 
-> case2：变量未声明（未定义）时
+> 变量未声明
 
 如果你从未声明一个变量，就去使用它，则会报错（这个大家都知道）；此时，如果用 `typeof` 检查这个变量时，会返回 `undefined`。举例：
 
@@ -346,7 +345,7 @@ console.log(typeof a); // undefined
 console.log(a); // 打印结果：Uncaught ReferenceError: a is not defined
 ```
 
-> case3：函数无返回值时
+> 数无返回值时
 
 如果一个函数没有返回值，那么，这个函数的返回值就是 `undefined`。
 
@@ -356,12 +355,10 @@ console.log(a); // 打印结果：Uncaught ReferenceError: a is not defined
 
 ```js
 function foo() {}
-
 console.log(foo()); // 打印结果：undefined
-
 ```
 
-> case4：调用函数时，未传参
+> 调用函数时，未传参
 
 调用函数时，如果没有传参，那么，这个参数的值就是 `undefined`。
 
@@ -371,7 +368,6 @@ console.log(foo()); // 打印结果：undefined
 function foo(name) {
     console.log(name);
 }
-
 foo(); // 调用函数时，未传参。执行函数后的打印结果：undefined
 ```
 
@@ -381,7 +377,6 @@ foo(); // 调用函数时，未传参。执行函数后的打印结果：undefin
 function foo(name) {
     name = name || 'qianguyihao';
 }
-
 foo();
 ```
 
@@ -572,8 +567,6 @@ console.log(num); //272
 
 就是说，无论 `parseInt()` 里面的进制参数是多少，最终的转换结果是十进制。
 
-我们来看下面的代码，打印结果继续震惊。
-
 ```javascript
 var a = '5';
 
@@ -614,6 +607,8 @@ console.log(parseInt(true));
 ### 6. Boolean
 
 布尔类型只有2个值: `true  `和 `false`
+
+系统中的所有布尔值都是有系统隐式的调用当前对象创建
 
 #### 6.1 数据类型转换
 
@@ -790,7 +785,7 @@ fun3(1, 2); // 调用函数
 
 对象就是数据和功能的集合.
 
-#### 8.1 对象的基本操作
+#### 1. 对象的基本操作
 
 > 创建对象
 
@@ -895,9 +890,83 @@ Object.defineProperty(对象，修改或新增的属性名，{
 console.log('name' in obj);
 ```
 
+#### 2. 构造函数原型 prototype
+
+构造函数方法很好用，但是存在浪费内存的问题, 例如创建实例对象方法的重复会占用内存
+
+`JavaScript `规定，每一个`构造函数`都有一个`prototype `属性，指向另一个对象。注意这个`prototype`就是一个对象，这个对象的所有属性和方法，都会被构造函数所拥有。
+
+我们可以把那些不变的方法，直接定义在 `prototype `对象上，这样所有对象的实例就可以共享这些方法。
+
+```js
+function Star(uname, age) {
+    this.uname = uname;
+    this.age = age;
+}
+Star.prototype.sing = function() {
+	console.log('我会唱歌');
+}
+```
+
+#### 3. 对象原型  `__proto__`
+
+对象都会有一个属性 `__proto__` 指向构造函数的 `prototype `原型对象，之所以我们对象可以使用构造函数 `prototype `原型对象的属性和方法，就是因为对象有 `__proto__` 原型的存在。
+
+`__proto__` 对象原型和原型对象 `prototype `是等价的
+
+`__proto__` 对象原型的意义就在于为对象的查找机制提供一个方向，或者说一条路线，但是它是一个非标准属性，因此实际开发中，不可以使用这个属性，它只是内部指向原型对象 `prototype`
+
+![](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204201412866.png)
+
+#### 4. constructor 函数
+
+对象原型（`__proto__` ）和构造函数（`prototype`）原型对象里面都有一个属性 `constructor `属性 ，`constructor `我们称为构造函数，因为它指回构造函数本身。
+
+`constructor `主要用于记录该对象引用于哪个构造函数，它可以让原型对象重新指向原来的构造函数。
+
+一般情况下，对象的方法都在构造函数的原型对象中设置。如果有多个对象的方法，我们可以给原型对象采取对象形式赋值，但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 `constructor  `就不再指向当前构造函数了。此时，我们可以在修改后的原型对象中，添加一个 `constructor `指向原来的构造函数。
+
+```js
+ function Star(uname, age) {
+     this.uname = uname;
+     this.age = age;
+ }
+ // 很多情况下,我们需要手动的利用constructor 这个属性指回 原来的构造函数
+ Star.prototype = {
+   // 如果我们修改了原来的原型对象,给原型对象赋值的是一个对象,则必须手动的利用constructor指回原来的构造函数
+   constructor: Star, // 手动设置指回原来的构造函数
+   sing: function() {
+     console.log('我会唱歌');
+   },
+   movie: function() {
+     console.log('我会演电影');
+   }
+}
+var zxy = new Star('张学友', 19);
+console.log(zxy)
+```
+
+#### 5.  原型链
+
+每一个实例对象又有一个__`proto`__属性，指向的构造函数的原型对象，构造函数的原型对象也是一个对象，也有__`proto`__属性，这样一层一层往上找就形成了原型链。
+
+![](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204201418663.png)
+
+#### 6. js 成员查找机制
+
+- 当访问一个对象的属性（包括方法）时，首先查找这个对象自身有没有该属性。
+- 如果没有就查找它的原型（也就是 __`proto`__指向的 `prototype `原型对象）。
+- 如果还没有就查找原型对象的原型（`Object`的原型对象）。
+- 依此类推一直找到 `Object `为止（`null`）。
+- __`proto`__对象原型的意义就在于为对象成员查找机制提供一个方向，或者说一条路线。
+
+
+
+
+
 ### 9. global
 
-
+固有对象就是系统已经实例化完毕的对象,只可以使用不可以创建
 
 
 
@@ -909,11 +978,558 @@ console.log('name' in obj);
 
 ### 11. Date
 
+内置对象 `Date `用来处理日期和时间。
+
+需要注意的是：与 `Math `对象不同，`Date `对象是一个构造函数 ，需要****先实例化****后才能使用。
+
+#### 1. 创建Date对象的两种写法
+
+- 写法一：如果`Date()`不写参数，就返回当前时间对象
+
+- 写法二：如果`Date()`里面写参数，就返回括号里输入的时间对象
+
+> 不传递参数时
+
+获取系统的当前时间对象
+
+```javascript
+var date1 = new Date();
+console.log(date1);
+console.log(typeof date1);
+// 2022-05-27T00:36:08.262Z
+// object
+```
+
+代码解释：不传递参数时，表示的是获取系统的当前时间对象。也可以理解成是：获取当前代码执行的时间。
+
+> 传递参数
+
+传递参数时，表示获取指定时间的时间对象。参数中既可以传递`字符串`，也可以传递`数字`，也可以传递`时间戳`。
+
+通过传参的这种写法，我们可以把时间字符串/时间数字/时间戳，按照指定的格式，转换为时间对象。
+
+参数是字符串
+
+```js
+const date11 = new Date('2020/02/17 21:00:00');
+console.log(date11); // Mon Feb 17 2020 21:00:00 GMT+0800 (中国标准时间)
+
+const date12 = new Date('2020/04/19'); // 返回的就是四月
+console.log(date12); // Sun Apr 19 2020 00:00:00 GMT+0800 (中国标准时间)
+
+const date13 = new Date('2020-05-20');
+console.log(date13); // Wed May 20 2020 08:00:00 GMT+0800 (中国标准时间)
+
+const date14 = new Date('Wed Jan 27 2017 12:00:00 GMT+0800 (中国标准时间)');
+console.log(date14); // Fri Jan 27 2017 12:00:00 GMT+0800 (中国标准时间)
+```
+
+
+参数是多个数字
+
+```js
+const date21 = new Date(2020, 2, 18); // 注意，第二个参数返回的是三月，不是二月
+console.log(date21); // Wed Mar 18 2020 00:00:00 GMT+0800 (中国标准时间)
+
+const date22 = new Date(2020, 3, 18, 22, 59, 58);
+console.log(date22); // Sat Apr 18 2020 22:59:58 GMT+0800 (中国标准时间)
+
+const params = [2020, 06, 12, 16, 20, 59];
+const date23 = new Date(...params);
+console.log(date23); // Sun Jul 12 2020 16:20:59 GMT+0800 (中国标准时间)
+```
+
+
+参数是时间戳
+
+```js
+const date31 = new Date(1591950413388);
+console.log(date31); // Fri Jun 12 2020 16:26:53 GMT+0800 (中国标准时间)
+
+// 先把时间对象转换成时间戳，然后把时间戳转换成时间对象
+const timestamp = new Date().getTime();
+const date32 = new Date(timestamp);
+console.log(date32); // Fri Jun 12 2020 16:28:21 GMT+0800 (中国标准时间)
+```
+
+#### 2. 日期的格式化
+
+上一段内容里，我们获取到了 `Date` 对象，但这个对象，打印出来的结果并不是特别直观。
+
+如果我们需要获取日期的指定部分，就需要用到 `Date`对象自带的方法。
+
+获取了日期指定的部分之后，我们就可以让日期按照指定的格式，进行展示（即日期的格式化）。比如说，我期望能以 `2020-02-02 19:30:59` 这种格式进行展示。
+
+Date对象 有如下方法，可以获取日期和时间的指定部分：
+
+| 方法名              | 含义              | 备注                 |
+| ------------------- | ----------------- | -------------------- |
+| `getFullYear()`     | 获取年份          |                      |
+| `getMonth()`        | **获取月： 0-11** | 0代表一月            |
+| `getDate()`         | **获取日：1-31**  | 获取的是几号         |
+| `getDay()`          | **获取星期：0-6** | 0代表周日，1代表周一 |
+| `getHours()`        | 获取小时：0-23    |                      |
+| `getMinutes()`      | 获取分钟：0-59    |                      |
+| `getSeconds()`      | 获取秒：0-59      |                      |
+| `getMilliseconds()` | 获取毫秒          | 1s = 1000ms          |
+
+> 年月日的格式化
+
+```js
+console.log(formatDate());
+
+/*
+    方法：日期格式化。
+    格式要求：今年是：2020年02月02日 08:57:09 星期日
+*/
+function formatDate() {
+    var date = new Date();
+
+    var year = date.getFullYear(); // 年
+    var month = date.getMonth() + 1; // 月
+    var day = date.getDate(); // 日
+
+    var week = date.getDay(); // 星期几
+    var weekArr = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+
+    var hour = date.getHours(); // 时
+    hour = hour < 10 ? '0' + hour : hour; // 如果只有一位，则前面补零
+
+    var minute = date.getMinutes(); // 分
+    minute = minute < 10 ? '0' + minute : minute; // 如果只有一位，则前面补零
+
+    var second = date.getSeconds(); // 秒
+    second = second < 10 ? '0' + second : second; // 如果只有一位，则前面补零
+
+    var result = '今天是：' + year + '年' + month + '月' + day + '日 ' + hour + ':' + minute + ':' + second + ' ' + weekArr[week];
+
+    return result;
+}
+
+```
+
+#### 3. 时间戳
+
+时间戳：指的是从格林威治标准时间的`1970年1月1日，0时0分0秒`到当前日期所花费的毫秒数（1秒 = 1000毫秒）。
+
+计算机底层在保存时间时，使用的都是时间戳。时间戳的存在，就是为了统一时间的单位。
+
+我们经常会利用时间戳来计算时间，因为它更精确
+
 
 
 
 
 ### 12. RegExp
+
+#### 1. 正则表达式基础使用
+
+> 正则表达式的创建
+
+在 `JavaScript `中，可以通过两种方式创建一个正则表达式。
+
+方式一：通过调用`RegExp`对象的构造函数创建 
+
+```js
+var regexp = new RegExp(/123/);
+console.log(regexp);
+```
+
+方式二：利用字面量创建 正则表达式
+
+```js
+ var rg = /123/;
+```
+
+> 测试正则表达式
+
+`test()` 正则对象方法，用于检测字符串是否符合该规则，该对象会返回 `true` 或 `false`，其参数是测试字符串。
+
+```js
+var rg = /123/;
+console.log(rg.test(123)); // 匹配字符中是否出现123  出现结果为true
+console.log(rg.test('abc')); // 匹配字符中是否出现123 未出现结果为false
+```
+
+> 匹配模式
+
+/正则表达式/匹配模式 
+
+- `i` 忽略大小写。这里的 `i `指的是 `ignore`。
+
+- `g` 全局匹配模式。这里的 `g` 指的是 `global`。
+
+#### 2. 正则表达式字符匹配
+
+正则表达式是匹配模式，要么匹配字符，要么匹配位置。
+
+##### 1 两种匹配
+
+如果正则只有精确匹配是没多大意义的，比如 `/hello/`，也只能匹配字符串中的 "hello" 这个子串。
+
+```js
+var regex = /hello/;
+
+console.log( regex.test("hello") );
+
+// => true
+```
+
+正则表达式之所以强大，是因为其能实现模糊匹配。
+
+> 横向模糊匹配
+
+横向模糊指的是，一个正则可匹配的字符串的长度不是固定的，可以是多种情况的。
+
+其实现的方式是使用量词。譬如 `{m,n}`，表示连续出现最少 m 次，最多 n 次。
+
+比如`/ab{2,5}c/`表示匹配这样一个字符串：第一个字符是“a”，接下来是2到5个字符“b”，最后是字符“c”。测试如下：
+
+```js
+var regex = /ab{2,5}c/g;
+
+var string = "abc abbc abbbc abbbbc abbbbbc abbbbbbc";
+
+console.log( string.match(regex) );
+
+// => ["abbc", "abbbc", "abbbbc", "abbbbbc"]
+```
+
+注意：案例中用的正则是`/ab{2,5}c/g`，后面多了`g`，它是正则的一个修饰符。表示全局匹配，即在目标字符串中按顺序找到满足匹配模式的所有子串，强调的是“所有”，而不只是“第一个”。`g`是单词global的首字母。
+
+> 纵向模糊匹配
+
+纵向模糊指的是，一个正则匹配的字符串，**具体到某一位字符时，它可以不是某个确定的字符，可以有多种可能。**
+
+其实现的方式是使用字符组。譬如`[abc]`，表示该字符是可以字符“a”、“b”、“c”中的任何一个。
+
+比如`/a[123]b/`可以匹配如下三种字符串："a1b"、"a2b"、"a3b"。测试如下：
+
+```js
+var regex = /a[123]b/g;
+
+var string = "a0b a1b a2b a3b a4b";
+
+console.log( string.match(regex) );
+
+// => ["a1b", "a2b", "a3b"]
+```
+
+检查一个字符串中是否包含 a或b
+
+**写法1**：
+
+```javascript
+	var reg = /a|b/;
+```
+
+解释：使用 `|` 表示`或`的意思。
+
+**写法2**：
+
+```javascript
+	var reg = /[ab]/;  // 跟上面的那行语法，是等价的
+```
+
+解释：这里的`[]`也是表示`或`的意思。
+
+一些规则：
+
+- `/[ab]/` 等价于 `/a|b/`：检查一个字符串中是否包含 **a或b**
+
+- `/[a-z]/`：检查一个字符串那种是否包含**任意小写字母**
+
+- `/[A-Z]/`：任意大写字母
+
+- `/[A-z]/`：任意字母
+
+- `/[0-9]/`：任意数字
+
+- `/a[bde]c/`：检查一个字符串中是否包含 abc 或 adc 或 aec
+
+`[]`这个符号在正则还是比较常用的。
+
+> 精确匹配
+
+正则表达式中的边界符（位置符）用来提示字符所处的位置，主要有两个字符
+
+| 边界符 | 说明                           |
+| ------ | ------------------------------ |
+| `^`    | 表示匹配行首的文本（以谁开始） |
+| `$`    | 表示匹配行尾的文本（以谁结束） |
+
+如果` ^`和 `$` 在一起，表示必须是精确匹配。
+
+##### 2. 字符组
+
+需要强调的是，虽叫字符组（字符类），但只是其中一个字符。例如`[abc]`，表示匹配一个字符，它可以是“a”、“b”、“c”之一。
+
+> 范围表示法
+
+如果字符组里的字符特别多的话，怎么办？可以使用范围表示法。
+
+比如[123456abcdefGHIJKLM]，可以写成[1-6a-fG-M]。用连字符`-`来省略和简写。
+
+因为连字符有特殊用途，那么要匹配“a”、“-”、“z”这三者中任意一个字符，该怎么做呢？
+
+不能写成[a-z]，因为其表示小写字符中的任何一个字符。
+
+可以写成如下的方式[-az]或[az-]或[a\-z]。即要么放在开头，要么放在结尾，要么转义。总之不会让引擎认为是范围表示法就行了。
+
+> 排除字符组
+
+纵向模糊匹配，还有一种情形就是，某位字符可以是任何东西，但就不能是"a"、"b"、"c"。
+
+此时就是排除字符组（反义字符组）的概念。例如`[ ^abc ]`，表示是一个除"a"、"b"、"c"之外的任意一个字符。字符组的第一位放`^`（脱字符），表示求反的概念。
+
+当然，也有相应的范围表示法。
+
+> 常见的简写形式
+
+预定义类指的是某些常见模式的简写方式.
+
+有了字符组的概念后，一些常见的符号我们也就理解了。因为它们都是系统自带的简写形式。
+
+`\d`就是[0-9]。表示是一位数字。记忆方式：其英文是digit（数字）。
+
+`\D`就是[ ^0-9]。表示除数字外的任意字符。
+
+`\w`就是[0-9a-zA-Z_]。表示数字、大小写字母和下划线。记忆方式：w是word的简写，也称单词字符。
+
+`\W`是[ ^0-9a-zA-Z_]。非单词字符。
+
+`\s`是[ \t\v\n\r\f]。表示空白符，包括空格、水平制表符、垂直制表符、换行符、回车符、换页符。记忆方式：s是space character的首字母。
+
+`\S`是[ ^ \t\v\n\r\f]。 非空白符。
+
+.就是[ ^\n\r\u2028\u2029]。通配符，表示几乎任意字符。换行符、回车符、行分隔符和段分隔符除外。记忆方式：想想省略号...中的每个点，都可以理解成占位符，表示任何类似的东西。
+
+如果要匹配任意字符怎么办？可以使用[\d\D]、[\w\W]、[\s\S]和[^]中任何的一个。
+
+```js
+var rg = /[abc]/; // 只要包含有a 或者 包含有b 或者包含有c 都返回为true
+console.log(rg.test('andy'));//true
+console.log(rg.test('baby'));//true
+console.log(rg.test('color'));//true
+console.log(rg.test('red'));//false
+var rg1 = /^[abc]$/; // 三选一 只有是a 或者是 b  或者是c 这三个字母才返回 true
+console.log(rg1.test('aa'));//false
+console.log(rg1.test('a'));//true
+console.log(rg1.test('b'));//true
+console.log(rg1.test('c'));//true
+console.log(rg1.test('abc'));//true
+----------------------------------------------------------------------------------
+var reg = /^[a-z]$/ //26个英文字母任何一个字母返回 true  - 表示的是a 到z 的范围  
+console.log(reg.test('a'));//true
+console.log(reg.test('z'));//true
+console.log(reg.test('A'));//false
+-----------------------------------------------------------------------------------
+//字符组合
+var reg1 = /^[a-zA-Z0-9]$/; // 26个英文字母(大写和小写都可以)任何一个字母返回 true  
+------------------------------------------------------------------------------------
+//取反 方括号内部加上 ^ 表示取反，只要包含方括号内的字符，都返回 false 。
+var reg2 = /^[^a-zA-Z0-9]$/;
+console.log(reg2.test('a'));//false
+console.log(reg2.test('B'));//false
+console.log(reg2.test(8));//false
+console.log(reg2.test('!'));//true
+```
+
+##### 3. 量词
+
+量词也称重复。掌握{m,n}的准确含义后，只需要记住一些简写形式。
+
+> 简写形式
+
+| 量词        | 说明                               |
+| ----------- | ---------------------------------- |
+| `*`         | 重复0次或更多次                    |
+| `+`         | 重复1次或更多次                    |
+| `?`         | 重复0次或1次                       |
+| `{n}`       | 重复n次                            |
+| `{n,}`      | 量词符用来设定某个模式出现的次数。 |
+| 量词`{n,m}` | 说明重复n到m次                     |
+
+> 贪婪匹配和惰性匹配
+
+看如下的例子：
+
+```js
+var regex = /\d{2,5}/g;
+
+var string = "123 1234 12345 123456";
+
+console.log( string.match(regex) );
+
+// => ["123", "1234", "12345", "12345"]
+```
+
+其中正则``/\d{2,5}/``，表示数字连续出现2到5次。会匹配2位、3位、4位、5位连续数字。
+
+但是其是贪婪的，它会尽可能多的匹配。你能给我6个，我就要5个。你能给我3个，我就3要个。反正只要在能力范围内，越多越好。
+
+我们知道有时贪婪不是一件好事。而惰性匹配，就是尽可能少的匹配：
+
+```js
+var regex = /\d{2,5}?/g;
+
+var string = "123 1234 12345 123456";
+
+console.log( string.match(regex) );
+
+// => ["12", "12", "34", "12", "34", "12", "34", "56"]
+```
+
+其中`/\d{2,5}?/`表示，虽然2到5次都行，当2个就够的时候，就不在往下尝试了。
+
+通过在量词后面加个问号就能实现惰性匹配，因此所有惰性匹配情形如下：
+
+```js
+{m,n}?
+{m,}?
+??
++?
+*?
+```
+
+对惰性匹配的记忆方式是：量词后面加个问号，问一问你知足了吗，你很贪婪吗？
+
+##### 4. 多选分支
+
+一个模式可以实现横向和纵向模糊匹配。而多选分支可以支持多个子模式任选其一。
+
+具体形式如下：(p1|p2|p3)，其中p1、p2和p3是子模式，用|（管道符）分隔，表示其中任何之一。
+
+例如要匹配"good"和"nice"可以使用`/good|nice/`。测试如下：
+
+```js
+var regex = /good|nice/g;
+
+var string = "good idea, nice try.";
+
+console.log( string.match(regex) );
+
+// => ["good", "nice"]
+```
+
+但有个事实我们应该注意，比如我用`/good|goodbye/`，去匹配"goodbye"字符串时，结果是"good"：
+
+```js
+var regex = /good|goodbye/g;
+
+var string = "goodbye";
+
+console.log( string.match(regex) );
+
+// => ["good"]
+```
+
+而把正则改成/goodbye|good/，结果是：
+
+```js
+var regex = /goodbye|good/g;
+
+var string = "goodbye";
+
+console.log( string.match(regex) );
+
+// => ["goodbye"]
+```
+
+也就是说，分支结构也是惰性的，即当前面的匹配上了，后面的就不再尝试了。
+
+#### 3. 正则表达式位置匹配
+
+在ES5中，共有6个锚字符：
+
+```js
+^ $ \b \B (?=p) (?!p)
+```
+
+##### 1. ^和$
+
+`^`（脱字符）匹配开头，在多行匹配中匹配行开头。
+
+`$` (美元符号）匹配结尾，在多行匹配中匹配行结尾。
+
+```js
+var rg = /abc/; // 正则表达式里面不需要加引号 不管是数字型还是字符串型
+// /abc/ 只要包含有abc这个字符串返回的都是true
+console.log(rg.test('abc'));
+console.log(rg.test('abcd'));
+console.log(rg.test('aabcd'));
+console.log('---------------------------');
+var reg = /^abc/;
+console.log(reg.test('abc')); // true
+console.log(reg.test('abcd')); // true
+console.log(reg.test('aabcd')); // false
+console.log('---------------------------');
+var reg1 = /^abc$/; // 精确匹配 要求必须是 abc字符串才符合规范
+console.log(reg1.test('abc')); // true
+console.log(reg1.test('abcd')); // false
+console.log(reg1.test('aabcd')); // false
+console.log(reg1.test('abcabc')); // false
+```
+
+比如我们把字符串的开头和结尾用"`#`"替换（位置可以替换成字符的！）：
+
+```js
+var result = "hello".replace(/^|$/g, '#');
+
+console.log(result);
+
+// => "#hello#"
+```
+
+多行匹配模式时，二者是行的概念，这个需要我们的注意：
+
+```js
+var result = "I\nlove\njavascript".replace(/^|$/gm, '#');
+
+console.log(result);
+
+/*
+#I#
+#love#
+#javascript#
+*/
+```
+
+##### 4. 位置的特性
+
+对于位置的理解，我们可以理解成空字符""。
+
+比如"hello"字符串等价于如下的形式：
+
+```js
+"hello" == "" + "h" + "" + "e" + "" + "l" + "" + "l" + "o" + "";
+
+"hello" == "" + "" + "hello"
+```
+
+因此，把`/^hello$/`写成`/^^hello$$$/`，是没有任何问题的：
+
+````js
+var result = /^^hello$$$/.test("hello");
+
+console.log(result);
+
+// => true
+````
+
+甚至可以写成更复杂的:
+
+```js
+var result = /(?=he)^^he(?=\w)llo$\b\b$/.test("hello");
+
+console.log(result);
+
+// => true
+```
+
+也就是说字符之间的位置，可以写成多个。
+
+把位置理解空字符，是对位置非常有效的理解方式。
 
 
 

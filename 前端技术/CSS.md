@@ -238,18 +238,171 @@
 格式：
 
 - `E[title]` 选中页面的`E元素`，并且E存在 `title `属性即可。
-
 - `E[title="abc"]`选中页面的`E元素`，并且`E`需要带有`title`属性，且属性值**完全等于**`abc`。
-
 - `E[attr~=val]`  选择具有 `att `属性且属性值为：用空格分隔的字词列表，其中一个等于 `val `的`E元素`。
-
 - `E[attr|=val]` 表示要么是一个单独的属性值，要么这个属性值是以“`-`”分隔的。
-
 - `E[title^="abc"]` 选中页面的`E`元素，并且`E`需要带有 `title 属性`,属性值以 `abc `开头。
-
 - `E[title$="abc"]` 选中页面的`E`元素，并且`E`需要带有` title 属性`,属性值以 `abc `结尾。
-
 - `E[title*="abc"]` 选中页面的`E`元素，并且`E`需要带有` title 属性`,属性值任意位置包含`abc`。
+
+### 11. 优先级
+
+#### 11.1 优先级的六大分类
+
+下面的优先级依次降低
+
+> **`! important`** 
+
+只需要在属性后面使用`! important`。它会覆盖页面内任何位置定义的元素样式。
+
+不管别的权重是多少, 反正听他的
+
+> 在`html`中给元素标签加`style`，即内联样式。该方法会造成`css`难以管理，所以不推荐使用。
+
+```html
+<h1 style="display: 'none';">隐藏</h1>
+```
+
+权重为` 1,0,0,0`
+
+> 由一个或多个`id选择器`来定义
+
+权重为 `0,1,0,0`
+
+> 由一个或多个类选择器、属性选择器、伪类选择器定义。
+
+权重为 `0,0,1,0`
+
+> 由一个或多个标签选择器定义。
+
+权重为 `0,0,0,1`
+
+> 通配选择器
+
+优先级最低, 但是会为所有的标签添加属性, 会造成性能的问题
+
+权重为 `0,0,0,0`
+
+> 总结
+
+`! important` > `行内样式` >` id选择器` > `类选择器` > `标签选择器` `伪类选择器` > `通配选择器`
+
+#### 11.2 优先级规则
+
+> 权重值越大，优先级越高
+
+权值从左到右依次比较, 如果相等, 则比较下一位, 如果最后一位也相等, 谁离得近, 则使用谁的样式
+
+`1,0,22,12` 权值大于 `0,22,23,13`
+
+```html
+<head>        
+		.red p{
+            color: red ;    // 红色
+        }
+        .blue p{
+            color: blue ;    // 蓝色
+        }
+</head>
+<body>
+<div class="red">
+    <div class="blue">
+        <p>我是什么颜色？</p>
+    </div>
+</div>
+
+<div class="blue">
+    <div class="red">
+        <p>我是什么颜色？</p>
+    </div>
+</div>
+</body>
+```
+
+最后面的颜色都是蓝色, 因为权值相等, `.blue p` 离代码近
+
+但是需要注意的是, 权值的四个位不会互相影响
+
+用一个夸张的例子解释
+
+```html
+    <style>
+        #id p {
+            color: red;
+        }
+
+        .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 p {
+            color: blue;
+        }
+    </style>
+
+
+<div id="id" class="class1">
+    <div class="class1">
+        <div class="class1">
+            <div class="class1">
+                <div class="class1">
+                    <div class="class1">
+                        <div class="class1">
+                            <div class="class1">
+                                <div class="class1">
+                                    <div class="class1">
+                                        <div class="class1">
+                                            <div class="class1">
+                                                <div class="class1">
+                                                    <div class="class1">
+                                                        <div class="class1">
+                                                            <div class="class1">
+                                                                <div class="class1">
+                                                                    <div class="class1">
+                                                                        <div class="class1">
+                                                                            <p>123</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+```
+
+`#id p ` 的权重是 `0,1,0,1`
+
+`.class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 .class1 p` 的权重是 `0,0,19,1`
+
+最后的结果是权重的第二位 `#id p `  大, 因为它的第二权重大
+
+> 属性的继承特性
+
+`CSS `的`继承特性`指的是应用在一个标签上的那些 `CSS `属性被传到其子标签上, 一般会继承 `font `类的属性
+
+如果 `<div>`有个属性 `color: red`，则这个属性将被`<p>` 继承，即 `<p>`也拥有属性 `color: red`。
+
+> 最近的祖先样式比其他祖先样式优先级高。
+
+```html
+<div style="color: red">
+    <div style="color: blue">
+        <div class="son"></div>
+    </div>
+</div>
+```
+
+颜色为 `blue`
+
+
 
 ## 三: 属性
 
@@ -928,11 +1081,11 @@ h1 {
 - 多列容器（`column-count`) 或 `column-width`) 值不为 `auto`，包括`column-count` 为 `1`）
 - `column-span` 值为 `all` 的元素始终会创建一个新的 BFC，即使该元素没有包裹在一个多列容器中([规范变更](https://github.com/w3c/csswg-drafts/commit/a8634b96900279916bd6c505fda88dda71d8ec51), [Chrome bug](https://bugs.chromium.org/p/chromium/issues/detail?id=709362))
 
-> 上面的只是为了让你看一眼, 但是没有用
+> 上面的只是为了让你看一眼, 但是不需要记忆呢么多没有用
 >
 > 一般常见的有
 
-|                                          |            |      |
+| 条件                                     | 解释       | 补充 |
 | ---------------------------------------- | ---------- | ---- |
 | 根元素                                   | 即HTML元素 |      |
 | `float`的值不为`none`                    |            |      |
@@ -949,8 +1102,6 @@ h1 {
 - 阻止[外边距重叠](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
 - 可以阻止元素被浮动元素覆盖
 - 自适应两栏布局
-
-
 
 #### 1.3 BFC 的布局规则
 
@@ -982,6 +1133,22 @@ h1 {
 
 
 > 6. 计算BFC的高度时，浮动元素也参与计算
+
+### 2. css hack
+
+`CSS hack`是通过加入一些特殊的符号，让不同的浏览器识别不同的符号，以达到应用不同的样式的目的。
+
+```css
+<!--[if <keywords>? IE <version>?]>
+HTML代码块
+<![endif]-->
+```
+
+
+
+
+
+
 
 
 
