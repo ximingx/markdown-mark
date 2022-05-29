@@ -2,6 +2,8 @@
 >
 > **这是一篇平平无奇, 但是非常长的文章, 长到你可能看一眼就会跳出去的文章, 但是我能有什么坏心思呢, 我只是单纯的懒得拆分开**
 
+![image-20220529224028541](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205292240654.png)
+
 [TOC]
 
 

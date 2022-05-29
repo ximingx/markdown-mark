@@ -4,6 +4,8 @@
 
 [Javascript诞生记 -阮一峰]:http://www.ruanyifeng.com/blog/2011/06/birth_of_javascript.html
 
+[ TS 实现设计模式 ]:https://refactoringguru.cn/design-patterns/typescript
+
 ## 一: 了解 JS
 
 ### 1. 历史和发展
@@ -28,11 +30,11 @@
 
 `ECMAscript`由于**只是语法的标准**, 所以在很多地方也都有了实现甚至超越了浏览器本身的存在.
 
-​	`ECMAscript`在浏览器中的实现`JavaScript`
+- `ECMAscript`在浏览器中的实现`JavaScript`
 
-​	`ECMAscript`在`flash`中的实现`ActionScript`
+- `ECMAscript`在`flash`中的实现`ActionScript`
 
-​	`ECMAscript`在服务器端的实现`Nodejs`
+- `ECMAscript`在服务器端的实现`Nodejs`
 
 `JavaScript`包含
 
@@ -76,7 +78,7 @@
     <script src = "tools.js"></script>
 </head>
 <body>
-    <button onclick="alert('不推荐, 也别这么玩')"></button>
+    <button onclick="alert('不推荐, 也别这么玩')">别闹</button>
     <script>
         // 也可以在这里写代码
     </script>
@@ -102,13 +104,13 @@
 
 1. 外链式
 
-```js
+```html
 <script src = "tools.js"></script>
 ```
 
 2. 嵌入式
 
-```js
+```html
 <script>
     console.log('hello ximingx');
 </script>
@@ -116,7 +118,7 @@
 
 3. 内联式
 
-```js
+```html
 <button onclick="alert('不推荐, 也别这么玩')"></button>
 ```
 
@@ -170,7 +172,7 @@ var a = "a";
 var a;
 ```
 
-3. 没有声明, 直接使用 (唔, 有弊端)
+3. 没有声明, 直接使用 (唔, 有弊端,劝你别用,会被别人骂屎一样的代码)
 
 ```js
 a = "a"
@@ -178,10 +180,9 @@ a = "a"
 
 > 命名规则
 
-1. 声明变量使用 `var `关键字
-2. 由字母, 数字, 下划线, `$`组成, 但是不可以用数字开头
-3. 变量名严格区分大小写
-7. 变量名不能和系统的保留关键字冲突
+1. 由`字母`, `数字`, `下划线`, `$`组成, 但是不可以用数字开头
+2. 变量名严格区分大小写
+3. 变量名不能和系统的保留关键字冲突
 
 > `JS` 关键字
 
@@ -195,7 +196,7 @@ break、delete、if、this、while、case、do、in、throw、with、catch、els
 abstract、double、goto、native、static、boolean、enum、implements、package、super、byte、char、class、const、public
 ```
 
-总结: 平常 `JS` 见不到的, 但是在 `java` 中有的, 谨慎使用它作为变量名
+总结: 平常 `JS` 见不到的, 但是在 `java` 中有的, 谨慎使用它作为变量名, 之后一部分我们可以在 `TS` 中看到
 
 > 驼峰命名法
 
@@ -250,6 +251,14 @@ var oldPeople = '阿翔'
 
 ### 3. 转义字符
 
+```html
+<h1><</h1>
+<h1>></h1>
+<!-- 上面这么写会出 bug -->
+```
+
+因为标签之间 `<` 会产生歧义,  这个时候我们需要使用到转义符, 而这也正是我们需要使用转义字符的常见需求
+
 | 转义字符 | 含义           |
 | -------- | -------------- |
 | `\n`     | 换行           |
@@ -272,7 +281,7 @@ var oldPeople = '阿翔'
 
 > `instanceof`
 
-用于检测构造函数的 `prototype` 属性是否出现在某个实例对象的原型链上。具体看`Object`中的原型
+用于检测构造函数的 `prototype` 属性是否出现在某个实例对象的原型链上。关于原型和原型链可以先不懂, 具体看`8. Object`中的原型介绍
 
 ```
 object instanceof constructor
@@ -287,6 +296,7 @@ function fn(a, b, c) {
   console.log(arguments instanceof Object);
   // false
   // true
+  // 一个不大不小的知识点: 函数中的默认属性arguments是一个伪数组的形式
 }
 
 fn(1, 2, 3);
@@ -300,9 +310,15 @@ fn(1, 2, 3);
 
 ### 2. Null
 
-`null `专门用来定义一个空对象。例如：`let a = null`，又例如 `Object.create(null)`.
+`null `专门用来定义一个空对象。
 
-如果你想定义一个变量用来保存引用类型，但是还没想好放什么内容，这个时候，可以在初始化时将其设置为 `null`。你可以把 `null `理解为：`null `虽然是一个单独的数据类型，但`null `相当于是一个 `object`，只不过地址为空（空指针）而已。
+```js
+let a = null
+```
+
+如果你想定义一个变量用来保存引用类型，但是还没想好放什么内容，这个时候，可以在初始化时将其设置为 `null`。
+
+你可以把 `null `理解为：`null `虽然是一个单独的数据类型，但`null `相当于是一个 `object`，只不过地址为空（是一个空指针）而已。
 
 比如：
 
@@ -318,7 +334,7 @@ cosole.log(typeof myObj); // 打印结果：object
 
 ### 3. Undefined
 
-表示未定义类型
+与 `null` 有一些区别, 他是一个未定义的值, 下面都是他可能出现的场景
 
 > 变量已声明，未赋值时
 
@@ -332,9 +348,9 @@ console.log(typeof name); // 打印结果：undefined
 
 补充：
 
--   `Undefined `类型的值只有一个，就是 `undefind`。比如 `let a = undefined`。
+-   `Undefined `类型的值只有一个，就是 `undefind`
 
--   使用 `typeof `检查一个 `undefined `值时，会返回 `undefined`。
+-   使用 `typeof `检查一个 `undefined `值时，会返回 `undefined`
 
 > 变量未声明
 
@@ -351,8 +367,6 @@ console.log(a); // 打印结果：Uncaught ReferenceError: a is not defined
 
 或者，也可以这样理解：在定义一个函数时，如果末尾没有 `return `语句，那么，其实就是 `return undefined`。
 
-举例：
-
 ```js
 function foo() {}
 console.log(foo()); // 打印结果：undefined
@@ -361,8 +375,6 @@ console.log(foo()); // 打印结果：undefined
 > 调用函数时，未传参
 
 调用函数时，如果没有传参，那么，这个参数的值就是 `undefined`。
-
-举例：
 
 ```js
 function foo(name) {
@@ -401,7 +413,7 @@ console.log(str2) // str2
 // 1. 在 JavaScript 中双引号定义的字符串和单引号定义的字符串没有本质区别
 
 // 2. 无论是单引号还是双引号，都必须配对使用，不能一个单引号和双引号配对
-let str3 = "str3'"0
+let str3 = "str3'"
 console.log(str3) //str'
 // 3. 单引号中的字符串中不能出现单引号，可以出现双引号
 //    双引号中的字符串中不能出现双引号，可以出现单引号
@@ -490,11 +502,11 @@ var val = 5 - 'a'; // 数字和字符串进行了乘法运算.(错误运算)
 var val = NaN; // 直接赋值为 NaN
 ```
 
-尽量避免获得`NaN`值,因为`NaN`是个错误
+尽量避免获得`NaN`值, 因为`NaN`是个错误, 你应该反思一下为什么会算出来 `NaN`
 
-`NaN`不等于任何数值,包括`NaN`自己
+`NaN `不等于任何数值,包括`NaN `自己
 
-`NaN`具有传染性,任何和`NaN`之间运算的结果都是`NaN`.
+`NaN`具有传染性, 任何和`NaN`之间运算的结果都是`NaN`.
 
 唯一检测`NaN`的办法是使用`isNaN()`功能
 
@@ -518,9 +530,10 @@ console.log(a); // abc1
 
 #### 5.3 数据类型转换
 
-> `parseInt() ``parseFloat`
+> `parseInt() ` `parseFloat()`
 
-1. `parseInt()`、`parseFloat()`会将传入的数据当作字符串来处理。也就是说，如果对`非String`使用 `parseInt(`)、`parseFloat()`，它会先将其转换为 `String `然后再操作。如果不是数值开头的字符串, 转换结果永远为`NaN`
+1. `parseInt()`、`parseFloat()`会将传入的数据当作字符串来处理。
+2. 也就是说，如果对`非String`使用 `parseInt(`)、`parseFloat()`，它会先将其转换为 `String `然后再操作。如果不是数值开头的字符串, 转换结果永远为`NaN`
 
 ```javascript
 var a = 168.23;
@@ -594,9 +607,9 @@ console.log(parseInt(true));
 // NaN
 ```
 
-`Numbwe()` 函数的转换规则
+`Number()` 函数的转换规则
 
-`Boolean	 ``true `转换为 1 `false `转换为 0
+`Boolean	 ` `true `转换为 1 `false `转换为 0
 
 `function     `转换为 `NaN		 `
 
@@ -612,7 +625,7 @@ console.log(parseInt(true));
 
 #### 6.1 数据类型转换
 
-其他的数据类型都可以转换为 `Boolean `类型。无论是隐式转换，还是显示转换，转换结果都是一样的。有下面几种情况：
+其他的数据类型都可以转换为 `Boolean `类型。无论是隐式转换，还是显示转换，转换结果都是一样的。
 
 > 情况一：`Number `转 `Boolean `
 
@@ -678,11 +691,11 @@ function sayHello(){
 
 > 方式一：利用函数关键字自定义函数（命名函数）
 
-使用`函数声明`来创建一个函数（也就是 `function `关键字）。语法：
+使用`函数声明`来创建一个函数（也就是 `function `关键字）。
 
 ```javascript
-function 函数名([形参1,形参2...形参N]){  // 备注：语法中的中括号，表示“可选”
-	语句...
+function 函数名([形参1,形参2...形参N]){  // 备注：语法中的中括号，表示“可选”, 参数的选取是任意的
+	
 }
 ```
 
@@ -690,7 +703,7 @@ function 函数名([形参1,形参2...形参N]){  // 备注：语法中的中括
 
 ```javascript
 function fun1(a, b){
-	return a+b;
+	return a + b;
 }
 ```
 
@@ -743,7 +756,11 @@ var fun2 = function() {
 var 变量名/函数名  = new Function('形参1', '形参2', '函数体');
 ```
 
-注意，`Function `里面的参数都必须是字符串格式。也就是说，形参也必须放在字符串里；函数体也是放在字符串里包裹起来，放在 `Function `的最后一个参数的位置。
+注意，`Function `里面的参数都必须是字符串格式。
+
+也就是说，形参也必须放在字符串里, 而且是在最前面的几位参数；
+
+函数体也是放在字符串里包裹起来，放在 `Function `的最后一个参数的位置。
 
 - **所有函数都是 `Function `的实例(对象)  **
 - 函数也属于对象
@@ -752,7 +769,6 @@ var 变量名/函数名  = new Function('形参1', '形参2', '函数体');
 
 ```javascript
 var fun3 = new Function('a', 'b', 'console.log("我是函数内部的内容");  console.log(a + b);');
-
 fun3(1, 2); // 调用函数
 ```
 
@@ -773,13 +789,13 @@ fun3(1, 2); // 调用函数
 
 > 总结
 
-1、所有的函数，都是 `Fuction` 的“实例”（或者说是“实例对象”）。函数本质上都是通过 `new Function` 得到的。
+1、所有的函数，都是 `Fuction` 的实例。函数本质上都是通过 `new Function` 得到的。
 
 2、函数既然是实例对象，那么，函数也属于“对象”。还可以通过如下特征，来佐证函数属于对象：
 
 我们直接打印某一个函数，比如 `console.log(fun2)`，发现它的里面有`__proto__`。
 
-们还可以打印 `console.log(fun2 instanceof Object)`，发现打印结果为 `true`。这说明 fun2 函数就是属于 `Object`。
+们还可以打印 `console.log(fun2 instanceof Object)`，发现打印结果为 `true`。
 
 ### 8. Object
 
@@ -789,7 +805,7 @@ fun3(1, 2); // 调用函数
 
 > 创建对象
 
-使用 `new `关键字调用的函数，是构造函数 `constructor`。构造函数是专门用来创建对象的函数。
+使用 `new `关键字调用的函数，是构造函数 `constructor` 来创建的对象。构造函数是专门用来创建对象的函数。
 
 ```javascript
 var obj = new Object();
@@ -799,13 +815,13 @@ var obj = new Object();
 
 使用对象字面量
 
-```
+```js
 var 变量  =  {};
 ```
 
 创建对象时添加成员
 
-```
+```js
 var 变量  = {
     成员名: 值,
     成员名: 值,
@@ -892,9 +908,11 @@ console.log('name' in obj);
 
 #### 2. 构造函数原型 prototype
 
-构造函数方法很好用，但是存在浪费内存的问题, 例如创建实例对象方法的重复会占用内存
+构造函数方法的使用存在浪费内存的问题, 例如创建实例对象方法的重复会占用内存
 
-`JavaScript `规定，每一个`构造函数`都有一个`prototype `属性，指向另一个对象。注意这个`prototype`就是一个对象，这个对象的所有属性和方法，都会被构造函数所拥有。
+`JavaScript `规定，每一个`构造函数`都有一个`prototype `属性，指向另一个对象。
+
+注意这个`prototype`就是一个对象，这个对象的所有属性和方法，都会被构造函数所拥有。
 
 我们可以把那些不变的方法，直接定义在 `prototype `对象上，这样所有对象的实例就可以共享这些方法。
 
@@ -918,13 +936,17 @@ Star.prototype.sing = function() {
 
 ![](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204201412866.png)
 
-#### 4. constructor 函数
+#### 4. constructor 
 
 对象原型（`__proto__` ）和构造函数（`prototype`）原型对象里面都有一个属性 `constructor `属性 ，`constructor `我们称为构造函数，因为它指回构造函数本身。
 
 `constructor `主要用于记录该对象引用于哪个构造函数，它可以让原型对象重新指向原来的构造函数。
 
-一般情况下，对象的方法都在构造函数的原型对象中设置。如果有多个对象的方法，我们可以给原型对象采取对象形式赋值，但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 `constructor  `就不再指向当前构造函数了。此时，我们可以在修改后的原型对象中，添加一个 `constructor `指向原来的构造函数。
+一般情况下，对象的方法都在构造函数的原型对象中设置。
+
+如果有多个对象的方法，我们可以给原型对象采取对象形式赋值，但是这样就会覆盖构造函数原型对象原来的内容，这样修改后的原型对象 `constructor  `就不再指向当前构造函数了。
+
+此时，我们可以在修改后的原型对象中，添加一个 `constructor `指向原来的构造函数。
 
 ```js
  function Star(uname, age) {
@@ -948,7 +970,7 @@ console.log(zxy)
 
 #### 5.  原型链
 
-每一个实例对象又有一个__`proto`__属性，指向的构造函数的原型对象，构造函数的原型对象也是一个对象，也有__`proto`__属性，这样一层一层往上找就形成了原型链。
+每一个实例对象有一个__`proto`__属性，指向的构造函数的原型对象，构造函数的原型对象也是一个对象，也有__`proto`__属性，这样一层一层往上找就形成了原型链。
 
 ![](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204201418663.png)
 
@@ -966,7 +988,11 @@ console.log(zxy)
 
 ### 9. global
 
-固有对象就是系统已经实例化完毕的对象,只可以使用不可以创建
+> 固有对象
+
+固有对象就是系统已经实例化完毕的对象, 只可以使用不可以创建
+
+
 
 
 
@@ -980,7 +1006,7 @@ console.log(zxy)
 
 内置对象 `Date `用来处理日期和时间。
 
-需要注意的是：与 `Math `对象不同，`Date `对象是一个构造函数 ，需要****先实例化****后才能使用。
+需要注意的是：与 `Math `对象不同，`Date `对象是一个构造函数 ，需要先实例化后才能使用
 
 #### 1. 创建Date对象的两种写法
 
@@ -1000,7 +1026,11 @@ console.log(typeof date1);
 // object
 ```
 
-代码解释：不传递参数时，表示的是获取系统的当前时间对象。也可以理解成是：获取当前代码执行的时间。
+代码解释：不传递参数时，表示的是获取系统的当前时间对象。
+
+也可以理解成是：获取当前代码执行的时间。
+
+当然你可能会发现, `new Date` 的时候会将时间按照`ISO`格式日期，东八区加上八个小时
 
 > 传递参数
 
@@ -1060,18 +1090,18 @@ console.log(date32); // Fri Jun 12 2020 16:28:21 GMT+0800 (中国标准时间)
 
 获取了日期指定的部分之后，我们就可以让日期按照指定的格式，进行展示（即日期的格式化）。比如说，我期望能以 `2020-02-02 19:30:59` 这种格式进行展示。
 
-Date对象 有如下方法，可以获取日期和时间的指定部分：
+`Date `对象 有如下方法，可以获取日期和时间的指定部分：
 
-| 方法名              | 含义              | 备注                 |
-| ------------------- | ----------------- | -------------------- |
-| `getFullYear()`     | 获取年份          |                      |
-| `getMonth()`        | **获取月： 0-11** | 0代表一月            |
-| `getDate()`         | **获取日：1-31**  | 获取的是几号         |
-| `getDay()`          | **获取星期：0-6** | 0代表周日，1代表周一 |
-| `getHours()`        | 获取小时：0-23    |                      |
-| `getMinutes()`      | 获取分钟：0-59    |                      |
-| `getSeconds()`      | 获取秒：0-59      |                      |
-| `getMilliseconds()` | 获取毫秒          | 1s = 1000ms          |
+| 方法名              | 含义              | 备注          |
+| ------------------- | ----------------- | ------------- |
+| `getFullYear()`     | 获取年份          |               |
+| `getMonth()`        | **获取月： 0-11** | 0代表一月     |
+| `getDate()`         | 获取日：1-31      | 获取的是几号  |
+| `getDay()`          | **获取星期：0-6** | **0代表周日** |
+| `getHours()`        | 获取小时：0-23    |               |
+| `getMinutes()`      | 获取分钟：0-59    |               |
+| `getSeconds()`      | 获取秒：0-59      |               |
+| `getMilliseconds()` | 获取毫秒          | 1s = 1000ms   |
 
 > 年月日的格式化
 
@@ -1143,7 +1173,7 @@ console.log(regexp);
 
 > 测试正则表达式
 
-`test()` 正则对象方法，用于检测字符串是否符合该规则，该对象会返回 `true` 或 `false`，其参数是测试字符串。
+`test()` 正则对象方法，用于检测字符串是否符合该规则，该对象会返回 `true`  或 `false`，其参数是测试字符串。
 
 ```js
 var rg = /123/;
