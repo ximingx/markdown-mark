@@ -1,5 +1,5 @@
-> 我记得 B站 是有尤雨溪关于 vue.js 的纪录片的, 感兴趣的可以去看看
->
+我记得 B站 是有尤雨溪关于 vue.js 的纪录片的, 感兴趣的可以去看看
+
 > **这是一篇平平无奇, 但是非常长的文章, 长到你可能看一眼就会跳出去的文章, 但是我能有什么坏心思呢, 我只是单纯的懒得拆分开**
 
 ![image-20220529224028541](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205292240654.png)
@@ -26,13 +26,13 @@
 
 > `vue` 的定义
 
-官方定义： **`Vue`（读作` /vjuː/`，类似 `ivew` ）**是一个帮助用户制造界面的 `JavaScript `框架。
+官方定义： `Vue`（读作` /vjuː/`，类似 `ivew` ）是一个帮助用户制造界面的 `JavaScript `框架。
 
 传统的网站开发一般采用`HTML+CSS+JS`作为技术架构，而`vue`立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心，极大的简化了开发流程。
 
 这时的我们使用`vue`技术栈，可以在几分钟内搭建出一个完整的前端项目。
 
-**前端开发者最主要的工作，就是为网站的使用者构建出美观、舒适、好用的网页。**
+前端开发者最主要的工作，就是为网站的使用者构建出美观、舒适、好用的网页。
 
 > 与其它框架的关联
 
@@ -50,17 +50,26 @@
 
 > 以及辅助 `vue `项目开发的一系列工具：
 
-- **`vue-cli`（`npm `全局包：一键生成工程化的 `vue `项目 -` `基于 webpack、大而全）**
-- **`vite```（npm 全局包：一键生成工程化的 `vue `项目 - 小而巧）**
+- `vue-cli`（`npm `全局包：一键生成工程化的 `vue `项目 -` `基于 `webpack`、大而全）
+- `vite```（npm 全局包：一键生成工程化的 `vue `项目 - 小而巧）
 - `vue-devtools`（浏览器插件：辅助调试的工具）
 - `vetur`（`vscode `插件：提供语法高亮和智能提示）
-- **`axios`: ajax请求**
-- **`vue-router`: 路由**
-- **`vuex`: 状态管理**
+- `axios`: `ajax`请求
+- `vue-router`: 路由
+- `vuex`: 状态管理
 - `vue-lazyload`: 图片懒加载
 - `vue-scroller`: 页面滑动相关
 - `mint-ui`: 基于`vue`的组件库(移动端)
-- **`element-plus`: 基于`vue`的组件库(PC端)**
+- `element-plus`: 基于`vue`的组件库(PC端)
+
+> `vue` 可以按照不同的方式使用
+
+- 增强静态的 `HTML `而无需构建步骤
+- 在任何页面中作为` Web Components `嵌入
+- 单页应用 (`SPA`)
+- 全栈 / 服务端渲染 (`SSR`)
+- `Jamstack `/ 静态站点生成 (`SSG`)
+- 目标为桌面端、移动端、`WebGL`，甚至是命令行终端
 
 ### 1.1 两种实现方式
 
@@ -248,17 +257,89 @@ export default {
 
 可以做到前后端分离
 
+### API 风格
+
+> `选项式 API`
+
+使用`选项式 API`，我们可以用包含多个选项的对象来描述组件的逻辑，例如 `data`、`methods` 和 `mounted`。
+
+选项所定义的属性都会暴露在函数内部的 `this` 上，它会指向当前的组件实例。
+
+```html
+<script>
+export default {
+  // data() 返回的属性将会成为响应式的状态
+  // 并且暴露在 `this` 上
+  data() {
+    return {
+      count: 0
+    }
+  },
+
+  // methods 是一些用来更改状态与触发更新的函数
+  // 它们可以在模板中作为事件监听器绑定
+  methods: {
+    increment() {
+      this.count++
+    }
+  },
+
+  // 生命周期钩子会在组件生命周期的各个不同阶段被调用
+  // 例如这个函数就会在组件挂载完成后被调用
+  mounted() {
+    console.log(`The initial count is ${this.count}.`)
+  }
+}
+</script>
+```
+
+> `组合式 API`
+
+通过`组合式 API`，我们可以使用导入的 `API 函数`来描述组件逻辑。在单文件组件中，`组合式 API` 通常会与 `<script setup>` 搭配使用
+
+告诉 `Vue `需要在编译时进行转换，来减少使用`组合式 API `时的样板代码。
+
+```html
+<script setup>
+import { ref, onMounted } from 'vue'
+
+// 响应式状态
+const count = ref(0)
+
+// 用来修改状态、触发更新的函数
+function increment() {
+  count.value++
+}
+
+// 生命周期钩子
+onMounted(() => {
+  // 响应式的数据需要通过 .value 的方式获取他的值
+  console.log(`The initial count is ${count.value}.`)
+})
+</script>
+
+<template>
+  <button @click="increment">Count is: {{ count }}</button>
+</template>
+```
+
 ## 2. Vue 的应用方式
 
+> 根据你的使用场景和个人偏好，在使用 `Vue `时，你可以选择是否采用构建流程(`vite` 或者是 `webpack`)。
+>
+> 使用构建工具的时候, 我们可以使用 `SFC` 
+>
 > 推荐： 我们首先要安装好` Node.js`环境，然后再来做下面的操作。
 
 ---
 
-### 2.1. 引用 Vue.js
+### 2.1. CDN 方式使用 (不使用构建工具)
 
-**首先介绍的方式都是直接在 `html` 文件中使用**
+首先介绍的方式都是直接在 `html` 文件中使用
 
-1、**方式一**：（`CDN`的方式进行引用）
+> 方式一：（`CDN`的方式进行引用）
+
+[推荐使用的CDN BootCDN https://www.bootcdn.cn/]: https://www.bootcdn.cn/
 
 ```html
 <head>
@@ -266,62 +347,23 @@ export default {
 </head>
 ```
 
-2、方式二：（下载 `vue.js` 文件）
+> 方式二：（下载 `vue.js` 文件）
 
 去网站下载 `vue.js` 文件，直接放到工程文件里，然后引用。
 
-3、方式三：（`NPM`的方式安装`vue`）
-
-```bash
-# 最新稳定版
-$ npm install vue
-```
-
-然后在代码中通过下面这种方式进行引用：
-
-```javascript
-  import Vue from 'vue'
-```
-
-首先我们需要通过 `createApp `创建一个应用程序实例
-
 ```html
-<script src="https://unpkg.com/vue@3"></script>
-
-<div id="app">
-  
-</div>
-
-<script>
-  Vue.createApp({
-    data() {
-      return {
-        message: 'Hello Vue!'
-      }
-    }
-  }).mount('#app')
-</script>
+<head>
+    <script src="./vue.global.js"></script>
+</head>
 ```
-
-`.mount()`在调用方法中，应用程序实例不会出现其之前的任何内容。它需要一个“容器”，它可以是实际的 `DOM `元素或选择参数字符串：
-
-```html
-<div id="app"></div>
-```
-
-```js
-*.mount('#app')
-```
-
-**上面的示例使用了 Vue 的全局构建，其中所有 API 都暴露在全局`Vue`变量下。**
 
 ---
 
 ### 2.2 利用 vue-cli
 
-`Vue `提供一个命令行工具，可用于快速搭建大型单页应用。该工具为现代化的前端开发工作流提供了开箱即用的构建配置。只需几分钟即可创建并启动一个带热重载、保存时静态检查以及可用于生产环境的构建配置的项目。
+`Vue `提供一个命令行工具，可用于快速搭建大型单页应用。该工具为现代化的前端开发工作流提供了开箱即用的构建配置。
 
-> 推荐使用 `vue3`, `vue3` 已经成为了 `vue `的默认版本
+只需几分钟即可创建并启动一个带热重载、保存时静态检查以及可用于生产环境的构建配置的项目。
 
 ```bash
 # 全局安装, 可以在任何位置安装脚手架
@@ -335,11 +377,6 @@ $ yarn add global @vue/cli
 $ vue create project
 ```
 
-![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/fa43f9cbf6ed4b09887936606b1e8e88.png)
-这里的上半部分是提醒我要升级， 下半部分是正常显示
-
-![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16-20220325094417451%20%E4%B8%8B%E5%8D%884.18.55.png)
-
 这里有三个选项 （空格是选中， 回车是确定)
 
 1. 使用 `vue3 `（默认版本） ， `babel`（为了打包后使`es6`语法降级兼容低版本浏览器），`eslint`（语法规范）
@@ -349,17 +386,12 @@ $ vue create project
 
 选择完成以后， 会自动搭建项目， 这里我们稍等一会
 
-![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16-20220325094418524%20%E4%B8%8B%E5%8D%884.18.55.png)
-
 ```bash
 # 进入项目目录
 $ cd project
 # 运行项目
 $ npm run serve
 ```
-
-![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16-20220325094417522%20%E4%B8%8B%E5%8D%884.18.55.png)
-点击显示的链接就可以进入创建项目所显示的页面了
 
 ![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16-20220325094418699%20%E4%B8%8B%E5%8D%884.18.55.png)
 
@@ -373,15 +405,15 @@ $ npm run serve
 
 ```bash
 $ npm install -g @vue/cli
-$ npm init vue@latest <your-project-name> --template vue
+$ npm init vue@latest
 # 或者使用 yarn
 $ yarn global add @vue/cli
-$ yarn create vite <your-project-name> --template vue
+$ yarn create vite
 ```
 
 选择配置
 
-```vite
+```bash
 ✔ Project name: … <your-project-name>
 ✔ Add TypeScript? … No / Yes
 ✔ Add JSX Support? … No / Yes
@@ -392,8 +424,6 @@ $ yarn create vite <your-project-name> --template vue
 ✔ Add ESLint for code quality? … No / Yes
 ✔ Add Prettier for code formating? … No / Yes
 ```
-
-![](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/image-20220325103100559%20%E4%B8%8B%E5%8D%884.18.55.png)
 
 然后进入项目， 运行项目
 
@@ -413,7 +443,7 @@ $ yarn dev
 
 ### 2.4 实例的解释
 
-每个 Vue 应用程序首先使用以下函数创建一个新的**应用程序实例**[`createApp`](https://vuejs.org/api/application.html#createapp)：
+每个 `Vue `应用都是通过 [`createApp`](https://staging-cn.vuejs.org/api/application.html#createapp) 函数创建一个新的 应用实例：
 
 ```js
 // 从 vue 中导入 creatApp 这个方法（看不懂可以忽视或者去看一下模块化的介绍， 并不重要）
@@ -438,6 +468,10 @@ import App from './App.vue'
 
 const app = createApp(App)
 ```
+
+应用根组件的内容将会被渲染在容器元素里面。容器元素自己将不会被视为应用的一部分。
+
+当根组件没有设置 `template` 选项时，Vue 将自动使用容器的 `innerHTML` 作为模板。
 
 ---
 
@@ -477,7 +511,48 @@ app.mount('#app')
 - `computed`和`method`都能实现的功能，建议使用`computed`, 因为有缓存；
 - `computed`和`watcher`都能实现的工呢，建议使用`computed`, 因为更加简洁；
 
----
+## 3. 响应式
+
+### 1. reactive
+
+我们可以使用 `reactive() `函数创建一个响应式对象或数组：
+
+```js
+import { reactive } from 'vue'
+
+const state = reactive({ count: 0 })
+```
+
+要在组件模板中使用响应式状态，请在 `setup()` 函数中定义并返回。
+
+```js
+import { reactive } from 'vue'
+
+export default {
+  // `setup` 是一个专门用于组合式 API 的特殊钩子
+  setup() {
+    const state = reactive({ count: 0 })
+
+    // 暴露 state 到模板
+    return {
+      state
+    }
+  }
+}
+```
+
+也可以通过使用构建工具来简化该操作。当使用单文件组件（`SFC`）时，我们可以使用 `<script setup>` 来简化大量样板代码。
+
+```html
+<script setup>
+import { reactive } from 'vue'    
+const state = reactive({ count: 0 }) 
+</script>
+```
+
+
+
+
 
 ## 3. vue 系统指令
 
@@ -496,11 +571,13 @@ app.mount('#app')
 
 指令是带有`v-`前缀的特殊属性。`Vue `提供了许多内置指令`v-html`
 
-**指令的工作是在其表达式的值发生变化时对 DOM 进行响应式更新。**
+指令的工作是在其表达式的值发生变化时对 `DOM `进行`响应式更新`。
 
 ###  3.1 {{ }}
 
-数据绑定最常见的形式就是使用 “**`Mustache`**” 语法（双大括号）的文本插值，在标签中使用。例如：
+`Vue `使用一种基于 `HTML `的模板语法，使我们能够声明式地将其组件实例的数据绑定到呈现的 `DOM `上。所有的 `Vue 模板`都是语法上合法的 `HTML`，可以被符合规范的浏览器和 `HTML 解析器`解析。
+
+数据绑定最常见的形式就是使用 “**`Mustache`**” 语法（双大括号）的文本插值，在标签中使用。
 
 ```html
 <span>Message: {{ msg }}</span>
@@ -508,9 +585,9 @@ app.mount('#app')
 
 `Mustache `标签将会被替代为对应数据对象上 `msg `属性（`msg`定义在`data`对象中）的值。
 
-无论何时，绑定的数据对象上 `msg `属性发生了改变，插值处的内容都会**自动更新**。
+无论何时，绑定的数据对象上 `msg `属性发生了改变，插值处的内容都会自动更新。
 
-**{{ 内容 }} 在初始化页面的时候最先会保留 {{  内容 }}, 然后被数据中的值替换**
+`{{ 内容 }}` 在初始化页面的时候最先会保留 `{{  内容 }}`, 然后被数据中的值替换
 
 `{{  }}`对JavaScript 表达式支持，例如：
 
@@ -623,7 +700,7 @@ app.mount('#app')
 
 `v-text`是纯文本，而`v-html`会被解析成`html`元素。
 
-**注意：使用`v-html`渲染数据可能会非常危险，因为它很容易导致 `XSS`（跨站脚本） 攻击，使用的时候请谨慎，能够使用`{{}}`或者v-text实现的不要使用`v-html`。**
+注意：使用`v-html`渲染数据可能会非常危险，因为它很容易导致 `XSS`（跨站脚本） 攻击，使用的时候请谨慎，能够使用`{{}}`或者v-text实现的不要使用`v-html`。
 
 `v-text`和`v-html`专门用来展示数据, 其作用和插值表达式类似。**`v-text`和`v-html`可以避免插值闪烁问题.**
 
@@ -870,12 +947,12 @@ app.mount('#app')
 
 属性绑定机制
 
-不能在 `HTML `属性中使用胡须。相反， `v-bind`：用于绑定**属性**。动态的获取属性的值， 不再是一个固定的值
+不能在 `HTML `属性中使用 `{{}}`。相反， `v-bind`：用于绑定**属性**。动态的获取属性的值， 不再是一个固定的值
 
->  他绑定的是属性 要和 {{ }} 语法区分开
+>  他绑定的是属性 要和 `{{ }}` 语法区分开
 
-- **如果绑定值为null或undefined，则该属性将从呈现的元素中删除。**
-- **凡是有-的style属性名都要变成驼峰式，比如font-size要变成`fontSize`**
+- 如果绑定的值是 `null` 或者 `undefined`，那么该 attribute 将会从渲染的元素上移除。
+- 凡是`有-的style属性名`都要变成驼峰式，比如`font-size`要变成`fontSize`
 - 值要用引号括起来
 
 比如说：
@@ -887,11 +964,11 @@ app.mount('#app')
 ```
 
 
-上方代码中，给属性加了 `v-bind` 之后，属性值里的整体内容是**表达式**，属性值里的`imageSrc`和`size`是`Vue`实例里面的**变量**。
+上方代码中，给属性加了 `v-bind` 之后，属性值里的整体内容是表达式，属性值里的`imageSrc`和`size`是`Vue`实例里面的变量。
 
 也就是说， `v-bind`的属性值里，可以写合法的 `js `表达式。
 
-**除了动态的设置属性值, 也可以动态的设置属性**
+除了动态的设置属性值, 也可以动态的设置属性
 
 ```js
 <h1 :[arg]="value">arg</h1>
@@ -1474,8 +1551,6 @@ binding 是一个对象，包含以下属性：
   </script>
 </body>
 ```
-
----
 
 ## 4. vue Reactivity
 
@@ -4379,78 +4454,6 @@ module.exports = {
 这里解释一下`externals `配置选项的作用：
 
 我们想引用一个库，但是又不想让`webpack`打包，并且又不影响我们在程序中以`CMD`、`AMD`或者`window/global`全局等方式进行使用，那就可以通过配置`externals`。
-
-## 13. setup
-
-`setup` `是所有` `Composition API`的容器，为一个函数。组件中所用到的数据、方法等等，均要配置在`setup`中，**它会在`beforeCreate`之前执行一次**，注意：`Vue3`里`this`不再是指向`Vue`实例，访问`this`会是`undefined
-
-- 若返回一个对象，则对象中的属性、方法, 在模板中均可以直接使用。
-- 若返回一个渲染函数：则可以自定义渲染内容。
-- 因为返回值不再是`return`的对象, 而是`promise`, 模板看不到`return`对象中的属性。（后期也可以返回一个`Promise`实例，但需要`Suspense`和异步组件的配合）
-
-> `Vue2`配置（`data`、`methos`、`computed`…）中可以访问到`setup`中的属性、方法。
-> 但在`setup`中不能访问到`V2`配置（`data`、`methods`、`computed`…）。
-> 如果有重名, `setup`优先。
-
-```js
-<script>
-import { ref, reactive } from 'vue'
-
-export default {
-	name: 'Home',
-	setup(props, context) {
-		const title = ref('标题')
-		const data = reactive({
-			value: '哈哈哈'
-		})
-		return {
-		  title,
-		  data
-		}
-	}
-}
-</script>
-```
-
-### 13.1 setup 参数
-
-- props：值为对象，包含组件外部传递过来，且组件内部声明接收了的属性
-- context：上下文对象
-
-+ + attrs: 值为对象，包含组件外部传递过来，但没有在`props`配置中声明的属性, 相当于`this.$attrs`
-  + slots: 收到的插槽内容, 相当于`this.$slots`
-  + emit: 分发自定义事件的函数, 相当于`this.$emit`
-
-### 13.2 ref
-
-使用`ref`可以创建一个包含响应式数据的引用对象（reference对象，简称ref对象），可以是基本类型、也可以是对象。
-
-```js
-// 创建
-const xxx = ref(value)
-
-// 使用
-xxx.value
-
-// 在模板中
-<div>{{xxx}}</div>
-```
-
-### 13.3 reactive
-
-定义一个对象类型的响应式数据，内部基于`ES6`的`Proxy`实现，通过代理对象操作源对象内部数据进行操作
-
-```js
-// 创建
-const xxx = reactive({
-    xxx: ''
-})
-
-// 使用
-xxx.xxx
-```
-
-
 
 
 
