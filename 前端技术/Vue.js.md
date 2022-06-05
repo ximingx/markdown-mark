@@ -1,47 +1,66 @@
-我记得 B站 是有尤雨溪关于 vue.js 的纪录片的, 感兴趣的可以去看看
-
-> **这是一篇平平无奇, 但是非常长的文章, 长到你可能看一眼就会跳出去的文章, 但是我能有什么坏心思呢, 我只是单纯的懒得拆分开**
+# Vue.js
 
 ![image-20220529224028541](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202205292240654.png)
 
 [TOC]
 
+> 参考文章
 
+| 文章 | 地址 |
+|---|---|
+| `官网` |https://vuejs.org/ |
+| `中文官网` |https://cn.vuejs.org/ |
+| `中文官网vue3` |https://v3.cn.vuejs.org/ |
+| `通俗易懂中文版翻译` |[staging-cn.vuejs.org](https://link.juejin.cn/?target=https%3A%2F%2Fstaging-cn.vuejs.org%2F) |
+| `菜鸟教程` |https://www.runoob.com/vue3/vue3-tutorial.html |
+| `W3CSchool` | https://www.w3cschool.cn/vuejs3 |
 
-# Vue.js
+## 1. 基础理论认识
 
-`官网`：https://vuejs.org/
-`中文官网`：https://cn.vuejs.org/
-`中文官网vue3`：https://v3.cn.vuejs.org/
-`菜鸟教程`：https://www.runoob.com/vue3/vue3-tutorial.html
-`W3CSchool`: https://www.w3cschool.cn/vuejs3/
+首先普及一个知识, 近年来比较受欢迎的前端框架有 `Google `的` AngularJS` , `Facebook` 的 `ReactJs`, 以及 `尤雨溪`的 `Vue.js`
 
-> **麻烦记住这个男人 (*`尤雨溪`*) , 我觉得他很帅哎**
->
-> ![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204271957654.png)
-
-## 1. 初步了解 vue.js
-
-首先普及一个知识, 近年来比较受欢迎的前端框架有 `Google `的` AngularJS` , `Facebook` 的 `ReactJs`, 以及`Vue.js`
+### 1. vue 初步了解
 
 > `vue` 的定义
 
 官方定义： `Vue`（读作` /vjuː/`，类似 `ivew` ）是一个帮助用户制造界面的 `JavaScript `框架。
 
-传统的网站开发一般采用`HTML+CSS+JS`作为技术架构，而`vue`立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心，极大的简化了开发流程。
+传统的网站开发一般采用`HTML+CSS+JS`作为技术架构，而`vue`立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心
 
-这时的我们使用`vue`技术栈，可以在几分钟内搭建出一个完整的前端项目。
+```vue
+// 从 vue 的包中解构出 createApp 方法, 用来创建一个实例
+import { createApp } from 'vue'
 
-前端开发者最主要的工作，就是为网站的使用者构建出美观、舒适、好用的网页。
+createApp({
+  data() {
+    return {
+      count: 0
+    }
+  }
+// 链式调用, mount('#app'), 绑定到 #app 元素上
+}).mount('#app')
+```
 
-> 与其它框架的关联
+```vue
+<div id="app">
+  <button @click="count++">
+    {{ count }}
+  </button>
+</div>
+```
 
-- 借鉴`angular`的模板和`数据绑定技术`
-- 借鉴`react`的组件化和`虚拟DOM技术`, 学习完 `react` 后 可以快速上手 `vue`
+> 两个核心功能
+
+- 声明式渲染：`Vue` 通过自己的模板语法扩展了标准 `HTML`，使得我们可以声明式地描述基于 `JavaScript `状态输出的 `HTML`。
+- 响应性：`Vue `会自动跟踪 `JavaScript `状态变化并在改变发生时响应式地更新 `DOM`。
+
+---
+
+### 2. 渐进式前端框架
 
 > 官方给 `vue `的定位是前端框架
 >
-> 因为它提供了构建用户界面的一整套解决方案（俗称 **`vue 全家桶`**）：
+> 因为它提供了构建用户界面的一整套解决方案（俗称 **`vue 全家桶`**）
 
 - `vue`（核心库）
 - `vue-router`（路由方案）
@@ -51,7 +70,7 @@
 > 以及辅助 `vue `项目开发的一系列工具：
 
 - `vue-cli`（`npm `全局包：一键生成工程化的 `vue `项目 -` `基于 `webpack`、大而全）
-- `vite```（npm 全局包：一键生成工程化的 `vue `项目 - 小而巧）
+- `vite`（`npm `全局包：一键生成工程化的 `vue `项目 - 小而巧）
 - `vue-devtools`（浏览器插件：辅助调试的工具）
 - `vetur`（`vscode `插件：提供语法高亮和智能提示）
 - `axios`: `ajax`请求
@@ -62,7 +81,12 @@
 - `mint-ui`: 基于`vue`的组件库(移动端)
 - `element-plus`: 基于`vue`的组件库(PC端)
 
-> `vue` 可以按照不同的方式使用
+> 与其它框架的关联
+
+- 借鉴`angular`的模板和`数据绑定技术`
+- 借鉴`react`的组件化和`虚拟DOM技术`
+
+> `vue` 是渐进化框架, 应用于
 
 - 增强静态的 `HTML `而无需构建步骤
 - 在任何页面中作为` Web Components `嵌入
@@ -71,125 +95,60 @@
 - `Jamstack `/ 静态站点生成 (`SSG`)
 - 目标为桌面端、移动端、`WebGL`，甚至是命令行终端
 
-### 1.1 两种实现方式
-
-> `SFC  `单页面文件
-
-```html
-// .vue 文件
-<template>
-<!-- 类似于 html 的模版 -->
-</template>
-
-<script>
-// 进行 js 操作
-</script>
-
-<style>
-<!-- css 样式 -->
-</style>
-```
-
-> `cdn` 引用
->
-> (当然也可以安装到本地然后引用, 但是不推荐)
-
-[BootCDN: https://www.bootcdn.cn/](https://www.bootcdn.cn/)
-
-1. 导入 `vue.js` 的 `script `脚本文件
-2. 在页面中声明一个将要被 `vue `所控制的 `DOM `区域
-3. 创建 `vm `实例对象（`vue 实例对象`）
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-</head>
-<body>
-<!-- 2. 声明要被 vue 所控制的 DOM 区域, 可以视为一个容器 -->
-<div id="app">
-    {{ username }}
-</div>
-
-<!-- 1. 导入 vue 的脚本文件 -->
-<script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.33/vue.global.js"></script>
-<!-- 3. 创建 vue 的实例对象 -->
-<script>
-    Vue.createApp({
-        // 数据
-        data() {
-            return {
-                username: `/**
-                  * author: ximingx
-                  * Github:https://github.com/ximingx
-                  * csdn: https://ximingx.blog.csdn.net/
-                  */`
-            }
-        }
-        // 绑定元素
-    }).mount('#app');
-</script>
-</body>
-</html>
-```
-
 ---
 
-### 1.2 提高效率的发展历程
+### 3. 提高效率的发展历程
 
 大概了解一下前端的库和框架的发展
 
-`原生JS` -> `Jquery之类的类库` -> `前端模板引擎` -> `Angular.js / Vue.js`（能够帮助我们减少不必要的DOM操作；提高渲染效率；双向数据绑定的概念）
+特殊强调一下: `jQuery2.0`的原始大小为`235KB`，优化后为`81KB`, 唔, 后面会有和其他框架文件大小的对比
 
-在 `Vue.js` 中我们有自己操作 `DOM `的方式， 可以不再使用原生方法
-
----
-
-### 1.3 虚拟 DOM
-
-传统的`web`开发，是利用 `jQuery`操作`DOM`，这是非常耗资源的。
-
-**我们可以在 `JS `的内存里构建类似于`DOM`的对象，去拼装数据，拼装完整后，把数据整体解析，一次性插入到`html`里去。这就形成了虚拟 `DOM`。**
-
-`Vue1.0`没有`虚拟DOM`，直到`Vue2.0`改成了基于`虚拟DOM`， 现在常用的版本是 `vue3`
+`原生JS` -> `Jquery之类的类库` -> `前端模板引擎` -> `Angular.js / Vue.js`
 
 ---
 
-### 1.4 Vue框架的特点
+### 4. 虚拟 DOM
 
-与 `jquery `的区别：`vue`数据驱动，通过数据来显示视图层而不是节点操作。
+传统的`web`开发，是利用 `jQuery`操作`DOM`，这是非常耗资源的
 
-`vue `一般使用场景：数据操作比较多、频繁的场景，更加便捷。
+而且 `jquery` 的包比 `vue` 大很多, 加载更慢
+
+> `Vue1.0`没有`虚拟DOM`，直到`Vue2.0`改成了基于`虚拟DOM`
+
+虚拟 `DOM` 使得我们可以在 `JS `的内存里构建类似于`DOM`的对象，去拼装数据，拼装完整后，把数据整体解析，一次性插入到`html`里去。
+
+---
+
+### 5. Vue框架的特点
+
+与 `jquery `的区别：`vue`是数据驱动，通过数据来显示视图层而不是通过繁杂的节点操作。
+
+> `vue `一般使用场景：数据操作比较多、频繁的场景
 
 
 - 模板渲染：基于 `html `的模板语法，学习成本低。
 
-- **响应式的更新机制：数据改变之后，视图会自动刷新。**
+- 响应式的更新机制：数据改变之后，视图会自动刷新。
 
-- 渐进式框架 （在任何页面上嵌入为 `Web `组件） , `vue `的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合
+- 渐进式框架 （在任何页面上嵌入为 `Web `组件） , `vue `的核心库只关注视图层，不仅易于上手，还便于与第三方库或既有项目整合, 减少造轮子, 嗷呜, 不是我懒的原因
 
 - 组件化/模块化 （确实使代码结构页面看起来清楚）
 
-- 轻量：开启 `gzip`压缩后，可以达到 `20kb` 大小。**（`React `达到 35kb，`AngularJS `达到60kb）。**
+- 轻量：开启 `gzip`压缩后，可以达到 `20kb` 大小。（`React `达到 `35kb`，`AngularJS `达到`60kb`）。(当然你学习的时候可能是看不出来差别的, 但是一个项目上线的时候, 加载资源是很耗时的任务, 呜呜呜)
 
 ---
 
-### 1.5 MVVM 模式
+### 6. MVVM 模式
 
 ![](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16%20%E4%B8%8B%E5%8D%884.18.55.png)
 
 **`ViewModel`是` Vue.js` 的核心，它是一个`Vue实例`。**
 
-`Vue`实例是作用于某一个`HTML`元素上的，这个元素可以是`HTML`的 `body `元素，也可以是指定了`id`的某个元素。（一般以 `#app `指定，当然也可以自己指定，我们会把 `vue `实例挂载到该 `DOM `元素）
-
-**当创建了`ViewModel`后，双向绑定是如何达成的呢？**
-
 首先，我们将上图中的**`DOM Listeners`和`Data Bindings`**看作两个工具，它们是实现双向绑定的关键。 
 
 > `View`
 
-从`View`侧看，`ViewModel`中的**`DOM Listeners`工具会帮我们监测页面上`DOM`元素的变化**，如果有变化，则更改`Model`中的数据； 
+从`View`侧看，`ViewModel`中的**`DOM Listeners`工具会帮我们监测 `view` 页面上`DOM`元素的变化**，如果有变化，则更改`Model`中的数据； 
 
 > `Model`
 
@@ -197,30 +156,36 @@
 
 > `MVVM`
 
-`MVVM`是`Model-View-ViewModel`的缩写。`MVVM`是一种设计思想。`Model `层代表数据模型，也可以在`Model`中定义数据修改和操作的业务逻辑；`View `代表`UI 组件`，它负责将数据模型转化成`UI `展现出来，`ViewModel `是一个同步`View `和 `Model`的对象。
+`MVVM`是`Model-View-ViewModel`的缩写。
 
-在`MVVM`架构下，`View `和 `Model `之间并没有直接的联系，而是通过`ViewModel`进行交互，`Model `和 `ViewModel `之间的交互是双向的， 因此`View `数据的变化会同步到`Model`中，而`Model `数据的变化也会立即反应到`View `上。
+`MVVM`是一种设计思想。`Model `层代表数据模型，也可以在`Model`中定义数据修改和操作的业务逻辑；`View `代表`UI 组件`，它负责将数据模型转化成`UI `展现出来，`ViewModel `是一个同步`View `和 `Model`的对象。
+
+在`MVVM`架构下，`View `和 `Model `之间并没有直接的联系，而是通过`ViewModel`进行交互，`Model `和 `View ` 与 `ViewModel`之间的交互都是双向的， 因此`View `数据的变化会同步到`Model`中，而`Model `数据的变化也会立即反应到`View `上。
 
 `ViewModel `通过双向数据绑定把 `View `层和 `Model `层连接起来，而`View `和 `Model `之间的同步工作完全是自动的，无需人为干涉，因此开发者只需关注业务逻辑，不需要手动操作`DOM`, 不需要关注数据状态的同步问题，复杂的数据状态维护完全由 `MVVM `来统一管理。
 
 > `mvc `和 `mvvm`
 
-`mvc`和`mvvm`其实区别并不大，都是一种设计思想。主要就是`mvc`中`Controller`演变成`mvvm`中的`viewModel`。`mvvm`主要解决了`mvc`中大量的`DOM `操作使页面渲染性能降低，加载速度变慢，影响用户体验。
+`mvc`和`mvvm`其实区别并不大，都是一种设计思想。
+
+主要就是`mvc`中`Controller`演变成`mvvm`中的`viewModel`。`mvvm`主要解决了`mvc`中大量的`DOM `操作使页面渲染性能降低，加载速度变慢，影响用户体验。
 
 ---
 
-### 1.6 单文件组件
+### 7. 单文件组件
 
-在大多数支持构建工具的 `Vue `项目中，我们使用类似于 `HTML `的文件格式创建 `Vue `组件，称为单文件组件（也称为`*.vue`文件，缩写为`SFC`）。
+嗷呜, 前提是支持构建工具的项目中, 别问我为什么要强调这个, 必不可能是因为我犯过错, 嗷呜
 
-顾名思义，`Vue SFC` 将组件的逻辑 (`JavaScript`)、模板 (`HTML`) 和样式 (`CSS`) 封装在一个文件中。这是前面的示例，以 `SFC `格式编写：
+> **在大多数支持构建vue工具的 `Vue `项目中**，我们使用类似于 `HTML `的文件格式创建 `Vue `组件，称为单文件组件（也称为`*.vue`文件，缩写为`SFC`）。
 
-```html
+顾名思义，`Vue SFC` 将组件的逻辑 (`JavaScript`)、模板 (`HTML`) 和样式 (`CSS`) 封装在一个文件中。
+
+```vue
 <script>
 export default {
   data() {
     return {
-      键值对的形式保存数据
+      // 键值对的形式保存数据
     }
   }
 }
@@ -231,33 +196,33 @@ export default {
 </template>
 
 <style scoped>
-// 样式的设计
+/* 样式的设计 */
 </style>
 ```
 
-**通常一个 `.vue` 文件就是一个组件， 用于实现页面某一个部分**
-
 ---
 
-### 1.7 单页面
+### 8. 单页面
 
 > 多页面
+>
+> 即服务端渲染
 
 多页面跳转刷新所有资源，每个公共资源`(js、css等)`需选择性重新加载
 
 页面跳转是所有的资源都要重新加载，页面之间的切换会出现卡顿空白的问题，不容易实现切换动画等。这种类型的网站也就是多页网站，也叫做多页应用
 
-即服务端渲染
-
 > 单页面
+>
+> 可以做到前后端分离
 
-一个项目中只有一个完整的`html`主页面，其他都是`html`片段组成的分页面，浏览器一开始会在主页面加载所有必须的 `html, js, css`。当用户向服务器发送请求的时候, 只需要访问一次就可以, 服务器返回一个`web`页面, 当页面跳转的时候只需要做到局部刷新, 由路由程序将分页面动态载入主页面，跳转只是局部刷新，不会重新加载全部资源。
+一个项目中只有一个完整的`html`主页面，其他都是`html`片段组成的分页面，浏览器一开始会在主页面加载所有必须的 `html, js, css`。
+
+当用户向服务器发送请求的时候, 只需要访问一次就可以, 服务器返回一个`web`页面, 当页面跳转的时候只需要做到局部刷新, 由路由程序将分页面动态载入主页面，跳转只是局部刷新，不会重新加载全部资源。
 
 原理：在`js`会感知到`url`的变化后动态地将当前页面的内容清除，然后将下一个页面的内容挂载到当前页面上。这个时候的路由不再是后端来做了，而是前端来做，判断页面显示相应的组件，清除不需要的。
 
-可以做到前后端分离
-
-### API 风格
+### 9. API 风格
 
 > `选项式 API`
 
@@ -265,7 +230,9 @@ export default {
 
 选项所定义的属性都会暴露在函数内部的 `this` 上，它会指向当前的组件实例。
 
-```html
+实际上，`选项式 API `也是用`组合式 API` 实现的
+
+```vue
 <script>
 export default {
   // data() 返回的属性将会成为响应式的状态
@@ -295,11 +262,18 @@ export default {
 
 > `组合式 API`
 
-通过`组合式 API`，我们可以使用导入的 `API 函数`来描述组件逻辑。在单文件组件中，`组合式 API` 通常会与 `<script setup>` 搭配使用
+通过`组合式 API`，我们可以使用导入的 `API 函数`来描述组件逻辑。
+
+在单文件组件中，`组合式 API` 通常会与 `<script setup>` 搭配使用
 
 告诉 `Vue `需要在编译时进行转换，来减少使用`组合式 API `时的样板代码。
 
-```html
+`vue3` 向下兼容了 `vue2` 的语法, 在简单的业务中任然可以使用 `vue2 `的 `选项式 API`
+
+这种形式更加自由，也需要你对 `Vue `的响应式系统有更深的理解才能高效使用。相应的，它的灵活性也使得组织和重用逻辑的模式变得更加强大。
+
+```vue
+<!-- setup 是进一步的简化 -->
 <script setup>
 import { ref, onMounted } from 'vue'
 
@@ -327,43 +301,47 @@ onMounted(() => {
 
 > 根据你的使用场景和个人偏好，在使用 `Vue `时，你可以选择是否采用构建流程(`vite` 或者是 `webpack`)。
 >
-> 使用构建工具的时候, 我们可以使用 `SFC` 
+> 使用构建工具的时候, 我们才可以使用 `SFC` 
 >
 > 推荐： 我们首先要安装好` Node.js`环境，然后再来做下面的操作。
+>
+> 可以使用 `nvm `也可以直接使用 `node`, 新手学习可以使用 `node`, 开发中可以替换 `nvm` 环境
 
 ---
 
-### 2.1. CDN 方式使用 (不使用构建工具)
+### 1. 不使用构建工具
 
-首先介绍的方式都是直接在 `html` 文件中使用
-
-> 方式一：（`CDN`的方式进行引用）
-
-[推荐使用的CDN BootCDN https://www.bootcdn.cn/]: https://www.bootcdn.cn/
-
-```html
-<head>
-    <script src="https://cdn.bootcdn.net/ajax/libs/vue/3.2.33/vue.global.js"></script>
-</head>
-```
-
-> 方式二：（下载 `vue.js` 文件）
-
-去网站下载 `vue.js` 文件，直接放到工程文件里，然后引用。
-
-```html
-<head>
-    <script src="./vue.global.js"></script>
-</head>
+```vue
+<body>
+    <!-- 在最开始一定要引入 vue 的文件 -->
+    <script src="https://unpkg.com/vue@3"></script>
+	<div id="app">
+    	{{ message }}
+	</div>
+    <script>
+  	const { createApp } = Vue
+  	createApp({
+    	data() {
+      		return {
+        		message: 'Hello Vue!' 
+      		}
+    	}
+  	}).mount('#app')
+</script>
+</body>
 ```
 
 ---
 
-### 2.2 利用 vue-cli
+### 2. 利用 vue-cli
 
-`Vue `提供一个命令行工具，可用于快速搭建大型单页应用。该工具为现代化的前端开发工作流提供了开箱即用的构建配置。
+`Vue `提供一个命令行工具，可用于快速搭建大型单页应用。
 
 只需几分钟即可创建并启动一个带热重载、保存时静态检查以及可用于生产环境的构建配置的项目。
+
+需要有 `node` 的环境, 利用 `npm `或 `yarn` 进行安装
+
+关于 `yarn `和 `npm `的命令可以网上去参考
 
 ```bash
 # 全局安装, 可以在任何位置安装脚手架
@@ -377,11 +355,13 @@ $ yarn add global @vue/cli
 $ vue create project
 ```
 
-这里有三个选项 （空格是选中， 回车是确定)
+> 依赖的选项 
 
 1. 使用 `vue3 `（默认版本） ， `babel`（为了打包后使`es6`语法降级兼容低版本浏览器），`eslint`（语法规范）
-2. 同上， 只有 `vue `版本不一样
-3. 自定义
+2. 同上， 但是版本选择 `vue2`
+3. 自定义选择添加的依赖
+
+> 空格是选中， 回车是确定
 
 
 选择完成以后， 会自动搭建项目， 这里我们稍等一会
@@ -397,11 +377,11 @@ $ npm run serve
 
 ---
 
-### 2.3 使用 vite
+### 3. 使用 vite
 
-官方的 `Vue `构建设置基于[Vite](https://vitejs.dev/)，这是一个现代、轻量级且速度极快的前端构建工具。
+`Vite`这是一个现代、轻量级且速度极快的前端构建工具。
 
-创建启用构建工具的 `Vue `项目，请在命令行中运行以下命令（不带`>`符号）：
+这一指令将会安装并执行` create-vue`，它是 Vue 官方的项目脚手架工具。
 
 ```bash
 $ npm install -g @vue/cli
@@ -441,26 +421,40 @@ $ yarn dev
 
 ---
 
-### 2.4 实例的解释
+### 4. 实例的解释
 
-每个 `Vue `应用都是通过 [`createApp`](https://staging-cn.vuejs.org/api/application.html#createapp) 函数创建一个新的 应用实例：
+每个 `Vue `应用都是通过 [`createApp`](https://staging-cn.vuejs.org/api/application.html#createapp) 函数创建一个新的 应用实例
 
-```js
-// 从 vue 中导入 creatApp 这个方法（看不懂可以忽视或者去看一下模块化的介绍， 并不重要）
+我们可以在原来的没有使用 `vue` 框架的项目中局部使用 `vue`, 通过绑定某一个具体的元素
+
+```vue
+// 从 vue 中导入 creatApp 这个方法
 import { createApp } from 'vue'
 
 const app = createApp({
-  /* root component options */
+  /* 根组件选项 */
 })
 ```
 
 ---
 
-###  2.5 根组件
+###  5. 根组件
 
-我们传入的对象`createApp`实际上是一个组件。每个应用程序都需要一个“根组件”，它可以包含其他组件作为其子组件。
+我们传入的对象`createApp`实际上是一个组件。
 
-如果您使用的是单文件组件，我们通常会从另一个文件中导入根组件：
+每个应用程序都需要一个根组件，它可以包含其他组件作为其子组件。
+
+```js
+import { createApp } from 'vue'
+
+const app = createApp({
+  /* 根组件选项 */
+})
+```
+
+如果您使用的是单文件组件，我们通常会从另一个文件中导入根组件
+
+在使用脚手架 ( 构建工具 ) 的时候常用
 
 ```js
 import { createApp } from 'vue'
@@ -469,53 +463,94 @@ import App from './App.vue'
 const app = createApp(App)
 ```
 
-应用根组件的内容将会被渲染在容器元素里面。容器元素自己将不会被视为应用的一部分。
+应用根组件的内容将会被渲染在容器元素里面。
 
-当根组件没有设置 `template` 选项时，Vue 将自动使用容器的 `innerHTML` 作为模板。
+需要注意的是容器元素自己将不会被视为应用的一部分。
 
 ---
 
-### 2.6 挂载
+### 6. 挂载
 
-`.mount()`在调用其方法之前，应用程序实例不会呈现任何内容。它需要一个“容器”参数，它可以是实际的 `DOM `元素或选择器字符串：
+`.mount()`在调用其方法之前，应用程序实例不会呈现任何内容。
+
+它需要一个“容器”参数，它可以是实际的 `DOM `元素或选择器字符串
 
 ```html
 <div id="app"></div>
+```
 
+```js
 const app = createApp(App)
 app.mount('#app')
 ```
 
-**应用程序根组件的内容将在容器元素内呈现。容器元素本身不被视为应用程序的一部分。**
+在完成应用程序注册后，应调用该`.mount()`方法。
 
-在完成应用程序注册后，应调用该`.mount()`方法。另请注意，与注册方法不同，它的返回值是根组件实例而不是应用程序实例。
+同时请注意，不同于其他资源注册方法，它的返回值是根组件实例
+
+当在未采用构建流程的情况下使用 `Vue `时，我们可以在挂载容器中直接书写根组件模板
+
+```html
+<div id="app">
+  <button @click="count++">{{ count }}</button>
+</div>
+```
+
+```js
+import { createApp } from 'vue'
+
+const app = createApp({
+  data() {
+    return {
+      count: 0
+    }
+  }
+})
+
+app.mount('#app')
+```
+
+当根组件没有设置 `template` 选项时，`Vue `将自动使用容器的 `innerHTML` 作为模板。
 
 ---
 
-### 2.7 应用程序配置
+### 7. 应用程序配置
 
 应用程序实例公开了一个`.config`对象，允许我们配置一些应用程序级选项
 
+```js
+app.config.errorHandler = (err) => {
+  /* 处理错误 */
+}
+```
+
 ---
 
-### 2.8 应用介绍
+### 8. 多个应用实例
 
-- `createApp`() ：创建一个应用，每个 `Vue` 应用都是通过用 `createApp `函数创建一个新的应用实例开始的：；
-- `data`(){} ： `data`方法，用于在`vue`中声明数据,对象或函数类型,页面中可以直接访问使用；
-- `methods`:{} ： `methods`属性，用于编写vue中的方法,所有的方法由`vue`对象来调用, 访问`data`中的属性直接使用`this.xxx`；
-- `computed`:{} 计算属性：根据数据，自动进行计算，经常用于数值计算；
-- `watch`:{}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ：属性说明：监听属性，属性变化时，制动执行里面的函数，可以根据变量的改变，作异步操作和页面样的改变；
+`createApp` `API `允许多个 `Vue `应用共存于同一个页面上，而且每个应用都拥有自己的用于配置和全局资源的作用域。
 
-注意：
+我们可以把渐进式理解为, 在原有的基础上, 使用 `vue` 框架补充页面
 
-- `computed`和`method`都能实现的功能，建议使用`computed`, 因为有缓存；
-- `computed`和`watcher`都能实现的工呢，建议使用`computed`, 因为更加简洁；
+```js
+const app1 = createApp({
+  /* ... */
+})
+app1.mount('#container-1')
+
+const app2 = createApp({
+  /* ... */
+})
+app2.mount('#container-2')
+```
 
 ## 3. 响应式
 
 ### 1. reactive
 
-我们可以使用 `reactive() `函数创建一个响应式对象或数组：
+`reactive()` 仅适用于对象（包括数组和内置类型，如 `Map `和 `Set`）。
+
+我们可以使用 [`reactive()`](https://staging-cn.vuejs.org/api/reactivity-core.html#reactive) 函数创建一个响应式对象或数组
 
 ```js
 import { reactive } from 'vue'
@@ -523,38 +558,298 @@ import { reactive } from 'vue'
 const state = reactive({ count: 0 })
 ```
 
-要在组件模板中使用响应式状态，请在 `setup()` 函数中定义并返回。
+要在组件模板中使用响应式状态，需要在 `setup()` 函数中定义并返回。
 
 ```js
 import { reactive } from 'vue'
 
 export default {
-  // `setup` 是一个专门用于组合式 API 的特殊钩子
   setup() {
     const state = reactive({ count: 0 })
 
-    // 暴露 state 到模板
+    function increment() {
+      state.count++
+    }
+      
+    // 一定更要返回
     return {
-      state
+      state,
+      increment
     }
   }
 }
 ```
 
-也可以通过使用构建工具来简化该操作。当使用单文件组件（`SFC`）时，我们可以使用 `<script setup>` 来简化大量样板代码。
+在 `setup()` 函数中手动暴露状态和方法可能非常繁琐。
+
+也可以通过使用构建工具来简化该操作。
+
+当使用单文件组件（`SFC`）时，我们可以使用 `<script setup>` 来简化大量样板代码。
 
 ```html
 <script setup>
-import { reactive } from 'vue'    
-const state = reactive({ count: 0 }) 
+import { reactive } from 'vue'
+
+const state = reactive({ count: 0 })
+
+function increment() {
+  state.count++
+}
+</script>
+
+<template>
+  <button @click="increment">
+    {{ state.count }}
+  </button>
+</template>
+```
+
+`<script setup>`  中的顶层的导入和变量声明可在同一组件的模板中自动使用, 不需要 `return `返回
+
+### 2. DOM 更新时机
+
+当你更改响应式数据后，`DOM `也会自动更新
+
+对 `Vue `组件数据的更改不会立即反映在 `DOM `中。相反，`Vue `异步更新 `DOM`。
+
+```html
+<template>
+  <div>
+    <button @click="handleClick">Insert/Remove</button>
+    <div v-if="show" ref="content">I am an element</div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      show: true,
+    };
+  },
+  methods: {
+    handleClick() {
+      this.show = !this.show;
+      console.log(this.show, this.$refs.content);
+    },
+  },
+};
+</script>
+
+<!-- 
+点击的时候会有这么两组结果, 
+
+false <div> I am an element </div>
+
+true null
+-->
+```
+
+我们可以发现, 在 `v-if='true'`的时候, 并没有存在当前的 `DOM `
+
+若要等待一个状态改变后的 `DOM `更新完成，你可以使用 `nextTick` 这个全局 `API`
+
+Vue 允许`this.$nextTick(callback)`在组件实例上使用权限。`callback`在新数据更新到达 `DOM `后立即执行。
+
+```html
+<template>
+  <div>
+    <button @click="handleClick">Insert/Remove</button>
+    <div v-if="show" ref="content">I am an element</div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      show: true,
+    };
+  },
+  methods: {
+    handleClick() {
+      this.show = !this.show;
+      this.$nextTick(() => {
+        console.log(this.show, this.$refs.content);
+      });
+    },
+  },
+};
+</script>
+
+<!-- 
+点击的时候会有这么两组结果, 
+
+false null
+true <div>I am an element</div>
+-->
+```
+
+在 `this.$nextTick` 函数中我们可以获取到发送改变后的 `DOM`
+
+如果在没有参数的情况下调用 `this.$nextTick()`，则函数返回一个 `promise`，当组件数据更改到达 `DOM `时该 `promise `会被解析。
+
+```js
+<template>
+  <div>
+    <button @click="handleClick">Insert/Remove</button>
+    <div v-if="show" ref="content">I am an element</div>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      show: true,
+    };
+  },
+  methods: {
+    async handleClick() {
+      this.show = !this.show;
+      await this.$nextTick();
+      console.log(this.show, this.$refs.content);
+    },
+  },
+};
 </script>
 ```
 
+### 3. 深层响应性
+
+在 `Vue `中，状态都是默认深层响应式的。
+
+这意味着即使在更改深层次的对象或数组，你的改动也能被检测到。
+
+```js
+import { reactive } from 'vue'
+
+const obj = reactive({
+  nested: { count: 0 },
+  arr: ['foo', 'bar']
+})
+
+function mutateDeeply() {
+  // 以下都会按照期望工作
+  obj.nested.count++
+  obj.arr.push('baz')
+}
+```
+
+### 4. 响应式代理
+
+值得注意的是，`reactive()` 返回的是一个原始对象的 `Proxy`，它和原始对象是不相等的
+
+关于 `proxy `是 `es6 `的知识点
+
+```js
+const raw = {}
+const proxy = reactive(raw)
+
+// 代理和原始对象不是全等的
+console.log(proxy === raw) // false
+```
+
+只有代理是响应式的，更改原始对象不会触发更新。因此，使用 `Vue `的响应式系统的最佳实践是 仅使用你声明对象的代理版本。
+
+为保证访问代理的一致性，对同一个对象调用 `reactive()` 会总是返回同样的代理，而对一个已存在代理调用 `reactive()` 也是返回同样的代理：
+
+```js
+// 在同一个对象上调用 reactive() 会返回相同的代理
+console.log(reactive(raw) === proxy) // true
+
+// 在一个代理上调用 reactive() 会返回它自己
+console.log(reactive(proxy) === proxy) // true
+```
+
+这个规则对嵌套对象也适用。依靠深层响应性，响应式对象内的嵌套对象依然是代理
+
+```js
+const proxy = reactive({})
+
+const raw = {}
+proxy.nested = raw
+
+console.log(proxy.nested === raw) // false
+```
+
+### 5. reactive 局限性
+
+> 1 仅对对象类型有效（对象、数组和 `Map`、`Set` 这样的数据类型有效，而对 `string`、`number` 和 `boolean` 这样的无效。
+
+```js
+
+```
+
+> 2 因为 `Vue `的响应式系统是通过 `property `访问进行追踪的，因此我们必须始终保持对该响应式对象的相同引用。
+
+这意味着我们不可以随意地替换一个响应式对象，因为这将导致对初始引用的响应性连接丢失
+
+```js
+let state = reactive({ count: 0 })
+
+// 上面的引用 ({ count: 0 }) 将不再被追踪（响应性连接已丢失！）
+state = reactive({ count: 1 })
+```
+
+同时这也意味着当我们将响应式对象的 `property `赋值或解构至本地变量时，或是将该 `property `传入一个函数时，我们会失去响应性
+
+```js
+const state = reactive({ count: 0 })
+
+// n 是一个局部变量，同 state.count
+// 失去响应性连接
+let n = state.count
+// 不影响原始的 state
+n++
+
+// count 也和 state.count 失去了响应性连接
+let { count } = state
+// 不会影响原始的 state
+count++
+```
+
+### 6. ref
+
+为了解决 `reactive()` 带来的限制, ` ref() `可以采用任何值类型并创建一个对象，该对象在` .value` 属性下公开内部值
+
+和响应式对象的 `property `类似，ref 的 `.value` `property `也是响应式的。
+
+```js
+import { ref } from 'vue'
+
+const message = ref('Hello World!')
+
+console.log(message.value) // "Hello World!"
+message.value = 'Changed'
+console.log(message.value) // "Changed"
+```
+
+在模板中使用时我们不需要再使用 `.value` 的形式, 直接使用该对象就可以
+
+```html
+<h1>{{ message }}</h1>
+```
+
+`ref `被传递给函数或是从一般对象上被解构时，不会丢失响应性
+
+```js
+const obj = {
+  foo: ref(1),
+  bar: ref(2)
+}
+
+// 该函数接收一个 ref
+// 需要通过 .value 取值
+// 但它会保持响应性
+callSomeFunction(obj.foo)
+
+// 仍然是响应式的
+const { foo, bar } = obj
+```
+
+一言以蔽之，`ref()` 使我们能创造一种任意值的引用并能够不丢失响应性地随意传递。
 
 
 
-
-## 3. vue 系统指令
+## 4. vue 系统指令
 
 指令（`Directives`）是 `vue `为开发者提供的模板语法，用于辅助开发者渲染页面的基本结构。
 
@@ -567,15 +862,17 @@ const state = reactive({ count: 0 })
 - 条件渲染指令
 - 列表渲染指令
 
-`Vue `的使用基于 `HTML `的模板语法，允许您以声明方式将渲染的 `DOM `绑定到底层组件实例的数据。所有 `Vue `模板都是语法上有效的 `HTML`，可以被符合规范的浏览器和 `HTML `解析器解析。
-
 指令是带有`v-`前缀的特殊属性。`Vue `提供了许多内置指令`v-html`
 
 指令的工作是在其表达式的值发生变化时对 `DOM `进行`响应式更新`。
 
-###  3.1 {{ }}
+### 1. 模板语法
 
-`Vue `使用一种基于 `HTML `的模板语法，使我们能够声明式地将其组件实例的数据绑定到呈现的 `DOM `上。所有的 `Vue 模板`都是语法上合法的 `HTML`，可以被符合规范的浏览器和 `HTML 解析器`解析。
+`Vue `使用一种基于 `HTML `的模板语法，使我们能够声明式地将其组件实例的数据绑定到呈现的 `DOM `上。所有的 `Vue 模板`都是语法上合法的 `HTML`，可以被符合规范的浏览器和 `HTML `解析器解析。
+
+在底层机制中，`Vue `会将模板编译成高度优化的 `JavaScript `代码。结合响应式系统，当应用状态变更时，`Vue `能够智能地推导出需要重新渲染的组件的最少数量，并应用最少的 `DOM `操作。
+
+###  3.1 {{ }}
 
 数据绑定最常见的形式就是使用 “**`Mustache`**” 语法（双大括号）的文本插值，在标签中使用。
 
@@ -583,11 +880,11 @@ const state = reactive({ count: 0 })
 <span>Message: {{ msg }}</span>
 ```
 
-`Mustache `标签将会被替代为对应数据对象上 `msg `属性（`msg`定义在`data`对象中）的值。
+`Mustache `标签将会被替代为对应数据对象上 `msg `属性（`msg`定义在`data`对象中）的值
+
+但是需要注意的是, 在页面最初的时候, 页面上显示的内容是 `{{msg}}` `msg` 的内容未来得及被替换
 
 无论何时，绑定的数据对象上 `msg `属性发生了改变，插值处的内容都会自动更新。
-
-`{{ 内容 }}` 在初始化页面的时候最先会保留 `{{  内容 }}`, 然后被数据中的值替换
 
 `{{  }}`对JavaScript 表达式支持，例如：
 
@@ -602,7 +899,7 @@ const state = reactive({ count: 0 })
 ```
 
 
-但是有个限制就是，每个绑定都**只能包含单个表达式**，如下表达式无效：
+但是有个限制就是，每个绑定都只能包含单个表达式，如下表达式无效：
 
 ```html
 <!-- 这是语句，不是表达式 -->
@@ -618,11 +915,11 @@ const state = reactive({ count: 0 })
 
 `v-cloak`会保持和元素实例的关联，直到结束编译后自动消失。
 
-`v-cloak`指令和`CSS `规则一起用的时候，能够**解决差值表达式闪烁的问题**（即：可以隐藏未编译的标签直到实例准备完毕）。
+`v-cloak`指令和`CSS `规则一起用的时候，能够解决差值表达式闪烁的问题（即：可以隐藏未编译的标签直到实例准备完毕）。
 
-**在网速很慢的情况下，一开始会直接显示`{{name}}`这个内容** ，等网络加载完成了，才会显示`name` 属性的值。
+在网速很慢的情况下，一开始会直接显示`{{name}}`这个内容 ，等网络加载完成了，才会显示`name` 属性的值。
 
-**原理: 先通过样式隐藏内容, 然后在内存中进行值的替换, 替换好之后再显示最后的结果**
+原理: 先通过样式隐藏内容, 然后在内存中进行值的替换, 替换好之后再显示最后的结果
 
 ```html
 <html lang="en">
@@ -661,13 +958,13 @@ const state = reactive({ count: 0 })
 
 `v-text`可以将一个变量的值渲染到指定的元素中。
 
-与插值表达式的区别: 插值表达式只会**替换自己的这个占位符**，并不会把整个元素的内容清空。`v-text` 会**覆盖**元素中原本的内容。
+与插值表达式的区别: 插值表达式只会替换自己的这个占位符，并不会把整个元素的内容清空。`v-text` 会覆盖元素中原本的内容。
 
 没有闪动问题
 
 - `v-text`指令用于将数据填充到标签中，作用于插值表达式类似，但是没有闪动问题
 - 如果数据中有`HTML`标签会将`html`标签一并输出
-- 注意：**此处为单向绑定**，数据对象上的值改变，插值会发生变化；但是当插值发生变化并不会影响数据对象的值
+- 注意：此处为单向绑定，数据对象上的值改变，插值会发生变化；但是当插值发生变化并不会影响数据对象的值
 
 ```html
 <div id="app">
@@ -702,9 +999,9 @@ const state = reactive({ count: 0 })
 
 注意：使用`v-html`渲染数据可能会非常危险，因为它很容易导致 `XSS`（跨站脚本） 攻击，使用的时候请谨慎，能够使用`{{}}`或者v-text实现的不要使用`v-html`。
 
-`v-text`和`v-html`专门用来展示数据, 其作用和插值表达式类似。**`v-text`和`v-html`可以避免插值闪烁问题.**
+`v-text`和`v-html`专门用来展示数据, 其作用和插值表达式类似。`v-text`和`v-html`可以避免插值闪烁问题.
 
-当网速比较慢时, 使用 `{{ }} `来展示数据, **有可能会产生插值闪烁问题。**
+当网速比较慢时, 使用 `{{ }} `来展示数据, 有可能会产生插值闪烁问题。
 
 ```js
 <div id="app">
@@ -732,7 +1029,7 @@ const state = reactive({ count: 0 })
 
 - 显示原始信息跳过编译过程
 - 跳过这个元素和它的子元素的编译过程。
-- **一些静态的内容不需要编译加这个指令可以加快渲染**
+- 一些静态的内容不需要编译加这个指令可以加快渲染
 
 ```html
     <span v-pre>{{ this will not be compiled }}</span>    
@@ -772,62 +1069,44 @@ const state = reactive({ count: 0 })
 
 ### 3.6 v-on
 
-事件绑定
-
 ![指令语法图](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/directive.69c37117%20%E4%B8%8B%E5%8D%884.18.55.png)
 
-例如：
+> 你可以使用 `v-on` 指令 (简写为 `@`) 来监听 `DOM `事件和运行 `JavaScript `代码。
 
 ```html
-	<button v-on:click="num++">{{ num }}</button>
+<button v-on:click="num++">{{ num }}</button>
 ```
 
 可以简写成：
 
 ```html
-    <button @click="num++">{{ num }}</button>
+<button @click="num++">{{ num }}</button>
 ```
 
-**事件对象的名称必须是 $event** 
+> 方法事件处理器会自动接收原生 `DOM `事件并触发执行, 事件对象的名称必须是` $event `
 
-```html
+```vue
+<script setup>
+const name = ref('Vue.js')
 
-<body>
-    <div id="app">
-        <div>{{num}}</div>
-        <div>
-            <!-- 如果事件直接绑定函数名称，那么默认会传递事件对象作为事件函数的第一个参数 -->
-            <button v-on:click='handle1'>点击1</button>
-            <!-- 2、如果事件绑定函数调用，那么事件对象必须作为最后一个参数显示传递，
-                 并且事件对象的名称必须是 $event 
-            -->
-            <button v-on:click='handle2(123, 456, $event)'>点击2</button>
-        </div>
-    </div>
-    <script type="text/javascript" src="js/vue.js"></script>
-    <script type="text/javascript">
-        var vm = new Vue({
-            el: '#app',
-            data: {
-                num: 0
-            },
-            methods: {
-                handle1: function(event) {
-                    console.log(event.target.innerHTML)
-                },
-                handle2: function(p, p1, event) {
-                    console.log(p, p1)
-                    console.log(event.target.innerHTML)
-                    this.num++;
-                }
-            }
-        });
-    </script>
+function greet(event) {
+  alert(`Hello ${name.value}!`)
+  // `event` 是 DOM 原生事件
+  if (event) {
+    alert(event.target.tagName)
+  }
+}
+</script>
+
+<template>
+	<!-- `greet` 是上面定义过的方法名 -->
+	<button @click="greet">Greet</button>
+</template>
 ```
 
-`$event` 是 `vue `提供的特殊变量，用来表示原生的事件参数对象`event`。``$event` 可以解决事件参数对象`event`被覆盖的问题。
+`$event` 是 `vue `提供的特殊变量，用来表示原生的事件参数对象`event`。`$event` 可以解决事件参数对象`event`被覆盖的问题。
 
-> **v-on 提供了click 事件，也提供了一些其他的事件。**
+> `v-on` 提供了一些事件
 
 
 - `v-on:click`
@@ -842,53 +1121,75 @@ const state = reactive({ count: 0 })
 
 - `v-on:submit`
 
-> **v-on的常见事件修饰符**
+> `v-on`的常见事件修饰符
 
-`Vue `不推荐我们操作`DOM    `为了解决这个问题，`Vue.js` 为 `v-on` 提供了**事件修饰符**
+在处理事件时调用 `event.preventDefault()` 或 `event.stopPropagation()` 是很常见的。
 
-`vue`为`v-on`提供了事件修饰符，通过点(.)表示的指令后缀来调用修饰符。
-
-**注：使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生。**
-
-`v-on` 提供了很多事件修饰符来辅助实现一些功能。事件修饰符有如下：
+`Vue `不推荐我们操作`DOM    `, 为了解决这个问题，`Vue.js` 为 `v-on` 提供了事件修饰符
 
 - `.stop`  阻止冒泡。本质是调用 `event.stopPropagation()`。阻止点击事件冒泡。等同于`JavaScript`中的`event.stopPropagation()`. 使用了.`stop`后，点击子节点不会捕获到父节点的事件
 
-
-- `.prevent`  阻止默认事件（默认行为）。本质是调用 `event.preventDefault()`。
-- `.capture`  添加事件监听器时，使用捕获的方式（也就是说，事件采用捕获的方式，而不是采用冒泡的方式）。
-- `.self`  只有当事件在该元素本身（比如不是子元素）触发时，才会触发回调。
-- `.once`  事件只触发一次。
-- `.{keyCode | keyAlias}`   只当事件是从侦听器绑定的元素本身触发时，才触发回调。
-- `.native` 监听组件根元素的原生事件。
-
-```html
-<!-- 阻止单击事件继续传播 -->
-<a v-on:click.stop="doThis"></a>
-
-<!-- 提交事件不再重载页面 -->
-<form v-on:submit.prevent="onSubmit"></form>
-
-<!-- 修饰符可以串联   即阻止冒泡也阻止默认事件 -->
-<a v-on:click.stop.prevent="doThat"></a>
-
-<!-- 只当在 event.target 是当前元素自身时触发处理函数 -->
-<!-- 即事件不是从内部元素触发的 -->
-<div v-on:click.self="doThat">...</div>
-
-使用修饰符时，顺序很重要；相应的代码会以同样的顺序产生。因此，用 v-on:click.prevent.self 会阻止所有的点击，而 v-on:click.self.prevent 只会阻止对元素自身的点击。
+```vue
+<!-- 单击事件将停止传递 -->
+<a @click.stop="doThis"></a>
 ```
 
-**关键修饰符**
 
-在监听键盘事件时，我们经常需要检查特定的键。Vue 允许为`v-on`或`@`在监听键事件时添加键修饰符：
+- `.prevent`  阻止默认事件（默认行为）。本质是调用 `event.preventDefault()`。
+
+```vue
+<!-- 提交事件将不再重新加载页面 -->
+<form @submit.prevent="onSubmit"></form>
+
+<!-- 修饰语可以使用链式书写 -->
+<a @click.stop.prevent="doThat"></a>
+
+<!-- 也可以只有修饰符 -->
+<form @submit.prevent></form>
+```
+
+
+- `.capture`  添加事件监听器时，使用捕获的方式（也就是说，事件采用捕获的方式，而不是采用冒泡的方式）。
+
+```vue
+<!-- 添加事件监听器时，使用 `capture` 捕获模式 -->
+<!-- 例如：指向内部元素的事件，在被内部元素处理前，先被外部处理 -->
+<div @click.capture="doThis">...</div>
+```
+
+
+- `.self`  只有当事件在该元素本身（比如不是子元素）触发时，才会触发回调。
+
+```vue
+<!-- 仅当 event.target 是元素本身时才会触发事件处理器 -->
+<div @click.self="doThat">...</div>
+```
+
+
+- `.once`  事件只触发一次。
+
+```vue
+<!-- 点击事件最多被触发一次 -->
+<a @click.once="doThis"></a>
+```
+
+- `.passive` 修饰符一般用于触摸事件的监听器
+
+```vue
+<!-- 滚动事件的默认行为 (scrolling) 将立即发生而非等待 `onScroll` 完成 -->
+<!-- 以防其中包含 `event.preventDefault()` -->
+<div @scroll.passive="onScroll">...</div>
+```
+
+> 按键修饰符
+
+在监听键盘事件时，我们经常需要检查特定的键。`Vue `允许为`v-on`或`@`在监听键事件时添加键修饰符：
 
 ```html
-<!-- only call `vm.submit()` when the `key` is `Enter` -->
 <input @keyup.enter="submit" />
 ```
 
-您可以直接使用通过`KeyboardEvent.key` 修饰符公开的任何有效键名，方法是将它们转换为 kebab-case。
+您可以直接使用通过`KeyboardEvent.key` 修饰符公开的任何有效键名，但需要转为 `kebab-case` 形式。
 
 ```html
 <input @keyup.page-down="onPageDown" />
@@ -898,118 +1199,68 @@ const state = reactive({ count: 0 })
 
 - `.enter`
 - `.tab`
-- `.delete`（捕获“删除”和“退格”键）
+- `.delete`
 - `.esc`
 - `.space`
 - `.up`
 - `.down`
 - `.left`
 - `.right`
+- `.ctrl`
+- `.alt`
+- `.shift`
+- `.meta`
 
-```html
-<!-- 只有在 `keyCode` 是 13 时调用 `vm.submit()` -->
-<input v-on:keyup.13="submit">
+> `.exact` 修饰符
 
-<!-- -当点击enter 时调用 `vm.submit()` -->
-<input v-on:keyup.enter="submit">
+`.exact` 修饰符允许控制触发一个事件所需的确定组合的系统按键修饰符。
 
-<!--当点击enter或者space时  时调用 `vm.alertMe()`   -->
-<input type="text" v-on:keyup.enter.space="alertMe" >
+```vue
+<!-- 当按下 Ctrl 时，即使同时按下 Alt 或 Shift 也会触发 -->
+<button @click.ctrl="onClick">A</button>
 
-常用的按键修饰符
-.enter =>    enter键
-.tab => tab键
-.delete (捕获“删除”和“退格”按键) =>  删除键
-.esc => 取消键
-.space =>  空格键
-.up =>  上
-.down =>  下
-.left =>  左
-.right =>  右
+<!-- 仅当按下 Ctrl 且未按任何其他键时才会触发 -->
+<button @click.ctrl.exact="onCtrlClick">A</button>
 
-<script>
-	var vm = new Vue({
-        el:"#app",
-        methods: {
-              submit:function(){},
-              alertMe:function(){},
-        }
-    })
-
-</script>
+<!-- 仅当没有按下任何系统按键时触发 -->
+<button @click.exact="onClick">A</button>
 ```
-
-在原生的 DOM 事件绑定中，可以在事件处理函数的形参处，接收事件参数对象 `event`。同理，在 `v-on` 指令（简写为 `@` ）所绑定的事件处理函数中，同样可以接收到事件参数对象 `event`，示例代码如下：
 
 ---
 
 ### 3.7 v-bind
 
-属性绑定机制
-
-不能在 `HTML `属性中使用 `{{}}`。相反， `v-bind`：用于绑定**属性**。动态的获取属性的值， 不再是一个固定的值
+数据绑定的一个常见需求场景是操纵元素的` CSS class` 列表和内联样式。因为它们都是 `attribute`，我们可以使用 `v-bind` 来做这件事
 
 >  他绑定的是属性 要和 `{{ }}` 语法区分开
 
-- 如果绑定的值是 `null` 或者 `undefined`，那么该 attribute 将会从渲染的元素上移除。
+- 不能在 `HTML属性 ` 中使用 `{{ }}`。 `v-bind`用于绑定属性
+
+- 如果绑定的值是 `null` 或者 `undefined`，那么该 `attribute `将会从渲染的元素上移除。
 - 凡是`有-的style属性名`都要变成驼峰式，比如`font-size`要变成`fontSize`
 - 值要用引号括起来
 
-比如说：
-
 ```html
-    <img v-bind:src="imageSrc +'string'">
-
-    <div v-bind:style="{ fontSize: size + 'px' }">{{ msg }}</div>
+<img v-bind:src="imageSrc +'string'">
+<div v-bind:style="{ fontSize: size + 'px' }">{{ msg }}</div>
 ```
 
 
-上方代码中，给属性加了 `v-bind` 之后，属性值里的整体内容是表达式，属性值里的`imageSrc`和`size`是`Vue`实例里面的变量。
+上方代码中，给属性加了 `v-bind` 之后，`:`之后的是属性的名字, 属性值里的整体内容是表达式
 
-也就是说， `v-bind`的属性值里，可以写合法的 `js `表达式。
+> 我们可以给 `:class` (`v-bind:class` 的缩写) 传递一个对象来动态切换 `class`：
 
-除了动态的设置属性值, 也可以动态的设置属性
-
-```js
-<h1 :[arg]="value">arg</h1>
-
-data() {
-    return {
-        arg: 'id',
-        value: 1
-    }
-}
+```vue
+<div class="static" :class="{ active: isActive, 'text-danger': hasError }"></div>
 ```
 
-上面两行代码也可以简写成：
+你可以在对象中写多个字段来操作多个 `class`。
 
-```html
-    <img :src="imageSrc +'string'">
+此外，`:class` 指令也可以和一般的 `class` `attribute `共存。
 
-    <div :style="{ fontSize: size + 'px' }"></div>
-```
+> 数组
 
-`Vue`中通过属性绑定为元素设置`class `类样式
-
-下面这是一般的写法
-
-```html
-    <style>
-        .red {
-            color: red;
-        }
-
-        .thin {
-            font-weight: thin;
-        }
-    </style>
-
-    <h1 class="red thin"></h1>
-```
-
-而在 `vue `中， 我们可以使用多种方式传递值
-
-**方式一： 数组**
+我们可以给 `:class` 绑定一个数组以应用一系列 `CSS class`
 
 ```html
 <!-- 直接传递类名 -->   
@@ -1021,9 +1272,7 @@ data() {
 ]"></h1>
 ```
 
-上方代码中，注意，数组里写的是字符串；如果不加单引号，就不是字符串了，而是变量，我们一般可以用这种方式来搞事情
-
-**方式二： 三元表达式**
+> 三元表达式
 
 外层也是通过数组的形式
 
@@ -1043,7 +1292,7 @@ data() {
     </script>
 ```
 
-**写法三：在数组中使用 对象 来代替 三元表达式**
+> 在数组中使用 对象 来代替 三元表达式
 
 ```html
     <div id="app">
@@ -1061,7 +1310,7 @@ data() {
     </script>
 ```
 
-**写法四：直接使用对象**
+> 直接使用对象
 
 
 ```html
@@ -1099,138 +1348,46 @@ data() {
 </span>
 ```
 
-> **每次组件更新时都会调用内部绑定表达式的函数，因此它们没有任何副作用，例如更改数据或触发异步操作。**
+每次组件更新时都会调用内部绑定表达式的函数，因此它们没有任何副作用，例如更改数据或触发异步操作。
+
+> 动态参数
+
+同样在指令参数上也可以使用一个 `JavaScript `表达式，需要包含在一对方括号内
+
+```js
+<a v-bind:[attributeName]="url"> ... </a>
+
+<!-- 简写 -->
+<a :[attributeName]="url"> ... </a>
+```
+
+这里的 `attributeName` 会作为一个 `JavaScript `表达式被动态执行，计算得到的值会被用作最终的参数。
+
+动态参数期望结果为一个字符串，或者是 `null`。特殊值 `null` 意为显式移除该绑定。
 
 ---
 
 ### 3.8 v-model
 
-双向数据绑定
+在前端处理表单时，我们常常需要将表单输入框的内容同步给 `JavaScript `中相应的变量。
 
-
-> 重点：**双向数据绑定，只能用于表单元素，或者用于自定义组件**。
-> 而 v-bind 所有元素都可以， 但他是单向绑定的
-
-之前的文章里，我们通过`v-bind`，给`<input>`标签绑定了`data`对象里的`name`属性。当`data`里的`name`的值发生改变时，`<input>`标签里的内容会自动更新。但是修改 `<input>`标签里的内容 不会引起`data`里的`name`的值发生改变
-
-可我现在要做的是：我在`<input>`标签里修改内容，要求`data`里的`name`的值自动更新。从而实现双向数据绑定。该怎么做呢？这就可以利用`v-model`这个属性。
-
-**区别**：
-
-- `v-bind`：只能实现数据的**单向**绑定，从 M 自动绑定到 V。
-
-- `v-model`：只有`v-model`才能实现**双向**数据绑定。注意，v-model 后面不需要跟冒号，
-
-**注意**：`v-model` 只能运用在**表单元素中，或者用于自定义组件**。常见的表单元素包括：`input(radio, text, address, email....) 、select、checkbox 、textarea。`
-
-我们还可以将多个复选框绑定到同一个数组或 `set `值：
-
-简单的描述
-
-- 当数据发生变化的时候，视图也就发生变化
-- 当视图发生变化的时候，数据也会跟着同步变化
-
-获取单选框中的值
-
-```html
- 	<!-- 
-		1、 两个单选框需要同时通过v-model 双向绑定 一个值 
-        2、 每一个单选框必须要有value属性  且value 值不能一样 
-		3、 当某一个单选框选中的时候 v-model  会将当前的 value值 改变 data 中的 数据
-
-		gender 的值就是选中的值，我们只需要实时监控他的值就可以了
-	-->
-   <input type="radio" id="male" value="1" v-model='gender'>
-   <label for="male">男</label>
-
-   <input type="radio" id="female" value="2" v-model='gender'>
-   <label for="female">女</label>
-
-<script>
-    new Vue({
-         data: {
-             // 默认会让当前的 value 值为 2 的单选框选中
-                gender: 2,  
-            },
-    })
-
-</script>
+```vue
+<input v-model="text">
 ```
 
-获取复选框中的值
+注意插值表达式在 `<textarea>` 中将不会工作。请使用 `v-model` 来替代。
 
-- 通过`v-model`
-- 和获取单选框中的值一样 
-- 复选框 `checkbox` 这种的组合时   `data `中的 `hobby` 我们要定义成数组 否则无法实现多选
+> 表单修饰符
 
-```html
-<script>
-export default {
-  data() {
-    return {
-      checkedNames: []
-    }
-  }
-}
-</script>
-<div>Checked names: {{ checkedNames }}</div>
+- `.lazy`
 
-<input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
-<label for="jack">Jack</label>
-
-<input type="checkbox" id="john" value="John" v-model="checkedNames">
-<label for="john">John</label>
-
-<input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
-<label for="mike">Mike</label>
-```
-
-获取下拉框和文本框中的值
+默认情况下，`v-model` 会在每次 `input` 事件后更新数据, 你可以添加 `lazy` 修饰符来改为在每次 `change` 事件后更新数据
 
 ```html
-   <div>
-      <span>职业：</span>
-       <!--
-			1、 需要给select  通过v-model 双向绑定 一个值 
-             2、 每一个option  必须要有value属性  且value 值不能一样 
-		    3、 当某一个option选中的时候 v-model  会将当前的 value值 改变 data 中的 数据
-		     occupation 的值就是选中的值，我们只需要实时监控他的值就可以了
-		-->
-       <!-- multiple  多选 -->
-      <select v-model='occupation' multiple>
-          <option value="0">请选择职业...</option>
-          <option value="1">教师</option>
-          <option value="2">软件工程师</option>
-          <option value="3">律师</option>
-      </select>
-         <!-- textarea 是 一个双标签   不需要绑定value 属性的  -->
-        <textarea v-model='desc'></textarea>
-  </div>
-<script>
-    new Vue({
-         data: {
-                // 默认会让当前的 value 值为 2 和 3 的下拉框选中
-                 occupation: ['2', '3'],
-             	 desc: 'nihao'
-            },
-    })
-</script>
-```
-
-**表单修饰符**
-
-`.lazy`
-
-默认情况下，`v-model`在每个事件之后将输入与数据同步（[上述](https://vuejs.org/guide/essentials/forms.html#vmodel-ime-tip)`input`IME 组合除外）。您可以添加修饰符以改为在事件后同步：`lazy``change`
-
-**本质: 将 input 事件切换成 change 事件**
-
-```html
-<!-- synced after "change" instead of "input" -->
 <input v-model.lazy="msg" />
 ```
 
-`.number`
+- `.number`
 
 如果您希望用户输入自动转换为数字，您可以将`number`修饰符添加到`v-model`托管输入：
 
@@ -1242,17 +1399,17 @@ export default {
 
 如果输入有，`number`则自动应用修饰符`type="number"`。
 
-`.trim`
+- `.trim`
 
 如果您希望自动修剪用户输入中的空白，您可以将`trim`修饰符添加到您的`v-model`-managed 输入中：
 
-**只能去掉首尾的 不能去除中间的空格**
+只能去掉首尾的 不能去除中间的空格
 
 ```html
 <input v-model.trim="msg" />
 ```
 
-**拓展:`v-model` 的实现原理**
+> `v-model` 的实现原理
 
 ```html
 <input :value="msg" @input="msg = @event.target.value">{{ msg }}</input>
@@ -1262,12 +1419,18 @@ export default {
 
 ### 3.8 v-for
 
-- **不推荐**同时使用 `v-if` 和 `v-for`
+我们可以使用 `v-for` 指令基于一个数组来渲染一个列表。
+
+> 使用注意点
+
+- 不推荐同时使用 `v-if` 和 `v-for`
 - 当 `v-if` 与 `v-for` 一起使用时，`v-if` 具有比` v-for `更高的优先级。
 
-我们可以使用该v-for指令基于数组呈现项目列表。该v-for指令需要格式为 的特殊语法`item in items`，其中`items`是源数据数组，`item`是被迭代的数组元素的别名：
+> 我们可以使用该`v-for`指令基于数组呈现项目列表。
 
-```js
+在 `v-for` 块中可以完整地访问父作用域内的 `property`。`v-for` 也支持使用可选的第二个参数表示当前项的位置索引。
+
+```vue
 <li v-for="item in items">
   {{ item.message }}
 </li>
@@ -1279,9 +1442,32 @@ data() {
 }
 ```
 
+> 您也可以使用`<template>`标签 `v-for`来渲染一个包含多个元素的块
+
+```vue
+<ul>
+  <template v-for="item in items">
+    <li>{{ item.msg }}</li>
+    <li class="divider" role="presentation"></li>
+  </template>
+</ul>
+```
+
+> 你也可以使用 `of` 作为分隔符来替代 `in`，这也和 `JavaScript` 的迭代器语法非常相似
 
 ```html
-<!-- 不是每一个都需要全写， 看需求 -->
+<div v-for="item of items"></div>
+```
+
+> 你也可以使用 `v-for` 来遍历一个对象的所有属性 
+
+第一个参数表示属性值
+
+第二个参数表示属性名
+
+第三个参数表示位置索引
+
+```vue
 <li v-for="(value, key, index) in obj1" :key="index">值：{{value}} --- 键：{{key}} --- index：{{index}} </li>
 <script>
     new Vue({
@@ -1297,50 +1483,48 @@ data() {
 </script>
 ```
 
-与 template 类似`v-if`，您也可以使用`<template>`标签 with`v-for`来渲染一个包含多个元素的块。例如：
+> key 管理状态
 
-```html
-<ul>
-  <template v-for="item in items">
-    <li>{{ item.msg }}</li>
-    <li class="divider" role="presentation"></li>
-  </template>
-</ul>
+用 `v-for` 正在更新已渲染过的元素列表时，它默认用就地复用策略。如果数据项的顺序被改变，`Vue`将不是移动 `DOM `元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素。
+
+为了给 `Vue `一个提示，以便它可以跟踪每个节点的标识，从而重用和重新排序现有的元素，你需要为每个项目提供一个唯一的 `key`  `attribute`
+
+```vue
+<div v-for="item in items" :key="item.id">
+  <!-- 内容 -->
+</div>
 ```
 
-您也可以使用`of`作为分隔符而不是`in`，以便它更接近 JavaScript 的迭代器语法：
+- `key `的值只能是字符串或数字类型
+- `key `的值必须具有唯一性, 建议把数据项 `id `属性的值作为 `key `的值
+- 使用 `index `的值当作 `key `的值没有任何意义（因为`index `的值不具有唯一性）
+- 建议使用 `v-for` 指令时一定要指定 `key `的值, 既提升性能、又防止列表状态紊乱, 最主要的是， 他不会给你警告， 看的心烦哎
 
-```html
-<div v-for="item of items"></div>
+> 组件上使用 `v-for`
+
+可以直接在组件上使用 `v-for`，和其他任何一般的元素没有区别 (别忘记提供一个 `key`)：
+
+```vue
+<my-component v-for="item in items" :key="item.id"></my-component>
 ```
 
-**注意**：在 Vue 2.2.0+ 版本里，当在**组件中**使用 v-for 时，key 属性是必须要加上的。
+但是，这不会自动将任何数据传递给组件，因为组件有自己独立的作用域。
 
-这样做是因为：每次 for 循环的时候，通过指定 key 来标示当前循环这一项的**唯一身份**。
+为了将迭代后的数据传递到组件中，我们还是应该使用 `prop`：
 
-> 当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用 “**就地复用**” 策略。如果数据项的顺序被改变，Vue将**不是移动 DOM 元素来匹配数据项的顺序**， 而是**简单复用此处每个元素**，并且确保它在特定索引下显示已被渲染过的每个元素。
 
-> 为了给 Vue 一个提示，**以便它能跟踪每个节点的身份，从而重用和重新排序现有元素**，你需要为每项提供一个唯一 key 属性。
-
-- key 的值只能是字符串或数字类型
-- key 的值必须具有唯一性（即：key 的值不能重复）
-- 建议把数据项 id 属性的值作为 key 的值（因为 id 属性的值具有唯一性）
-- **使用 index 的值当作 key 的值没有任何意义（因为index 的值不具有唯一性）**
-- **建议使用 v-for 指令时一定要指定 key 的值（既提升性能、又防止列表状态紊乱）, 最主要的是， 他不会给你警告， 看的心烦哎**
 
 ---
 
 ### 3.9 v-if
 
-设置元素的显示和隐藏
+`v-if` 会根据表达式的值的真假条件，来决定是否渲染元素，如果为`false`则不渲染，如果为`true`则渲染。
 
-**作用**：根据表达式的值的真假条件，来决定是否渲染元素，如果为`false`则不渲染（达到隐藏元素的目的），如果为`true`则渲染。
+在切换时，元素和它的数据绑定会被销毁并重建
 
-在切换时，元素和它的数据绑定会被销毁并重建。
+因为`v-if`是一个指令，所以它必须附加到单个元素。
 
-**`v-if`在`<template>`**
-
-因为`v-if`是一个指令，所以它必须附加到单个元素。但是如果我们想要切换多个元素怎么办？在这种情况下，我们可以`v-if`在一个`<template>`元素上使用，它作为一个不可见的包装器。最终渲染结果将不包括该`<template>`元素。
+我们可以`v-if`在一个`<template>`元素上使用，它作为一个不可见的包装器。最终渲染结果将不包括该`<template>`元素。
 
 ```html
 <template v-if="ok">
@@ -1350,15 +1534,32 @@ data() {
 </template>
 ```
 
+和 `v-else` 相似，一个使用 `v-else-if` 的元素必须紧跟在一个 `v-if` 或一个 `v-else-if` 元素后面。
+
+```js
+<div v-if="type === 'A'">
+  A
+</div>
+<div v-else-if="type === 'B'">
+  B
+</div>
+<div v-else-if="type === 'C'">
+  C
+</div>
+<div v-else>
+  Not A/B/C
+</div>
+```
+
 `v-else`也`v-else-if`可以用在`<template>`.
 
 ---
 
 ### 3.10 v-show
 
-元素的显示和隐藏
+`v-show`用于控制元素的显示和隐藏
 
-**作用**：根据表达式的真假条件，来切换元素的 display 属性。如果为false，则在元素上添加 `display:none`属性；否则移除`display:none`属性。
+根据表达式的真假条件，来切换元素的 `display `属性。如果为`false`，则在元素上添加 `display:none`属性；否则移除`display:none`属性。
 
 `v-show`不支持该`<template>`元素
 
@@ -1369,23 +1570,23 @@ data() {
 
 `v-if`和`v-show`都能够实现对一个元素的隐藏和显示操作。
 
-区别：
+> 区别
 
-- v-if：每次都会重新添加/删除DOM元素
+- `v-if`：每次都会重新添加/删除`DOM`元素
 
-- v-show：每次不会重新进行DOM的添加/删除操作，只是在这个元素上添加/移除`style="display:none"`属性，表示节点的显示和隐藏。
+- `v-show`：每次不会重新进行`DOM`的添加/删除操作，只是在这个元素上添加/移除`style="display:none"`属性，表示节点的显示和隐藏。
 
-优缺点：
+> 优缺点
 
-- v-if：有较高的切换性能消耗。这个很好理解，毕竟每次都要进行dom的添加／删除操作。
+- `v-if`：有较高的切换性能消耗。这个很好理解，毕竟每次都要进行`dom`的添加／删除操作。
 
-- v-show：**有较高的初始渲染消耗**。也就是说，即使一开始`v-show="false"`，该节点也会被创建，只是隐藏起来了。而`v-if="false"`的节点，根本就不会被创建。
+- `v-show`：有较高的初始渲染消耗。也就是说，即使一开始`v-show="false"`，该节点也会被创建，只是隐藏起来了。而`v-if="false"`的节点，根本就不会被创建。
 
-**总结**：
+> 总结
 
-- 如果元素涉及到频繁的切换，最好不要使用 v-if, 而是推荐使用 v-show
-- 如果元素可能永远也不会被显示出来被用户看到，则推荐使用 v-if
-- 由于隐含优先级，不建议在同一元素上**使用**and `v-if`。当`v-if`和`v-for`都用于同一个元素时，`v-if`将首先评估。
+- 如果元素涉及到频繁的切换，最好不要使用 `v-if`, 而是推荐使用 `v-show`
+- 如果元素可能永远也不会被显示出来被用户看到，则推荐使用` v-if`
+- 当 `v-if` 和 `v-for` 同时存在于一个元素上的时候，`v-if` 会首先被执行。
 
 ---
 
@@ -1484,75 +1685,26 @@ const app = {
 - `beforeUnmount`: 当指令与在绑定元素父组件卸载之前时，只调用一次。
 - `unmounted`: 当指令与元素解除绑定且父组件已卸载时，只调用一次。
 
-**钩子函数的参数有：**
+钩子函数的参数有：
 
-**el**
+> `el`
 
-- **el** 指令绑定到的元素。这可用于直接操作 DOM。
+- `el `指令绑定到的元素。这可用于直接操作 `DOM`。
 
-**binding**
+> `binding`
 
-binding 是一个对象，包含以下属性：
+`binding `是一个对象，包含以下属性：
 
 - `instance`：使用指令的组件实例。
-- `value`：**传递给指令的值。**例如，在 `v-my-directive="1 + 1"` 中，该值为 `2`。
+- `value`：传递给指令的值。例如，在 `v-my-directive="1 + 1"` 中，该值为 `2`。
 - `oldValue`：先前的值，仅在 `beforeUpdate` 和 `updated` 中可用。值是否已更改都可用。
 - `arg`：参数传递给指令 (如果有)。例如在 `v-my-directive:foo` 中，arg 为 `"foo"`。
 - `modifiers`：包含修饰符 (如果有) 的对象。例如在 `v-my-directive.foo.bar` 中，修饰符对象为 `{foo: true，bar: true}`。
-- `dir`：一个对象，在注册指令时作为参数传递。
+- `dir`：一个对象，在注册指令时作为参数传递
 
----
 
-### 3.13 tabbar
 
-```html
-<body>
-  <div id="app">
-    <div class="tab">
-      <ul>
-        <li v-on:click='change(index)' :class='currentIndex==index?"active":""' :key='item.id' v-for='(item,index) in list'>{{item.title}}</li>
-      </ul>
-      <div :class='currentIndex==index?"current":""' :key='item.id' v-for='(item, index) in list'>
-        <img :src="item.path">
-      </div>
-    </div>
-  </div>
-  <script type="text/javascript" src="js/vue.js"></script>
-  <script type="text/javascript">
-    /*
-      
-    */
-    var vm = new Vue({
-      el: '#app',
-      data: {
-        currentIndex: 0, // 选项卡当前的索引
-        list: [{
-          id: 1,
-          title: 'apple',
-          path: 'img/apple.png'
-        },{
-          id: 2,
-          title: 'orange',
-          path: 'img/orange.png'
-        },{
-          id: 3,
-          title: 'lemon',
-          path: 'img/lemon.png'
-        }]
-      },
-      methods: {
-        change: function(index){
-          // 在这里实现选项卡切换操作：本质就是操作类名
-          // 如何操作类名？就是通过currentIndex
-          this.currentIndex = index;
-        }
-      }
-    });
-  </script>
-</body>
-```
-
-## 4. vue Reactivity
+## 4. vue options
 
 ### 4.1 data
 
@@ -1624,59 +1776,70 @@ export default {
 
 ---
 
-### 4.3 computed
+### 3. computed
 
-能够将计算结果缓存起来的属性(将行为转化成了静态的属性)
+模板中的表达式虽然方便，但也只能用来做简单的操作。如果在模板中写太多逻辑，会让使其变得臃肿，难以维护。
 
 计算属性就是一个提前定义好的方法, 该方法可以看作是一个特殊的值, 可以在插值表达式中使用.
 
-**计算属性的主要特性就是为了将不经常变化的计算结果进行缓存，以节约我们的系统开销；**
+> `computed` 比较适合对多个变量或者对象进行处理后返回一个结果值，也就是数多个变量中的某一个值发生了变化则我们监控的这个值也就会发生变化
 
-`computed`比较适合对多个变量或者对象进行处理后返回一个结果值，也就是数多个变量中的某一个值发生了变化则我们监控的这个值也就会发生变化
+`computed()` 方法期望接收一个 `getter `函数，返回值为一个`计算属性 ref`。
 
-```js
- var app = new Vue({
-     el:"#app",
-     // 计算属性必须放在Vue的computed中
-     computed:{
-         // 定义计算属性
-         // 有方法的皮， 但是却是当作属性使用
-         // 这里一定要有return, 否则, 调用的时候无法拿到结果   
-         属性名() {
-             return "返回值";
-         }
-     }
-});
+```vue
+<script setup>
+import { reactive, computed } from 'vue'
+
+const author = reactive({
+  age: 20,
+  firstName: '',
+  lastName: ''
+})
+
+// 一个计算属性 ref
+const fullName = computed(() => {
+    return author.firstName + author.lastName
+})
+
+</script>
+
+<template>
+  <span>{{ fullName }}</span>
+</template>
 ```
 
-每个计算属性都包含有一个 getter 和 setter, 当没有明确指明使用方法时, 默认采取的是 getter 方法
+> 缓存特性
 
-> setup
+而且它可以将计算结果缓存起来的属性, 将行为转化成了静态的属性, 计算属性的主要特性就是为了将不经常变化的计算结果进行缓存，以节约我们的系统开销
 
-```js
-import { computed } from 'vue'
+这意味着只要 `author.firstName` 或者  `author.lastName` 不改变，无论多少次访问 `fullName` 都会立即返回先前的计算结果，而不用重复执行 `getter `函数。
 
-setup(){
-	// 简写语法
-    let fullName = computed(() => {
-        return person.firstName + '-' + person.lastName
-    })
-    
-    // 完整语法
-    let fullName = computed({
-        get(){
-            return person.firstName + '-' + person.lastName
-        },
-        set(value){
-            const nameArr = value.split('-')
-            person.firstName = nameArr[0]
-            person.lastName = nameArr[1]
-        }
-    })
-    return fullName
-}
+> 每个计算属性都包含有一个 `getter `和 `setter`, 当没有明确指明使用方法时, 默认采取的是 `getter `方法
 
+```vue
+<script setup>
+import { ref, computed } from 'vue'
+
+const firstName = ref('123')
+const lastName = ref('456')
+
+const fullName = computed({
+  // getter
+  get() {
+    return firstName.value + ' ' + lastName.value
+  },
+  // setter
+  set(newValue) {
+    // 注意：我们这里使用的是解构赋值语法
+    [firstName.value, lastName.value] = newValue.split(' ')
+  }
+})
+</script>
 ```
+
+现在当你再运行 `fullName.value = '1 2'` 时，`setter `会被调用而 `firstName` 和 `lastName` 会随之更新。
+
+> 不要在计算函数中做`异步请求`或者更改 `DOM`
 
 ---
 
@@ -1814,121 +1977,71 @@ watchEffect(() => {
 
 ## 5. Vue.js 生命周期
 
-从`Vue`实例创建、运行、到销毁期间，总是伴随着各种各样的事件，这些事件，统称为生命周期。
+每个 `Vue `组件实例在创建时都需要经历一系列的初始化步骤，比如设置好数据侦听，编译模板，挂载实例到 DOM 以及数据改变时更新 `DOM`。
 
-`Vue `实例从创建到销毁的过程，就是生命周期。也就是从开始创建、初始化数据、编译模板、挂载Dom→渲染、更新→渲染、卸载等一系列过程，我们称这是 `Vue `的生命周期。
+### 1. vue2 生命周期
 
-生命周期钩子 = 生命周期函数 = 生命周期事件。
+> 创建期间生命周期函数
 
-生命周期中里有一个很重要的概念： **钩子函数**, 其实就是`Vue`提前定义好的事件, 其作用类似于`Servlet`的`init`方法和`distory`方法
+- `beforeCreate`：实例刚在内存中被创建出来，此时，还没有初始化好 `data `和 `methods` 属性
 
-> 首先了解 `vue2 `的生命周期
-
-### 5.1 创建期间生命周期函数
-
-- `beforeCreate`：实例刚在内存中被创建出来，此时，还没有初始化好 `data `和 `methods` 属性 ( **我感觉这个时候没什么可以去改变的了** )
-
-- **`created`：实例已经在内存中创建OK，此时 `data `和 `methods `已经创建，此时还没有开始 编译模板。我们可以在这里进行`Ajax`请求。**
+- `created`：实例已经在内存中创建OK，此时 `data `和 `methods `已经创建，此时还没有开始 编译模板。我们可以在这里进行`Ajax`请求。
 
 - `beforeMount`：此时已经完成了模板的编译，但是还没有挂载到页面中
 
-- `mounted`：此时，已经将编译好的模板，挂载到了页面指定的容器中显示。（`mounted`之后，表示**真实DOM渲染完了，可以操作`DOM`了**）
+- `mounted`：此时，已经将编译好的模板，挂载到了页面指定的容器中显示。（`mounted`之后，表示真实DOM渲染完了，可以操作`DOM`了）
 
----
+> 运行期间生命周期函数
 
-### 5.2 运行期间生命周期函数
-
-- `beforeUpdate`：状态更新之前执行此函数， **此时 `data `中的状态值是最新的，但是界面上显示的 数据还是旧的**，因为此时还没有开始重新渲染`DOM`节点
+- `beforeUpdate`：状态更新之前执行此函数， 此时 `data `中的状态值是最新的，但是界面上显示的 数据还是旧的，因为此时还没有开始重新渲染`DOM`节点
 
 - `updated`：实例更新完毕之后调用此函数，此时 `data `中的状态值 和 界面上显示的数据，都已经完成了更新，界面已经被重新渲染好了。
 
-PS：数据发生变化时，会触发这两个方法。不过，我们一般用`watch`来做。
+数据发生变化时，会触发这两个方法。不过，我们一般用`watch`来做。
 
----
-
-### 5.3 销毁期间生命周期函数
+> 销毁期间生命周期函数
 
 - `beforeDestroy`：实例销毁之前调用。在这一步，实例仍然完全可用。
 
 - `destroyed：Vue `实例销毁后调用。调用后，`Vue `实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。
 
-PS：可以在`beforeDestroy`里**清除定时器、或清除事件绑定**。
+可以在`beforeDestroy`里清除定时器、或清除事件绑定。
 
----
+> 第一次页面加载时会触发 `beforeCreate, created, beforeMount, mounted` 这几个钩子
 
-**第一次页面加载时会触发 beforeCreate, created, beforeMount, mounted 这几个钩子**
-
-DOM 渲染在 `mounted `中就已经完成了。
+`DOM `渲染在 `mounted `中就已经完成了。
 
 生命周期钩子的一些使用方法：
 
 - `beforecreate `: 可以在此阶段加`loading`事件，在加载实例时触发；
-
 - `created` : 初始化完成时的事件写在这里，如在这结束`loading`事件，异步请求也适宜在这里调用；
-
 - `mounted` : 挂载元素，获取到`DOM`节点；
-
 - `updated `: 如果对数据统一处理，在这里写上相应函数；
-
 - `beforeDestroy `: 可以做一个确认停止事件的确认框；
 
----
-
-![组件生命周期图](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/lifecycle.16e4c08e%20%E4%B8%8B%E5%8D%884.18.55.png)
-
----
+> 图解
 
 ![](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/480a7cdefd3a9a2a01a4289c8d3d038e%20%E4%B8%8B%E5%8D%884.18.55.png)
 
-> 如果项目使用 **`选项 API`**，就不必更改任何代码了，因为 `Vue3 `兼容以前的版本。
->
-> 当然，我们用 `Vue3 `就是要用它的 **`组合 API`**，**`组合 API`**中访问这些钩子的方式略有不同，**`组合API`**在较大的`Vue`项目中特别有用。
+### 2. vue3 生命周期
 
-在`组合API`中，我们需要将生命周期钩子导入到项目中，才能使用，这有助于保持项目的轻量性。
+> 注册周期钩子
 
-```js
-// 组合 API
-import { onMounted } from 'vue'
-```
-
-除了`beforecate`和`created`(它们被`setup`方法本身所取代)，我们可以在`setup`方法中访问的`API生命周期钩子`有9个选项:
-
-- `onBeforeMount` – 在挂载开始之前被调用：相关的 `render` 函数首次被调用。
-- `onMounted` – 组件挂载时调用
-- `onBeforeUpdate` – 数据更新时调用，发生在虚拟 DOM 打补丁之前。这里适合在更新之前访问现有的 DOM，比如手动移除已添加的事件监听器。
-- `onUpdated` – 由于数据更改导致的虚拟 DOM 重新渲染和打补丁，在这之后会调用该钩子。
-- onBeforeUnmount – 在卸载组件实例之前调用。在这个阶段，实例仍然是完全正常的。
-- `onUnmounted` – 卸载组件实例后调用。调用此钩子时，组件实例的所有指令都被解除绑定，所有事件侦听器都被移除，所有子组件实例被卸载。
-- `onActivated` – 被 `keep-alive` 缓存的组件激活时调用。
-- `onDeactivated` – 被 `keep-alive` 缓存的组件停用时调用。
-- `onErrorCaptured` – 当捕获一个来自子孙组件的错误时被调用。此钩子会收到三个参数：错误对象、发生错误的组件实例以及一个包含错误来源信息的字符串。此钩子可以返回 `false` 以阻止该错误继续向上传播。
-
-```js
-// 组合 API
-<script>
+```vue
+<script setup>
 import { onMounted } from 'vue'
 
-export default {
-   setup () {
-     onMounted(() => {
-       console.log('mounted in the composition api!')
-     })
-   }
-}
+onMounted(() => {
+  console.log(`the component is now mounted.`)
+})
 </script>
 ```
 
-最后总结一下 `vue2 ` `=>`  `vue3 `的变化
+> 生命周期
 
-- `beforeCreate` -> 使用 `setup()`
-- `created` -> 使用 `setup()`
-- `beforeMount` -> `onBeforeMount`
-- `mounted` -> `onMounted`
-- `beforeUpdate` -> `onBeforeUpdate`
-- `updated` -> `onUpdated`
-- `beforeDestroy` -> `onBeforeUnmount`
-- `destroyed` -> `onUnmounted`
-- `errorCaptured` -> `onErrorCaptured`
+![img](https://staging-cn.vuejs.org/assets/lifecycle.16e4c08e.png)
+
+
 
 ## 6. Vue 动画
 
@@ -2288,7 +2401,7 @@ export default {
 - 父组件通过标签上`:data=data`方式定义传值， 子组件通过`props`方法接受数据
 - 子组件通过`$emit`方法传递参数， 父组件通过定义的函数接收数据
 
-当一个值被传递给一个 `prop `属性时，它就成为该组件实例上的一个属性。该属性的值可以在模板中和组件的`this`上下文中访问，就像任何其他组件属性一样。
+当一个值被传递给一个 `prop `属性时，它就成为该组件实例上的一个属性。该属性的值可以在模板中和组件的`this`上下文中访问，就像任何其他组件属性一样
 
 ### 7.5 props
 
@@ -4547,28 +4660,33 @@ import 'normalize.css'
 
 ### 5. 数组变异方法
 
-- 在 Vue 中，直接修改对象属性的值无法触发响应式。当你直接修改了对象属性的值，你会发现，只有数据改了，但是页面内容并没有改变
-- 变异数组方法即保持数组方法原有功能不变的前提下对其进行功能拓展, 可以触发响应式
+在 `Vue `中，直接修改对象属性的值无法触发响应式。
 
-| `push()`    | 往数组最后面添加一个元素，成功返回当前数组的长度             |
+变异数组方法即保持数组方法原有功能不变的前提下对其进行功能拓展, 可以触发响应式
+
+> 修改当前的数组
+
+| 方法        | 含义                                                         |
 | ----------- | ------------------------------------------------------------ |
+| `push()`    | 往数组最后面添加一个元素，成功返回当前数组的长度             |
 | `pop()`     | 删除数组的最后一个元素，成功返回删除元素的值                 |
 | `shift()`   | 删除数组的第一个元素，成功返回删除元素的值                   |
 | `unshift()` | 往数组最前面添加一个元素，成功返回当前数组的长度             |
 | `splice()`  | 有三个参数，第一个是想要删除的元素的下标（必选），第二个是想要删除的个数（必选），第三个是删除 后想要在原位置替换的值 |
-| `sort()`    | sort()  使数组按照字符编码默认从小到大排序,成功返回排序后的数组 |
-| `reverse()` | reverse()  将数组倒序，成功返回倒序后的数组                  |
+| `sort()`    | `sort()`  使数组按照字符编码默认从小到大排序,成功返回排序后的数组 |
+| `reverse()` | `reverse()`  将数组倒序，成功返回倒序后的数组                |
 
-不会改变原始数组，但总是返回一个新数组
+> 不会改变原始数组，但总是返回一个新数组
 
-| filter | filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。 |
-| ------ | ------------------------------------------------------------ |
-| concat | concat() 方法用于连接两个或多个数组。该方法不会改变现有的数组 |
-| slice  | slice() 方法可从已有的数组中返回选定的元素。该方法并不会修改数组，而是返回一个子数组 |
+| 方法     | 含义                                                         |
+| -------- | ------------------------------------------------------------ |
+| `filter` | 创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素 |
+| `concat` | 用于连接两个或多个数组                                       |
+| `slice`  | 可从已有的数组中返回选定的元素                               |
 
-**通过索引修改数据是不会发生响应式的**
+> 通过索引修改数据是不会发生响应式的
 
-一般可以通过 **Vue.set(arr,index,value)**   来修改, 让 触发视图重新更新一遍，数据动态起来
+一般可以通过` Vue.set(arr,index,value)`   来修改, 让 触发视图重新更新一遍，数据动态起来
 
 ```js
 var vm = new Vue({
@@ -5462,14 +5580,6 @@ $ pm2 restart 名称
 # 删除服务
 $ pm2 delete 名称 
 ```
-
-
-
-
-
-# vue 使用 ts
-
-
 
 
 

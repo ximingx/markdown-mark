@@ -3551,7 +3551,9 @@ document.cookie="userId=828; expires=" + date.toGMTString();
 
 由于`BOM`的`window`包含了`document`，因此可以直接使用`window`对象的`document`属性，通过`document`属性就可以访问、检索、修改`XHTML`文档内容与结构。
 
-可以说，`BOM`包含了`DOM`(对象)，浏览器提供出来给予访问的是`BOM`对象，从`BOM`对象再访问到`DOM`对象，从而`js`可以操作浏览器以及浏览器读取到的文档。
+可以说，`BOM`包含了`DOM`(对象)
+
+浏览器提供出来给予访问的是`BOM`对象，从`BOM`对象再访问到`DOM`对象，从而`js`可以操作浏览器以及浏览器读取到的文档。
 
 ### 1.  window对象
 

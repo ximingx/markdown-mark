@@ -170,15 +170,13 @@ and 今天的睡前小故事是盗版的她的哦， 哎， 泥， 鸭
 
 最近好累, 但是好开心
 
+### 2022.05.29
 
+一个提前过的六一儿童节
+阿翔在小孩子堆里嘎嘎乱杀
+并且成功带走了一只大孩子
 
-
-
-
-
-
-
-
+![img](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202206012332137.webp)
 
 
 
