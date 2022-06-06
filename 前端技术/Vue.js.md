@@ -27,7 +27,7 @@
 
 传统的网站开发一般采用`HTML+CSS+JS`作为技术架构，而`vue`立足于其上，以模板语法为基础，以数据绑定和组件化开发为核心
 
-```vue
+```js
 // 从 vue 的包中解构出 createApp 方法, 用来创建一个实例
 import { createApp } from 'vue'
 
@@ -41,7 +41,7 @@ createApp({
 }).mount('#app')
 ```
 
-```vue
+```html
 <div id="app">
   <button @click="count++">
     {{ count }}
@@ -180,7 +180,7 @@ createApp({
 
 顾名思义，`Vue SFC` 将组件的逻辑 (`JavaScript`)、模板 (`HTML`) 和样式 (`CSS`) 封装在一个文件中。
 
-```vue
+```html
 <script>
 export default {
   data() {
@@ -232,7 +232,7 @@ export default {
 
 实际上，`选项式 API `也是用`组合式 API` 实现的
 
-```vue
+```js
 <script>
 export default {
   // data() 返回的属性将会成为响应式的状态
@@ -272,7 +272,7 @@ export default {
 
 这种形式更加自由，也需要你对 `Vue `的响应式系统有更深的理解才能高效使用。相应的，它的灵活性也使得组织和重用逻辑的模式变得更加强大。
 
-```vue
+```html
 <!-- setup 是进一步的简化 -->
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -872,7 +872,7 @@ const { foo, bar } = obj
 
 在底层机制中，`Vue `会将模板编译成高度优化的 `JavaScript `代码。结合响应式系统，当应用状态变更时，`Vue `能够智能地推导出需要重新渲染的组件的最少数量，并应用最少的 `DOM `操作。
 
-###  3.1 {{ }}
+###  2. {{ }}
 
 数据绑定最常见的形式就是使用 “**`Mustache`**” 语法（双大括号）的文本插值，在标签中使用。
 
@@ -911,7 +911,7 @@ const { foo, bar } = obj
 
 ---
 
-### 3.2 v-cloak
+### 3. v-cloak
 
 `v-cloak`会保持和元素实例的关联，直到结束编译后自动消失。
 
@@ -954,7 +954,7 @@ const { foo, bar } = obj
 
 ---
 
-###  3.3 v-text
+###  4. v-text
 
 `v-text`可以将一个变量的值渲染到指定的元素中。
 
@@ -993,7 +993,7 @@ const { foo, bar } = obj
 
 ---
 
-### 3.4 v-html
+### 5. v-html
 
 `v-text`是纯文本，而`v-html`会被解析成`html`元素。
 
@@ -1025,7 +1025,7 @@ const { foo, bar } = obj
 
 ---
 
-###  3.4 v-pre
+###  6. v-pre
 
 - 显示原始信息跳过编译过程
 - 跳过这个元素和它的子元素的编译过程。
@@ -1047,7 +1047,7 @@ const { foo, bar } = obj
 </script>
 ```
 
-### 3.5 v-once
+### 7. v-once
 
 - 执行一次性的插值【当数据改变时，插值处的内容不会继续更新】
 - 可以提高性能
@@ -1067,7 +1067,7 @@ const { foo, bar } = obj
 
 ---
 
-### 3.6 v-on
+### 8. v-on
 
 ![指令语法图](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/directive.69c37117%20%E4%B8%8B%E5%8D%884.18.55.png)
 
@@ -1228,7 +1228,7 @@ function greet(event) {
 
 ---
 
-### 3.7 v-bind
+### 9. v-bind
 
 数据绑定的一个常见需求场景是操纵元素的` CSS class` 列表和内联样式。因为它们都是 `attribute`，我们可以使用 `v-bind` 来做这件事
 
@@ -1367,7 +1367,7 @@ data() {
 
 ---
 
-### 3.8 v-model
+### 10. v-model
 
 在前端处理表单时，我们常常需要将表单输入框的内容同步给 `JavaScript `中相应的变量。
 
@@ -1417,7 +1417,7 @@ data() {
 
 ---
 
-### 3.8 v-for
+### 11. v-for
 
 我们可以使用 `v-for` 指令基于一个数组来渲染一个列表。
 
@@ -1516,7 +1516,7 @@ data() {
 
 ---
 
-### 3.9 v-if
+### 12. v-if
 
 `v-if` 会根据表达式的值的真假条件，来决定是否渲染元素，如果为`false`则不渲染，如果为`true`则渲染。
 
@@ -1555,7 +1555,7 @@ data() {
 
 ---
 
-### 3.10 v-show
+### 13. v-show
 
 `v-show`用于控制元素的显示和隐藏
 
@@ -1566,7 +1566,7 @@ data() {
 
 ---
 
-### 3.11 v-if v-show
+### 14. v-if v-show
 
 `v-if`和`v-show`都能够实现对一个元素的隐藏和显示操作。
 
@@ -1590,7 +1590,7 @@ data() {
 
 ---
 
-###  3.12 自定义指令
+###  15. 自定义指令
 
 - 内置指令不能满足我们特殊的需求
 - Vue允许我们自定义指令
@@ -1704,9 +1704,9 @@ const app = {
 
 
 
-## 4. vue options
+## 5. vue options
 
-### 4.1 data
+### 1. data
 
 我们使用`data`选项来声明组件的反应状态。选项值应该是一个返回对象的函数。`Vue `会在创建新组件实例时调用该函数，并将返回的对象包装在其响应系统中。此对象的任何顶级属性都代理在组件实例上（`this`在方法和生命周期挂钩中）：
 
@@ -1740,7 +1740,7 @@ export default {
 </script>
 ```
 
-### 4.2 methods
+### 2. methods
 
 Vue 自动绑定`this`值，`methods`以便它始终引用组件实例。这可确保方法在`this`用作事件侦听器或回调时保留正确的值。定义 时应避免使用箭头函数`methods`，因为这会阻止 Vue 绑定适当的`this`值：
 
@@ -1843,85 +1843,111 @@ const fullName = computed({
 
 ---
 
-### 4.4 watch
+### 4. watch
 
-计算属性允许我们以声明方式计算派生值。但是，在某些情况下，我们需要执行“副作用”以响应状态更改——例如，改变 `DOM`，或根据异步操作的结果更改另一部分状态。
+在`组合式 API` 中，我们可以使用`watch`在每次响应式状态发生变化时触发回调函数
 
-`watch `中的属性 一定是`data `中 已经存在的数据 
+> `watch`类似于`onchange`事件,可以在属性值修改的时候,执行某些操作.
 
-**`watch`类似于`onchange`事件,可以在属性值修改的时候,执行某些操作.**
+```vue
+<script setup>
+import { ref, watch } from 'vue'
 
-```html
- <div id="app">
-        <div>
-            <span>名：</span>
-            <span>
-        <input type="text" v-model='firstName'>
-      </span>
-        </div>
-        <div>
-            <span>姓：</span>
-            <span>
-        <input type="text" v-model='lastName'>
-      </span>
-        </div>
-        <div>{{fullName}}</div>
-    </div>
+const question = ref('')
+const answer = ref('Questions usually contain a question mark. ;-)')
 
-  <script type="text/javascript">
-        var vm = new Vue({
-            el: '#app',
-            data: {
-                firstName: 'Jim',
-                lastName: 'Green',
-                fullName: 'Jim Green'
-            },
-             //watch  属性 定义 和 data 已经 methods 平级 
-            watch: {
-                //   注意：  这里firstName  对应着data 中的 firstName 
-                //   当 firstName 值 改变的时候  会自动触发 watch
-                firstName: function(val) {
-                    this.fullName = val + ' ' + this.lastName;
-                },
-                //   注意：  这里 lastName 对应着data 中的 lastName 
-                lastName: function(val) {
-                    this.fullName = this.firstName + ' ' + val;
-                }
-            }
-        });
-    </script>
+// 可以直接侦听一个 ref
+watch(question, async (newQuestion, oldQuestion) => {
+  if (newQuestion.indexOf('?') > -1) {
+    answer.value = 'Thinking...'
+    try {
+      const res = await fetch('https://yesno.wtf/api')
+      answer.value = (await res.json()).answer
+    } catch (error) {
+      answer.value = 'Error! Could not reach the API. ' + error
+    }
+  }
+})
+</script>
+
+<template>
+  <p>
+    Ask a yes/no question:
+    <input v-model="question" />
+  </p>
+  <p>{{ answer }}</p>
+</template>
 ```
 
-**当需要监听一个对象的改变时，普通的`watch`方法无法监听到对象内部属性的改变，只有`data`中的数据才能够监听到变化，此时就需要deep属性对对象进行深度监听**
+> `watch` 的第一个参数可以是不同形式的
+>
+> 它可以是一个 `ref `(包括计算属性)、一个响应式对象、一个 `getter` 函数、或多个来源组成的数组
 
 ```js
-var app = new Vue({
-    el:"#app",
-    data:{
-        message:"白大锅",
-        person:{"name":"heima", "age":13}
-    },
-    // watch监听
-    watch:{
-        
-        // 监听message属性值,newValue代表新值,oldValue代表旧值
-        message(newValue, oldValue){
-        	console.log("新值：" + newValue + "；旧值：" + oldValue);
-        },
-        // 监控person对象的值,对象的监控只能获取新值
-        person: {
-            // 开启深度监控；监控对象中的属性值变化
-            deep: true,
-            // 获取到对象的最新属性数据( newValue 代表新对象)
-            handler(newValue, oldValue){
-                console.log("name = " + newValue.name + "; age=" + newValue.age);
-            }
-        }
-    }
-});
+const x = ref(0)
+const y = ref(0)
+
+// 单个 ref
+watch(x, (newX) => {
+  console.log(`x is ${newX}`)
+})
+
+// getter 函数
+watch(
+  () => x.value + y.value,
+  (sum) => {
+    console.log(`sum of x + y is: ${sum}`)
+  }
+)
+
+// 多个来源组成的数组
+watch([x, () => y.value], ([newX, newY]) => {
+  console.log(`x is ${newX} and y is ${newY}`)
+})
 ```
 
-> setup
+> 直接给 `watch()` 传入一个响应式对象，会隐式地创建一个深层侦听器
+>
+> 该回调函数在所有嵌套的变更时都会被触发
+
+```js
+const obj = reactive({ count: 0 })
+
+watch(obj, (newValue, oldValue) => {
+  // 在嵌套的 property 变更时触发
+  // 注意：`newValue` 此处和 `oldValue` 是相等的
+  // 因为它们是同一个对象！
+})
+
+obj.count++
+```
+
+这不同于返回响应式对象的 `getter `函数：只有在 `getter `函数返回不同的对象时，才会触发回调
+
+```js
+watch(
+  () => state.someObject,
+  () => {
+    // 仅当 state.someObject 被替换时触发
+  }
+)
+```
+
+然而，在上面的例子里，你可以显式地加上 `deep` 选项，强制转成深层侦听器：
+
+```js
+watch(
+  () => state.someObject,
+  (newValue, oldValue) => {
+    // 注意：`newValue` 此处和 `oldValue` 是相等的
+  },
+  { deep: true }
+)
+```
+
+深度侦听需要遍历被侦听对象中的所有嵌套的 property，当用于大型数据结构时，开销很大。因此请只在必要时才使用它，并且要留意性能。
+
+> 常见场景
 
 ```js
 // 情况一：监视 ref 定义的响应式数据
@@ -1956,13 +1982,13 @@ watch(() => person.job, (newValue, oldValue) => {
 }, { deep:true })
 ```
 
-### 4.5 watchEffect
+### 5. watchEffect
 
 和`watch`的区别是，`watch`既要指明监视的属性，也要指明监视的回调。
 
-而`watchEffect`，**不用指明监视哪个属性，监视的回调中用到哪个属性，那就监视哪个属性，不用写返回值。**
+而`watchEffect`，不用指明监视哪个属性，监视的回调中用到哪个属性，那就监视哪个属性，不用写返回值。
 
-在启动的时候也会被执行
+`watch()` 是懒执行的：仅在侦听源变化时，才会执行回调。`watchEffect` 在创建侦听器时，立即执行一遍回调。
 
 ```js
 // 回调中用到的数据只要发生变化，则直接重新执行回调
@@ -1973,9 +1999,61 @@ watchEffect(() => {
 })
 ```
 
+> `watchEffect()` 会立即执行一遍回调函数
+>
+> 如果这时函数产生了副作用，`Vue `会自动追踪副作用的依赖关系，自动分析出响应源。
+
+```js
+const url = ref('https://...')
+const data = ref(null)
+
+async function fetchData() {
+  const response = await fetch(url.value)
+  data.value = await response.json()
+}
+
+// 立即获取
+fetchData()
+// ...再侦听 url 变化
+watch(url, fetchData)
+
+// 也可以这样子
+
+watchEffect(async () => {
+  const response = await fetch(url.value)
+  data.value = await response.json()
+})
+```
+
+> 回调的刷新时机
+
+默认情况下，用户创建的侦听器回调，都会在 `Vue `**组件更新****之前**被调用。这意味着你在侦听器回调中访问的 `DOM` 将是被 `Vue `更新之前的状态。
+
+如果想在侦听器回调中能访问被 `Vue `更新之后的`DOM`，你需要指明 `flush: 'post'` 选项
+
+```js
+watch(source, callback, {
+  flush: 'post'
+})
+
+watchEffect(callback, {
+  flush: 'post'
+})
+```
+
+后置刷新的 `watchEffect()` 有个更方便的别名 `watchPostEffect()`：
+
+```js
+import { watchPostEffect } from 'vue'
+
+watchPostEffect(() => {
+  /* 在 Vue 更新后执行 */
+})
+```
+
 ---
 
-## 5. Vue.js 生命周期
+## 6. Vue.js 生命周期
 
 每个 `Vue `组件实例在创建时都需要经历一系列的初始化步骤，比如设置好数据侦听，编译模板，挂载实例到 DOM 以及数据改变时更新 `DOM`。
 
@@ -2312,7 +2390,7 @@ let show = ref(false)
 
 ## 7. Components
 
-组件的出现，就是为了拆分 `Vue `实例的代码量的，**能够让我们以不同的组件，来划分不同的功能模块，将来我们需要什么样的功能，就可以去调用对应的组件即可。**
+组件的出现，就是为了拆分 `Vue `实例的代码量的，能够让我们以不同的组件，来划分不同的功能模块，将来我们需要什么样的功能，就可以去调用对应的组件即可。
 
 在 `vue `项目中， 我们将 `ui `作为单独的一部分，嵌套应用程序 ， 每一个组件负责自己的页面内容， 最重要的是， 减少了造轮子
 
@@ -2323,87 +2401,194 @@ let show = ref(false)
 
 ---
 
-### 7.1 模块化和组件化的区别
+### 1. 模块化和组件化的区别
 
 - 模块化：是从`代码逻辑`的角度进行划分的；方便代码分层开发，保证每个功能模块的职能单一
 - 组件化：是从`UI界面`的角度进行划分的；前端的组件化，方便`UI组件`的重用
 
-### 7.2 组件的注册
+### 2. 组件的定义
 
-`vue3` 全局组件需在 `main.js` 中定义
+当使用构建步骤时，我们一般会将 `Vue `组件定义在一个单独的 `.vue` 文件中，这被叫做 `SFC`
 
-我们可以使用以下方法使组件在当前[`Vue `应用程序](https://vuejs.org/guide/essentials/application.html)`app.component()`中全局可用：
+```vue
+<script setup>
+import { ref } from 'vue'
+
+const count = ref(0)
+</script>
+
+<template>
+  <button @click="count++">You clicked me {{ count }} times.</button>
+</template>
+```
+
+当不使用构建步骤时，一个 `Vue `组件以一个包含 `Vue `特定选项的 `JavaScript `对象来定义：
 
 ```js
-import { createApp } from 'vue'
-import MyComponent from './MyComponent.vue'
-const app = createApp(App)
+import { ref } from 'vue'
 
-app.component('MyComponent')
+export default {
+  setup() {
+    const count = ref(0)
+    return { count }
+  },
+  template: `
+    <button @click="count++">
+      You clicked me {{ count }} times.
+    </button>`
+  // 或者 `template: '#my-template-element'`
+}
 ```
+
+这里的模板是一个内联的 `JavaScript `字符串，`Vue `将会在运行时编译它。你也可以使用 ID 选择器来指向一个元素 (通常是原生的 `<template>` 元素)，`Vue `将会使用其内容作为模板来源。
+
+上面的例子中定义了一个组件，并在一个 `.js` 文件里默认导出了它自己，但你也可以通过具名导出在一个文件中导出多个组件。
+
+### 3. 组件的注册
+
+一个 `Vue 组件`需要被注册使得 `Vue `在渲染模板时能找到其实现。有两种方式来注册组件：全局注册和局部注册。
+
+> 全局注册
+
+我们可以使用 `app.component()` 方法，让组件在全局可用。
+
+```js
+import MyComponent from './App.vue'
+
+app.component('MyComponent', MyComponent)
+```
+
+但全局组件，只要声明，即使不使用也会被初始化，影响性能。如果你全局注册了一个组件，却一次都没有使用，它仍然会出现在最终的构建产物中。
+
+`app.component()` 方法可以被链式调用
+
+```js
+app
+  .component('ComponentA', ComponentA)
+  .component('ComponentB', ComponentB)
+  .component('ComponentC', ComponentC)
+```
+
+全局注册的组件可以在此应用的任意组件的模板中使用：
+
+```vue
+<!-- 这在当前应用的任意组件中都可用 -->
+<ComponentA/>
+<ComponentB/>
+<ComponentC/>
+```
+
+所有的子组件也可以使用全局注册的组件，这意味着这三个组件也都可以在彼此内部使用。
+
+> 局部注册
 
 `局部注册的组件`只能在当前组件使用
 
-```html
+```js
 import ComponentA from './ComponentA.vue'
 
 export default {
   // 局部注册的组件
   components: {
     ComponentA
+  },
+  setup() {
+    // ...
   }
 }
 ```
 
-但全局组件，只要声明，即使不使用也会被初始化，影响性能。
-
-**局部组件声明的对象建议首字母大写，单词间使用驼峰命名。**
-
-**映射时，组件的名称还保持全小写字母，单词之间使用 `“-”` 连接, 在使用打包工具时, 可以直接使用原来的名字**
-
 局部组件，如果不使用，就不会初始化，因此对性能有好处。
 
-### 7.3 组件的使用
+当你在单文件组件中使用了 `<script setup>`，导入的组件可以在本地使用而无需注册：
 
 ```vue
-<script>
-import ButtonCounter from './ButtonCounter.vue'
+<script setup>
+import ComponentA from './ComponentA.vue'
+</script>
 
-export default {
-  data() {
-      retuen {
-          msg: "ximingx"
-      }
-  },
-  components: {
-    ButtonCounter
-  }
-}
+<template>
+  <ComponentA />
+</template>
+```
+
+局部注册组件在后代组件中并不可用, 只可以在当前组件中使用
+
+> 组件名格式
+
+推荐使用 `PascalCase `作为组件名的注册格式，这是因为：
+
+1. `PascalCase `是合法的 `JavaScript `标识符。这使得在 `JavaScript` 中导入和注册组件都很容易，同时 IDE 也能提供较好的自动补全。
+2. `<PascalCase />` 在模板中更明显地表明了这是一个 `Vue `组件，而不是原生 `HTML `元素。同时也能够将 `Vue `组件和自定义元素区分开来。
+
+但是，`PascalCase `的标签名在 `DOM 模板`中是不可用的
+
+`Vue `支持将使用 `kebab-case` 的标签解析为使用 `PascalCase `注册的组件。这意味着一个以 `MyComponent` 为名注册的组件，在模板中可以通过 `<MyComponent>` 或 `<my-component>` 引用。
+
+### 4. 组件的使用
+
+```vue
+<script setup>
+import ButtonCounter from './ButtonCounter.vue'
 </script>
 
 <template>
   <h1>Here is a child component!</h1>
-  <p>{{ msg }}</p>
   <ButtonCounter />
 </template>
 ```
 
-- **组件参数的`data`值必须是函数同时这个函数要求返回一个对象** 
-- **组件模板必须是单个根元素( `vue2`的情况下 ), `vue3 `可以随意, 多个根组件**
-- 组件模板的内容可以是模板字符串
+通过 `<script setup>`，导入的组件都在模板中直接可用。
 
 使用 切换多个组件一个组件在切换离开时将被卸载。我们可以通过内置组件`KeepAlive` 强制非活动组件保持
 
-### 7.4 组件之间值的传递
+### 5. 组件之间值的传递
 
 `Vue` 组件作用域是孤立的，不允许在子组件模板内直接引用父组件的数据。必须使用特定的方法才能实现组件之间的数据传递。
+
+组件需要显式声明 `prop`，这样 `Vue `才能知道外部传入的哪些是 `prop`，哪些是透传 `attribute`
 
 - 父组件通过标签上`:data=data`方式定义传值， 子组件通过`props`方法接受数据
 - 子组件通过`$emit`方法传递参数， 父组件通过定义的函数接收数据
 
-当一个值被传递给一个 `prop `属性时，它就成为该组件实例上的一个属性。该属性的值可以在模板中和组件的`this`上下文中访问，就像任何其他组件属性一样
+当一个值被传递给一个 `prop `属性时，它就成为该组件实例上的一个属性。
 
-### 7.5 props
+### 6. props
+
+组件需要显式声明 `prop`，这样 `Vue `才能知道外部传入的哪些是 `prop`
+
+声明的 `props `会自动暴露给模板。
+
+`defineProps` 会返回一个对象，其中包含了可以传递给组件的所有 `props`，因此我们在 `JavaScript `中使用
+
+> `defineProps` 是一个仅 `<script setup>` 中可用的编译宏命令，并不需要显式地导入。
+
+```vue
+<!-- BlogPost.vue -->
+<script setup>
+defineProps(['title'])
+    
+const props = defineProps(['title'])
+console.log(props.title)
+</script>
+
+<template>
+  <h4>{{ title }}</h4>
+</template>
+```
+
+如果你没有使用 `<script setup>`，`props `必须以 `props` 选项的方式声明，`props` 对象会作为 `setup()` 函数的第一个参数
+
+```js
+export default {
+  props: ['title'],
+  setup(props) {
+    console.log(props.title)
+  }
+}
+```
+
+一个组件可以有任意多的 `props`，默认情况下，任何值都可以传递给任何 `prop`。
 
 > 1.数组形式
 
@@ -2415,22 +2600,32 @@ props: [data1, data2]
 
 > 2.简单对象形式
 
-除了使用字符串数组声明 `props `之外，我们还可以使用对象语法：
+除了使用字符串数组声明 `props `之外，我们还可以使用对象语法
 
 ```js
-export default {
-  props: {
-    title: String,
-    likes: Number
-  }
-}
+// 使用 <script setup>
+defineProps({
+  title: String,
+  likes: Number
+})
 ```
+
+对于以对象形式声明中的每个属性，key 是 prop 的名称，而值应该是预期类型的构造函数。
 
 组件可以为其 `props `指定要求，例如您已经看到的类型。如果不满足要求，`Vue `将在浏览器的 `JavaScript `控制台中警告
 
-**但是也只是警告**
+如果你正在搭配 `TypeScript `使用 `<script setup>`，也可以使用类型标注来声明 prop
 
-> **3.复杂对象形式**
+```vue
+<script setup lang="ts">
+defineProps<{
+  title?: string
+  likes?: number
+}>()
+</script>
+```
+
+> 3.复杂对象形式
 
 要指定 `prop `验证，您可以向`option`提供具有验证要求的对象，而不是字符串数组。例如：`props`
 
@@ -2451,7 +2646,7 @@ export default {
 
 - `validator`：校验器，是一个函数，拥有一个代表传入值的形参，可以自定义各种校验，当返回`false`时，会报错，表示没通过校验。
 
-**`props` 会在一个组件实例创建之前进行验证，所以实例的属性 (如 `data`、`computed` 等) 在 `default` 或 `validator` 函数中是不可用的。**
+`props` 会在一个组件实例创建之前进行验证，所以实例的属性 (如 `data`、`computed` 等) 在 `default` 或 `validator` 函数中是不可用的。
 
 ```js
 export default {
@@ -2499,8 +2694,12 @@ export default {
 
 除了上面的父组件传值给子组件, 子组件也可以传值给子组件, 这就需要用到 `$emit`
 
-```js
-vm.$emit( eventName, […args] )
+组件要触发的事件可以显式地通过 [`defineEmits()`](https://staging-cn.vuejs.org/api/sfc-script-setup.html#defineprops-defineemits) 宏来声明。
+
+```vue
+<script setup>
+const emit = defineEmits(['inFocus', 'submit'])
+</script>
 ```
 
 - 参数
@@ -2510,7 +2709,7 @@ vm.$emit( eventName, […args] )
 
 > 子组件
 
-```js
+```vue
 <template>
   <div>
     <h1>{{ message }}</h1>
@@ -2784,7 +2983,7 @@ export default {
 
 > 子组件
 
-```js
+```vue
 <template>
     <p>{{test}}</p>
 </template>
@@ -3092,7 +3291,7 @@ export default {
 
 > `<slot>< /slot> `一般被写在子组件里,可以被父组件内写的东西"插"满
 
-```js
+```vue
 <template>
   <SonComponents>
     <h1>ximingx</h1>
@@ -3100,7 +3299,7 @@ export default {
 </template>
 ```
 
-```js
+```vue
 <template>
   <button>son button</button>
   <slot></slot>
@@ -3119,7 +3318,7 @@ export default {
 
 > 插槽在哪一个组件中使用, 使用的就是哪一个组件的数据
 
-```html
+```vue
 <template>
     <h1>{{ number }}</h1>
     <SonComponents @commit="change">
@@ -3154,7 +3353,7 @@ export default {
 
 大多数使用默认插槽
 
-```js
+```vue
 <template>
   <slot>
     <button>ximingx</button>
@@ -3166,7 +3365,7 @@ export default {
 
 除此之外, 我们可以在`slot`容器`<template>`上使用`v-slot`来表示一个传入组件的插槽，通过**指令参数**来表示插槽的名称。
 
-```html
+```vue
 <template>
   <header>
     <slot name="header"></slot>
@@ -3190,11 +3389,43 @@ export default {
 </foo>
 ```
 
+> 组件传值是单向数据流
+
+一般情况下, 父组件的值发生改变会影响子组件中的数据, 而子组件中的值发生改变不会影响父组件, 是单向数据流的
+
+但是特殊情况除外, 如果数据是`引用类型`, 例如对象或者数组, 在子组件中修改值, 可能会影响父组件中的数据
+
+> 默认插槽的名字是 `default`
+
+```html
+<slot>
+    <button>ximingx</button>
+</slot>
+<!-- 等价于 -->
+<slot  name="default">
+    <button>ximingx</button>
+</slot>
+```
+
+> 插槽的简写是 `#`
+
+```html
+<template>
+  <SonComponents>
+    <template #main></template>
+  </SonComponents>
+</template>
+```
+
+
+
 ### 7.16 is
+
+有的需求会想要在两个组件间来回切换
 
 > `<component :is="current"></component>` 的使用可以动态的渲染组件
 
-```js
+```vue
 <template>
   <component :is="current"></component>
   <button @click="current = 'XimingTest'"></button>
@@ -3218,35 +3449,7 @@ export default {
 </script>
 ```
 
-### @ 补充
-
-> 组件传值是单向数据流
-
-一般情况下, 父组件的值发生改变会影响子组件中的数据, 而子组件中的值发生改变不会影响父组件, 是单向数据流的
-
-**但是特殊情况除外, 如果数据是`引用类型`, 例如对象或者数组, 在子组件中修改值, 可能会影响父组件中的数据**
-
-> 默认插槽的名字是 `default`
-
-```html
-<slot>
-    <button>ximingx</button>
-</slot>
-<!-- 等价于 -->
-<slot  name="default">
-    <button>ximingx</button>
-</slot>
-```
-
-> 插槽的简写是 `#`
-
-```html
-<template>
-  <SonComponents>
-    <template #main></template>
-  </SonComponents>
-</template>
-```
+组件会在被切换掉后卸载。我们可以通过 `keepAlive` 组件强制不活跃的组件仍然保持“存活”的状态。
 
 ## 8. Vue-router
 
