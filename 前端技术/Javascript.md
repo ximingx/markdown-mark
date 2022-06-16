@@ -12,6 +12,8 @@
 
 > `JavaScript` 的定位
 
+`JavaScript `官方名称是 `ECMAScript` 是一种属于网络的脚本语言, 已经被广泛用于 `Web 应用开发`,常用来为网页添加各式各样的动态功能,为用户提供更流畅美观的浏览效果。
+
 - `JavaScript` 是脚本编程语言
 - `JavaScript` 是弱类型语言
 - `JavaScript` 是动态类型的
@@ -21,14 +23,16 @@
 
 > `JavaScript` 和 `ECMAScript` 的区别，以及和 `DOM` 、`BOM` 的关系, 
 
-`ECMAScript `是由网景的`布兰登·艾奇`开发的一种脚本语言`JavaScript`的`标准化规范`；
+`ECMAScript `是脚本语言`JavaScript`的`标准化规范`；
 
-- 1995年12月，升阳与网景联合发表了`JavaScript`。
-- 1996年11月，网景公司将`JavaScript`提交给[欧洲计算机制造商协会](https://baike.baidu.com/item/欧洲计算机制造商协会/2052072)进行标准化。
-- 1997年6月, `ECMA-262`的第一个版本被`Ecma`组织采纳。`ECMAScript`是`ECMA-262`标准化的脚本语言的名称。
+- `1994 年`,  `Netscape`（网景）公司发布了 `Navigator` 浏览器 1.0 版本，市场占用率超过 90%
+
+- `1995年12月`，升阳与网景联合发表了`JavaScript`。
+- `1996年11月`，网景公司将`JavaScript`提交给欧洲计算机制造商协会进行标准化。
+- `1997年6月`, `ECMA-262`的第一个版本被`Ecma`组织采纳。`ECMAScript`是`ECMA-262`标准化的脚本语言的名称。
 - 最初命名为`Mocha`，后来改名为`LiveScript`，最后重命名为`JavaScript`。
 
-`ECMAscript`由于**只是语法的标准**, 所以在很多地方也都有了实现甚至超越了浏览器本身的存在.
+> `ECMAscript`由于只是语法的标准, 所以在很多地方也都有了实现甚至超越了浏览器本身的存在.
 
 - `ECMAscript`在浏览器中的实现`JavaScript`
 
@@ -36,7 +40,7 @@
 
 - `ECMAscript`在服务器端的实现`Nodejs`
 
-`JavaScript`包含
+> `JavaScript`包含
 
 - `DOM`（文档对象模型），提供了与网页内容交互的 `方法` 和 `接口`
 - `BOM`（浏览器对象模型），提供了与浏览器交互的 `方法` 和 `接口`
@@ -46,9 +50,35 @@
 
 `ES5` 也称为 `ECMAScript 2009`，是`ECMAScript`的第5版, 是现在浏览前兼容性较好的一个版本
 
-`JS版本` 主要还是用的`5.1 `和 `6.0`
+- `1996 年 11 月`网景公司将 `JS `提交给 `ECMA`(国际标准化组织)成为国际标准，用于对抗微软。
 
-`ECMAScript 2018 ` 是最新版
+  由 `ECMA `的第 39 号技术专家委员会（Technical Committee 39，简称 `TC39`）负责制订 `ECMAScript `标准，成员包括 `Microsoft`、`Mozilla`、`Google `等大公司。
+
+- `1997 年`, `ECMA` 发布` ECMA-262 标准`，推出浏览器标准语言 `ECMAScript 1.0`
+
+- ...
+
+- `2009 年`, `ECMAScript 5.0` 发布
+
+- `2011 年`, `ECMAScript5.1` 发布，成为 `ISO `国际标准，从而推动所有浏览器都支持
+
+- ...
+
+- `2015 年`, `ECMAScript6 `发布，更名为 ECMAScript 2015。
+
+- `2016 年`, `ECMAScript7 `发布，`ECMAScript2016`
+
+- `2017 年`, `ECMAScript8 `发布，`ECMAScript2017`
+
+- `2018 年`, `ECMAScript9 `发布，`ECMAScript2018`
+
+- `2019 年`, `ECMAScript10`，`ECMAScript2019`
+
+- `2020 年`, `ECMAScript11`，`ECMAScript2020`
+
+- ....
+
+从 `2015 `年开始 `tc39`委员会决定每年发布新的 `ECMAScript `版本
 
 > `JavaScript `和 `java `的关系
 
@@ -58,7 +88,65 @@
 
 然而，由于当时`Java`技术如日中天，`Netscape`公司觉得改为`JavaScript`这个名字会更吸引人注目, 所以就是这么草率, 没有什么特殊的关系
 
+> 使用场景
+
+- 浏览器网页端开发
+- 做为服务器后台语言使用[`Node.js`)](https://nodejs.org/)
+- 移动端手机 `APP `开发，如 `Facebook `的 `React Native`、`uniapp`、`PhoneGap`、`IONIC`
+- 跨平台的桌面应用程序，如使用 `electronjs`
+
+> `es6` 兼容性 
+
+[https://caniuse.com/es6]:(https://caniuse.com/es6)
+
+![image-20220610161602700](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202206101616796.png)
+
 ### 2. 基础使用
+
+> 运行流程
+
+所有内容需要在特定的环境中运行，就像 `PSD `需要在类似 `PS `的软件处理一样。
+
+浏览器内置了处理的 `JS解析器`，但不同浏览器的性能不同，所以 `JS `一般都在浏览器中执行，当然也有可以在服务器后台执行的 `JS 解析器`。
+
+> > 在浏览器中访问一个网站的大概过程
+
+1. 浏览器向后台服务器(任何一个托管的服务器上, 可以是`阿里云`, `腾讯云`等平台)发送请求
+2. 服务器返回文件快速下载到本地(`js文件`, `html文件`, `css文件`), 由浏览器渲染出页面
+3. 监听用户事件, 内存空间保存数据
+4. 关闭页面生命周期结束, 并释放占用的资源
+
+> 语法规范, `;` 的使用
+
+使用分号表示一段指令的结束，当没有输入分号时如果有换行符 JS 会自动添加分号，减少错误的发生。
+
+- 但推荐每个指令都以分号结束
+- 在使用构建工具时，不使用分号结束可能会造成异常
+
+但是 `;` 确实是可以不加的, 有些时候我们确实会看到不加 `;` 的代码
+
+> 注释
+
+在编程语言中基本都有注释的存在, 没必要行行都加, 在一些很难想得通的地方加就好
+
+单行注释: 用于对一行的内容进行注释操作.
+
+```js
+// 嗷呜, 这是注释
+```
+
+多行注释: 一次对连续的多行进行注释操作
+
+```js
+/*
+	嗷呜, 这是注释	
+	嗷呜, 这是注释
+	嗷呜, 这是注释
+	水代码
+*/
+```
+
+在`JS`中多行注释禁止嵌套使用,因为多行注释的开头符号`/*` 是查找最近的`*/`作为结束的, 所以多行注释嵌套会出错的!
 
 > `script` 标签
 
@@ -91,7 +179,7 @@
 
 > `script `标签的属性
 
-|            |                                                              |
+| 属性       | 属性值                                                       |
 | ---------- | ------------------------------------------------------------ |
 | `src`      | 用于引入`JS文件的地址`                                       |
 | `language` | 用于设置脚本的类型 (废弃)                                    |
@@ -116,11 +204,52 @@
 </script>
 ```
 
+嵌入式中使用外链式, 会忽视嵌入式代码
+
 3. 内联式
 
 ```html
 <button onclick="alert('不推荐, 也别这么玩')"></button>
 ```
+
+> 避免延迟, `script` 的位置要求
+
+ `js `放在 `<head>` 标签中要等到 `js `加载并解析后才会显示`<body>`标签中的内容。
+
+```html
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ximingx</title>
+    <script>
+        alert('ximingx');
+    </script>
+</head>
+
+<body>
+    <h1>ximingx</h1>
+</body>
+```
+
+页面中不会先渲染出 `<h1>ximingx</h1>`, 而是文件加载并解析后, 弹出框结束后渲染出 `ximingx` 内容
+
+为了解决上面的问题，可以将 `js 文件 `放在 标签前如下所示
+
+```html
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ximingx</title>
+</head>
+
+<body>
+    <h1>ximingx</h1>
+    <!-- 在页面显示后,开始对 js 的操作 -->
+    <script src="ximingx.js"></script>
+</body>
+```
+
+这样的使用方式可以提高用户的体验感
 
 > 三种输出方式
 
@@ -144,45 +273,23 @@ alert('hello ximingx');
 document.write('hello ximingx');
 ```
 
-> 语法结构
->
-> ​		`JS`是以分号作为语句的结束, 但是如果你不写分号，也能够正常执行, 但是它相当于没有结束符, 在某些特定特殊的情况下运行会报错
-
 ## 二: 基础语法
 
 ### 1. 变量常量
 
-> 变量就是可以变化的量, 是内存中可以存储数据内容的代号, 一个变量名, 对应一个变量的值
->
-> 与常量不同, 常量必须在声明的时候赋予一个值, 且不能更改
+> `JS `中的变量是弱类型可以保存所有类型的数据，即变量没有类型而值有类型。
 
-#### 1.1 var
+变量就是可以变化的量, 是内存中可以存储数据内容的代号, 一个变量名, 对应一个存储的地址, 存放数据
 
-> 使用 `var` 进行变量的声明的三种方式
+与常量不同, 常量必须在声明的时候赋予一个值, 且不能更改
 
-1. 声明并同时赋值
+#### 1. 基础知识
 
-```js
-var a = "a";
-```
-
-2. 声明但不赋值
-
-```js
-var a;
-```
-
-3. 没有声明, 直接使用 (唔, 有弊端,劝你别用,会被别人骂屎一样的代码)
-
-```js
-a = "a"
-```
-
-> 命名规则
+> 变量的命名规则
 
 1. 由`字母`, `数字`, `下划线`, `$`组成, 但是不可以用数字开头
 2. 变量名严格区分大小写
-3. 变量名不能和系统的保留关键字冲突
+3. `变量名`不能和系统的`保留字`, `关键字`冲突
 
 > `JS` 关键字
 
@@ -207,53 +314,403 @@ abstract、double、goto、native、static、boolean、enum、implements、packa
 也是一般情况下 `JS` 的命名规范
 
 ```js
-var oldPeople = '阿翔'
+let userName = 'ximingx'
 ```
 
-#### 1.2 let
+> 变量的声明的三种方式
 
-
-
-留坑
-
-
-
-#### 1.3 const
-
-
-
-留坑
-
-
-
-### 2. 注释
-
-在编程语言中基本都有注释的存在, 没必要行行都加, 在一些很难想得通的地方加就好
-
-单行注释: 用于对一行的内容进行注释操作.
+- 声明并同时赋值
 
 ```js
-// 嗷呜, 这是注释
+var a = "a";
 ```
 
-多行注释: 一次对连续的多行进行注释操作
+- 声明但不赋值
 
 ```js
-/*
-	嗷呜, 这是注释	
-	嗷呜, 这是注释
-	嗷呜, 这是注释
-	水代码
-*/
+var a;
 ```
 
-在`JS`中多行注释禁止嵌套使用,因为多行注释的开头符号`/*` 是查找最近的`*/`作为结束的, 所以多行注释嵌套会出错的!
+- 没有声明, 直接使用 (唔, 有弊端,劝你别用,会被别人骂屎一样的代码)
+
+```js
+a = "a"
+```
+
+> 使用`,` 可以同时声明多个变量
+
+```js
+let n = 2,f = 3;
+```
+
+> 弱类型
+
+在 `JS `中变量类型由所引用的值决定, 而不是定义时它的类型决定的, 和别的语言有所区别, 不需要标识类型
+
+```js
+var web = "ximingx";
+console.log(typeof web); //string
+web = 99;
+console.log(typeof web); //number
+web = {};
+console.log(typeof web); //object
+```
+
+#### 2. var let const
+
+> 声明变量的三种关键字
+
+- `var`
+- `let`
+- `const`
+
+> 变量提升
+
+仅仅在使用 `var` 时会有变量提升的缺陷
+
+```js
+var web = 'baidu.com';
+console.log(web);
+var class = 'class';
+// 此时程序控制台的第一行不会显示 baidu.com 而是会直接报错
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+console.log(website); // undefined
+var website = 'ximingx.com'
+```
+
+上面是变量提升的演示
+
+解析器会先解析代码，然后把声明的变量的声明提升到最前，这就叫做变量提升
+
+当遇到声明 `class` 为变量名以后, 直接报错, 后面的代码不执行
+
+```js
+console.log(a); //undefined
+var a = 1;
+console.log(a);  //1
+
+//以上代码解析器执行过程如下
+
+var a;
+console.log(a); //1
+a = 1;
+console.log(a); //1
+```
+
+下面是 `if(false)` 中定义的 `var `也会发生变量提升
+
+```js
+var web = "ximingx";
+function ximingx() {
+    if (false) {
+        // 不执行, 仍然会发生变量提升
+        var web = "ximingx";
+    }
+    console.log(web);
+    // undefined
+}
+ximingx();
+```
+
+所以推荐 `var `声明的变量, 先声明后使用
+
+而 `let ` 和 `const `解决了这个问题
+
+> 重复声明
+>
+> 使用 `var `可能造成不小心定义了同名变量
+
+使用 `var `可能造成不小心定义了同名变量, 重复声明会进行覆盖操作
+
+```js
+//优惠价
+var price = 90;
+//商品价格
+var price = 100;
+console.log(`商品优惠价格是:${price}`);
+```
+
+使用`let` 可以避免上面的问题，因为 `let `声明后的变量不允许在同一作用域中重新声明
+
+```js
+let web = 'ximingx.com';
+let web = 'ximingx'; //Identifier 'web' has already been declared
+```
+
+不同作用域可以重新声明
+
+```js
+let web = 'ximingx.com';
+if (true) {
+	let web = 'ximingx'; //Identifier 'web' has already been declared
+}
+```
+
+但可以改变值这是与 `const `不同点
+
+```js
+let price = 90;
+price = 88;
+console.log(`商品价格是:${price}`);
+```
+
+> 使用 `var` 声明的变量存在于最近的函数或全局作用域中
+>
+> 没有块级作用域的机制
+
+没有块作用域很容易污染全局，下面函数中的变量污染了全局环境
+
+```js
+function run() {
+  // 没有声明直接使用, 污染到了全局
+  web = "ximingx";
+}
+run();
+console.log(web); //ximingx
+```
+
+没有块作用作用域时 `var `也会污染全局
+
+```js
+for (var i = 0; i < 10; i++) {
+  console.log(i);
+}
+console.log(i); // 10
+```
+
+使用`let`有块作用域时则不会有全局污染的问题
+
+```js
+let i = 100;
+for (let i = 0; i < 6; i++) {
+  console.log(i);
+}
+console.log(i); // 100
+```
+
+> `var` 全局声明的变量也存在于 `window`对象中,
+>
+> `let `与 `const `则不会
+
+```js
+var a = "ximingx";
+console.log(window.a); //ximingx
+```
+
+`let` 全局声明的变量不存在于 `window`对象中, 不会更改 `window对象`
+
+```js
+let a = "ximingx";
+console.log(window.a); //undefined
+```
+
+所以 `var` 声明的变量可能会覆盖 `global` 中原有的变量 
+
+> 与 `var` 声明的区别是 `let/const` 拥有块作用域
+
+`let`存在块作用域特性，变量只在块域中有效
+
+```js
+if (true) {
+    let web = 'ximingx',url = 'ximingx.com';
+    console.log(web); //ximingx
+}
+console.log(web); //web is not defined
+```
+
+每一层都是独立作用域，里层作用域可以声明外层作用域同名变量，但不会改变外层变量
+
+> 使用 `const` 用来声明常量
+
+这与其他语言差别不大，比如可以用来声明后台接口的 URI 地址。
+
+- 常量名建议全部大写
+- 只能声明一次变量
+- 声明时必须同时赋值
+- 不允许再次全新赋值
+- 可以修改引用类型变量的值
+- 拥有块、函数、全局作用域
+
+```js
+const USERNAME = 'ximingx';
+const PASSWORD = '751119'
+PASSWORD = 123 // 报错, 基本数据类型的常量不可以更爱
+```
+
+> `const` 声明的常量为引用数据类型时可以修改
+
+```js
+const INFP = {
+    PASSWORD: '123',
+    USERNAME: 'user'
+}
+INFO.USERNAME = '123'
+// 可以正常运行
+```
+
+> 将引用类型锁死
+
+```js
+const APP = {
+    USER: 'ximingx',
+    PORT: 80
+};
+Object.freeze(APP);
+APP.PORT = 3000;
+console.log(APP)
+
+// { USER: 'ximingx', PORT: 80 }
+```
+
+使用严格模式会报出错误。
+
+#### 3. 暂时性死区
+
+`TDZ `又称暂时性死区，指变量在作用域内已经存在，但必须在`let/const`声明后才可以使用。
+
+`TDZ `可以让程序保持先声明后使用的习惯，让程序更稳定。
+
+- 变量要先声明后使用
+- 建议使用` let/const` 而少使用 `var`
+
+使用`let/const` 声明的变量在声明前存在临时性死区（`TDZ`）使用会发生错误
+
+```js
+console.log(x); // Cannot access 'x' before initialization
+let x = 1;
+```
+
+在`run`函数作用域中产生 `TDZ`，不允许变量在未声明前使用。
+
+```js
+ximingx = "ximingx";
+function run() {
+  console.log(ximingx); // 不可以这样子
+  let ximingx = "ximingx";
+}
+run();
+```
+
+下面代码 b 没有声明赋值不允许直接使用
+
+```js
+function fun(a = b, b = 3) {}
+fun(); //Cannot access 'b' before initialization
+```
+
+因为 a 已经赋值，所以 b 可以使用 a 变量，下面代码访问正常
+
+```js
+function fun(a = 2, b = a) {}
+fun();
+```
+
+#### 4. 传值与传址
+
+基本数据类型指数值、字符串等简单数据类型，引用类型指对象数据类型。
+
+具体的会在数据类型章节讲
+
+> 基本类型复制是值的复制，互相不受影响。
+
+```js
+let a = 100;
+let b = a;
+console.log(a); // 100
+console.log(b); // 100
+a = 200;
+console.log(a); // 200
+console.log(b); // 100
+```
+
+> 对于引用类型来讲，变量保存的是引用对象的指针。变量间赋值时其实赋值是变量的指针，这样多个变量就引用的是同一个对象。
+
+```js
+let info = {
+    web: "ximingx",
+    lover: 'hsl'
+};
+let b = info;
+info.web = "baidu";
+console.log(b); // { web: 'baidu', lover: 'hsl' }
+```
+
+### 2. 严格模式
+
+> 严格模式可以让我们及早发现错误，使代码更安全规范，推荐在代码中一直保持严格模式运行。
+
+严格模式对正常的 `JavaScript `语义做了一些更改。
+
+1. 严格模式通过抛出错误来消除了一些原有静默错误。
+2. 严格模式修复了一些导致 `JavaScript 引擎`难以执行优化的缺陷：有时候，相同的代码，严格模式可以比非严格模式下运行得更快。
+3. 严格模式禁用了在 `ECMAScript `的未来版本中可能会定义的一些语法。
+
+> 声明方式
+
+为整个脚本文件开启严格模式，需要在所有语句之前放一个特定语句 `"use strict";` （或 `'use strict';`）
+
+```js
+// 整个脚本都开启严格模式的语法
+"use strict";
+let a = 1;
+```
+
+同样的，要给某个函数开启严格模式，得把 `"use strict";` (或 `'use strict'; `) 声明*一字不漏地*放在函数体所有语句之前。
+
+```js
+function strict() {
+  // 函数级别严格模式语法
+  'use strict';
+  return "Hi!";
+}
+```
+
+> 改变
+>
+> 具体参考, 唔, 我觉得我写的就是规范, 虽然不是
+
+[https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode]:(https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Strict_mode)
+
+> 变量必须使用关键词声明，未声明的变量不允许赋值
+
+```js
+"use strict";
+url = 'ximingx.com'; //url is not defined
+```
+
+> 强制声明防止污染全局
+
+```js
+"use strict";
+function run() {
+  web = "ximingx"; //
+}
+run();
+console.log(web); 
+```
+
+> 关键词不允许做变量使用
+
+```js
+"use strict";
+var public = 'houdunren.com'; //
+```
+
+> 变量参数不允许重复定义
+
+```js
+"use strict";
+// 不允许参数重名
+function hd(name, name) {}
+```
 
 ### 3. 转义字符
 
 ```html
-<h1><</h1>
-<h1>></h1>
+<h1> < </h1>
+<h1> > </h1>
 <!-- 上面这么写会出 bug -->
 ```
 
@@ -310,8 +767,6 @@ fn(1, 2, 3);
 
 ### 2. Null
 
-`null `专门用来定义一个空对象。
-
 ```js
 let a = null
 ```
@@ -320,14 +775,12 @@ let a = null
 
 你可以把 `null `理解为：`null `虽然是一个单独的数据类型，但`null `相当于是一个 `object`，只不过地址为空（是一个空指针）而已。
 
-比如：
-
 ```js
 let myObj = null;
 cosole.log(typeof myObj); // 打印结果：object
 ```
 
-补充：
+> 补充
 
 -   `Null `类型的值只有一个，就是 `null`。
 -   使用 `typeof `检查一个 `null `值时，会返回 `object`。
@@ -354,7 +807,7 @@ console.log(typeof name); // 打印结果：undefined
 
 > 变量未声明
 
-如果你从未声明一个变量，就去使用它，则会报错（这个大家都知道）；此时，如果用 `typeof` 检查这个变量时，会返回 `undefined`。举例：
+如果你从未声明一个变量，就去使用它，则会报错（这个大家都知道）；此时，如果用 `typeof` 检查这个变量时，会返回 `undefined`。
 
 ```js
 console.log(typeof a); // undefined
