@@ -914,7 +914,7 @@ hover([over,]out)     // 其中over和out为两个函数
 
 ![noconfig](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204271953231.png)
 
-```javascript
+```html
 <script>
 	$(function() {
   		// 让jquery 释放对$ 控制权 让用自己决定

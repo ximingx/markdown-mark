@@ -126,7 +126,7 @@ Markdown 图片语法格式如下：
 
 **最后就可以看到我们学号的样式了**
 
-![image-20220407142449642](C:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20220407142449642.png)
+![image-20220407142449642](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202206171633318.png)
 
 ![image-20220407143627736](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204071436777.png)
 
