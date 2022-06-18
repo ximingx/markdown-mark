@@ -196,7 +196,11 @@ and 今天的睡前小故事是盗版的她的哦， 哎， 泥， 鸭
 
 
 
+### 2022.06.17
 
+第一次远距离离开
+
+![image-20220617090923686](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202206170909993.png)
 
 
 
