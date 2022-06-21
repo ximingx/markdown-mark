@@ -204,9 +204,27 @@ and 今天的睡前小故事是盗版的她的哦， 哎， 泥， 鸭
 
 
 
+### 2022.06.20
 
+记录一下, 你喜欢的颜色
 
+```css
+background-image: linear-gradient(to top, #a3bded 0%, #6991c7 100%);
 
+background-image: linear-gradient(to top, #0c3483 0%, #a2b6df 100%, #6b8cce 100%, #a2b6df 100%);
 
+background-image: linear-gradient(to top, #df89b5 0%, #bfd9fe 100%);
 
+background-image: linear-gradient(-225deg, #2CD8D5 0%, #C5C1FF 56%, #FFBAC3 100%);
+
+background-image: linear-gradient(-225deg, #2CD8D5 0%, #6B8DD6 48%, #8E37D7 100%);
+
+background-image: linear-gradient(-225deg, #A8BFFF 0%, #884D80 100%);
+
+background-image: linear-gradient(-225deg, #7DE2FC 0%, #B9B6E5 100%);
+
+background-image: linear-gradient(-225deg, #CBBACC 0%, #2580B3 100%);
+
+background-image: linear-gradient(-225deg, #7085B6 0%, #87A7D9 50%, #DEF3F8 100%);
+```
 

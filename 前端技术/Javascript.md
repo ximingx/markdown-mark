@@ -710,7 +710,7 @@ function hd(name, name) {}
 ```html
 <h1> < </h1>
 <h1> > </h1>
-<!-- 上面这么写会出 bug -->
+<!-- 上面这么写会出 bug -->dD
 <script>
 	let a = "abc"de"    
     <!-- 上面这么写会出 bug -->
@@ -719,51 +719,14 @@ function hd(name, name) {}
 
 因为标签之间 `<`  以及 `"`会产生歧义,  这个时候我们需要使用到转义符, 而这也正是我们需要使用转义字符的常见需求
 
-| 转义字符 | 含义           |
-| -------- | -------------- |
-| `\n`     | 换行           |
-| `\r`     | 回车           |
-| `\t`     | 缩进           |
-| `\\`     | 表示一个`\`    |
-| `\'`     | 表示一个单引号 |
-| `\" `    | 表示一个双引号 |
-
-### 4. 模板字符串
-
-> `` 的使用                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-
-```js
-// 一: 以使用一对单引号或者一对双引号来定义一个字符串
-let str1 = "str1"
-console.log(str1) // str1
-let str2 = 'str2'
-console.log(str2) // str2
-// 1. 在 JavaScript 中双引号定义的字符串和单引号定义的字符串没有本质区别
-
-// 2. 无论是单引号还是双引号，都必须配对使用，不能一个单引号和双引号配对
-let str3 = "str3'"0
-console.log(str3) //str'
-// 3. 单引号中的字符串中不能出现单引号，可以出现双引号
-//    双引号中的字符串中不能出现双引号，可以出现单引号
-
-// 4. 单引号和双引号定义字符串时，须在一行内完成,不能换行
-
-// 二: 使用模板字符串的方式定义字符串：我们可以使用一对反引号来定义字符串 (tab 键上面的 ``)
-let str4 = `这是一个普通的字符串`
-let str5 = `这是一个换行的 
-字符串`
-let str6 = 7
-let str7 = 6
-// 模板字符串利用 ${} 使用变量
-let str8 = `这是一个可以解析变量的字符串，例如：${str6 + str7}`
-console.log(str4) // 这是一个普通的字符串
-console.log(str5) /* 这是一个换行的 
-字符串 */
-console.log(str6) // 7
-console.log(str7) // 6
-console.log(str8) // 这是一个可以解析变量的字符串，例如：13
-// ${varName}或${value}。即${}中可为变量名，也可直接为字面量值(如${123}或${asd})。
-```
+| 转义字符 |      含义      |
+| :------: | :------------: |
+|   `\n`   |      换行      |
+|   `\r`   |      回车      |
+|   `\t`   |      缩进      |
+|   `\\`   |  表示一个`\`   |
+|   `\'`   | 表示一个单引号 |
+|  `\" `   | 表示一个双引号 |
 
 
 
@@ -784,16 +747,15 @@ console.log(str8) // 这是一个可以解析变量的字符串，例如：13
 
 > `instanceof`
 
-用于检测构造函数的 `prototype` 属性是否出现在某个实例对象的原型链上。
-
-关于原型和原型链可以先不懂, 具体看`9. Object`中的原型介绍
+用于检测构造函数的 `prototype` 属性是否出现在某个实例对象的原型链上
 
 ```js
 object instanceof constructor
 ```
 
-- `object`：某个实例对象
-- `constructor`：某个构造函数
+`object`：某个实例对象
+
+`constructor`：某个构造函数
 
 ```js
 function fn(a, b, c) {
@@ -814,23 +776,44 @@ fn(1, 2, 3);
 - 基本类型：`number/string/boolean`
 - `function`
 - `object`
-- `undefined`
+- `undefined` : 对于不存在的变量, 返回 `undefined`, 声明但是未定义变量也是返回 `undefined`
 
-`typeof`运算符用于判断对象的类型，但是对于一些创建的对象 (`Array`)，它们都会返回`object`'
+```js
+let a = 3;
+let b = "str"
+let c = [1,"23",4]
+let d = {}
+let e = function () {
 
+}
+let f;
+console.log(a,b,c,d,e,f) // 注意这里不可以使用 g, 会直接报错
+console.log(typeof a, typeof b, typeof c, typeof d, typeof e, typeof f, typeof g)
+// 3 str [ 1, '23', 4 ] {} [Function: e] undefined
+// number string object object function undefined undefined
+```
 
+`typeof`运算符用于判断对象的类型，但是对于一些创建的对象 (`Array`)，它们都会返回`object`
 
+> 判断是否声明 
 
+```js
+if(typeof == 'undefined'){ 
+    throw new Error(“变量没有声明”) 
+}
+```
 
 ### 2. Null
+
+> `null` 的定义
+
+如果你想定义一个变量用来保存引用类型，但是还没想好放什么内容，可以在初始化时将其设置为 `null`。
 
 ```js
 let a = null
 ```
 
-如果你想定义一个变量用来保存引用类型，但是还没想好放什么内容，这个时候，可以在初始化时将其设置为 `null`。
-
-你可以把 `null `理解为：`null `虽然是一个单独的数据类型，但`null `相当于是一个 `object`，只不过地址为空（是一个空指针）而已。
+你可以把 `null `理解为：`null `虽然是一个单独的数据类型，但`null `相当于是一个 `object`，只不过地址为空
 
 ```js
 let myObj = null;
@@ -839,8 +822,9 @@ cosole.log(typeof myObj); // 打印结果：object
 
 > 补充
 
--   `Null `类型的值只有一个，就是 `null`。
--   使用 `typeof `检查一个 `null `值时，会返回 `object`。
+`Null `类型的值只有一个，就是 `null`。
+
+使用 `typeof `检查一个 `null `值时，会返回 `object`。
 
 ### 3. Undefined
 
@@ -855,12 +839,6 @@ let name;
 console.log(name); // 打印结果：undefined
 console.log(typeof name); // 打印结果：undefined
 ```
-
-补充：
-
--   `Undefined `类型的值只有一个，就是 `undefind`
-
--   使用 `typeof `检查一个 `undefined `值时，会返回 `undefined`
 
 > 变量未声明
 
@@ -902,7 +880,7 @@ function foo(name) {
 foo();
 ```
 
-等学习了 ES6 之后，上方代码也可以这样写：
+等学习了 `ES6 `之后，上方代码也可以这样写：
 
 ```js
 function foo(name = 'qianguyihao') {}
@@ -910,12 +888,31 @@ function foo(name = 'qianguyihao') {}
 foo();
 ```
 
+> 补充
+
+`Undefined `类型的值只有一个，就是 `undefind`
+
+使用 `typeof `检查一个 `undefined `值时，会返回 `undefined`
+
+---
+
 ### 4. String
 
-#### 4.1 声明字符串的方式
+字符串类型是使用非常多的数据类型，也是相对简单的数据类型。
+
+#### 1. 声明字符串的方式
+
+> new
 
 ```js
-// 一: 以使用一对单引号或者一对双引号来定义一个字符串
+let x = new String("ximingx")
+// 写起来略带一点麻烦, 一般不这么做
+```
+
+> 简写的方式
+
+```js
+// 以使用一对单引号或者一对双引号来定义一个字符串
 let str1 = "str1"
 console.log(str1) // str1
 let str2 = 'str2'
@@ -929,8 +926,12 @@ console.log(str3) //str'
 //    双引号中的字符串中不能出现双引号，可以出现单引号
 
 // 4. 单引号和双引号定义字符串时，须在一行内完成,不能换行
+```
 
-// 二: 使用模板字符串的方式定义字符串：我们可以使用一对反引号来定义字符串 (tab 键上面的 ``)
+> 模板字符串
+
+```js
+// 使用模板字符串的方式定义字符串：我们可以使用一对反引号来定义字符串 (tab 键上面的 ``)
 let str4 = `这是一个普通的字符串`
 let str5 = `这是一个换行的 
 字符串`
@@ -947,22 +948,20 @@ console.log(str8) // 这是一个可以解析变量的字符串，例如：13
 // ${varName}或${value}。即${}中可为变量名，也可直接为字面量值(如${123}或${asd})。
 ```
 
-#### 4.2 转义符串
+> 字符串使用单、双引号包裹，单、双引号使用结果没有区别。
 
-转义符: `\`
+#### 2. 转义符串
 
-```js
-// 在定义一个字符串的时候，有些特殊字符并不适合直接出现。例如：换行符、单引 号（不能出现在单引号内）、双引号（不能出现在双引号内）
-```
-
-例如 下面是错误的
+> 在定义一个字符串的时候，有些特殊字符并不适合直接出现。
+>
+> 例如：换行符、单引 号（不能出现在单引号内）、双引号（不能出现在双引号内）
 
 ```js
 let str = " " " 
 // 会直接报语法错误
 ```
 
-但是我们需要这样去使用 , 这个时候可以我们就需要使用 `\` 转义符，例如： 
+>  但是我们需要这样去使用 , 这个时候可以我们就需要使用 `\` 转义符，例如： 
 
 ```js
 // 在这里使用了\n 来代表换行符
@@ -982,28 +981,547 @@ console.log(str3)
 // str3 "'
 ```
 
-#### 4.3 数据类型转换
+> 常见的转义符
+
+| 符号 | 说明     |
+| ---- | -------- |
+| \t   | 制表符   |
+| \n   | 换行     |
+| \\   | 斜杠符号 |
+| \'   | 单引号   |
+| \"   | 双引号   |
+
+#### 3. 数据类型转换
 
 > `toSring()`
 
 `toString()`方法，该方法不会影响到原变量，会将转换后的结果返回，需要定义新的变量接收，或者将值赋予已有变量。
+
 但是需要注意的是，`null`和`undefined`这两个类型的值是没有`toString()`方法的。
+
+#### 4. 返回值类型
+
+>  使用字面量与对象方法创建字符串，返回的是不同类型
+
+```js
+let str1 = "str1";
+let str2 = new String("str2");
+console.log(typeof str1, typeof str2); //string object
+```
+
+#### 5. 属性
+
+> 使用`length`属性可以获取字符串长度
+
+```js
+console.log("dawdaw.com".length)
+```
+
+#### 6. String 对象的方法
+
+![在这里插入图片描述](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204201646902.png)
+
+##### localeCompare()
+
+> 字符比较是指按照字典次序对单个字符或字符串进行比较大小的操作
+>
+> 一般都是以`Unicode码值`的大小作为字符比较的标准。
+
+`JS字符串`在进行大于(小于)比较时，会根据第一个不同的字符的`Unicode值码`进行比较
+
+```js
+let a="91";                   
+let b="390"                    
+console.log(a.charCodeAt())    // 57
+console.log(b.charCodeAt())    // 51
+console.log(a<b)               // false
+```
+
+>  `“91” < “390”` 结果为 `false `
+
+字符串在比较的时候会转化为 `ascll `的打印字符（`9是57,3是51`），会依次比较字符，如果第一个字符相等就比较下一个或遇到`‘\0’`为止。  ，所以在比较的时候一定要转化为`number`来比较
+
+所以解释一下上面的结果
+
+a 中第一个字符为 9 , b 中第一个字符为 3 ,两者不同,所以开始比较他们的 `ascll `, a 的 `acsll `(57) 大于 b 的 `acsll `(51) 所以 `“91” < “390” 结果为 false `
+
+> 如果一个是字符串,一个是数值,会倾向于将字符串转换为数值然后进行比较
+
+```js
+let a = 34
+let b = "34"
+console.log( a == b ) //true
+```
+
+> 一般的用法就是 `a.localeCompare(b)`
+
+```js
+let str1 = "123456"
+let str2 = "1234567"
+let str3 = "12345678"
+let str4 = "123478"
+let str5 = "abcd"
+let str6 = "dcba"
+// 返回值大于0：说明当前字符串string大于对比字符串targetString
+//
+// 返回值小于0：说明当前字符串string小于对比字符串targetString
+//
+// 返回值等于0：说明当前字符串string等于对比字符串targetString
+console.log(str1.localeCompare(str2)); // -1
+console.log(str2.localeCompare(str2)); // 0
+console.log(str3.localeCompare(str2)); // 1
+console.log(str4.localeCompare(str2)); // 1
+console.log(str5.localeCompare(str6)); // -1
+```
+
+##### charCodeAt()
+
+> 返回指定位置的`字符Unicode编码`
+
+```js
+// 返回字符串 index 位置的 Unicode 编码 , 默认为 0 号位置
+console.log("a".charCodeAt(0))
+console.log("aabb".charCodeAt(2))
+// 97
+// 98
+```
+
+##### charAt()
+
+> 返回指定位置的`字符`
+
+```js
+// charAt（index）
+// 返回指定位置（index）的字符。
+// 如果index小于0或者大于等于字符串的长度string.length，它会返回空字符串。
+let str = "str1"
+console.log(str.charAt(1))
+console.log(str.charAt(5))
+// t
+// 
+```
+
+##### String.fromCharCode()
+
+```js
+console.log(String.fromCharCode( 5, 66, 67, 68, 69, 70, 71 ))
+console.log(String.fromCharCode( 38 ))
+console.log(String.fromCharCode( 13, 22269 ))
+console.log(String.fromCharCode())
+// ║BCDEFG
+// &
+// 国
+// 
+```
+
+##### slice()
+
+>  `slice（start, end）` 最后的取值范围 `[start, end)`
+
+```js
+// slice（start,end）
+// 截取字符串 start 索引位置到 end 索引位置之前的字符串
+// start 参数字符串中第一个字符位置为 0, 第二个字符位置为 1, 以此类推，如果是负数表示从尾部截取多少个字符串，slice(-2) 表示提取原数组中的倒数第二个元素到最后一个元素（包含最后一个元素）。
+// end 参数如果为负数，-1 指字符串的最后一个字符的位置，-2 指倒数第二个字符，以此类推。
+let str1 = "123456789"
+console.log(str1.slice(0, str1.length))
+// 123456789
+let str2 = "123456789"
+console.log(str2.slice(1, 3))
+// 23
+console.log(str2.slice(-2))
+// 89
+// 使用 slice() 原数组不会发生改变
+console.log(str2)
+// 123456789
+console.log(str1.slice(0,-1))
+// 参数为负数时，处理字符串从末尾开始
+// 12345678
+console.log(str1.slice(6, -5))
+//
+console.log(str1.slice(3, -5))
+// 4
+```
+
+##### substring()
+
+> 它不同于substring`和 `slice`的是, `substring` 中的负数是没有意义的, 视为 `0` 
+
+```js
+// substring（start，to）
+let str = "str1"
+console.log(str.substring(0))
+console.log(str.substring(1,2))
+// 如果参数 start 与 end 相等，那么该方法返回的就是一个空串（即长度为 0 的字符串）。
+console.log(str.substring(1,1))
+// start => to 如果start的数值大于to的位置 , 可以理解为把两个参数位置颠倒
+console.log(str.substring(3,1))
+console.log(str.substring(2,1))
+console.log(str.substring(4,2))
+// str1
+// t
+//
+// tr
+// t
+// r1
+```
+
+##### substr()
+
+> 它不同于`substring`和 `slice`的是, 第二个参数代表的是长度
+
+```js
+// substr（start，length）
+// 从 start 索引位开始,截取长度为 length 的字符串,若果没有 length,将后面的全部截取
+let str = "str1"
+console.log(str.substr(1))
+console.log(str.substr(1,2))
+console.log(str.substr(1,-1))
+// tr1
+// tr
+// 
+// 对,没错,最后的结果为空字符串
+```
+
+##### concat()
+
+```js
+// concat()
+// 一般字符串的拼接可以直接使用 + 连接
+console.log("c".concat("23", "str"));
+// c23str
+```
+
+##### indexOf()
+
+> `indexOf（searchString，startPosition）` 返回值不为 `-1` 说明匹配到
+
+```js
+// indexOf（searchString，startPosition）
+let str1= "123qwe"
+console.log(str1.indexOf("2"))
+console.log(str1.indexOf("a"))
+console.log(str1.indexOf("ad"))
+console.log(str1.indexOf("ae"))
+console.log(str1.indexOf("we"))
+console.log(str1.indexOf("we",5))
+// 1
+// -1
+// -1
+// -1
+// 4
+// -1
+```
+
+> 案例: 查找字符串`"awdsdfeaadwfw"`中，所有 `a` 出现的位置以及次数。
+
+先查找`第一个 a` 出现的位置。
+
+只要 `indexOf `返回的结果不是` -1` 就继续往后查找。
+
+因为 `indexOf `只能查找到第一个，所以后面的查找，可以利用第二个参数，在当前索引加 1，从而继续查找。
+
+
+```js
+var str = 'afdwreasd';
+var index = str.indexOf('a');
+var num = 0;
+while (index !== -1) {
+    console.log(index);
+    num++; // 每打印一次，就计数一次
+    index = str.indexOf('o', index + 1);
+}
+
+console.log('a 出现的次数是: ' + num);
+```
+
+##### lastIndexOf()
+
+```js
+// lastIndexOf（searchString，position）
+let str1= "123qwe"
+// 与indexOf方法类似，只不过它是从该字符串的末尾开始查找而不是从开头。
+console.log(str1.lastIndexOf("2"))
+console.log(str1.lastIndexOf("a"))
+console.log(str1.lastIndexOf("ad"))
+console.log(str1.lastIndexOf("ae"))
+console.log(str1.lastIndexOf("we"))
+console.log(str1.lastIndexOf("we",5))
+// 1
+// -1
+// -1
+// -1
+// 4
+// 4
+```
+
+##### includes()
+
+```js
+// 返回布尔值，表示是否找到了参数字符串。
+let str = '这是测试字符串';
+if (str.indexOf('测试') !== -1) {
+  console.log(true)    //包含
+} else {
+  console.log(false)    //不包含
+}
+// true
+```
+
+##### startsWith()
+
+```js
+// 返回布尔值，表示参数字符串是否在原字符串的头部。
+let str = '这是测试字符串';
+if (str.startsWith('这') === true) {
+  console.log(true)
+} else {
+  console.log(false)
+}
+if (str.startsWith('是') === true) {
+  console.log(true)
+} else {
+  console.log(false)
+}
+// true
+// false
+```
+
+##### endsWith()
+
+```js
+// 返回布尔值，表示参数字符串是否在原字符串的尾部。
+let str = '这是测试字符串';
+if (str.endsWith('这') === true) {
+  console.log(true)
+} else {
+  console.log(false)
+}
+if (str.endsWith('串') === true) {
+  console.log(true)
+} else {
+  console.log(false)
+}
+// false
+// true
+```
+
+`includes() startsWith() endsWith()` 这三个方法都支持第二个参数，表示开始搜索的位置。
+
+如果`repeat`的参数是`负数或者Infinity`，会报错。
+
+##### search()
+
+`search()` 方法用于检索字符串中指定的子字符串，或检索与正则表达式相匹配的子字符串。
+
+如果没有找到任何匹配的子串，则返回 -1。
+
+> `search()`方法查找时是对大小写敏感的。
+
+```js
+let str = "abcd Abcd abc"
+console.log(str.search("abc"))
+// 0
+console.log(str.search("Abc"))
+// 5
+```
+
+> 常用于正则表达式
+
+```js
+let str = "Ximingx.Com";
+console.log(str.search(".com")); 
+console.log(str.search(/\.com/i));
+// -1
+// 7
+```
+
+##### match()
+
+```js
+let article = "12345657abcdeABCDE123"
+console.log(article.match("123"));
+// [ '123', index: 0, input: '12345657abcdeABCDE', groups: undefined ]
+console.log(article.match("3"));
+// [ '3', index: 2, input: '12345657abcdeABCDE123', groups: undefined ]
+```
+
+##### replace()
+
+> 只会替换第一个匹配到的字符
+
+```js
+let str1 = "121416"
+let str2 = "1234567"
+console.log(str1.replace(/[1-5]/g,'i'))
+// i21416
+```
+
+> 使用正则表达式
+
+```js
+let str1 = "121416"
+let str2 = "1234567"
+console.log(str1.replace(/[1-5]/g,'i'))
+// iiiii6
+```
+
+##### split()
+
+> 第一个参数代表 `分隔符`
+
+```js
+let str1 = "深入 Vue底层，手写一个vuex\n 348\n"
+// split() 将以传递的参数把字符串分割,最后返回一个数组
+let str1 = "深入 Vue底层，手写一个vuex\n 348\n"
+console.log(str1.split(''))
+// [
+//   '深', '入', ' ',  'V',  'u',
+//   'e',  '底', '层', '，', '手',
+//   '写', '一', '个', 'v',  'u',
+//   'e',  'x',  '\n', ' ',  '3',
+//   '4',  '8',  '\n'
+// ]
+console.log(str1.split(" "))
+// [ '深入', 'Vue底层，手写一个vuex\n', '348\n' ]
+console.log(str1.split("\n"))
+// [ '深入 Vue底层，手写一个vuex', ' 348', '' ]
+```
+
+> 第二个参数代表 `限制分割次数`
+
+```js
+let str = "山东省-济南市-市中区"
+let newStr = str.split('-')
+console.log(newStr)// ["山东省","济南市","市中区"]
+
+// 第二个参数times，匹配'-'两次
+let str = "山东省-济南市-市中区"
+let newStr = str.split('-',2)
+console.log(newStr)//["山东省", "济南市"]
+```
+
+##### repeat()
+
+```js
+// repeat方法返回一个新字符串，表示将原字符串重复n次。参数如果是小数，会被取整。
+let str = '这是测试字符串';
+console.log(str.repeat(3));
+// 这是测试字符串这是测试字符串这是测试字符串
+```
+
+##### padStart()    padEnd()
+
+`ES2017 `引入了字符串补全长度的功能。如果某个字符串不够指定长度，会在头部或尾部补全。
+
+`padStart`()用于头部补全，`padEnd`()用于尾部补全。
+
+```js
+console.log('x'.padStart(5, 'ab')) // 'ababx'
+console.log('x'.padStart(4, 'ab')) // 'abax'
+console.log('x'.padEnd(5, 'ab')) // 'xabab'
+console.log('x'.padEnd(4, 'ab')) // 'xaba'
+// 如果原字符串的长度，等于或大于最大长度，则字符串补全不生效，返回原字符串
+
+// 如果省略第二个参数，默认使用空格补全长度。
+
+// padStart()的常见用途是为数值补全指定位数。下面代码生成 10 位的数值字符串。
+console.log('1'.padStart(10, '0')) 
+console.log('12'.padStart(10, '0')) 
+console.log('123456'.padStart(10, '0')) 
+// 0000000001
+// 0000000012
+// 0000123456
+// 另一个用途是提示字符串格式。
+'12'.padStart(10, 'YYYY-MM-DD') // "YYYY-MM-12"
+'09-12'.padStart(10, 'YYYY-MM-DD') // "YYYY-09-12"
+```
+
+##### trim()
+
+> 仅仅是去除字符串两端的空格
+
+```js
+var str = '   hello   '
+console.log(str.trim()）  // hello 去除两端空格
+var str1 = '   he l l o   '
+console.log(str.trim()）  // he l l o  去除两端空格
+```
+
+##### trimStart()，trimEnd()
+
+> `trimStart()，trimEnd()` 比 `trim()` 更加具体处理哪一处的空字符串
+
+`ES2019 `对字符串实例新增了`trimStart()`和`trimEnd()`这两个方法。它们的行为与`trim()`一致
+
+`trimStart()`消除字符串头部的空格, `trimEnd()`消除尾部的空格
+
+它们返回的都是新字符串，不会修改原始字符串。
+
+```js
+const s = '  abc  ';
+s.trim() // "abc"
+s.trimStart() // "abc  "
+s.trimEnd() // "  abc"
+```
+
+##### toLowerCase() toUpperCase()
+
+> 将字符转换成大写格式或者转字符为小写格式
+
+```js
+let article = "This Is Pink"
+console.log(article.toLowerCase())
+console.log(article.toUpperCase())
+// this is pink
+// THIS IS PINK
+```
+
+#### 6. 类型转换
+
+> 将字符串转换为数组
+
+```js
+console.log("1,2,3".split(",")); //[1,2,3]
+```
+
+> 隐式类型转换会根据类型自动转换类型
+
+```js
+let hd = 99 + '';
+console.log(typeof hd); //string
+```
+
+> 使用 `String` 构造函数可以显示转换字符串类型
+
+```js
+let aw = 99;
+console.log(typeof String(aw)); //string
+```
+
+> `js` 中大部分类型都是对象，可以使用类方法 `toString`转化为字符串
+
+```js
+let number = 99;
+console.log(typeof number.toString()); //string
+
+let arr = ['人23', '123'];
+console.log(typeof arr.toString()); //string
+```
+
+---
 
 ### 5. Number
 
 `Number` 其实就是数字类型
 
-#### 5.1 分类
+#### 1. 分类
 
-> 整形
+> 数值
 
+包含有 `整数 `和 `浮点数`
 
-
-> 浮点型
-
-
-
-> NaN
+> `NaN`
 
 获得`NaN`的方式:
 
@@ -1014,13 +1532,25 @@ var val = NaN; // 直接赋值为 NaN
 
 尽量避免获得`NaN`值, 因为`NaN`是个错误, 你应该反思一下为什么会算出来 `NaN`
 
+#### 2. NaN遇到的坑
+
+> `NaN` 特点
+
 `NaN `不等于任何数值,包括`NaN `自己
 
+```js
+console.log(NaN == NaN) // false
+```
+
+唯一检测`NaN`的办法是使用`isNaN()`功能, 或者是使用 `Object.is` 方法判断两个值是否完全相同
+
+```js
+var res = 2 / 'ximingx';
+console.log(Object.is(res, NaN));
+console.log(Number.isNaN(res));
+```
+
 `NaN`具有传染性, 任何和`NaN`之间运算的结果都是`NaN`.
-
-唯一检测`NaN`的办法是使用`isNaN()`功能
-
-#### 5.2 NaN遇到的坑
 
 ```js
 var a = 'abc';
@@ -1038,12 +1568,15 @@ console.log(typeof a); // string
 console.log(a); // abc1
 ```
 
-#### 5.3 数据类型转换
+#### 3. 数据类型转换
 
 > `parseInt() ` `parseFloat()`
 
-1. `parseInt()`、`parseFloat()`会将传入的数据当作字符串来处理。
-2. 也就是说，如果对`非String`使用 `parseInt(`)、`parseFloat()`，它会先将其转换为 `String `然后再操作。如果不是数值开头的字符串, 转换结果永远为`NaN`
+`parseInt()`、`parseFloat()`会将传入的数据当作字符串来处理。
+
+也就是说，如果对`非String`使用 `parseInt(`)、`parseFloat()`，它会先将其转换为 `String `然后再操作
+
+> 如果不是数值开头的字符串, 转换结果永远为`NaN`
 
 ```javascript
 var a = 168.23;
@@ -1059,7 +1592,7 @@ var d = undefined;
 console.log(parseInt(d)); //打印结果：NaN  （因为是先将 d 转为字符串"undefined"，然后然后再操作）
 ```
 
-2. 只保留字符串最开头的数字，后面的中文自动消失。例如：
+> 只保留字符串最开头的数字，后面的中文自动消失
 
 ```javascript
 console.log(parseInt('2017在公众号上写了6篇文章')); //打印结果：2017
@@ -1069,7 +1602,7 @@ console.log(parseInt('2017.01在公众号上写了6篇文章')); //打印结果�
 console.log(parseInt('aaa2017.01在公众号上写了6篇文章')); //打印结果：NaN （因为不是以数字开头）
 ```
 
-3. 自动截断小数：取整，不四舍五入。
+> 自动截断小数：取整，不四舍五入
 
 ```javascript
 var a = parseInt(5.8) + parseInt(4.7);
@@ -1078,7 +1611,7 @@ a = parseInt(5.8 + 4.7);
 console.log(a); //10;
 ```
 
-4. 带两个参数时，表示在转换时，包含了进制转换。
+> 带两个参数时，表示在转换时，包含了进制转换
 
 ```javascript
 var a = '110';
@@ -1088,7 +1621,7 @@ var num = parseInt(a, 16); // 【重要】将 a 当成 十六进制 来看待，
 console.log(num); //272
 ```
 
-就是说，无论 `parseInt()` 里面的进制参数是多少，最终的转换结果是十进制。
+> 就是说，无论 `parseInt()` 里面的进制参数是多少，最终的转换结果是十进制。
 
 ```javascript
 var a = '5';
@@ -1117,7 +1650,7 @@ console.log(parseInt(true));
 // NaN
 ```
 
-`Number()` 函数的转换规则
+> `Number()` 函数的转换规则
 
 `Boolean	 ` `true `转换为 1 `false `转换为 0
 
@@ -1127,19 +1660,53 @@ console.log(parseInt(true));
 
 `undefined   `转换为  `NaN`
 
+#### 4. number 函数
+
+> `isInteger`
+
+判断是否为整数
+
+```js
+console.log(Number.isInteger(1.2));
+```
+
+> `toFixed`
+
+指定返回的小数位数可以四舍五入
+
+```js
+console.log((16.556).toFixed(2)); // 16.56
+```
+
+
+
 ### 6. Boolean
 
-布尔类型只有2个值: `true  `和 `false`
+> 布尔类型只有2个值: `true  `和 `false`
 
 系统中的所有布尔值都是有系统隐式的调用当前对象创建
 
-#### 6.1 数据类型转换
+```js
+let boolean = new Boolean(true)
+console.log(typeof boolean) // object
+// 需要使用 .valueOf() 方法, 否则无论 boolean 是什么 object 将一直转换为 true
+// .valueOf() 获取对象的原始值
+if(boolean.valueOf()) {
+    
+}
+```
 
-其他的数据类型都可以转换为 `Boolean `类型。无论是隐式转换，还是显示转换，转换结果都是一样的。
+#### 1. 数据类型转换
+
+> 其他的数据类型都可以转换为 `Boolean `类型。
+
+无论是隐式转换，还是显示转换，转换结果都是一样的。
 
 > 情况一：`Number `转 `Boolean `
 
-`0` 和 `NaN`是 `false`，其余的都是 `true`。比如 `Boolean(NaN)`的结果是 `false`。
+`0` 和 `NaN`是 `false`，其余的都是 `true`。
+
+比如 `Boolean(NaN)`的结果是 `false`。
 
 > 情况二：`String `转 `Boolean `
 
@@ -1156,9 +1723,9 @@ if (!a) {
 }
 ```
 
-> **引用数据类型会转换为 `true`。**
+> 引用数据类型会转换为 `true`。
 
-**注意，空数组`[]`和空对象`{}`，转换结果也是 `true`, 但是为 null 的时候为 `false`**
+注意，空数组`[]`和空对象`{}`，转换结果也是 `true`, 但是为 `null `的时候为 `false`
 
 ```js
 if (Boolean(null)) {
@@ -1170,32 +1737,81 @@ if (Boolean({})) {
 // true + {}
 ```
 
+> 如果使用 `Boolean `与数值比较时，会进行隐式类型转换
+>
+>  `true 转为 1，false 转为 0`
+
+```js
+console.log(3 == true); //false
+console.log(0 == false); //true
+```
+
+> 总结
+
+| 数据类型    | true             | false            |
+| ----------- | ---------------- | ---------------- |
+| `String`    | 非空字符串       | 空字符串         |
+| `Number`    | 非 0 的数值      | 0 、`NaN`        |
+| `Array`     | 数组不参与比较时 | 参与比较的空数组 |
+| `Object`    | 所有对象         |                  |
+| `undefined` | 无               | `undefined`      |
+| `null`      | 无               | `null`           |
+| `NaN`       | 无               | `NaN`            |
+
+#### 2. 显示类型转换
+
+> `!!`
+
+```js
+let string = 'ximingx'
+console.log(!!string)
+```
+
+> `Boolean()`
+
+```js
+let string = 'ximingx'
+console.log(Boolean(string))
+```
+
 ### 7. Array
 
-数组和普通对象的功能类似，也是用来存储一些值的。不同的是：
+数组是多个变量值的集合，数组是`Array` 对象的实例，所以可以像对象一样调用方法。
 
--   普通对象是使用字符串作为属性名的，而数组是使用数字作为索引来操作元素。索引：从 0 开始的整数就是索引。
+> 使用对象方式创建数组
 
-数组的存储性能比普通对象要好。在实际开发中我们经常使用数组来存储一些数据（尤其是列表数据），使用频率非常高。
+```js
+console.log(new Array(1, '123', '3')); 
+```
 
-数组中的元素可以是任意的数据类型，也可以是对象，也可以是函数，也可以是数组。数组的元素中，如果存放的是数组，我们就称这种数组为二维数组。(可以以此类推多维数组)
+> 使用字面量创建是推荐的简单作法
+
+```js
+const array = ["ds", "dsw"];
+```
+
+> 使用原型的 `length`属性可以获取数组元素数量
+
+```js
+let hd = ["123", "大晚上"];
+console.log(hd.length); //2
+```
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/a19346ab9fc34e04a3b7b322165afe9a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 #### 1. Array.方法
 
-| 方法                               | 描述                           | 备注 |
-| :--------------------------------- | :----------------------------- | :--- |
-| `Array.isArray()`                  | 判断是否为数组                 |      |
-| `Array.from(arrayLike)`            | 将伪数组转化为真数组           |      |
-| `Array.of(value1, value2, value3)` | 创建数组：将一系列值转换成数组 |      |
+|                方法                |         描述         |
+| :--------------------------------: | :------------------: |
+|         `Array.isArray()`          |    判断是否为数组    |
+|      `Array.from(arrayLike)`       | 将伪数组转化为真数组 |
+| `Array.of(value1, value2, value3)` | 将一系列值转换成数组 |
 
-注意，获取数组的长度是用`length`属性，不是方法。
+> 注意，获取数组的长度是用`length`属性，不是方法。
 
 ##### Array.isArray()
 
-**判断一个对象是否为数组。返回bool值。**
-**Array.isArray(obj)**
+> 判断一个对象是否为数组
 
 ```js
 let arr=["a","b","c","a","b","c"];
@@ -1204,12 +1820,13 @@ console.log(Array.isArray(arr)); // true
 
 ##### Array.from()
 
-> **伪数组**：包含 length 属性的对象或可迭代的对象。
-> 另外，伪数组的原型链中没有 Array.prototype，而真数组的原型链中有  Array.prototype。因此伪数组没有数组的一般方法，比如 pop()、join() 等方 法。
+> 伪数组：包含 `length `属性的对象或可迭代的对象。
 
-用于类似数组的对象（**必须拥有length属性的对象**）和可遍历对象转为真正的数组。
+伪数组的原型链中没有 `Array.prototype`，而真数组的原型链中有  `Array.prototype`。
 
-**注意下面的三种结果差别**
+因此伪数组没有数组的一般方法，比如 `pop()、join()` 等方 法。
+
+> `Array.from()` 用于类似数组的对象（必须拥有`length`属性的对象）和可遍历对象转为真正的数组。  
 
 ```js
 let json1 = {
@@ -1240,7 +1857,7 @@ console.log(arr3);
 // [ '123', '123', '123' ]
 ```
 
-将字符串转换为数组
+> 将字符串转换为数组
 
 ```js
 let array1 = "alone to find"
@@ -1253,7 +1870,7 @@ console.log(Array.from(array1))
 // ]
 ```
 
-伪数组的举例
+> 伪数组的举例
 
 ```html
 <body>
@@ -1269,13 +1886,11 @@ console.log(Array.from(array1))
 </body>
 ```
 
-上面的布局中，有三个 button 标签，我们通过`getElementsByTagName`获取到的`btnArray`实际上是**伪数组**，并不是真实的数组
+上面的布局中，有三个 `button `标签，我们通过`getElementsByTagName`获取到的`btnArray`实际上是伪数组，并不是真实的数组
 
-**但是如果我们想要用到数组的方法该怎么办呢?**
+采用`Array.from`方法将`btnArray`这个伪数组转换为真数组
 
-解决办法：采用`Array.from`方法将`btnArray`这个伪数组转换为真数组即可：
-
-```javascript
+```js
 Array.from(btnArray);
 ```
 
@@ -1283,7 +1898,7 @@ Array.from(btnArray);
 
 #####  Array.of()
 
-**将一组值转变为数组**
+> 将一组值转变为数组中的一部分
 
 ```js
 let arr1 = Array.of(1,2,3)
@@ -1300,7 +1915,14 @@ console.log(arr4)
 // []
 ```
 
-补充：`new Array()`和 `Array.of()`的区别在于：当参数只有一个时，前者表示数组的长度，后者表示数组中的内容。
+> `new Array()`和 `Array.of()`的区别在于：当参数只有一个时，前者表示数组的长度，后者表示数组中的内容。
+
+```js
+let arr1 = new Array(6)
+let arr2 = Array.of(6)
+console.log(arr1) // [ <6 empty items> ]
+console.log(arr2) // [ 6 ]
+```
 
 #### 2. 增删改操作
 
@@ -1317,11 +1939,9 @@ console.log(arr4)
 
 ##### pop()
 
-**pop()删除并返回数组的最后一个元素。**
+> `pop()` 删除并返回数组的最后一个元素。
 
-**影响原数组** 
-
-如果数组变为空，则该方法不改变数组，返回undefine值
+如果数组变为空，则该方法不改变数组，返回 `undefine `值
 
 ```js
 let arr=["a","b","c","a","b","c"];
@@ -1330,9 +1950,7 @@ console.log(arr.pop()); //c
 
 ##### shift()
 
-**shift()删除并返回数组的第一个元素。**
-
-**影响原数组** 
+> `shift()` 删除并返回数组的第一个元素。
 
 ```js
 let arr=["a","b","c","a","b","c"];
@@ -1341,7 +1959,7 @@ console.log(arr.shift()); //a
 
 ##### push()
 
-**push()向数组的末尾添加一个或多个元素，并返回该数组的新长度。**
+> `push()`向数组的末尾添加一个或多个元素，并返回该数组的新长度。
 
 ```js
 let arr=["a","b","c","a","b","c"];
@@ -1359,7 +1977,7 @@ console.log(array1);
 
 ##### unshitf()
 
-**unshitf()赂数组的开头添加一个或多个元素，并返回数组的新长度。**
+> `unshitf()` 数组的开头添加一个或多个元素，并返回数组的新长度。
 
 ```js
 let arr=["a","b","c","a","b","c"];
@@ -1375,7 +1993,7 @@ console.log(arr)
 
 ##### slice()
 
-**选取数组的一部分，并返回新数组。**
+> 选取数组的一部分，并返回新数组。
 
 如果是负数，则表示从数组尾部开始算起
 
@@ -1393,15 +2011,15 @@ console.log(arr.slice(-3, -1));  //[ 'a', 'm' ]
 
 ##### splice()   !important
 
-**从数组中添加或删除更改元素,注意: 会改变原始数组,返回删除的元素  个人最喜欢使用的方法**
+从数组中添加或删除更改元素,注意: 会改变原始数组,返回删除的元素
 
-**array.splice(index,deleteNumber,item1,item2)**
+`array.splice(index,deleteNumber,item1,item2)`
 
-**其中的参数第一个是操作的数组下标index，而第二个是删除个数，之后的  可选参数  是增加内容**
+其中的参数第一个是操作的数组下标`index`，而第二个是删除个数，之后的  `可选参数`  是增加内容
 
-**1. 删除操作**
+> 1. 删除操作
 
-splice(0) 会把原数组清空。
+`splice(0)` 会把原数组清空。
 
 ```js
 let arr=["b","o","a","m"];
@@ -1415,16 +2033,14 @@ console.log(array)
 // [ 'c', 'd', 'e', '1' ]
 ```
 
-> 举例4\：（删除指定元素，用得很多）
+> 删除指定元素，用得很多
 
 ```js
 const arr4 = ['a', 'b', 'c', 'd'];
 arr4.splice(arr4.indexOf('c'), 1); // 删除数组中的'c'这个元素
 ```
 
-
-
-**2. 增加操作**
+> 2. 增加操作
 
 ```js
 let array = ["a", "b", "c", "d", "e", "1"]
@@ -1438,7 +2054,7 @@ console.log(array)
 // ]
 ```
 
-**3. 修改操作**
+> 3. 修改操作
 
 ```js
 let array = ["a", "b", "c", "d", "e", "1"]
@@ -1452,9 +2068,7 @@ console.log(array)
 // ]
 ```
 
-###### splice()练习：数组去重
-
-代码实现：
+> 数组去重
 
 ```javascript
 //创建一个数组
@@ -1482,15 +2096,11 @@ for (var i = 0; i < arr.length; i++) {
 console.log(arr);
 ```
 
-
-
-
-
 ##### fill()
 
-**使用固定的值来填充数组,value为填充值,start 索引位到 end 索引位之前(不包含end索引位)的值被 value 替换**
+使用固定的值来填充数组, `value`为填充值, `start `索引位到 `end `索引位之前(不包含`end索引位`)的值被 `value `替换
 
-**Array1.fill(value,start,end)**
+`Array1.fill(value,start,end)`
 
 ```js
 let Array1 = [1,2,3,4,5,6]
@@ -1514,7 +2124,7 @@ console.log(arr2)  //  [4, 4, 4, 4, 4, 4, 4, 4, 4]
 
 ##### copyWithin()
 
-start 索引位到 end 索引位之前(不包含end索引位)的值将依次替换掉 traget 索引位起的值 (start - end中间有几位,就替换几位 )      （会覆盖原有成员）
+start 索引位到 end 索引位之前(不包含end索引位)的值将依次替换掉 traget 索引位起的值 (start - end中间有几位,就替换几位 )  
 
 `Array1.copyWithin(target,start,end)`
 
@@ -1551,13 +2161,13 @@ console.log(Array1.copyWithin(0,1))
 
 ##### concat()
 
-返回结果: Array1 后直接拼接增加 Array2
+返回结果: `Array1 `后直接拼接增加 `Array2`
 
 该方法不会改变现有的数组，而仅仅会返回被连接数组的一个副本。
 
-参数的位置可以有多个数组,最后都将合并
+> 参数的位置可以有多个数组,最后都将合并
 
-arrayObject.concat(arrayX,arrayX,......,arrayX)
+`arrayObject.concat(arrayX,arrayX,......,arrayX)`
 
 ```js
 let Array1 = [1,2,3,4,5]
@@ -1581,7 +2191,7 @@ console.log(Array1.concat(Array2,Array1))
 
 ```
 
-当然,拼接数组一般可以选择更简单的方式 `... `
+> 当然,拼接数组一般可以选择更简单的方式 `... `
 
 ```js
 let arr1 = [1, 2, 3, 4]
@@ -1607,10 +2217,10 @@ console.log(arr1.push(...arr2));
 
 ##### join()
 
-**把数组中的所有元素转换为一个字符串，元素通过分隔符分隔。**
-**若没有指定分隔符则用逗号来分隔元素。**
+> 把数组中的所有元素转换为一个字符串，元素通过分隔符分隔。
+> 若没有指定分隔符则用逗号来分隔元素。
 
-**传入undefined会默认用逗号分隔。**
+传入`undefined`会默认用逗号分隔
 
 ```js
 let arr=["a","b","c","a","b","c"];
@@ -1631,15 +2241,15 @@ console.log(arr.join("-"))   // a-b-c-a-b-c
 
 ##### sort()
 
-**sort()对数组的元素进行排序。排序顺序可以是字母或数字，并按升序或降序，默认按字母升序。**
+`sort()`对数组的元素进行排序。排序顺序可以是字母或数字，并按升序或降序，默认按字母升序。
 
-**在使用sort()方法时，可以使用箭头函数,比较好看**
+在使用`sort()`方法时，可以使用箭头函数,比较好看
 
 ```js
 array.sort((a, b) => b - a);
 ```
 
-**如果在使用 sort() 方法时不带参，则默认按照Unicode 编码，从小到大进行排序。**
+如果在使用 `sort()` 方法时不带参，则默认按照`Unicode 编码`，从小到大进行排序。
 
 ```js
 var fruits = ["Banana", "Orange", "Apple", "Mango"];
@@ -1661,13 +2271,13 @@ console.log(numbers)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/43b0b22b8e0842178f673f40419a5003.png)
 
 
-**可以看出对数值的排序并不是理想状态**
+可以看出对数值的排序并不是理想状态
 
-此时打印出来的数组并不是按照升序进行排序，上面说到sort()默认是按照Unicode编码进行排序，
+此时打印出来的数组并不是按照升序进行排序，上面说到`sort()`默认是按照`Unicode编码`进行排序，
 
 所以即使13 < 20，13也会在20的前面，因为13的第一位是1。
 
-**数字与字母混合排序**
+数字与字母混合排序
 
 ```js
 var minx = [8,13,5,7,0,20,6,1,"Banana", "Orange", "Apple", "Mango"];
@@ -1690,19 +2300,17 @@ let resArr2 = arr2.sort();
 console.log(resArr2);//输出   [10, 111, 1899, 30, 35, 45, 50]
 ```
 
-使用数字排序，你必须通过一个函数作为参数来调用。
+> 使用数字排序，你必须通过一个函数作为参数来调用。
 
-**<font color="red">原理:  (理解了原理随便玩)</font>**
-
-**sort()里面的函数返回值如果大于0，则a、b交换位置；（数组原本位置为a在b的前面）**
+`sort()`里面的函数返回值如果大于0，则a、b交换位置；（数组原本位置为a在b的前面）
 
 如果返回值小于0，则a、b不交换位置；
 
 如果返回值等于0，则a、b的位置不变。
 
-**简单的记忆: a-b是升序,b-a是降序**
+简单的记忆: a-b是升序,b-a是降序
 
-**升序排列**
+> 升序排列
 
 ```js
 let arr=[20,20,4,22,23];
@@ -1712,7 +2320,7 @@ console.log(arr.sort(function (a, b) { //升序
 // [ 4, 20, 20, 22, 23 ]
 ```
 
-**降序排列**
+> 降序排列
 
 ```js
 let arr=[20,20,4,22,23];
@@ -1722,7 +2330,7 @@ console.log(arr.sort(function (a, b) { //降序
 // [ 23, 22, 20, 20, 4 ]
 ```
 
-**多排序**
+> 多排序
 
 ```js
 let arr6 = [{id:10,age:2},{id:5,age:4},{id:6,age:10},{id:9,age:6},{id:2,age:8},{id:10,age:9}];
@@ -1745,7 +2353,7 @@ let arr6 = [{id:10,age:2},{id:5,age:4},{id:6,age:10},{id:9,age:6},{id:2,age:8},{
 
 ##### reverse()
 
-**reverse()反转数组的元素顺序。**
+> `reverse()`反转数组的元素顺序。
 
 ```js
 let arr=["b","o","a","m"];
@@ -1769,12 +2377,11 @@ console.log(arr)
 
 ##### indexOf()
 
-**该方法将从头到尾地检索数组，看它是否含有对应的元素。如果找到一个 item，则返回 item 的第一次出现的位置。开始位置的索引为 0。**
-**如果在数组中没找到指定元素则返回 -1。**
+> 该方法将从头到尾地检索数组，看它是否含有对应的元素。如果找到一个 item，则返回 item 的第一次出现的位置。开始位置的索引为 0。如果在数组中没找到指定元素则返回 -1。
 
-第二个参数 从第几位开始
+> 第二个参数 从第几位开始
 
-**Array1.indexOf(value, fromIndex)**
+`Array1.indexOf(value, fromIndex)`
 
 ```js
 let arr=["a","b","c","a","b","c"];
@@ -1785,8 +2392,7 @@ console.log(arr.indexOf("a", 2)); //3
 
 ##### lastIndexOf()
 
-**返回一个指定的元素在数组中最后出现的位置，从后向前查找。若没有找到，则返回-1。**
-**数组的检索位置从0开始。**
+返回一个指定的元素在数组中最后出现的位置，从后向前查找。若没有找到，则返回-1。
 
 ```js
 let arr=["a","b","c","a","b","c"];
@@ -1798,13 +2404,13 @@ console.log(arr.lastIndexOf("a",2)) // 0
 
 ##### includes()
 
-**判断一个数组是否包含一个指定的值，如果是返回true，否则返回false**
+> 判断一个数组是否包含一个指定的值，如果是返回`true`，否则返回`false`
 
-**注意：对象数组不能使用includes方法来检测,使用 includes()比较字符串和字符时是区分大小写。**
+注意：对象数组不能使用`includes`方法来检测,使用 `includes()`比较字符串和字符时是区分大小写。
 
-**Array1.includes(value, fromIndex)**
+`Array1.includes(value, fromIndex)`
 
-includes可以包含两个参数，**第二个参数表示判断的起始位置,起始位置第一个数字是0。**
+`includes`可以包含两个参数，第二个参数表示判断的起始位置,起始位置第一个数字是0。
 
 ```js
 console.log([1,2,3,4].includes(1))   //true
@@ -1820,21 +2426,17 @@ console.log([1,2,3,4].includes(3,2))   //true
 
 ##### find()
 
-**语法**：
-
 ```javascript
 find((item, index, arr) => {
     return true;
 });
 ```
 
-
-
-**返回通过函数判断的数组的  第一个元素的值  。**
+> 返回通过函数判断的数组的  第一个元素的值  。
 
 如果没有符合条件的元素返回 undefined ,  find() 对于空数组，函数是不会执行的。
 
-**Array1.find((item) => {return condition})**
+`Array1.find((item) => {return condition})`
 
 ```js
 let Array2 = [2,3,4,5]
@@ -1846,9 +2448,9 @@ console.log(Array2.find((item) => {
 
 ##### findindex()
 
-**与 find() 方法相似,返回的结果为索引位置,返回通过函数判断的数组的  第一个元素的索引位置  。**
+与` find()` 方法相似,返回的结果为索引位置,返回通过函数判断的数组的  第一个元素的索引位置  。
 
-**Array1.find((item) => {return condition})**
+`Array1.find((item) => {return condition})`
 
 ```JS
 let Array2 = [2,3,4,5]
@@ -1864,11 +2466,9 @@ console.log(Array2.findIndex((item) => {
 
 ##### every()
 
-js中every和some都是对数组进行迭代操作的函数
+> 检测数组所有元素是否都符合`every()`里的函数,有一个不满足就返回`false`,全符合返回`true`,并停止检测
 
-**检测数组所有元素是否都符合every()里的函数,有一个不满足就返回false,全符合返回true,并停止检测**
-
-**Array1.every((item) => {return condition})**
+`Array1.every((item) => {return condition})`
 
 ```js
 let Array1 = [1,2,3,4,5,6]
@@ -1883,9 +2483,9 @@ console.log(Array3);
 
 ##### some()
 
-**检测数组所有元素是否都符合every()里的函数,只要有一个为真,返回true,并停止检测**
+> 检测数组所有元素是否都符合`some()`里的函数,只要有一个为真,返回`true`,并停止检测
 
-**Array1.every((item) => {return condition})**
+`Array1.every((item) => {return condition})`
 
 ```js
 let Array1 = [1,2,3,4,5,6]
@@ -1911,22 +2511,22 @@ console.log(flag);// false 返回值是布尔值,只要查找到满足条件的�
 
 #### 6. 循环操作
 
-| 方法        | 描述                                                         | 备注                                                   |
-| :---------- | :----------------------------------------------------------- | :----------------------------------------------------- |
-| `for 循环`  | 这个大家都懂                                                 |                                                        |
-| `forEach()` | 和 for 循环类似，但需要兼容 IE8 以上                         | forEach() 没有返回值。也就是说，它的返回值是 undefined |
-| `map()`     | 对原数组中的每一项进行加工，将组成新的数组(最后的结果可能会含有undefined) | 不会改变原数组                                         |
-| `filter()`  | 过滤数组：返回结果是 true 的项，将组成新的数组，返回结果为**新的数组** | 不会改变原数组                                         |
-| `reduce`    | 接收一个函数作为累加器，返回值是回调函数累计处理的结果       |                                                        |
+| 方法        | 描述                                                         | 备注                                                       |
+| :---------- | :----------------------------------------------------------- | :--------------------------------------------------------- |
+| `for 循环`  | 这个大家都懂                                                 |                                                            |
+| `forEach()` | 和 `for `循环类似，但需要兼容 `IE8 `以上                     | `forEach()` 没有返回值。也就是说，它的返回值是 `undefined` |
+| `map()`     | 对原数组中的每一项进行加工，将组成新的数组(最后的结果可能会含有`undefined`) | 不会改变原数组                                             |
+| `filter()`  | 过滤数组：返回结果是 `true `的项，将组成新的数组，返回结果为新的数组 | 不会改变原数组                                             |
+| `reduce`    | 接收一个函数作为累加器，返回值是回调函数累计处理的结果       |                                                            |
 
 
 ---
 
 ##### filter()
 
-**检测指定的数组中所有符合条件的元素，并将满足的值返回新的数组。**
+检测指定的数组中所有符合条件的元素，并将满足的值返回新的数组。
 
-**Array1.filter((item) => {return condition})**
+`Array1.filter((item) => {return condition})`
 
 ```js
 let Array1 = [1,2,3,4,5,6]
@@ -1955,9 +2555,9 @@ console.log(Array4);
 
 ##### forEach()
 
-**有三个参数  值,索引,和当前的数组  对每个元素进行一次调用, 没有返回值**
+有三个参数  值,索引,和当前的数组  对每个元素进行一次调用, 没有返回值
 
-**Array2.forEach((item,index,arr) => {return condition}) **
+`Array2.forEach((item,index,arr) => {return condition}) `
 
 ```js
 let Array2 = [2,3,4,5]
@@ -1976,17 +2576,17 @@ Array2.forEach((item,index,arr) => {
 //相当于数组遍历的 for循环 没有返回值
 ```
 
-在forEach 里面 return 不会终止迭代 , forEach 可以使用return中止这一层循环后续的代码执行 , **但是不能使用break**
+在`forEach `里面 `return `不会终止迭代 , `forEach `可以使用`return`中止这一层循环后续的代码执行 , 但是不能使用`break`
 
-forEach无法在所有元素都传递给调用的函数之前终止（而for循环却有break方法），**如果要提前终止**，必须把forEach放在try块中，并能抛出一个异常。
+`forEach`无法在所有元素都传递给调用的函数之前终止（而`for`循环却有`break`方法），如果要提前终止，必须把`forEach`放在`try`块中，并能抛出一个异常。
 
-如果forEach()调用的函数抛出foreach.break异常，循环会提前终止
+如果`forEach`()调用的函数抛出`foreach.break`异常，循环会提前终止
 
 
 
 ##### map()
 
-**通过指定函数处理数组的每个元素，并返回处理后的数组。**
+> 通过指定函数处理数组的每个元素，并返回处理后的数组。
 
 ```js
 let arr=["a","b","c","a","b","c"];
@@ -2005,7 +2605,7 @@ console.log(map1);
 // [ undefined, 8, undefined, undefined ]
 ```
 
-map()方法创建了一个新数组，但新数组并不是在遍历完array1后才被赋值的，而是**每遍历一次就得到一个值**
+`map()`方法创建了一个新数组，但新数组并不是在遍历完`array1`后才被赋值的，而是每遍历一次就得到一个值
 
 ```js
 var array1 = [1, 4, 9, 16];
@@ -2022,15 +2622,13 @@ console.log(map1);
 
 ##### reduce()
 
-**reduce 有两个参数 ,第一个参数为 callback 函数 ,第二个参数 是初始值**
+`reduce `有两个参数 ,第一个参数为 `callback `函数 ,第二个参数 是初始值
 
-**callback 函数中有四个参数(上一次回调时返回的值,当前的值,当前索引,原数组)**
+`callback `函数中有四个参数(上一次回调时返回的值,当前的值,当前索引,原数组)
 
-**arr.reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])**
+`arr.reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])`
 
-**这个很容易,不要被误导很难的想法**
-
-相当于一个累加的效果,将前面运算的结果与当前的值进行运算
+> 相当于一个累加的效果,将前面运算的结果与当前的值进行运算
 
 ```js
 let arr=["a","b","c","a","b","c"];
@@ -2052,7 +2650,7 @@ console.log(Array);
 // 31
 ```
 
-一个数组去重的实现
+> 一个数组去重的实现
 
 ```js
 let arr = [1, 2, 3, 3, 4, 2]
@@ -2066,7 +2664,7 @@ let newArr = arr.reduce((pre, cur) => {
 console.log(newArr)
 ```
 
-在对象中的使用
+> 在对象中的使用
 
 ```js
 let arr = [
@@ -2080,9 +2678,7 @@ let sum = arr.reduce((pre, cur) => {
 console.log(sum) //340
 ```
 
-**举例 1**、求和：
-
-计算数组中所有元素项的总和。代码实现：
+> 计算数组中所有元素项的总和
 
 ```javascript
 const arr = [2, 0, 1, 9, 6];
@@ -2094,9 +2690,7 @@ const total = arr.reduce((prev, item) => {
 console.log('total:' + total); // 打印结果：18
 ```
 
-**举例 2**、统计某个元素出现的次数：
-
-代码实现：
+> 统计某个元素出现的次数：
 
 ```js
 // 定义方法：统一 value 这个元素在数组 arr 中出现的次数
@@ -2114,9 +2708,7 @@ let arr1 = [1, 2, 6, 5, 6, 1, 6];
 console.log(repeatCount(arr1, 6)); // 打印结果：3
 ```
 
-**举例 3**、求元素的最大值：
-
-代码实现：
+> 求元素的最大值：
 
 ```js
 const arr = [2, 0, 1, 9, 6];
@@ -2130,7 +2722,7 @@ console.log(maxValue); // 打印结果：9
 
 ##### keys()、values()、entries()
 
-这三个方法都是返回一个遍历器对象，可用for...of循环遍历，**唯一区别：keys()是对键名的遍历、values()对键值的遍历、entries()是对键值对的遍历。**
+这三个方法都是返回一个遍历器对象，可用for...of循环遍历，唯一区别：`keys`()是对键名的遍历、`values`()对键值的遍历、`entries`()是对键值对的遍历。
 
 ```js
 let arr = ["a","b","c","d"];
@@ -2157,13 +2749,56 @@ for(let i of arr.entries()){
 // [ 3, 'd' ]
 ```
 
+### 7. 展开语法
+
+> `...` 可以用于合并数组
+
+```js
+let arr1 = [1, 2, 4, 5,];
+let arr2 = ["daw", "dwa"]
+let arr3 = [...arr1, ...arr2];
+console.log(arr3);
+// [ 1, 2, 4, 5, 'daw', 'dwa' ]
+```
+
+> 函数接收参数
+
+```js
+function fun(...args) {
+    console.log(args);
+    // [ 1, 2, 3 ]
+}
+fun(1, 2, 3);
+```
+
+> 操作 `DOM` 节点
+
+```html
+<body>
+<div>123</div>
+<div>456</div>
+<script>
+    
+    const div = document.querySelectorAll('div');
+    Array.prototype.map.call(div, function (item) {
+        console.log(item);
+    });
+
+	// 这种方式很便捷
+    [...div].map(function (item) {
+        console.log(item);
+    });
+</script>
+</body>
+```
+
 
 
 ### 8. Function
 
 函数：就是将一些功能或语句进行封装，在需要的时候，通过调用的形式，执行这些语句。
 
-- **函数也是一个对象**
+- 函数也是一个对象
 
 - 使用`typeof`检查一个函数对象时，会返回 `function`
 
@@ -2546,7 +3181,7 @@ console.log(typeof date1);
 
 通过传参的这种写法，我们可以把时间字符串/时间数字/时间戳，按照指定的格式，转换为时间对象。
 
-参数是字符串
+> > 参数是字符串
 
 ```js
 const date11 = new Date('2020/02/17 21:00:00');
@@ -2562,8 +3197,7 @@ const date14 = new Date('Wed Jan 27 2017 12:00:00 GMT+0800 (中国标准时间)'
 console.log(date14); // Fri Jan 27 2017 12:00:00 GMT+0800 (中国标准时间)
 ```
 
-
-参数是多个数字
+> > 参数是多个数字
 
 ```js
 const date21 = new Date(2020, 2, 18); // 注意，第二个参数返回的是三月，不是二月
@@ -2577,8 +3211,7 @@ const date23 = new Date(...params);
 console.log(date23); // Sun Jul 12 2020 16:20:59 GMT+0800 (中国标准时间)
 ```
 
-
-参数是时间戳
+> > 参数是时间戳
 
 ```js
 const date31 = new Date(1591950413388);
@@ -2592,24 +3225,18 @@ console.log(date32); // Fri Jun 12 2020 16:28:21 GMT+0800 (中国标准时间)
 
 #### 2. 日期的格式化
 
-上一段内容里，我们获取到了 `Date` 对象，但这个对象，打印出来的结果并不是特别直观。
-
-如果我们需要获取日期的指定部分，就需要用到 `Date`对象自带的方法。
-
-获取了日期指定的部分之后，我们就可以让日期按照指定的格式，进行展示（即日期的格式化）。比如说，我期望能以 `2020-02-02 19:30:59` 这种格式进行展示。
-
 `Date `对象 有如下方法，可以获取日期和时间的指定部分：
 
-| 方法名              | 含义              | 备注          |
-| ------------------- | ----------------- | ------------- |
-| `getFullYear()`     | 获取年份          |               |
-| `getMonth()`        | **获取月： 0-11** | 0代表一月     |
-| `getDate()`         | 获取日：1-31      | 获取的是几号  |
-| `getDay()`          | **获取星期：0-6** | **0代表周日** |
-| `getHours()`        | 获取小时：0-23    |               |
-| `getMinutes()`      | 获取分钟：0-59    |               |
-| `getSeconds()`      | 获取秒：0-59      |               |
-| `getMilliseconds()` | 获取毫秒          | 1s = 1000ms   |
+| 方法名              | 含义           | 备注          |
+| ------------------- | -------------- | ------------- |
+| `getFullYear()`     | 获取年份       |               |
+| `getMonth()`        | 获取月： 0-11  | 0代表一月     |
+| `getDate()`         | 获取日：1-31   | 获取的是几号  |
+| `getDay()`          | 获取星期：0-6  | **0代表周日** |
+| `getHours()`        | 获取小时：0-23 |               |
+| `getMinutes()`      | 获取分钟：0-59 |               |
+| `getSeconds()`      | 获取秒：0-59   |               |
+| `getMilliseconds()` | 获取毫秒       | 1s = 1000ms   |
 
 > 年月日的格式化
 
@@ -2648,11 +3275,108 @@ function formatDate() {
 
 #### 3. 时间戳
 
-时间戳：指的是从格林威治标准时间的`1970年1月1日，0时0分0秒`到当前日期所花费的毫秒数（1秒 = 1000毫秒）。
+> 时间戳
+>
+> 从格林威治标准时间的`1970年1月1日，0时0分0秒`到当前日期所花费的毫秒数（1秒 = 1000毫秒）。
 
-计算机底层在保存时间时，使用的都是时间戳。时间戳的存在，就是为了统一时间的单位。
+计算机底层在保存时间时，使用的都是时间戳
+
+时间戳的存在，就是为了统一时间的单位
 
 我们经常会利用时间戳来计算时间，因为它更精确
+
+> 时间与时间戳的转换
+
+```js
+let date = new Date();
+// 获得时间戳
+console.log(date.getTime());
+let timestamp = date.getTime();
+// 将时间戳转换为时间
+let date1 = new Date(timestamp);
+console.log(date1);
+```
+
+#### 4. 全部时间函数
+
+| 方法                 | 描述                                                     |
+| :------------------- | :------------------------------------------------------- |
+| Date()               | 返回当日的日期和时间。                                   |
+| getDate()            | 从 Date 对象返回一个月中的某一天 (1 ~ 31)。              |
+| getDay()             | 从 Date 对象返回一周中的某一天 (0 ~ 6)。                 |
+| getMonth()           | 从 Date 对象返回月份 (0 ~ 11)。                          |
+| getFullYear()        | 从 Date 对象以四位数字返回年份。                         |
+| getYear()            | 请使用 getFullYear() 方法代替。                          |
+| getHours()           | 返回 Date 对象的小时 (0 ~ 23)。                          |
+| getMinutes()         | 返回 Date 对象的分钟 (0 ~ 59)。                          |
+| getSeconds()         | 返回 Date 对象的秒数 (0 ~ 59)。                          |
+| getMilliseconds()    | 返回 Date 对象的毫秒(0 ~ 999)。                          |
+| getTime()            | 返回 1970 年 1 月 1 日至今的毫秒数。                     |
+| getTimezoneOffset()  | 返回本地时间与格林威治标准时间 (GMT) 的分钟差。          |
+| getUTCDate()         | 根据世界时从 Date 对象返回月中的一天 (1 ~ 31)。          |
+| getUTCDay()          | 根据世界时从 Date 对象返回周中的一天 (0 ~ 6)。           |
+| getUTCMonth()        | 根据世界时从 Date 对象返回月份 (0 ~ 11)。                |
+| getUTCFullYear()     | 根据世界时从 Date 对象返回四位数的年份。                 |
+| getUTCHours()        | 根据世界时返回 Date 对象的小时 (0 ~ 23)。                |
+| getUTCMinutes()      | 根据世界时返回 Date 对象的分钟 (0 ~ 59)。                |
+| getUTCSeconds()      | 根据世界时返回 Date 对象的秒钟 (0 ~ 59)。                |
+| getUTCMilliseconds() | 根据世界时返回 Date 对象的毫秒(0 ~ 999)。                |
+| parse()              | 返回 1970 年 1 月 1 日午夜到指定日期（字符串）的毫秒数。 |
+| setDate()            | 设置 Date 对象中月的某一天 (1 ~ 31)。                    |
+| setMonth()           | 设置 Date 对象中月份 (0 ~ 11)。                          |
+| setFullYear()        | 设置 Date 对象中的年份（四位数字）。                     |
+| setYear()            | 请使用 setFullYear() 方法代替。                          |
+| setHours()           | 设置 Date 对象中的小时 (0 ~ 23)。                        |
+| setMinutes()         | 设置 Date 对象中的分钟 (0 ~ 59)。                        |
+| setSeconds()         | 设置 Date 对象中的秒钟 (0 ~ 59)。                        |
+| setMilliseconds()    | 设置 Date 对象中的毫秒 (0 ~ 999)。                       |
+| setTime()            | 以毫秒设置 Date 对象。                                   |
+| setUTCDate()         | 根据世界时设置 Date 对象中月份的一天 (1 ~ 31)。          |
+| setUTCMonth()        | 根据世界时设置 Date 对象中的月份 (0 ~ 11)。              |
+| setUTCFullYear()     | 根据世界时设置 Date 对象中的年份（四位数字）。           |
+| setUTCHours()        | 根据世界时设置 Date 对象中的小时 (0 ~ 23)。              |
+| setUTCMinutes()      | 根据世界时设置 Date 对象中的分钟 (0 ~ 59)。              |
+| setUTCSeconds()      | 根据世界时设置 Date 对象中的秒钟 (0 ~ 59)。              |
+| setUTCMilliseconds() | 根据世界时设置 Date 对象中的毫秒 (0 ~ 999)。             |
+| toSource()           | 返回该对象的源代码。                                     |
+| toString()           | 把 Date 对象转换为字符串。                               |
+| toTimeString()       | 把 Date 对象的时间部分转换为字符串。                     |
+| toDateString()       | 把 Date 对象的日期部分转换为字符串。                     |
+| toGMTString()        | 请使用 toUTCString() 方法代替。                          |
+| toUTCString()        | 根据世界时，把 Date 对象转换为字符串。                   |
+| toLocaleString()     | 根据本地时间格式，把 Date 对象转换为字符串。             |
+| toLocaleTimeString() | 根据本地时间格式，把 Date 对象的时间部分转换为字符串。   |
+| toLocaleDateString() | 根据本地时间格式，把 Date 对象的日期部分转换为字符串。   |
+| UTC()                | 根据世界时返回 1970 年 1 月 1 日 到指定日期的毫秒数。    |
+| valueOf()            | 返回 Date 对象的原始值。                                 |
+
+#### 5. moment.js
+
+[http://momentjs.cn/]: (http://momentjs.cn/)
+
+> 封装时间处理的第三方库
+
+```js
+<script src="https://cdn.bootcss.com/moment.js/2.24.0/moment.min.js"></script>
+```
+
+> 获取当前时间
+
+```js
+console.log(moment().format("YYYY-MM-DD HH:mm:ss"));
+```
+
+> 设置时间
+
+```js
+console.log(moment("2020-02-18 09:22:15").format("YYYY-MM-DD HH:mm:ss"));
+```
+
+> 十天后的日期
+
+```js
+console.log(moment().add(10, "days").format("YYYY-MM-DD hh:mm:ss"));
+```
 
 
 
