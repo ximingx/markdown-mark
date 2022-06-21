@@ -426,11 +426,11 @@ hover([over,]out)     // 其中over和out为两个函数
 
 ## 6. 属性操作
 
-​	jQuery 常用属性操作有三种：prop() / attr() / data() ;
+jQuery 常用属性操作有三种：`prop() / attr() / data()` ;
 
 ### 6.1 元素固有属性值
 
-​	**所谓元素固有属性就是元素本身自带的属性**，比如 <a> 元素里面的 href ，比如 <input> 元素里面的 type。 
+所谓元素固有属性就是元素本身自带的属性，比如` <a> `元素里面的 href ，比如` <input>` 元素里面的 type。 
 
 ![prop](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202204271934167.png)
 
