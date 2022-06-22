@@ -2011,7 +2011,9 @@ console.log(arr.slice(-3, -1));  //[ 'a', 'm' ]
 
 ##### splice()   !important
 
-从数组中添加或删除更改元素,注意: 会改变原始数组,返回删除的元素
+> 从数组中添加或删除更改元素
+>
+> 会改变原始数组,返回删除的元素
 
 `array.splice(index,deleteNumber,item1,item2)`
 
@@ -2098,7 +2100,7 @@ console.log(arr);
 
 ##### fill()
 
-使用固定的值来填充数组, `value`为填充值, `start `索引位到 `end `索引位之前(不包含`end索引位`)的值被 `value `替换
+> 使用固定的值来填充数组, `value`为填充值, `start `索引位到 `end `索引位之前(不包含`end索引位`)的值被 `value `替换
 
 `Array1.fill(value,start,end)`
 
@@ -2120,11 +2122,9 @@ arr2.fill(4);
 console.log(arr2)  //  [4, 4, 4, 4, 4, 4, 4, 4, 4]
 ```
 
-
-
 ##### copyWithin()
 
-start 索引位到 end 索引位之前(不包含end索引位)的值将依次替换掉 traget 索引位起的值 (start - end中间有几位,就替换几位 )  
+> `start `索引位到 `end `索引位之前(不包含`end`索引位)的值将依次替换掉 `traget `索引位起的值 (`start - end` 中间有几位,就替换几位 )  
 
 `Array1.copyWithin(target,start,end)`
 
@@ -2791,6 +2791,40 @@ fun(1, 2, 3);
 </script>
 </body>
 ```
+
+### 8. 解构赋值
+
+> 解构是一 一对应的, 用于简化赋值
+
+```js
+let arr = [1, 2, 3]
+let [age, year] = arr
+console.log(age, year) // 1 2
+```
+
+> 但是在对象中使用的多一点, 数组中使用的较少, 除此之外也可以用于字符串
+
+```js
+const [...arr] = "ximingx"
+console.log(arr) 
+// [
+//   'x', 'i', 'm',
+//   'i', 'n', 'g',
+//   'x'
+// ] 
+```
+
+> 解构与展开语法
+
+```js
+let [name, ...arg] = ["ximingx", 'hsl', 'qsx']
+console.log(name)
+console.log(arg)
+// ximingx
+// [ 'hsl', 'qsx' ]
+```
+
+
 
 
 
