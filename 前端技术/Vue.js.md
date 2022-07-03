@@ -49,11 +49,6 @@ createApp({
 </div>
 ```
 
-> 两个核心功能
-
-- 声明式渲染：`Vue` 通过自己的模板语法扩展了标准 `HTML`，使得我们可以声明式地描述基于 `JavaScript `状态输出的 `HTML`。
-- 响应性：`Vue `会自动跟踪 `JavaScript `状态变化并在改变发生时响应式地更新 `DOM`。
-
 ---
 
 ### 2. 渐进式前端框架
@@ -297,6 +292,37 @@ onMounted(() => {
 </template>
 ```
 
+### 10. 与jQuery的对比
+
+在开始学习`Vue.js`之前我们先回顾下过去是如何开发前端页面的
+
+在过去开发前端页面我们经常会选择使用`jQuery`库，使用`jQuery`库开发的好处是屏蔽了不同浏览器操作`DOM`的兼容性问题，相对于使用原生`JavaScript`开发，`jQuery`实现相同的功能使用的代码更少，`jQuery`的开发原则就是写更少的代码完成更多的功能。
+
+使用`jQuery`仅仅是减少了操作`DOM`的代码，实际在开发项目的过程中你需要考虑你的业务如何实现同时又要考虑如果操作`DOM`。
+
+随着这几年前端的快速发展，前端页面中需要实现的功能越来越复杂，`jQuery`已经不能满足时代的需求。
+
+这个时候应运而生了很多前端开发框架，例如：`Vue、React、Angular`前端大三框架。
+
+使用这些框架开发前端页面我们不需要再手动操作`DOM`，它们已经把`DOM`操作封装起来了，我们只需要考虑项目中的业务功能如何实现即可。
+
+相比于其他库，`Vue.js` 提供了更加简洁、更易于理解的 `API`，使得我们能够快速上手。
+
+也就是使用`Vue.js`开发前端项目会比过去的`jQuery`库开发更简单方便，`jQuery`的核心只是简化了`DOM`操作，使用`Vue.js`开发我们不需要操作`DOM`
+
+### 11. vue 核心思想
+
+`Vue.js` 是为了克服 `HTML` 在构建应用上的不足而设计的。`Vue.js` 有着诸多特性，最为核心的是数据驱动和组件化
+
+> 数据驱动
+
+- `DOM `是数据的一种自然映射
+- 数据改变自动驱动视图更新(响应式数据)
+
+> 组件化
+
+- 扩展 `HTML `元素，封装可重用代码
+
 ## 2. Vue 的应用方式
 
 > 根据你的使用场景和个人偏好，在使用 `Vue `时，你可以选择是否采用构建流程(`vite` 或者是 `webpack`)。
@@ -311,24 +337,16 @@ onMounted(() => {
 
 ### 1. 不使用构建工具
 
+> 可以直接引入线上的`Vue.js`
+
 ```vue
-<body>
-    <!-- 在最开始一定要引入 vue 的文件 -->
-    <script src="https://unpkg.com/vue@3"></script>
-	<div id="app">
-    	{{ message }}
-	</div>
-    <script>
-  	const { createApp } = Vue
-  	createApp({
-    	data() {
-      		return {
-        		message: 'Hello Vue!' 
-      		}
-    	}
-  	}).mount('#app')
-</script>
-</body>
+<script src="https://unpkg.com/vue@next"></script>
+```
+
+> 可以把`vue.js`下载到本地，然后引入本地的`vue.js`
+
+```html
+<script src="./vue.js"></script>
 ```
 
 ---
@@ -357,8 +375,15 @@ $ vue create project
 
 > 依赖的选项 
 
-1. 使用 `vue3 `（默认版本） ， `babel`（为了打包后使`es6`语法降级兼容低版本浏览器），`eslint`（语法规范）
-2. 同上， 但是版本选择 `vue2`
+```bash
+? Please pick a preset: 
+❯ Default ([Vue 2] babel, eslint) 
+  Default (Vue 3 Preview) ([Vue 3] babel, eslint) 
+  Manually select features 
+```
+
+1. 使用 `vue2 `（默认版本） ， `babel`（为了打包后使`es6`语法降级兼容低版本浏览器），`eslint`（语法规范）
+2. 同上， 但是版本选择 `vue3`
 3. 自定义选择添加的依赖
 
 > 空格是选中， 回车是确定
@@ -427,7 +452,7 @@ $ yarn dev
 
 我们可以在原来的没有使用 `vue` 框架的项目中局部使用 `vue`, 通过绑定某一个具体的元素
 
-```vue
+```js
 // 从 vue 中导入 creatApp 这个方法
 import { createApp } from 'vue'
 
@@ -874,7 +899,7 @@ const { foo, bar } = obj
 
 ###  2. {{ }}
 
-数据绑定最常见的形式就是使用 “**`Mustache`**” 语法（双大括号）的文本插值，在标签中使用。
+数据绑定最常见的形式就是使用 “`Mustache`” 语法（双大括号）的文本插值，在标签中使用。
 
 ```html
 <span>Message: {{ msg }}</span>
@@ -4286,6 +4311,8 @@ export function request(config) {
 
 ### 11 封装
 
+> 封装形式一
+
 ```js
 import axios from 'axios'
 const TIMEOUT = 5000
@@ -4334,17 +4361,74 @@ import {request} from "network/request";
   })
 ```
 
+> 封装形式二
+
+```js
+import axios from 'axios'
+
+export default {
+  // app Vue 的应用实例
+  // options 可选项，插件所需选项
+  install (app) {
+    // axios.defaults.baseURL = 'http://127.0.0.1:3000'
+    // axios.defaults.timeout = 30000
+
+    const instance = axios.create({
+      baseURL: 'http://127.0.0.1:3000',
+      timeout: 30000
+    })
+
+    // Add a request interceptor
+    instance.interceptors.request.use(function (config) {
+      // Do something before request is sent
+      return config
+    }, function (error) {
+      // Do something with request error
+      return Promise.reject(error)
+    })
+
+    // Add a response interceptor
+    instance.interceptors.response.use(function (response) {
+      // Any status code that lie within the range of 2xx cause this function to trigger
+      // Do something with response data
+      console.log(response)
+      if (response.status !== 200 && response.status !== 201) {
+        return Promise.reject(new Error('网络请求出现错误'))
+      }
+      return response.data
+    }, function (error) {
+      // Any status codes that falls outside the range of 2xx cause this function to trigger
+      // Do something with response error
+      return Promise.reject(error)
+    })
+
+    app.config.globalProperties.$http = instance
+  }
+}
+```
+
+调用
+
+```js
+async loadData () {
+  const data = await this.$http.get('/heroes')
+  this.heroes = data
+}
+```
+
 ### 12. 补充
 
-> 为什么不适用jQuery的Ajax？
+> 为什么不使用`jQuery`的`Ajax`？
 
-在vue开发中不需要使用jQuery，因为jQuery很重量级。使用 jquery 比 vue 体积还大， 得不偿失
+在`vue`开发中不需要使用`jQuery`，因为`jQuery`很重量级。
 
-> vue官方在Vue1.x的时候，推出了Vue-resource。
+使用 `jquery `比 vue体积还大， 得不偿失
 
-Vue-resource角jQuery轻便很多，但在vue2.x之后，尤雨溪对Vue-resource不维护了，简言之，就是弃用了。
+> `vue`官方在`Vue1.x`的时候，推出了`Vue-resource`
 
-> 尤雨溪推荐使用axios。 嗷呜, 听男神的话
+`Vue-resource` 比 `jQuery` 轻便很多，但在`vue2.x`之后，尤雨溪对`Vue-resource`不维护了，简言之，就是弃用了。
+
+> 尤雨溪推荐使用`axios`。 
 
 ## 10. Vuex
 

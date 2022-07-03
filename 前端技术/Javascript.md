@@ -79,6 +79,30 @@
 
 从 `2015 `年开始 `tc39`委员会决定每年发布新的 `ECMAScript `版本
 
+> `ECMAScript 6` 是什么
+
+- `ECMAScript 6` 又叫 `ES2015`，简称 `ES6`
+- `ES6 `是继 `ES4、ES5` 之后的 `JS 语言规范`
+- `ES6 `中增加了一些新的特性
+- `ES6 `的目标，是使得 `JavaScript `语言可以用来编写复杂的大型应用程序，成为企业级开发语言
+- 2015年6月发布
+
+> 为什么要学习 `ES6`
+
+- 提供了更加方便的新语法弥补 JS 语言本身的缺陷
+- 给内置对象增加了更多的方法方便
+- 新的前端项目中大量使用 `ES6 `的新语法
+- `ES6 `让 `JS` 可以开发复杂的大型项目，成为企业级开发语言
+
+> `ES6` 兼容性 
+
+- `ES6 `虽好，但是有兼容性问题，`IE7-IE11` 基本不支持 `ES6`
+- 在最新的现代浏览器、移动端、`Node.js` 中都支持 `ES6 `
+
+[https://caniuse.com/es6]:(https://caniuse.com/es6)
+
+![image-20220610161602700](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202206101616796.png)
+
 > `JavaScript `和 `java `的关系
 
 首先在在概念和设计方面，`Java `和 `JavaScript `是两种完全不同的语言。
@@ -94,11 +118,154 @@
 - 移动端手机 `APP `开发，如 `Facebook `的 `React Native`、`uniapp`、`PhoneGap`、`IONIC`
 - 跨平台的桌面应用程序，如使用 `electronjs`
 
-> `es6` 兼容性 
+>  `ECMA5` 增加
 
-[https://caniuse.com/es6]:(https://caniuse.com/es6)
+1. 严格模式（`use strict`）
 
-![image-20220610161602700](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202206101616796.png)
+2. 提供了`json`序列化方法 `JSON.parse`、`JSON.stringify`
+
+3. `Object`对象新增了方法
+
+   ```js
+   // 添加或更改对象属性
+   Object.defineProperty(object, property, descriptor)
+   // 添加或更改多个对象属性
+   Object.defineProperties(object, descriptors)
+   // 访问属性
+   Object.getOwnPropertyDescriptor(object, property)
+   // 以数组返回所有属性
+   Object.getOwnPropertyNames(object)
+   // 以数组返回所有可枚举的属性
+   Object.keys(object)
+   // 访问原型
+   Object.getPrototypeOf(object)
+   // 阻止向对象添加属性
+   Object.preventExtensions(object)
+   // 如果可将属性添加到对象，则返回 true
+   Object.isExtensible(object)
+   // 防止更改对象属性（而不是值）
+   Object.seal(object)
+   // 如果对象被密封，则返回 true
+   Object.isSealed(object)
+   // 防止对对象进行任何更改
+   Object.freeze(object)
+   // 如果对象被冻结，则返回 true
+   Object.isFrozen(object)
+   ```
+
+4. 数组新增了一些方法
+
+   ```js
+   Array.prototype.indexOf
+   Array.prototype.every
+   Array.prototype.some
+   Array.prototype.filter
+   Array.prototype.map
+   Array.prototype.forEach
+   ```
+
+5. 函数增加了`.bind`方法   
+
+> `ECMA6`
+
+- 类
+- 模块化
+- 箭头函数
+- 函数参数默认值
+- 模板字符串
+- 解构赋值
+- 延展操作符
+- 对象属性简写
+- `Promise`
+- `Let`与`Const`
+
+> `ECMA7`
+
+- 数组`includes`方法，用于判断是否包含某个值
+- `a ** b`指数运算符，它与 `Math.pow(a, b)`相同
+
+> `ECMA8`
+
+- `async/await`
+
+- `Object.values()`
+
+- `Object.entries()`
+
+- `padStart()`和`padEnd()`，填充字符串达到当前长度
+
+- 函数参数列表结尾允许逗号
+
+- `Object.getOwnPropertyDescriptors()`
+
+- `ShareArrayBuffer`和`Atomics`对象，用于从共享内存位置读取和写入
+
+>  `ECMA9`
+
+- 异步迭代
+
+- `Promise.finally()`
+
+- `Rest/Spread` 属性
+
+- 正则表达式命名捕获组（`Regular Expression Named Capture Groups`）
+
+- 正则表达式反向断言（`lookbehind`）
+
+- 正则表达式`dotAll`模式
+
+- 正则表达式 `Unicode `转义
+
+- 非转义序列的模板字符串
+
+> `ECMA10`
+
+- 更加友好的 `JSON.stringify`
+
+- 新增了`Array`的`flat()`方法和`flatMap()`方法
+
+- 新增了`String`的`trimStart()`方法和`trimEnd()`方法
+
+- `Object.fromEntries()`
+
+- `Symbol.prototype.description`
+
+- `String.prototype.matchAll`
+
+- `Function.prototype.toString()`现在返回精确字符，包括空格和注释
+
+- 简化`try {} catch {}`,修改 `catch `绑定
+
+- 新的基本数据类型`BigInt`
+
+- `globalThis`
+
+- `import()`
+
+- `Legacy RegEx`
+
+- 私有的实例方法和访问器
+
+> `ECMA11`
+
+- `String.prototype.matchAll` 用于字符串批量匹配正则, 返回一个 可迭代对象
+- 类的私有属性 #字段
+- `Promise.allSettled` 不管参数中的`promise`是`fulfilled`还是`rejected`，都会等参数中的实例都返回结果，包装实例才会结束。
+- 可选链操作符 使用" `?` "可选链式操作符, 会自动检测 ? 前面的对象是否存; 存在 则调用 , 不存在 则为 `undefined`
+- 动态 `import `导入
+- `bigInt `用于大数值运算
+
+> `ECMA12`
+
+- 新的逻辑操作符 `??` 
+- `String.prototype.replaceAll` 有了这个 `API`，替换字符不用写正则了
+- `Promise.any()` 返回第一个`fullfilled `的 `promise `，若全部 `reject`，则返回一个带有失败原因的 `AggregateError`
+- `WeakRefs `使用弱引用对象，该弱引用不会阻止 GC，并且可以在 GC 前使用` WeakRef.prototype.deref ( ) `解除该引用
+
+
+
+
+
 
 ### 2. 基础使用
 
@@ -276,7 +443,7 @@ document.write('hello ximingx');
 
 ### 1. 变量常量
 
-> `JS `中的变量是弱类型可以保存所有类型的数据，即变量没有类型而值有类型。
+> `JS `中的变量是弱类型可以保存所有类型的数据，即变量没有固定的类型
 
 变量就是可以变化的量, 是内存中可以存储数据内容的代号, 一个变量名, 对应一个存储的地址, 存放数据
 
@@ -365,7 +532,7 @@ console.log(typeof web); //object
 
 > 变量提升
 
-仅仅在使用 `var` 时会有变量提升的缺陷
+在使用 `var` 时会有变量提升的缺陷
 
 ```js
 var web = 'baidu.com';
@@ -606,6 +773,20 @@ function fun(a = 2, b = a) {}
 fun();
 ```
 
+> 案例
+
+```js
+let age = 18;
+{
+    // 外部无法score，因为有块级作用域
+    let score = 100;
+}
+for (let i = 0; i < 10; i++) {
+    // i 只能在此范围内使用，因为有块级作用域
+}
+console.log(i)
+```
+
 #### 4. 传值与传址
 
 基本数据类型指数值、字符串等简单数据类型，引用类型指对象数据类型。
@@ -728,12 +909,6 @@ function hd(name, name) {}
 |   `\'`   | 表示一个单引号 |
 |  `\" `   | 表示一个双引号 |
 
-
-
-
-
-
-
 ## 三. 数据类型
 
 根据语言特征: `JS` 是基于对象的语言, 所有的数据都是对象
@@ -742,6 +917,38 @@ function hd(name, name) {}
 
 1. 基本数据类型
 2. 引用数据类型
+
+> 基本数据类型的传值是传值
+
+```js
+let a = 'aaa'
+let b = a
+console.log(`a: ${a}`)
+console.log(`b: ${b}`)
+a = 'bbb'
+console.log(`a: ${a}`)
+console.log(`b: ${b}`)
+// a: aaa
+// b: aaa
+// a: bbb
+// b: aaa
+```
+
+> 引用类型是传址
+
+```js
+let arr1 = ['aaa', 123]
+let arr2 = arr1
+console.log(`arr1: ${arr1}`)
+console.log(`arr2: ${arr2}`)
+arr1.push(1)
+console.log(`arr1: ${arr1}`)
+console.log(`arr2: ${arr2}`)
+// arr1: aaa,123
+// arr2: aaa,123
+// arr1: aaa,123,1
+// arr2: aaa,123,1
+```
 
 ### 1. 类型检测
 
@@ -1781,7 +1988,15 @@ console.log(Boolean(string))
 > 使用对象方式创建数组
 
 ```js
-console.log(new Array(1, '123', '3')); 
+new Array(1, '123', '3')
+let arr = new Array(6)
+```
+
+> 但是需要注意, 当传入一个数值参数的时候, 会生成参数个数大小的数组
+
+```js
+let arr = new Array(6)
+console.log(arr) // [ <6 empty items> ]
 ```
 
 > 使用字面量创建是推荐的简单作法
@@ -1790,11 +2005,41 @@ console.log(new Array(1, '123', '3'));
 const array = ["ds", "dsw"];
 ```
 
+> 取值使用下标, 从 0 开始
+
+```js
+let array = [123, 456, 789]
+console.log(array[2])
+console.log(array[10])
+// 789
+// undefined
+```
+
+> `typeof `检测的结果为 `object`
+
+```js
+console.log(typeof arr) // object
+```
+
 > 使用原型的 `length`属性可以获取数组元素数量
 
 ```js
 let hd = ["123", "大晚上"];
 console.log(hd.length); //2
+```
+
+> 多维数组定义
+
+```js
+const array = [["321"], ["123"]];
+console.log(array[1][0]); // 123
+```
+
+> 数组可以设置任何值，下面是使用索引添加数组
+
+```js
+let hd = ["123"];
+hd[1] = "432";
 ```
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/a19346ab9fc34e04a3b7b322165afe9a.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAeGltaW5neA==,size_20,color_FFFFFF,t_70,g_se,x_16)
@@ -1807,15 +2052,14 @@ console.log(hd.length); //2
 |      `Array.from(arrayLike)`       | 将伪数组转化为真数组 |
 | `Array.of(value1, value2, value3)` | 将一系列值转换成数组 |
 
-> 注意，获取数组的长度是用`length`属性，不是方法。
-
 ##### Array.isArray()
 
 > 判断一个对象是否为数组
 
 ```js
-let arr=["a","b","c","a","b","c"];
+let arr = ["a","b","c","a","b","c"];
 console.log(Array.isArray(arr)); // true
+console.log(Array.isArray(9)); //false
 ```
 
 ##### Array.from()
@@ -1855,6 +2099,10 @@ console.log(arr3);
 // []
 // [ undefined, '123', '123' ]
 // [ '123', '123', '123' ]
+
+let fakeArr = { 0: 1, 1: 2, 2: 3, length: 3 };
+let arr = Array.from(fakeArr);
+console.log(arr); // [ 1, 2, 3 ]
 ```
 
 > 将字符串转换为数组
@@ -1873,28 +2121,45 @@ console.log(Array.from(array1))
 > 伪数组的举例
 
 ```html
-<body>
-    <button>按钮1</button>
-    <button>按钮2</button>
-    <button>按钮3</button>
-
-    <script>
-        let btnArray = document.getElementsByTagName('button');
-        console.log(btnArray);
-        console.log(btnArray[0]);
-    </script>
-</body>
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<script>
+    let divs = document.querySelectorAll("div")
+    console.log(divs)
+    // NodeList(3)
+    // 0: div
+    // 1: div
+    // 2: div
+    // length: 3
+    console.log(Array.from(divs)) // [div, div, div]
+</script>
 ```
 
-上面的布局中，有三个 `button `标签，我们通过`getElementsByTagName`获取到的`btnArray`实际上是伪数组，并不是真实的数组
+上面的布局中，有三个 `div`标签，我们通过`querySelectorAll`获取到的`divs`实际上是伪数组, 是一个 `DOM 节点`，并不是真实的数组
 
-采用`Array.from`方法将`btnArray`这个伪数组转换为真数组
+采用`Array.from`方法将`divs`这个伪数组转换为真数组
 
 ```js
-Array.from(btnArray);
+Array.from(divs);
 ```
 
 然后就可以使用数组的一般方法了
+
+> `Array.from` 第二个参数为函数, 可以对数组的元素进行迭代二次处理
+
+```js
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<script>
+    let divs = document.querySelectorAll("div")
+    console.log(Array.from(divs, function (item, index) {
+        item.style.color = 'gray'
+        return item
+    }))
+</script>
+```
 
 #####  Array.of()
 
@@ -1915,13 +2180,15 @@ console.log(arr4)
 // []
 ```
 
-> `new Array()`和 `Array.of()`的区别在于：当参数只有一个时，前者表示数组的长度，后者表示数组中的内容。
+> `new Array()`和 `Array.of()`的区别在于：当参数只有一个时且为数值类型时，前者表示数组的长度，后者表示数组中的内容。
 
 ```js
 let arr1 = new Array(6)
 let arr2 = Array.of(6)
 console.log(arr1) // [ <6 empty items> ]
 console.log(arr2) // [ 6 ]
+let arr = new Array('3')
+console.log(arr) // [ '3' ]
 ```
 
 #### 2. 增删改操作
@@ -1993,29 +2260,28 @@ console.log(arr)
 
 ##### slice()
 
-> 选取数组的一部分，并返回新数组。
-
-如果是负数，则表示从数组尾部开始算起
+> 选取数组的一部分，并返回新数组, 这个函数不会改变原数组
 
 ```js
-let arr=["b","o","a","m"];
+let arr = ["b","o","a","m"];
 console.log(arr.slice(1,3)); // [ 'o', 'a' ]
-arr=["b","o","a","m"];
+console.log(arr) // ["b","o","a","m"]
+arr = ["b","o","a","m"];
 console.log(arr.slice(1)); // [ 'o', 'a', 'm' ]
 ```
+
+> 如果是负数，则表示从数组尾部开始算起
 
 ```js
 let arr=["b","o","a","m","c"];
 console.log(arr.slice(-3, -1));  //[ 'a', 'm' ]
 ```
 
-##### splice()   !important
+##### splice()
 
-> 从数组中添加或删除更改元素
->
-> 会改变原始数组,返回删除的元素
+> 会改变原始数组, 返回删除的元素
 
-`array.splice(index,deleteNumber,item1,item2)`
+`array.splice(index,deleteNumber,[item1,item2, ...])`
 
 其中的参数第一个是操作的数组下标`index`，而第二个是删除个数，之后的  `可选参数`  是增加内容
 
@@ -2151,13 +2417,14 @@ console.log(Array1.copyWithin(0,1))
 // [4, 2, 3, 4, 5]
 ```
 
+
+
 #### 3. 拼接分离
 
-| 方法       | 描述                                             | 备注             |
-| :--------- | :----------------------------------------------- | :--------------- |
-| `concat()` | 合并数组：连接两个或多个数组，返回结果为新的数组 | 不会改变原数组   |
-| `join()`   | 将数组转换为字符串，返回结果为转换后的字符串     | 不会改变原数组   |
-| `split()`  | 将字符串按照指定的分隔符，组装为数组             | 不会改变原字符串 |
+| 方法       | 描述                                             | 备注           |
+| :--------- | :----------------------------------------------- | :------------- |
+| `concat()` | 合并数组：连接两个或多个数组，返回结果为新的数组 | 不会改变原数组 |
+| `join()`   | 将数组转换为字符串，返回结果为转换后的字符串     | 不会改变原数组 |
 
 ##### concat()
 
@@ -2213,8 +2480,6 @@ console.log(arr1.push(...arr2));
 // 返回的是数组的长度
 ```
 
-
-
 ##### join()
 
 > 把数组中的所有元素转换为一个字符串，元素通过分隔符分隔。
@@ -2242,8 +2507,6 @@ console.log(arr.join("-"))   // a-b-c-a-b-c
 ##### sort()
 
 `sort()`对数组的元素进行排序。排序顺序可以是字母或数字，并按升序或降序，默认按字母升序。
-
-在使用`sort()`方法时，可以使用箭头函数,比较好看
 
 ```js
 array.sort((a, b) => b - a);
@@ -2388,6 +2651,13 @@ let arr=["a","b","c","a","b","c"];
 console.log(arr.indexOf("a", 2)); //3
 ```
 
+> 严格类型匹配
+
+```js
+let arr = [12, '32']
+console.log(arr.indexOf(32)) // -1
+```
+
 
 
 ##### lastIndexOf()
@@ -2426,15 +2696,29 @@ console.log([1,2,3,4].includes(3,2))   //true
 
 ##### find()
 
-```javascript
+> 返回通过函数判断的数组的  第一个元素的值  。
+
+```js
 find((item, index, arr) => {
     return true;
 });
+
+// 找到数组中的第一个小于 0 的数字
+let arr = [1, 3, -5, 6, -2];
+let result = arr.find((x) => x < 0);
+// 等同于
+let result = arr.find(function (x) {
+  return x < 0;
+});
+// find 回调函数有 3 个参数
+arr.find(function (item, index, ar) {
+  // item  当前的值
+  // index 当前的值对应的索引
+  // ar 原数组
+});
 ```
 
-> 返回通过函数判断的数组的  第一个元素的值  。
-
-如果没有符合条件的元素返回 undefined ,  find() 对于空数组，函数是不会执行的。
+如果没有符合条件的元素返回 `undefined `,  `find()` 对于空数组，函数是不会执行的。
 
 `Array1.find((item) => {return condition})`
 
@@ -2455,7 +2739,7 @@ console.log(Array2.find((item) => {
 ```JS
 let Array2 = [2,3,4,5]
 console.log(Array2.findIndex((item) => {
-  return item >= 3
+  return it em >= 3
 }));
 // 1
 ```
@@ -2582,8 +2866,6 @@ Array2.forEach((item,index,arr) => {
 
 如果`forEach`()调用的函数抛出`foreach.break`异常，循环会提前终止
 
-
-
 ##### map()
 
 > 通过指定函数处理数组的每个元素，并返回处理后的数组。
@@ -2605,7 +2887,7 @@ console.log(map1);
 // [ undefined, 8, undefined, undefined ]
 ```
 
-`map()`方法创建了一个新数组，但新数组并不是在遍历完`array1`后才被赋值的，而是每遍历一次就得到一个值
+`map()`方法创建了一个新数组
 
 ```js
 var array1 = [1, 4, 9, 16];
@@ -2722,7 +3004,9 @@ console.log(maxValue); // 打印结果：9
 
 ##### keys()、values()、entries()
 
-这三个方法都是返回一个遍历器对象，可用for...of循环遍历，唯一区别：`keys`()是对键名的遍历、`values`()对键值的遍历、`entries`()是对键值对的遍历。
+这三个方法都是返回一个遍历器对象，可用`for...of`循环遍历
+
+区别：`keys`()是对键名的遍历、`values`()对键值的遍历、`entries`()是对键值对的遍历。
 
 ```js
 let arr = ["a","b","c","d"];
@@ -2749,9 +3033,26 @@ for(let i of arr.entries()){
 // [ 3, 'd' ]
 ```
 
-### 7. 展开语法
+> `next` 的使用
+
+```js
+    let arr = [1, 2, 3, 4 ]
+    let keys = arr.keys()
+    console.log(keys) // Array Iterator {}
+    console.log(keys.next()) // {value: 0, done: false}
+    console.log(keys.next()) // {value: 1, done: false}
+    console.log(keys.next()) // {value: 2, done: false}
+    console.log(keys.next()) // {value: 3, done: false}
+    console.log(keys.next()) // {value: undefined, done: true}
+```
+
+
+
+#### 7. 展开语法
 
 > `...` 可以用于合并数组
+>
+> `扩展运算符`，可以看成 `rest `参数的逆运算，也是` ... `可以把数组中的每一项展开  
 
 ```js
 let arr1 = [1, 2, 4, 5,];
@@ -2759,9 +3060,21 @@ let arr2 = ["daw", "dwa"]
 let arr3 = [...arr1, ...arr2];
 console.log(arr3);
 // [ 1, 2, 4, 5, 'daw', 'dwa' ]
+
+// 合并两个数组
+let arr1 = [1, 2];
+let arr2 = [3, 4];
+let arr3 = [...arr1, ...arr2];
+
+// 把数组展开作为参数，可以替代 apply 的使用
+// 求数组的最大值
+let arr = [6, 99, 10, 1];
+let max = Math.max(...arr);
 ```
 
 > 函数接收参数
+>
+> `rest `参数只能是最后一个参数
 
 ```js
 function fun(...args) {
@@ -2769,6 +3082,19 @@ function fun(...args) {
     // [ 1, 2, 3 ]
 }
 fun(1, 2, 3);
+
+// 求一组数的最大值
+function getMax(...values) {
+  let max = values[0];
+  for (let i = 0; i < values.length; i++) {
+    if (max < values[i]) {
+      max = values[i];
+    }
+  }
+  return max;
+}
+// 调用
+console.log(getMax(6, 1, 100, 9, 10));
 ```
 
 > 操作 `DOM` 节点
@@ -2792,7 +3118,7 @@ fun(1, 2, 3);
 </body>
 ```
 
-### 8. 解构赋值
+#### 8. 解构赋值
 
 > 解构是一 一对应的, 用于简化赋值
 
@@ -2805,6 +3131,14 @@ console.log(age, year) // 1 2
 > 但是在对象中使用的多一点, 数组中使用的较少, 除此之外也可以用于字符串
 
 ```js
+// 默认情况获取到的变量需要和对象的属性同名
+let obj = {foo: 'aaa', bar: 'bbb'};
+let { foo, bar } = obj;
+
+// 更改变量的名称
+let obj = {foo: 'aaa', bar: 'bbb'};
+let { foo: a, bar: b } = obj;
+
 const [...arr] = "ximingx"
 console.log(arr) 
 // [
@@ -2964,6 +3298,58 @@ fun3(1, 2); // 调用函数
 我们直接打印某一个函数，比如 `console.log(fun2)`，发现它的里面有`__proto__`。
 
 们还可以打印 `console.log(fun2 instanceof Object)`，发现打印结果为 `true`。
+
+#### 2. 箭头函数
+
+`ES6 `中允许使用箭头定义函数 `=>`，目的是简化函数的定义并且里面的`this`也比较特殊。
+
+> 箭头函数的定义 
+
+如果箭头函数的只有一个参数可以省略小括号，否则参数的小括号不可以省略 
+
+如果箭头函数的代码块中有多余一条语句的话，不能省略大括号，如果需要返回值，必须添加 `return`
+
+```js
+let fn = x => x * 2;
+// 等同于
+let fn = function (x) {
+    return x;
+}
+```
+
+> 箭头函数内部的`this`
+
+箭头函数中的 `this `是定义箭头函数作用域中的 `this `(箭头函数没有自己的`this`)
+
+```js
+var timerId = setInterval(() => {
+  this.snake.move();
+}, 100);
+```
+
+-  箭头函数不可以作为构造函数使用** 
+-  箭头函数内部没有 `arguments `
+
+#### 3. 函数默认值
+
+`ES6 `之前函数不能设置参数的默认值
+
+```js
+// ES5 中给参数设置默认值的变通做法
+function fn(x, y) {
+  y = y || 'world';
+  console.log(x, y);
+}
+
+// ES6 中给函数设置默认值
+function fn(x, y = 'world') {
+
+}
+```
+
+
+
+
 
 ### 9. Object
 
@@ -3821,9 +4207,169 @@ console.log(result);
 
 把位置理解空字符，是对位置非常有效的理解方式。
 
+### 14. set
+
+> `Set `是 `ES6 `中新增的内置对象，类似于数组，但是成员的值都是唯一的，没有重复的值(可以实现数组去重)。
+
+用于存储任何类型的唯一值，无论是基本类型还是对象引用。
+
+- 只能保存值没有键名
+- 严格类型检测
+- 值是唯一的
+- 遍历顺序是添加的顺序，方便保存回调函数
+
+```js
+// Set 可以通过一个数组初始化
+let set = new Set([1, 2, 1, 5, 1, 6]);
+// 数组去重
+let arr = [...set];
+```
+
+> `Set `的成员 
+
+-  `size`：属性，获取 `set` 中成员的个数，相当于数组中的 `length`
+-  `add(value)`：添加某个值，返回 `Set `结构本身。
+-  `delete(value)`：删除某个值，返回一个布尔值，表示删除是否成功。
+-  `has(value)`：返回一个布尔值，表示该值是否为`Set`的成员。
+-  `clear()`：清除所有成员，没有返回值。
+
+> 使用 `keys()/values()/entries()` 都可以返回迭代对象，因为`set`类型只有值, 所以 `keys`与`values` 方法结果一致。
+
+```js
+let set = new Set([1,2 ,2,3 ,43])
+console.log(set.values()) // [Set Iterator] { 1, 2, 3, 43 }
+console.log(set.keys()) // [Set Iterator] { 1, 2, 3, 43 }
+console.log(set.entries()) // [Set Entries] { [ 1, 1 ], [ 2, 2 ], [ 3, 3 ], [ 43, 43 ] }
+```
 
 
 
+### 15. symbol
+
+`Symbol`用于防止属性名冲突而产生的，比如向第三方对象中添加属性时。
+
+`Symbol `的值是唯一的，独一无二的不会重复的
+
+#### 1. Symbol() 定义方式一
+
+> 定义 `Symbol` 的方法
+
+```js
+let ximingx = Symbol();
+let edu = Symbol();
+console.log(ximingx); //symbol
+console.log(hd == edu); //false
+```
+
+> `Symbol `不可以添加属性, 可以视为一个独一无二不会重复的字符串
+
+```js
+let ximingx = Symbol();
+ximingx.name = "x";
+console.log(ximingx.name); // undefined
+```
+
+> 可传入字符串用于描述`Symbol`，方便在控制台分辨`Symbol`
+>
+>  传入相同参数`Symbol`也是独立唯一的，因为参数只是描述而已
+
+```js
+let ximingx = Symbol(`aw`)
+let hsl = Symbol(`aw`)
+console.log(ximingx)
+console.log(hsl)
+console.log(ximingx == hsl)
+// Symbol(aw)
+// Symbol(aw)
+// false
+```
+
+> 使用`description`可以获取传入的描述参数
+
+```js
+let ximingx = Symbol(`aw`)
+console.log(ximingx.description) // aw
+```
+
+#### 2. Symbol() 定义方式二
+
+> `Symbol.for` 根据描述获取`Symbol`，如果不存在则新建一个`Symbol`
+
+```js
+let x = Symbol.for(`ximingx`)
+let ximing = Symbol.for(`ximingx`)
+console.log(x == ximing) // true
+```
+
+- 使用`Symbol.for`会在系统中将`Symbol`登记, 重复的将视为一个 `Symbol`
+- 使用`Symbol()`则不会登记
+
+> `Symbol.keyFor` 根据使用`Symbol.for`登记的`Symbol`返回描述，如果找不到返回`undefined `。
+
+```js
+let ximingx = Symbol.for(`ximingx`)
+console.log(Symbol.keyFor(ximingx)) // ximingx
+```
+
+#### 3. 在对象属性中的使用
+
+`Symbol` 是独一无二的所以可以保证对象属性的唯一。
+
+- `Symbol `声明和访问使用 `[]`（变量）形式操作
+- 也不能使用 `.` 语法因为 `.`语法是操作字符串属性的。
+
+```js
+let symbol = Symbol("ximingx");
+let obj = {
+    [symbol]: "ximingx.com"
+};
+console.log(obj[symbol]); // ximingx.com
+```
+
+#### 4. 遍历属性
+
+> `Symbol `不能使用 `for/in`、`for/of` 遍历操作吗, 如果对象属性不想被遍历，可以使用`Symbol`保护
+
+```js
+let symbol = Symbol()
+let obj = {
+    name: `ximingx`,
+    [symbol]: 'ximingx.com'
+}
+for (const key in obj) {
+    console.log(key)
+}
+// name
+```
+
+> 可以使用 `Object.getOwnPropertySymbols` 获取所有`Symbol`属性, 只能获取 `symbol` 属性
+
+```js
+let symbol = Symbol(`这是一个 Symbol`)
+let obj = {
+    name: `ximingx`,
+    [symbol]: 'ximingx.com'
+}
+for (const key of Object.getOwnPropertySymbols(obj)) {
+    console.log(key)
+}
+// Symbol(这是一个 Symbol)
+```
+
+> 也可以使用 `Reflect.ownKeys(obj)` 获取所有属性包括`Symbol`
+
+```js
+let symbol = Symbol(`这是一个 Symbol`)
+let obj = {
+    name: `ximingx`,
+    [symbol]: 'ximingx.com'
+}
+for (const key of Reflect.ownKeys(obj)) {
+    console.log(key)
+}
+// name
+// Symbol(这是一个 Symbol)
+```
 
 ## 四: 运算符
 

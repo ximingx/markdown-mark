@@ -76,6 +76,12 @@ console.log(JSON.stringify(person));
 var xhr = new XMLHttpRequest();
 ```
 
+早期`IE`创建`Ajax`
+
+```javascript
+var xhr =new ActiveXObject(“Microsoft.XMLHTTP”);
+```
+
 ### 5. 传递请求参数
 
 `xhr.open(method,urL,async)`

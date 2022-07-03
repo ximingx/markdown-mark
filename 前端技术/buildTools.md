@@ -317,37 +317,60 @@ loader主要用于转换某些类型的模板，它是一个转换器。
 
 ## 2. Babel
 
-> 掌握 ES6 之后，如果你的业务需要考虑 ES5 的兼容性，则可以这样做：写 ES6 语法的 js 代码，然后通过 `Babel`将 ES6 转换为 ES5。如果没有这样的需要，那么下面的内容，了解即可。
+> 掌握 `ES6 `之后，如果你的业务需要考虑 `ES5 `的兼容性，则可以这样做：写 `ES6` 语法的 `js `代码，然后通过 `Babel`将 ES6 `转换`为 `ES5`。
+>
+> 如果没有这样的需要，那么下面的内容，了解即可。
 
-babel 的作用是将 ES6 语法转为 ES5 语法，支持低端浏览器。
+`Babel `是一个工具链，主要用于将采用 `ECMAScript 2015+` 语法编写的代码转换为向后兼容的 `JavaScript` 语法，以便能够运行在当前和旧版本的浏览器或其他环境中。
 
-以一个简单的案例说明
+```js
+// Babel 输入： ES2015 箭头函数
+[1, 2, 3].map(n => n + 1);
+
+// Babel 输出： ES5 语法实现的同等功能
+[1, 2, 3].map(function(n) {
+  return n + 1;
+});
+```
+
+> 降级处理 `babel `的使用步骤 
+
+1. 安装` Node.js`
+
+2. `npm `初始化项目
+
+3. 命令行中安装 `babel`
+
+4. 配置文件 `.babelrc`
+
+5. 运行
+
+> 以一个简单的案例说明
 
 ### 2.1 先创建一个项目的目录
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/bdd90d76902b4db0afddebd454609192.png)
-在 index.js 写入
+
+在 `index.js` 写入
 
 ```js
 let a = item => item + 2
 console.log(a(4))
 ```
 
-这个文件是一个 ES6 语法 的 js 文件，稍后，我们尝试把这个 ES6 语法的 js 文件转化为 ES5 的 js 文件。
-
-
+这个文件是一个 `ES6 `语法 的 `js` 文件，稍后，我们尝试把这个 `ES6 `语法的` js` 文件转化为 `ES5` 的` js` 文件。
 
 ### 2.2 安装 Babel-cli
 
 初始化项目：
 
-在安装 Babel 之前，需要先用 npm init 先初始化我们的项目。打开终端或者通过 cmd 打开命令行工具，进入项目目录，输入如下命令：
+在安装 `Babel `之前，需要先用 `npm init` 先初始化我们的项目。打开终端或者通过 `cmd `打开命令行工具，进入项目目录，输入如下命令：
 
 ```bash
-	npm init -y
+$ npm init -y
 ```
 
-上方代码中，`-y` 代表全部默认同意，就不用一次次按回车了（稍后再根据需要，在文件中手动修改）。命令执行完成后，会在项目的根目录下生成 package.json 文件：
+上方代码中，`-y` 代表全部默认同意，就不用一次次按回车了（稍后再根据需要，在文件中手动修改）。命令执行完成后，会在项目的根目录下生成 `package.json` 文件：
 
 ```json
 {
@@ -386,10 +409,10 @@ npm install --save-dev babel-preset-es2015 babel-cli
 
 ### 2.5 开始转换：
 
-现在，我们应该可以将 ES6 的文件转化为 ES5 的文件了，命令如下：（此命令略显复杂）
+现在，我们应该可以将 `ES6 `的文件转化为 `ES5 `的文件了，命令如下：（此命令略显复杂）
 
 ```bash
-	babel src/index.js -o dist/index.js
+$ babel src/index.js -o dist/index.js
 ```
 
 我们可以将上面这个命令进行简化一下。操作如下：
@@ -402,15 +425,15 @@ npm install --save-dev babel-preset-es2015 babel-cli
   },
 ```
 
-目前为止，环境配置好了。以后，我们执行如下命令，即可将`src/index.js`这个 ES6 文件转化为 `dist/index.js`这个 ES5 文件：
+目前为止，环境配置好了。以后，我们执行如下命令，即可将`src/index.js`这个 `ES6 `文件转化为 `dist/index.js`这个 `ES5 `文件：
 
 ```bash
 npm run build
 ```
 
-我们执行上面的命令之后，会发现， dist 目录下会生成 ES5 的 js 文件：
+我们执行上面的命令之后，会发现， `dist `目录下会生成 `ES5 `的 `js` 文件：
 
-之后我们就可以在 index.html 中使用 es5的语法了
+之后我们就可以在 `index.html` 中使用 `es5`的语法了
 
 ```js
 "use strict";
@@ -419,6 +442,15 @@ var a = function a(item) {
   return item + 2;
 };
 console.log(a(4));
+```
+
+> 补充
+
+```bash
+# 把转换的结果输出到指定的文件
+$ npx babel index.js -o test.js
+# 把转换的结果输出到指定的目录
+$ npx babel src -d lib
 ```
 
 

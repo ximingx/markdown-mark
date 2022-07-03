@@ -109,3 +109,97 @@ let show = ref(false)
 </style>
 ```
 
+
+
+# josn-server
+
+可以将 `json `格式的数据返回
+
+## 1. 举例
+
+> db.json
+
+```js
+{
+  "heroes": [
+    {
+      "id": 1,
+      "name": "关羽",
+      "gender": "男"
+    },
+    {
+      "id": 2,
+      "name": "刘备",
+      "gender": "男"
+    },
+    {
+      "id": 3,
+      "name": "大乔",
+      "gender": "女"
+    }
+  ]
+}
+```
+
+> 命令行启动
+
+```bash
+$ json-server --watch db.json
+```
+
+> 请求操作
+
+- 获取英雄列表
+
+- - 请求路径：`http://localhost:3000/heros`
+  - 请求方法：`GET`
+  - 根据英雄`id`获取一个英雄
+
+- - - 请求路径：`http://localhost:3000/heros/:id`
+
+- - - - `:id` 需要给定一个英雄的 id
+
+- - - 请求方法：`GET`
+
+- 添加英雄
+
+- - 请求路径：`http://localhost:3000/heros`
+
+  - 请求方法：`POST`
+
+  - 请求体：
+
+  - ```js
+    {
+      name: '英雄名称',
+      gender: '英雄性别'
+    }
+    ```
+
+- 删除英雄
+
+- - 请求路径：`http://localhost:3000/heros/:id`
+
+- - - `:id` 需要给定一个英雄的 id
+
+- - 请求方法：`DELETE`
+
+- 编辑英雄
+
+- - 请求路径：`http://localhost:3000/heros/:id`
+
+- - - `:id` 需要给定一个英雄的 id
+
+- - 请求方法：`PATCH`
+
+  - 请求体：
+
+  - ```js
+    {
+      name: '英雄名称',
+      gender: '英雄性别'
+    }
+    ```
+
+    
+
