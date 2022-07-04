@@ -3176,176 +3176,7 @@ console.log(arg)
 
 - 简化编程，让编程模块化。高内聚、低耦合。
 
-来看个例子：
 
-```javascript
-console.log("你好");
-sayHello();	// 调用函数
-
-// 定义函数
-function sayHello(){
-	console.log("欢迎");
-	console.log("welcome");
-}
-```
-
-#### 1 函数的定义/声明
-
-> 方式一：利用函数关键字自定义函数（命名函数）
-
-使用`函数声明`来创建一个函数（也就是 `function `关键字）。
-
-```javascript
-function 函数名([形参1,形参2...形参N]){  // 备注：语法中的中括号，表示“可选”, 参数的选取是任意的
-	
-}
-```
-
-举例：
-
-```javascript
-function fun1(a, b){
-	return a + b;
-}
-```
-
-解释如下：
-
-- `function`：是一个关键字。
-
-- 函数名字：命名规定和变量的命名规定一样。只能是字母、数字、下划线、美元符号，不能以数字开头。
-
-- 参数：可选。
-
-- 大括号里面，是这个函数的语句。
-
-> 方式二：函数表达式（匿名函数）
-
-使用`函数表达式`来创建一个函数。语法：
-
-```javascript
-var 变量名  = function([形参1,形参2...形参N]){
-	语句....
-}
-```
-
-举例：
-
-```javascript
-var fun2 = function() {
-	console.log("我是匿名函数中封装的代码");
-};
-```
-
-解释如下：
-
-
-- 上面的 `fun2 `是变量名，不是函数名。
-
-- 函数表达式的声明方式跟声明变量类似，只不过变量里面存的是值，而函数表达式里面存的是函数。
-
-- 函数表达式也可以传递参数。
-
-从方式二的举例中可以看出：所谓的“函数表达式”，其实就是将匿名函数赋值给一个变量。
-
-> 方式三：使用构造函数 `new Function()`
-
-使用构造函数`new Function()`来创建一个对象。这种方式，用的少。
-
-语法：
-
-```javascript
-var 变量名/函数名  = new Function('形参1', '形参2', '函数体');
-```
-
-注意，`Function `里面的参数都必须是字符串格式。
-
-也就是说，形参也必须放在字符串里, 而且是在最前面的几位参数；
-
-函数体也是放在字符串里包裹起来，放在 `Function `的最后一个参数的位置。
-
-- **所有函数都是 `Function `的实例(对象)  **
-- 函数也属于对象
-
-代码举例：
-
-```javascript
-var fun3 = new Function('a', 'b', 'console.log("我是函数内部的内容");  console.log(a + b);');
-fun3(1, 2); // 调用函数
-```
-
-打印结果：
-
-```js
-我是函数内部的内容
-3
-```
-
-**分析**：
-
-方式3的写法很少用，原因如下：
-
-- 不方便书写：写法过于啰嗦和麻烦。
-
-- 执行效率较低：首先需要把字符串转换为 `js `代码，然后再执行。
-
-> 总结
-
-1、所有的函数，都是 `Fuction` 的实例。函数本质上都是通过 `new Function` 得到的。
-
-2、函数既然是实例对象，那么，函数也属于“对象”。还可以通过如下特征，来佐证函数属于对象：
-
-我们直接打印某一个函数，比如 `console.log(fun2)`，发现它的里面有`__proto__`。
-
-们还可以打印 `console.log(fun2 instanceof Object)`，发现打印结果为 `true`。
-
-#### 2. 箭头函数
-
-`ES6 `中允许使用箭头定义函数 `=>`，目的是简化函数的定义并且里面的`this`也比较特殊。
-
-> 箭头函数的定义 
-
-如果箭头函数的只有一个参数可以省略小括号，否则参数的小括号不可以省略 
-
-如果箭头函数的代码块中有多余一条语句的话，不能省略大括号，如果需要返回值，必须添加 `return`
-
-```js
-let fn = x => x * 2;
-// 等同于
-let fn = function (x) {
-    return x;
-}
-```
-
-> 箭头函数内部的`this`
-
-箭头函数中的 `this `是定义箭头函数作用域中的 `this `(箭头函数没有自己的`this`)
-
-```js
-var timerId = setInterval(() => {
-  this.snake.move();
-}, 100);
-```
-
--  箭头函数不可以作为构造函数使用** 
--  箭头函数内部没有 `arguments `
-
-#### 3. 函数默认值
-
-`ES6 `之前函数不能设置参数的默认值
-
-```js
-// ES5 中给参数设置默认值的变通做法
-function fn(x, y) {
-  y = y || 'world';
-  console.log(x, y);
-}
-
-// ES6 中给函数设置默认值
-function fn(x, y = 'world') {
-
-}
-```
 
 
 
@@ -4242,13 +4073,85 @@ console.log(set.keys()) // [Set Iterator] { 1, 2, 3, 43 }
 console.log(set.entries()) // [Set Entries] { [ 1, 1 ], [ 2, 2 ], [ 3, 3 ], [ 43, 43 ] }
 ```
 
+> Set 中是严格类型约束的，下面的数值`1`与字符串`1`属于两个不同的值
+
+```js
+let set = new Set();
+set.add(1);
+set.add("1");
+console.log(set); //Set(2) {1, "1"}
+```
+
+> 使用 `add` 添加元素，不允许重复添加`hdcms`值
+
+```js
+let set = new Set();
+
+set.add('1');
+set.add('2');
+set.add('2')
+
+console.log(set.values()); // SetIterator {"houdunren", "hdcms"}
+```
+
+> 可以使用`点语法` 或 `Array.form` 静态方法将Set类型转为数组，这样就可以使用数组处理函数了
+
+```js
+const set = new Set(["123", "321"]);
+console.log([...set]); // ["123", "312"]
+console.log(Array.from(set)); // ["123", "321"]
+```
+
+> 字符串去重
+
+```js
+console.log([...new Set("ximingx")].join("")); // ximng
+```
 
 
-### 15. symbol
+
+
+
+### 15. WeakSet
+
+ `WeakSet`结构同样不会存储重复的值，**它的成员必须只能是对象类型的值**
+
+- 垃圾回收不考虑`WeakSet`，即`WeakSet`引用时引用计数器不加一，所以对象不被任何引用时, 不管`WeakSet`是否在使用都将删除
+- 因为`WeakSet `是弱引用，由于其他地方操作成员可能会不存在，所以不可以进行`forEach( )`遍历等操作
+- 也是因为弱引用，`WeakSet `结构没有`keys( )，values( )，entries( )`等方法和`size`属性
+- 因为是弱引用所以当外部引用删除时，希望自动删除数据时使用 `WeakMap`
+
+> `WeakSet`的值必须为对象类型
+
+```js
+new WeakSet([["123"], ["321"]]);
+```
+
+> `WeakSet`的常用指令
+
+```js
+const x = new WeakSet();
+const arr = ["123"];
+//添加操作
+x.add(arr);
+console.log(x.has(arr));
+
+//删除操作
+x.delete(arr);
+
+//检索判断
+console.log(x.has(arr));
+```
+
+
+
+
+
+### 16. symbol
 
 `Symbol`用于防止属性名冲突而产生的，比如向第三方对象中添加属性时。
 
-`Symbol `的值是唯一的，独一无二的不会重复的
+`Symbol `的值是唯一的，独一无二的不会重复的, 可以将`Symbol`视为一个字符串
 
 #### 1. Symbol() 定义方式一
 
@@ -4257,11 +4160,11 @@ console.log(set.entries()) // [Set Entries] { [ 1, 1 ], [ 2, 2 ], [ 3, 3 ], [ 43
 ```js
 let ximingx = Symbol();
 let edu = Symbol();
-console.log(ximingx); //symbol
-console.log(hd == edu); //false
+console.log(ximingx); // Symbol()
+console.log(ximingx == edu); // false
 ```
 
-> `Symbol `不可以添加属性, 可以视为一个独一无二不会重复的字符串
+> `Symbol `不可以添加属性, 将其视为一个独一无二不会重复的字符串
 
 ```js
 let ximingx = Symbol();
@@ -4274,13 +4177,13 @@ console.log(ximingx.name); // undefined
 >  传入相同参数`Symbol`也是独立唯一的，因为参数只是描述而已
 
 ```js
-let ximingx = Symbol(`aw`)
-let hsl = Symbol(`aw`)
+let ximingx = Symbol(`a`)
+let hsl = Symbol(`w`)
 console.log(ximingx)
 console.log(hsl)
 console.log(ximingx == hsl)
-// Symbol(aw)
-// Symbol(aw)
+// Symbol(a)
+// Symbol(w)
 // false
 ```
 
@@ -4293,7 +4196,7 @@ console.log(ximingx.description) // aw
 
 #### 2. Symbol() 定义方式二
 
-> `Symbol.for` 根据描述获取`Symbol`，如果不存在则新建一个`Symbol`
+> `Symbol.for` 根据描述获取`Symbol`，如果不存在则新建一个`Symbol`, 会在系统中登记
 
 ```js
 let x = Symbol.for(`ximingx`)
@@ -4308,12 +4211,16 @@ console.log(x == ximing) // true
 
 ```js
 let ximingx = Symbol.for(`ximingx`)
+let x = Symbol.for()
 console.log(Symbol.keyFor(ximingx)) // ximingx
+console.log(Symbol.keyFor(x)) // undefined
 ```
 
 #### 3. 在对象属性中的使用
 
-`Symbol` 是独一无二的所以可以保证对象属性的唯一。
+> `Symbol` 是独一无二的所以可以保证对象属性的唯一
+>
+> 使用`Symbol`可以解决在保存数据时由于名称相同造成的耦合覆盖问题。
 
 - `Symbol `声明和访问使用 `[]`（变量）形式操作
 - 也不能使用 `.` 语法因为 `.`语法是操作字符串属性的。
@@ -4370,6 +4277,161 @@ for (const key of Reflect.ownKeys(obj)) {
 // name
 // Symbol(这是一个 Symbol)
 ```
+
+### 17. Map
+
+`Map`是一组键值对的结构，用于解决以往不能用对象做为键的问题
+
+- 具有极快的查找速度
+- 函数、对象、基本类型都可以作为键或值
+
+> 函数、对象、基本类型都可以作为键或值
+
+```js
+let map = new Map()
+map.set("name", "ximingx")
+map.set(function () {
+
+}, "function")
+map.set({}, "对象")
+map.set(1, "数值")
+console.log(map)
+// Map(4) {
+//   'name' => 'ximingx',
+//   [Function (anonymous)] => 'function',
+//   {} => '对象',
+//   1 => '数值'
+// }
+```
+
+> 可以接受一个数组作为参数，该数组的成员是一个表示键值对的数组, 用于依次添加多个元素
+
+```js
+let m = new Map([
+  ['qsx', 'ximingx'],
+  ['hsl', 'lover']
+]);
+
+console.log(m.get('qsx')); // ximingx
+```
+
+> 使用`set` 方法添加元素，支持链式操作
+
+```js
+let map = new Map();
+let obj = {
+    name: "ximingx"
+};
+
+map.set(obj, "ximingx.com").set("name", "123");
+
+console.log(map.entries());
+// [Map Entries] {
+//   [ { name: 'ximingx' }, 'ximingx.com' ],
+//   [ 'name', '123' ]
+// }
+```
+
+> 对于键是对象的`Map`， 键保存的是内存地址，值相同但内存地址不同的视为两个键。
+
+```js
+let arr = ["123"];
+const ximingx = new Map();
+ximingx.set(arr, "ximingx.com"); 
+console.log(ximingx.get(arr)); // ximingx.com
+console.log(ximingx.get(["123"])); // undefined
+```
+
+> 获取数据数量
+
+```js
+console.log(map.size);
+```
+
+> 检测元素是否存在
+
+```js
+console.log(map.has(obj1));
+```
+
+> 读取元素
+
+```js
+let map = new Map()
+map.set(1, "数值")
+console.log(map.get(1)) // 数值
+```
+
+> 使用 `delete()` 方法删除单个元素, 返回 `Boolean` 值 
+
+```js
+map.delete(obj);
+```
+
+> 使用`clear`方法清除`Map`所有元素
+
+```js
+map.clear()
+```
+
+> 使用 `keys()/values()/entries()` 都可以返回可遍历的迭代对象。
+
+```js
+let x = new Map([["qsx", "ximingx"], ["hsl", "xx"]]);
+console.log(x.keys());
+console.log(x.values());
+console.log(x.entries());
+// [Map Iterator] { 'qsx', 'hsl' }
+// [Map Iterator] { 'ximingx', 'xx' }
+// [Map Entries] { [ 'qsx', 'ximingx' ], [ 'hsl', 'xx' ] }
+```
+
+> 可以使用`展开语法` 或 `Array.form` 静态方法将`Set`类型转为数组，这样就可以使用数组处理函数了
+
+```js
+let x = new Map([["qsx", "ximingx"], ["hsl", "xx"]]);
+
+console.log(...x); 
+console.log(...x.entries()); 
+console.log(...x.values()); 
+console.log(...x.keys()); 
+// [ 'qsx', 'ximingx' ] [ 'hsl', 'xx' ]
+// [ 'qsx', 'ximingx' ] [ 'hsl', 'xx' ]
+// ximingx xx
+// qsx hsl
+```
+
+### 18. WeakMap
+
+`WeakMap` 对象是一组键/值对的集
+
+- 键名必须是对象
+- `WeaMap`对键名是弱引用的，键值是正常引用
+
+- 垃圾回收不考虑`WeaMap`的键名，不会改变引用计数器，键在其他地方不被引用时即删除
+- 因为`WeakMap` 是弱引用，由于其他地方操作成员可能会不存在，所以不可以进行`forEach( )`遍历等操作
+- 也是因为弱引用，`WeaMap `结构没有`keys( )，values( )，entries( )`等方法和 `size `属性
+- 当键的外部引用删除时，希望自动删除数据时使用 `WeakMap`
+
+> 下面是`WeakSet`的常用指令
+
+```js
+let x = new WeakMap();
+const arr = ["123"];
+//添加操作
+x.set(arr, "321");
+console.log(x.has(arr)); // true
+
+//删除操作
+x.delete(arr);
+
+//检索判断
+console.log(x.has(arr)); // false
+```
+
+> `WakeMap`的键名对象不会增加引用计数器，如果一个对象不被引用了会自动删除。
+
+
 
 ## 四: 运算符
 
@@ -4744,7 +4806,117 @@ for (const iterator of str) {
 
 ## 六: 函数
 
+函数是将复用的代码块封装起来的模块，在 `JS `中函数还有其他语言所不具有的特性
+
 ### 1. 函数的定义
+
+> 方式一：利用函数关键字自定义函数（命名函数）
+
+使用`函数声明`来创建一个函数（也就是 `function `关键字）。
+
+```javascript
+function 函数名([形参1,形参2...形参N]){  // 备注：语法中的中括号，表示“可选”, 参数的选取是任意的
+	
+}
+```
+
+举例：
+
+```javascript
+function fun1(a, b){
+	return a + b;
+}
+```
+
+解释如下：
+
+- `function`：是一个关键字。
+
+- 函数名字：命名规定和变量的命名规定一样。只能是字母、数字、下划线、美元符号，不能以数字开头。
+
+- 参数：可选。
+
+- 大括号里面，是这个函数的语句。
+
+> 方式二：函数表达式（匿名函数）
+
+使用`函数表达式`来创建一个函数。语法：
+
+```javascript
+var 变量名  = function([形参1,形参2...形参N]){
+	语句....
+}
+```
+
+举例：
+
+```javascript
+var fun2 = function() {
+	console.log("我是匿名函数中封装的代码");
+};
+```
+
+解释如下：
+
+
+- 上面的 `fun2 `是变量名，不是函数名。
+
+- 函数表达式的声明方式跟声明变量类似，只不过变量里面存的是值，而函数表达式里面存的是函数。
+
+- 函数表达式也可以传递参数。
+
+从方式二的举例中可以看出：所谓的“函数表达式”，其实就是将匿名函数赋值给一个变量。
+
+> 方式三：使用构造函数 `new Function()`
+
+使用构造函数`new Function()`来创建一个对象。这种方式，用的少。
+
+语法：
+
+```javascript
+var 变量名/函数名  = new Function('形参1', '形参2', '函数体');
+```
+
+注意，`Function `里面的参数都必须是字符串格式。
+
+也就是说，形参也必须放在字符串里, 而且是在最前面的几位参数；
+
+函数体也是放在字符串里包裹起来，放在 `Function `的最后一个参数的位置。
+
+- 所有函数都是 `Function `的实例(对象)  
+- 函数也属于对象
+
+代码举例：
+
+```javascript
+var fun3 = new Function('a', 'b', 'console.log("我是函数内部的内容");  console.log(a + b);');
+fun3(1, 2); // 调用函数
+```
+
+打印结果：
+
+```js
+我是函数内部的内容
+3
+```
+
+方式3的写法很少用，原因如下：
+
+- 不方便书写：写法过于啰嗦和麻烦。
+
+- 执行效率较低：首先需要把字符串转换为 `js `代码，然后再执行。
+
+> 总结
+
+1、所有的函数，都是 `Fuction` 的实例。函数本质上都是通过 `new Function` 得到的。
+
+2、函数既然是实例对象，那么，函数也属于“对象”。还可以通过如下特征，来佐证函数属于对象：
+
+我们直接打印某一个函数，比如 `console.log(fun2)`，发现它的里面有`__proto__`。
+
+们还可以打印 `console.log(fun2 instanceof Object)`，发现打印结果为 `true`。
+
+
 
 > 函数名: 函数的标识
 
@@ -5149,6 +5321,41 @@ console.log(fn == fn()); // false
 ```
 
 我们知道，当我们在调用一个函数时，通常使用`函数()`这种格式；可如果，我们是直接使用`函数`这种格式，它的作用相当于整个函数。
+
+### 13. 箭头函数
+
+`ES6 `中允许使用箭头定义函数 `=>`，目的是简化函数的定义并且里面的`this`也比较特殊。
+
+> 箭头函数的定义 
+
+如果箭头函数的只有一个参数可以省略小括号，否则参数的小括号不可以省略 
+
+如果箭头函数的代码块中有多余一条语句的话，不能省略大括号，如果需要返回值，必须添加 `return`
+
+```js
+let fn = x => x * 2;
+// 等同于
+let fn = function (x) {
+    return x;
+}
+```
+
+> 箭头函数内部的`this`
+
+箭头函数中的 `this `是定义箭头函数作用域中的 `this `(箭头函数没有自己的`this`)
+
+```js
+var timerId = setInterval(() => {
+  this.snake.move();
+}, 100);
+```
+
+-  箭头函数不可以作为构造函数使用** 
+-  箭头函数内部没有 `arguments `
+
+
+
+
 
 ## 七: DOM
 

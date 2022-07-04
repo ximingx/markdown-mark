@@ -293,7 +293,9 @@ $ yrm test taobao
 
 
 
+# webstorm 插件
 
+![image-20220704191154991](https://raw.githubusercontent.com/ximingx/Figurebed/master/imgs/202207041911100.png)
 
 
 
