@@ -32,7 +32,7 @@ Git本地有三个工作区域：工作目录（Working Directory）、暂存区
 
 ## Git 安装
 
-在开始使用 Git 管理项目的版本之前，需要将它安装到计算机上。可以使用浏览器访问如下的网址，根据自己的操作系统，选择下载对应的 Git 安装包：**https://git-scm.com/downloads**
+在开始使用 Git 管理项目的版本之前，需要将它安装到计算机上。可以使用浏览器访问如下的网址，根据自己的操作系统，选择下载对应的 Git 安装包：https://git-scm.com/downloads
 
 ![image-20220407203932796](https://raw.githubusercontent.com/ximingx/Figurebed/master/img/202204072039892.png)
 
